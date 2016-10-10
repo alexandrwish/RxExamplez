@@ -45,8 +45,8 @@ public class RetrofitActivity extends Activity {
         presenter.onLoadClick(holder.getInput().getText().toString());
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     @SuppressWarnings("unused")
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void onTranslateAnswer(TranslateAnswerEvent event) {
         holder.getInputText().setText(event.getText());
         holder.getTranslateText().setText(event.getTranslate());
