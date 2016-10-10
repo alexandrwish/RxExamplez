@@ -1,5 +1,6 @@
 package com.magenta.rx.rxa.component;
 
+import com.magenta.rx.rxa.module.MapModule;
 import com.magenta.rx.rxa.module.RXModule;
 import com.magenta.rx.rxa.module.RetrofitModule;
 
@@ -12,4 +13,6 @@ import dagger.Component;
 public interface RXComponent {
 
     RetrofitComponent plusRetrofitComponent(RetrofitModule module);
+
+    MapComponent plusMapComponent(MapModule module);
 }

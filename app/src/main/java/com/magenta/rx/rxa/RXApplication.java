@@ -2,11 +2,14 @@ package com.magenta.rx.rxa;
 
 import android.app.Application;
 
+import com.magenta.rx.rxa.activity.MapActivity;
 import com.magenta.rx.rxa.activity.RetrofitActivity;
 import com.magenta.rx.rxa.component.DaggerRXComponent;
+import com.magenta.rx.rxa.component.MapComponent;
 import com.magenta.rx.rxa.component.RXComponent;
 import com.magenta.rx.rxa.component.RetrofitComponent;
 import com.magenta.rx.rxa.model.TranslateAnswerLoader;
+import com.magenta.rx.rxa.module.MapModule;
 import com.magenta.rx.rxa.module.RXModule;
 import com.magenta.rx.rxa.module.RetrofitModule;
 import com.magenta.rx.rxa.presenter.RetrofitPresenter;
@@ -15,6 +18,7 @@ public class RXApplication extends Application {
 
     protected static RXApplication instance;
     private RetrofitComponent retrofitComponent;
+    private MapComponent mapComponent;
     private RXComponent rxComponent;
 
     public void onCreate() {
@@ -34,8 +38,19 @@ public class RXApplication extends Application {
         retrofitComponent.inject(activity);
     }
 
+    public void addMapComponent(MapActivity activity) {
+        if (mapComponent == null) {
+            mapComponent = rxComponent.plusMapComponent(new MapModule());
+        }
+        mapComponent.inject(activity);
+    }
+
     public void removeRetrofitComponent() {
         retrofitComponent = null;
+    }
+
+    public void removeMapComponent() {
+        mapComponent = null;
     }
 
     public void inject(TranslateAnswerLoader loader) {

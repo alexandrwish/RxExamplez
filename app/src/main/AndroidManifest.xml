@@ -10,6 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyCBkAfbrf-WwtFwgnoTRuJxGdO01VZqKzo" />
+
         <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,5 +21,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.RetrofitActivity" />
+        <activity android:name=".activity.MapActivity" />
     </application>
 </manifest>
