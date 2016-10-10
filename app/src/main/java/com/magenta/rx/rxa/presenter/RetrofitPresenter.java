@@ -4,8 +4,8 @@ import android.util.Log;
 
 import com.magenta.rx.rxa.RXApplication;
 import com.magenta.rx.rxa.event.TranslateAnswerEvent;
-import com.magenta.rx.rxa.http.APIClient;
 import com.magenta.rx.rxa.model.TranslateAnswer;
+import com.magenta.rx.rxa.model.TranslateAnswerLoader;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -17,14 +17,14 @@ import rx.schedulers.Schedulers;
 public class RetrofitPresenter {
 
     @Inject
-    APIClient client;
+    TranslateAnswerLoader loader;
 
     public RetrofitPresenter() {
         RXApplication.getInstance().inject(this);
     }
 
     public void onLoadClick(final String text) {
-        client.translate("trnsl.1.1.20161008T152042Z.47ba7d102a5a0487.48abde3433e4c3dbb46961c913f32db6e6ec1c1c", text, "ru")
+        loader.load(text)
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Observer<TranslateAnswer>() {
                     public void onCompleted() {

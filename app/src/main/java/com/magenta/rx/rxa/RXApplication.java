@@ -6,6 +6,7 @@ import com.magenta.rx.rxa.activity.RetrofitActivity;
 import com.magenta.rx.rxa.component.DaggerRXComponent;
 import com.magenta.rx.rxa.component.RXComponent;
 import com.magenta.rx.rxa.component.RetrofitComponent;
+import com.magenta.rx.rxa.model.TranslateAnswerLoader;
 import com.magenta.rx.rxa.module.RXModule;
 import com.magenta.rx.rxa.module.RetrofitModule;
 import com.magenta.rx.rxa.presenter.RetrofitPresenter;
@@ -37,7 +38,11 @@ public class RXApplication extends Application {
         retrofitComponent = null;
     }
 
+    public void inject(TranslateAnswerLoader loader) {
+        retrofitComponent.inject(loader);
+    }
+
     public void inject(RetrofitPresenter presenter) {
-        rxComponent.inject(presenter);
+        retrofitComponent.inject(presenter);
     }
 }
