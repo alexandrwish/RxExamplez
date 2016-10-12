@@ -4,7 +4,7 @@ import android.app.Activity;
 
 import com.magenta.rx.rxa.activity.RetrofitActivity;
 import com.magenta.rx.rxa.component.ActivityScope;
-import com.magenta.rx.rxa.model.TranslateAnswerLoader;
+import com.magenta.rx.rxa.model.loader.TranslateAnswerLoader;
 import com.magenta.rx.rxa.presenter.RetrofitPresenter;
 import com.magenta.rx.rxa.view.RetrofitViewHolder;
 

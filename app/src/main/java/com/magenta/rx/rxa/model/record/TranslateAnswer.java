@@ -1,6 +1,4 @@
-package com.magenta.rx.rxa.model;
-
-import java.util.Arrays;
+package com.magenta.rx.rxa.model.record;
 
 public class TranslateAnswer {
 
@@ -30,9 +28,5 @@ public class TranslateAnswer {
 
     public void setText(String[] text) {
         this.text = text;
-    }
-
-    public String toString() {
-        return "{\"code\":" + code + ",\"lang\":" + lang + ",\"text\":[" + Arrays.toString(text) + "]}";
     }
 }

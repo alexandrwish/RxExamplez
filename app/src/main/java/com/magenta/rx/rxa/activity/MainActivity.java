@@ -23,7 +23,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        list.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new String[]{"Google Map v2", "Retrofit"}));
+        list.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new String[]{"Google Map v2", "Yandex translate + Retrofit", "", "Yandex dictionary + Retrofit"}));
     }
 
     @OnItemClick(value = R.id.list)
@@ -41,7 +41,7 @@ public class MainActivity extends Activity {
                 // пример работы с сервисами
             }
             case 3: {
-                // пример работы с БД
+                startActivity(new Intent(MainActivity.this, DictionaryActivity.class)); // пример работы с БД
             }
             case 4: {
                 // пример разграничения доступа к ресурсам

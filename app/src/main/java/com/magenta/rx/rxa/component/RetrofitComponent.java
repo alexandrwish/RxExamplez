@@ -1,7 +1,7 @@
 package com.magenta.rx.rxa.component;
 
 import com.magenta.rx.rxa.activity.RetrofitActivity;
-import com.magenta.rx.rxa.model.TranslateAnswerLoader;
+import com.magenta.rx.rxa.model.loader.TranslateAnswerLoader;
 import com.magenta.rx.rxa.module.RetrofitModule;
 import com.magenta.rx.rxa.presenter.RetrofitPresenter;
 

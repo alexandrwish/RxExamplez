@@ -4,8 +4,8 @@ import android.util.Log;
 
 import com.magenta.rx.rxa.RXApplication;
 import com.magenta.rx.rxa.event.TranslateAnswerEvent;
-import com.magenta.rx.rxa.model.TranslateAnswer;
-import com.magenta.rx.rxa.model.TranslateAnswerLoader;
+import com.magenta.rx.rxa.model.loader.TranslateAnswerLoader;
+import com.magenta.rx.rxa.model.record.TranslateAnswer;
 
 import org.greenrobot.eventbus.EventBus;
 

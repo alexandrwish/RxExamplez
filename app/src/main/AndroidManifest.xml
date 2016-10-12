@@ -22,5 +22,6 @@
         </activity>
         <activity android:name=".activity.RetrofitActivity" />
         <activity android:name=".activity.MapActivity" />
+        <activity android:name=".activity.DictionaryActivity" />
     </application>
 </manifest>

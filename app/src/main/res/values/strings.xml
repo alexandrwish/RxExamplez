@@ -3,4 +3,8 @@
     <string name="load">Load</string>
     <string name="draw">Draw</string>
     <string name="clean">Clean</string>
+    <string name="synonyms">Synonyms:</string>
+    <string name="meaning">Meaning:</string>
+    <string name="examples">Examples:</string>
+    <string name="definition">Definition:</string>
 </resources>
