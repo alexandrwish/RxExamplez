@@ -8,7 +8,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.0'
+        classpath 'com.android.tools.build:gradle:2.2.1'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         classpath 'org.greenrobot:greendao-gradle-plugin:3.1.0'
     }
@@ -45,15 +45,15 @@ dependencies {
     compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
     compile 'org.greenrobot:greendao:3.1.0'
     compile 'com.google.code.gson:gson:2.4'
-    compile 'com.google.android.gms:play-services-maps:9.4.0'
+    compile 'com.google.android.gms:play-services-maps:9.6.1'
     compile 'com.google.dagger:dagger:2.5'
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
-    compile 'com.jakewharton:butterknife:8.2.1'
+    compile 'com.jakewharton:butterknife:8.4.0'
     apt 'com.google.dagger:dagger-compiler:2.5'
-    apt 'com.jakewharton:butterknife-compiler:8.2.1'
+    apt 'com.jakewharton:butterknife-compiler:8.4.0'
 
 //      test
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
