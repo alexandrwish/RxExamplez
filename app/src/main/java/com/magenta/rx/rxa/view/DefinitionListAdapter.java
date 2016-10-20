@@ -7,6 +7,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.magenta.rx.rxa.R;
 import com.magenta.rx.rxa.model.record.Definition;
 
@@ -74,7 +75,7 @@ public class DefinitionListAdapter extends BaseExpandableListAdapter {
         ViewHolder holder = (ViewHolder) view.getTag();
         holder.text.setText(definition.getText());
         holder.pos.setText(definition.getPos());
-        holder.def.setAdapter(new TranscriptionListAdapter(Arrays.asList(definition.getTr()), activity));
+        holder.def.init(new Gson().toJson(definition.getTr()));
         return view;
     }
 
@@ -93,7 +94,7 @@ public class DefinitionListAdapter extends BaseExpandableListAdapter {
         @BindView(R.id.pos)
         TextView pos;
         @BindView(R.id.def)
-        ListView def;
+        JSONView def;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);

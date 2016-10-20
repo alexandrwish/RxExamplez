@@ -38,11 +38,10 @@
         android:paddingTop="4dp"
         android:text="@string/definition" />
 
-    <ListView
+    <com.magenta.rx.rxa.view.JSONView
         android:id="@+id/def"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/border"
         android:paddingEnd="8dp"
         android:paddingStart="8dp" />
 

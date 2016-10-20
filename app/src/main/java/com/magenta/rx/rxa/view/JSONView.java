@@ -40,9 +40,24 @@ public class JSONView extends LinearLayout {
         try {
             draw(this, new JSONObject(json), 40);
         } catch (JSONException e) {
-            Log.e(getClass().getName(), e.getMessage(), e);
+            try {
+                draw(this, new JSONArray(json), 40);
+            } catch (JSONException ex) {
+                Log.e(getClass().getName(), e.getMessage(), e);
+            }
         }
         return this;
+    }
+
+    private void draw(ViewGroup parent, JSONArray array, int colorInt) throws JSONException {
+        for (int i = 0; i < array.length(); i++) {
+            LinearLayout l = new LinearLayout(getContext());
+            l.setOrientation(VERTICAL);
+            l.setPadding(24, 12, 24, 12);
+            l.setBackgroundColor(Color.argb(colorInt, colorInt, colorInt, colorInt));
+            parent.addView(l);
+            draw(l, array.getJSONObject(i), colorInt + 30);
+        }
     }
 
     private void draw(ViewGroup parent, JSONObject object, int colorInt) throws JSONException {
