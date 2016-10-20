@@ -45,6 +45,7 @@ public class DictionaryActivity extends Activity {
     }
 
     @OnClick(R.id.load)
+    @SuppressWarnings("unused")
     public void onClick() {
         presenter.onLoadClick(holder.getText().getText().toString());
     }
@@ -52,7 +53,7 @@ public class DictionaryActivity extends Activity {
     @SuppressWarnings("unused")
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void onDictionaryAnswer(DictionaryAnswerEvent event) {
-        adapter.add(event.getWord(), event.getEntities());
+        adapter.add(event.getWord(), event.getDefinitions());
         adapter.notifyDataSetChanged();
         EventBus.getDefault().removeStickyEvent(event);
     }

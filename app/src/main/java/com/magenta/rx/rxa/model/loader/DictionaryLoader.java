@@ -26,6 +26,7 @@ import com.magenta.rx.rxa.model.record.Transcription;
 
 import org.greenrobot.greendao.rx.RxDao;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,11 +47,14 @@ public class DictionaryLoader {
     @Inject
     SharedPreferences preferences;
 
-    private final Map<String, List<DefinitionEntity>> map = new HashMap<>();
-    private final PublishSubject<HashMap.Entry<String, List<DefinitionEntity>>> publishSubject = PublishSubject.create();
+    private final Map<String, List<Definition>> map = new HashMap<>();
+    private final PublishSubject<HashMap.Entry<String, List<Definition>>> publishSubject = PublishSubject.create();
 
     public DictionaryLoader() {
         RXApplication.getInstance().inject(this);
+    }
+
+    public void loadAll() {
         new RxDao<>(RXApplication.getInstance().getSession().getDictionaryEntityDao()).loadAll()
                 .subscribeOn(Schedulers.io())
                 .flatMap(new Func1<List<DictionaryEntity>, Observable<? extends DictionaryEntity>>() {
@@ -58,12 +62,17 @@ public class DictionaryLoader {
                         return Observable.from(dictionaryEntities);
                     }
                 })
-                .doOnNext(new Action1<DictionaryEntity>() {
-                    public void call(DictionaryEntity dictionaryEntity) {
-                        publishSubject.onNext(new HashMap.SimpleEntry<>(dictionaryEntity.getWord(), dictionaryEntity.getDef()));
+                .map(new Func1<DictionaryEntity, Map.Entry<String, List<Definition>>>() {
+                    public Map.Entry<String, List<Definition>> call(DictionaryEntity dictionaryEntity) {
+                        return new HashMap.SimpleEntry<>(dictionaryEntity.getWord(), Arrays.asList(fromEntity(dictionaryEntity).getDef()));
                     }
                 })
-                .subscribe(new Subscriber<DictionaryEntity>() {
+                .doOnNext(new Action1<Map.Entry<String, List<Definition>>>() {
+                    public void call(Map.Entry<String, List<Definition>> definitions) {
+                        publishSubject.onNext(new HashMap.SimpleEntry<>(definitions.getKey(), definitions.getValue()));
+                    }
+                })
+                .subscribe(new Subscriber<Map.Entry<String, List<Definition>>>() {
                     public void onCompleted() {
                     }
 
@@ -71,37 +80,37 @@ public class DictionaryLoader {
                         Log.e(getClass().getName(), e.getMessage(), e);
                     }
 
-                    public void onNext(DictionaryEntity dictionaryEntity) {
-                        map.put(dictionaryEntity.getWord(), dictionaryEntity.getDef());
+                    public void onNext(Map.Entry<String, List<Definition>> definitions) {
+                        map.put(definitions.getKey(), definitions.getValue());
                     }
                 });
     }
 
-    public Observable<List<DefinitionEntity>> load(final String word) {
+    public Observable<List<Definition>> load(final String word) {
         return map.containsKey(word) ? Observable.just(map.get(word)) : client.dictionary(preferences.getString("dictionary_key", ""), word, preferences.getString("dictionary_lang", ""))
                 .doOnError(new Action1<Throwable>() {
                     public void call(Throwable throwable) {
                         Log.e(getClass().getName(), throwable.getMessage(), throwable);
                     }
                 })
-                .map(new Func1<DictionaryAnswer, DictionaryEntity>() {
-                    public DictionaryEntity call(DictionaryAnswer dictionaryAnswer) {
-                        return toEntity(word, dictionaryAnswer);
+                .map(new Func1<DictionaryAnswer, List<Definition>>() {
+                    public List<Definition> call(DictionaryAnswer dictionaryAnswer) {
+                        return Arrays.asList(dictionaryAnswer.getDef());
                     }
                 })
-                .doOnNext(new Action1<DictionaryEntity>() {
-                    public void call(DictionaryEntity dictionaryEntity) {
-                        map.put(dictionaryEntity.getWord(), dictionaryEntity.getDef());
+                .doOnNext(new Action1<List<Definition>>() {
+                    public void call(List<Definition> definitions) {
+                        map.put(word, definitions);
                     }
                 })
-                .map(new Func1<DictionaryEntity, List<DefinitionEntity>>() {
-                    public List<DefinitionEntity> call(DictionaryEntity dictionaryEntity) {
-                        return dictionaryEntity.getDef();
+                .doOnNext(new Action1<List<Definition>>() {
+                    public void call(List<Definition> definitions) {
+                        toEntity(word, new DictionaryAnswer(null, definitions.toArray(new Definition[definitions.size()])));
                     }
                 });
     }
 
-    public PublishSubject<HashMap.Entry<String, List<DefinitionEntity>>> loadAll() {
+    public PublishSubject<HashMap.Entry<String, List<Definition>>> getPublisher() {
         return publishSubject;
     }
 
@@ -146,5 +155,16 @@ public class DictionaryLoader {
             }
         }
         return entity;
+    }
+
+    private DictionaryAnswer fromEntity(DictionaryEntity entity) {
+        DictionaryAnswer answer = new DictionaryAnswer();
+        Definition[] definitions = new Definition[entity.getDef().size()];
+        for (int i = 0; i < entity.getDef().size(); i++) {
+            DefinitionEntity definitionEntity = entity.getDef().get(i);
+            definitions[i] = new Definition(definitionEntity.getText(), definitionEntity.getPos(), new Transcription[/*definitionEntity.getTr().size()*/0]);
+        }
+        answer.setDef(definitions);
+        return answer;
     }
 }

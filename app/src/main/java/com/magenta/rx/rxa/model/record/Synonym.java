@@ -1,6 +1,6 @@
 package com.magenta.rx.rxa.model.record;
 
-public class Synonym {
+public class Synonym implements Texted {
 
     private String text;
 

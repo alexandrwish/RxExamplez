@@ -6,11 +6,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.magenta.rx.rxa.model.entity.TextedEntity;
+import com.magenta.rx.rxa.model.record.Texted;
 
 import java.util.List;
 
-public class ArrayAdapter<T extends TextedEntity> extends BaseAdapter {
+public class ArrayAdapter<T extends Texted> extends BaseAdapter {
 
     private final List<T> entities;
     private final Activity activity;

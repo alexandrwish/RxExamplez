@@ -1,6 +1,6 @@
 package com.magenta.rx.rxa.model.record;
 
-public class Meaning {
+public class Meaning implements Texted {
 
     private String text;
 

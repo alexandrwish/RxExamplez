@@ -1,6 +1,6 @@
 package com.magenta.rx.rxa.model.record;
 
-public class Example {
+public class Example implements Texted {
 
     private String text;
     private Transcription[] tr;

@@ -8,8 +8,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.magenta.rx.rxa.R;
-import com.magenta.rx.rxa.model.entity.DefinitionEntity;
+import com.magenta.rx.rxa.model.record.Definition;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,10 +20,10 @@ import butterknife.ButterKnife;
 
 public class DefinitionListAdapter extends BaseExpandableListAdapter {
 
-    private final List<HashMap.Entry<String, List<DefinitionEntity>>> entries;
+    private final List<HashMap.Entry<String, List<Definition>>> entries;
     private final Activity activity;
 
-    public DefinitionListAdapter(List<HashMap.Entry<String, List<DefinitionEntity>>> entries, Activity context) {
+    public DefinitionListAdapter(List<HashMap.Entry<String, List<Definition>>> entries, Activity context) {
         this.entries = entries;
         this.activity = context;
     }
@@ -69,11 +70,11 @@ public class DefinitionListAdapter extends BaseExpandableListAdapter {
         } else {
             view = convertView;
         }
-        DefinitionEntity definitionEntity = entries.get(groupPosition).getValue().get(childPosition);
+        Definition definition = entries.get(groupPosition).getValue().get(childPosition);
         ViewHolder holder = (ViewHolder) view.getTag();
-        holder.text.setText(definitionEntity.getText());
-        holder.pos.setText(definitionEntity.getPos());
-        holder.def.setAdapter(new TranscriptionListAdapter(definitionEntity.getTr(), activity));
+        holder.text.setText(definition.getText());
+        holder.pos.setText(definition.getPos());
+        holder.def.setAdapter(new TranscriptionListAdapter(Arrays.asList(definition.getTr()), activity));
         return view;
     }
 
@@ -81,15 +82,8 @@ public class DefinitionListAdapter extends BaseExpandableListAdapter {
         return false;
     }
 
-    public void add(String word, List<DefinitionEntity> definitionEntities) {
-        entries.add(new HashMap.SimpleEntry<>(word, definitionEntities));
-    }
-
-    public void addAll(Map<String, List<DefinitionEntity>> map) {
-        map.clear();
-        for (Map.Entry<String, List<DefinitionEntity>> entry : map.entrySet()) {
-            this.entries.add(entry);
-        }
+    public void add(String word, List<Definition> definition) {
+        entries.add(new HashMap.SimpleEntry<>(word, definition));
     }
 
     static class ViewHolder {

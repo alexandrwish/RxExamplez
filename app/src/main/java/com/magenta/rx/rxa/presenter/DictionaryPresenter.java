@@ -4,8 +4,8 @@ import android.util.Log;
 
 import com.magenta.rx.rxa.RXApplication;
 import com.magenta.rx.rxa.event.DictionaryAnswerEvent;
-import com.magenta.rx.rxa.model.entity.DefinitionEntity;
 import com.magenta.rx.rxa.model.loader.DictionaryLoader;
+import com.magenta.rx.rxa.model.record.Definition;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -32,7 +32,7 @@ public class DictionaryPresenter {
         loader.load(word)
                 .subscribeOn(Schedulers.io())
                 .delay(100L, TimeUnit.MILLISECONDS)
-                .subscribe(new Subscriber<List<DefinitionEntity>>() {
+                .subscribe(new Subscriber<List<Definition>>() {
                     public void onCompleted() {
                     }
 
@@ -40,21 +40,22 @@ public class DictionaryPresenter {
                         Log.e(getClass().getName(), e.getMessage(), e);
                     }
 
-                    public void onNext(List<DefinitionEntity> definitionEntities) {
-                        post(word, definitionEntities);
+                    public void onNext(List<Definition> definitions) {
+                        post(word, definitions);
                     }
                 });
     }
 
     public void init() {
-        loader.loadAll().subscribe(new Action1<HashMap.Entry<String, List<DefinitionEntity>>>() {
-            public void call(HashMap.Entry<String, List<DefinitionEntity>> stringListEntry) {
+        loader.getPublisher().subscribe(new Action1<HashMap.Entry<String, List<Definition>>>() {
+            public void call(HashMap.Entry<String, List<Definition>> stringListEntry) {
                 post(stringListEntry.getKey(), stringListEntry.getValue());
             }
         });
+        loader.loadAll();
     }
 
-    private void post(String word, List<DefinitionEntity> definitionEntities) {
-        EventBus.getDefault().postSticky(new DictionaryAnswerEvent(word, definitionEntities));
+    private void post(String word, List<Definition> definitions) {
+        EventBus.getDefault().postSticky(new DictionaryAnswerEvent(word, definitions));
     }
 }

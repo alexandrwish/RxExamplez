@@ -8,8 +8,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.magenta.rx.rxa.R;
-import com.magenta.rx.rxa.model.entity.ExampleEntity;
+import com.magenta.rx.rxa.model.record.Example;
 
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -17,20 +18,20 @@ import butterknife.ButterKnife;
 
 public class ExampleListAdapter extends BaseAdapter {
 
-    private final List<ExampleEntity> entities;
+    private final List<Example> examples;
     private final Activity activity;
 
-    public ExampleListAdapter(Activity activity, List<ExampleEntity> entities) {
-        this.entities = entities;
+    public ExampleListAdapter(Activity activity, List<Example> examples) {
+        this.examples = examples;
         this.activity = activity;
     }
 
     public int getCount() {
-        return entities.size();
+        return examples.size();
     }
 
     public Object getItem(int position) {
-        return entities.get(position);
+        return examples.get(position);
     }
 
     public long getItemId(int position) {
@@ -45,10 +46,10 @@ public class ExampleListAdapter extends BaseAdapter {
         } else {
             view = convertView;
         }
-        ExampleEntity entity = entities.get(position);
+        Example entity = examples.get(position);
         ViewHolder holder = (ViewHolder) view.getTag();
         holder.text.setText(entity.getText());
-        holder.ex.setAdapter(new ArrayAdapter<>(activity, entity.getTr()));
+        holder.ex.setAdapter(new ArrayAdapter<>(activity, Arrays.asList(entity.getTr())));
         return view;
     }
 

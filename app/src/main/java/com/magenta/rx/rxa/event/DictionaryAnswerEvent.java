@@ -1,21 +1,21 @@
 package com.magenta.rx.rxa.event;
 
-import com.magenta.rx.rxa.model.entity.DefinitionEntity;
+import com.magenta.rx.rxa.model.record.Definition;
 
 import java.util.List;
 
 public class DictionaryAnswerEvent {
 
-    private final List<DefinitionEntity> entities;
+    private final List<Definition> definitions;
     private final String word;
 
-    public DictionaryAnswerEvent(String word, List<DefinitionEntity> definitionEntities) {
-        this.entities = definitionEntities;
+    public DictionaryAnswerEvent(String word, List<Definition> definitionEntities) {
+        this.definitions = definitionEntities;
         this.word = word;
     }
 
-    public List<DefinitionEntity> getEntities() {
-        return entities;
+    public List<Definition> getDefinitions() {
+        return definitions;
     }
 
     public String getWord() {
