@@ -73,8 +73,8 @@ public class MapActivity extends Activity implements OnMapReadyCallback {
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(marker));
     }
 
-    @SuppressWarnings("unused")
     @Subscribe
+    @SuppressWarnings("unused")
     public void onClean(CleanMapEvent event) {
         googleMap.clear();
     }

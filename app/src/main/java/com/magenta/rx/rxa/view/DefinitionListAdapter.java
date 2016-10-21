@@ -10,7 +10,8 @@ import com.google.gson.Gson;
 import com.magenta.rx.rxa.R;
 import com.magenta.rx.rxa.model.record.Definition;
 
-import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -18,10 +19,10 @@ import butterknife.ButterKnife;
 
 public class DefinitionListAdapter extends BaseExpandableListAdapter {
 
-    private final List<HashMap.Entry<String, List<Definition>>> entries;
+    private final LinkedHashMap<String, List<Definition>> entries;
     private final Activity activity;
 
-    public DefinitionListAdapter(List<HashMap.Entry<String, List<Definition>>> entries, Activity context) {
+    public DefinitionListAdapter(LinkedHashMap<String, List<Definition>> entries, Activity context) {
         this.entries = entries;
         this.activity = context;
     }
@@ -31,15 +32,15 @@ public class DefinitionListAdapter extends BaseExpandableListAdapter {
     }
 
     public int getChildrenCount(int groupPosition) {
-        return entries.get(groupPosition).getValue().size();
+        return entries.get(getKeyByIndex(groupPosition)).size();
     }
 
     public Object getGroup(int groupPosition) {
-        return entries.get(groupPosition);
+        return entries.get(getKeyByIndex(groupPosition));
     }
 
     public Object getChild(int groupPosition, int childPosition) {
-        return entries.get(groupPosition).getValue().get(childPosition);
+        return entries.get(getKeyByIndex(groupPosition)).get(childPosition);
     }
 
     public long getGroupId(int groupPosition) {
@@ -56,7 +57,7 @@ public class DefinitionListAdapter extends BaseExpandableListAdapter {
 
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         View view = convertView == null ? activity.getLayoutInflater().inflate(android.R.layout.simple_expandable_list_item_1, parent, false) : convertView;
-        ((TextView) view.findViewById(android.R.id.text1)).setText(entries.get(groupPosition).getKey());
+        ((TextView) view.findViewById(android.R.id.text1)).setText(getKeyByIndex(groupPosition));
         return view;
     }
 
@@ -68,7 +69,7 @@ public class DefinitionListAdapter extends BaseExpandableListAdapter {
         } else {
             view = convertView;
         }
-        Definition definition = entries.get(groupPosition).getValue().get(childPosition);
+        Definition definition = entries.get(getKeyByIndex(groupPosition)).get(childPosition);
         ViewHolder holder = (ViewHolder) view.getTag();
         holder.text.setText(definition.getText());
         holder.pos.setText(definition.getPos());
@@ -81,7 +82,20 @@ public class DefinitionListAdapter extends BaseExpandableListAdapter {
     }
 
     public void add(String word, List<Definition> definition) {
-        entries.add(new HashMap.SimpleEntry<>(word, definition));
+        entries.remove(word);
+        entries.put(word, definition);
+    }
+
+    private String getKeyByIndex(int index) {
+        Iterator<String> iterator = entries.keySet().iterator();
+        while (iterator.hasNext()) {
+            if (index-- > 0) {
+                iterator.next();
+            } else {
+                return iterator.next();
+            }
+        }
+        return null;
     }
 
     static class ViewHolder {

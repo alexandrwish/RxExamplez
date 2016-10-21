@@ -8,8 +8,7 @@ import com.magenta.rx.rxa.presenter.DictionaryPresenter;
 import com.magenta.rx.rxa.view.DefinitionListAdapter;
 import com.magenta.rx.rxa.view.DictionaryViewHolder;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import dagger.Module;
@@ -51,6 +50,6 @@ public class DictionaryModule {
     @Provides
     @ActivityScope
     protected DefinitionListAdapter provideDictionaryListAdapter() {
-        return new DefinitionListAdapter(new ArrayList<HashMap.Entry<String, List<Definition>>>(), activity);
+        return new DefinitionListAdapter(new LinkedHashMap<String, List<Definition>>(), activity);
     }
 }
