@@ -95,7 +95,7 @@ public class JSONView extends LinearLayout {
     }
 
     private void addView(ViewGroup parent, String key, String text) {
-        View view = ((Activity) getContext()).getLayoutInflater().inflate(R.layout.view_json_item, parent, false);
+        View view = ((Activity) getContext()).getLayoutInflater().inflate(R.layout.view_item_json, null);
         ((TextView) view.findViewById(R.id.key)).setText(key);
         ((TextView) view.findViewById(R.id.text)).setText(text);
         parent.addView(view);

@@ -4,17 +4,14 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.magenta.rx.rxa.R;
 import com.magenta.rx.rxa.model.record.Definition;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -66,7 +63,7 @@ public class DefinitionListAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         View view;
         if (convertView == null) {
-            view = activity.getLayoutInflater().inflate(R.layout.definition_list_item, parent, false);
+            view = activity.getLayoutInflater().inflate(R.layout.list_item_definition, parent, false);
             view.setTag(new ViewHolder(view));
         } else {
             view = convertView;
