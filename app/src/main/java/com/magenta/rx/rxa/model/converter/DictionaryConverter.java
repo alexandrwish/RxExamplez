@@ -32,7 +32,7 @@ public class DictionaryConverter {
         DictionaryEntity entity = new DictionaryEntity(word);
         dictionaryDao.insert(entity);
         for (Definition definition : answer.getDef()) {
-            DefinitionEntity definitionEntity = new DefinitionEntity(null, word, definition.getText(), definition.getPos());
+            DefinitionEntity definitionEntity = new DefinitionEntity(null, word, definition.getText(), definition.getPos(), definition.getTs());
             definitionDao.insert(definitionEntity);
             if (definition.getTr() != null) {
                 for (Transcription transcription : definition.getTr()) {
@@ -80,7 +80,7 @@ public class DictionaryConverter {
         for (int i = 0; i < transcriptions.length; i++) {
             transcriptions[i] = toRecord(definition.getTr().get(i));
         }
-        return new Definition(definition.getText(), definition.getText(), transcriptions);
+        return new Definition(definition.getText(), definition.getPos(), definition.getTs(), transcriptions);
     }
 
     private static Transcription toRecord(TranscriptionEntity transcription) {

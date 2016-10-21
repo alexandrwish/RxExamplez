@@ -4,11 +4,13 @@ public class Definition implements Texted {
 
     private String text;
     private String pos;
+    private String ts;
     private Transcription[] tr;
 
-    public Definition(String text, String pos, Transcription[] tr) {
+    public Definition(String text, String pos, String ts, Transcription[] tr) {
         this.text = text;
         this.pos = pos;
+        this.ts = ts;
         this.tr = tr;
     }
 
@@ -29,6 +31,14 @@ public class Definition implements Texted {
 
     public void setPos(String pos) {
         this.pos = pos;
+    }
+
+    public String getTs() {
+        return ts;
+    }
+
+    public void setTs(String ts) {
+        this.ts = ts;
     }
 
     public Transcription[] getTr() {

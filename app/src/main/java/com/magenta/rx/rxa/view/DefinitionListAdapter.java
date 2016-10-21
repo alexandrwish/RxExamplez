@@ -73,6 +73,7 @@ public class DefinitionListAdapter extends BaseExpandableListAdapter {
         ViewHolder holder = (ViewHolder) view.getTag();
         holder.text.setText(definition.getText());
         holder.pos.setText(definition.getPos());
+        holder.ts.setText(definition.getTs());
         holder.def.init(new Gson().toJson(definition.getTr()));
         return view;
     }
@@ -104,6 +105,8 @@ public class DefinitionListAdapter extends BaseExpandableListAdapter {
         TextView text;
         @BindView(R.id.pos)
         TextView pos;
+        @BindView(R.id.ts)
+        TextView ts;
         @BindView(R.id.def)
         JSONView def;
 

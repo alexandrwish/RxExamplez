@@ -19,6 +19,7 @@ public class DefinitionEntity implements TextedEntity {
     private DictionaryEntity dictionary;
     private String text;
     private String pos;
+    private String ts;
     @ToMany(referencedJoinProperty = "defId")
     private List<TranscriptionEntity> tr;
 
@@ -144,6 +145,14 @@ public class DefinitionEntity implements TextedEntity {
     @Generated(hash = 2040040024)
     private transient DaoSession daoSession;
 
+    public String getTs() {
+        return this.ts;
+    }
+
+    public void setTs(String ts) {
+        this.ts = ts;
+    }
+
     public String getPos() {
         return this.pos;
     }
@@ -176,15 +185,17 @@ public class DefinitionEntity implements TextedEntity {
         this.id = id;
     }
 
-    @Generated(hash = 1241546465)
-    public DefinitionEntity(Long id, String wordId, String text, String pos) {
+    @Generated(hash = 1994154801)
+    public DefinitionEntity(Long id, String wordId, String text, String pos, String ts) {
         this.id = id;
         this.wordId = wordId;
         this.text = text;
         this.pos = pos;
+        this.ts = ts;
     }
 
     @Generated(hash = 344093570)
     public DefinitionEntity() {
     }
+
 }
