@@ -11,12 +11,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.magenta.rx.rxa.R;
+import com.magenta.rx.rxa.model.comporator.JsonDictionaryKeyComparator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 public class JSONView extends LinearLayout {
 
@@ -37,6 +41,7 @@ public class JSONView extends LinearLayout {
     }
 
     public JSONView init(String json) {
+        removeAllViews();
         try {
             draw(this, new JSONObject(json), 40);
         } catch (JSONException e) {
@@ -64,20 +69,20 @@ public class JSONView extends LinearLayout {
         if (object == null) {
             return;
         }
-        Iterator iterator = object.keys();
+        Iterator<String> iterator = object.keys();
+        List<String> keys = new LinkedList<>();
         while (iterator.hasNext()) {
-            Object key = iterator.next();
-            if (key.toString().equalsIgnoreCase("GED")) {
+            String key = iterator.next();
+            if (key.equalsIgnoreCase("GED")) {
                 continue;
             }
-            LinearLayout layout = new LinearLayout(getContext());
-            layout.setBackgroundResource(R.drawable.border);
-            layout.setOrientation(VERTICAL);
-            layout.setPadding(24, 12, 24, 12);
-            parent.addView(layout);
-            Object o = object.get(key.toString());
+            keys.add(key);
+        }
+        Collections.sort(keys, JsonDictionaryKeyComparator.getInstance());
+        for (String key : keys) {
+            Object o = object.get(key);
             if (o instanceof JSONObject) {
-                draw(layout, (JSONObject) o, colorInt + 30);
+                draw(parent, (JSONObject) o, colorInt + 30);
             } else if (o instanceof JSONArray) {
                 JSONArray a = (JSONArray) o;
                 for (int i = 0; i < a.length(); i++) {
@@ -85,11 +90,16 @@ public class JSONView extends LinearLayout {
                     l.setOrientation(VERTICAL);
                     l.setPadding(24, 12, 24, 12);
                     l.setBackgroundColor(Color.argb(colorInt, colorInt, colorInt, colorInt));
-                    layout.addView(l);
+                    parent.addView(l);
                     draw(l, a.getJSONObject(i), colorInt + 30);
                 }
             } else {
-                addView(layout, key.toString(), o.toString());
+                LinearLayout layout = new LinearLayout(getContext());
+                layout.setBackgroundResource(R.drawable.border);
+                layout.setOrientation(VERTICAL);
+                layout.setPadding(24, 12, 24, 12);
+                parent.addView(layout);
+                addView(layout, key, o.toString());
             }
         }
     }
