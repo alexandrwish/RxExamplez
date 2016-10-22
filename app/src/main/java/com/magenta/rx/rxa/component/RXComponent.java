@@ -6,6 +6,7 @@ import com.magenta.rx.rxa.module.DictionaryModule;
 import com.magenta.rx.rxa.module.MapModule;
 import com.magenta.rx.rxa.module.RXModule;
 import com.magenta.rx.rxa.module.RetrofitModule;
+import com.magenta.rx.rxa.module.ServiceMapModule;
 
 import javax.inject.Singleton;
 
@@ -15,11 +16,13 @@ import dagger.Component;
 @Component(modules = {RXModule.class})
 public interface RXComponent {
 
+    DictionaryComponent plusDictionaryComponent(DictionaryModule module);
+
+    ServiceMapComponent plusServiceMapComponent(ServiceMapModule module);
+
     RetrofitComponent plusRetrofitComponent(RetrofitModule module);
 
     MapComponent plusMapComponent(MapModule module);
-
-    DictionaryComponent plusDictionaryComponent(DictionaryModule module);
 
     void inject(RXApplication application);
 

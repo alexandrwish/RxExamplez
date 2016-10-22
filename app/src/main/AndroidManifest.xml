@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.magenta.rx.rxa">
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
         android:name=".RXApplication"
         android:allowBackup="false"
@@ -9,6 +12,10 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <service
+            android:name=".service.GeoLocationService"
+            android:enabled="true" />
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
@@ -23,5 +30,6 @@
         <activity android:name=".activity.RetrofitActivity" />
         <activity android:name=".activity.MapActivity" />
         <activity android:name=".activity.DictionaryActivity" />
+        <activity android:name=".activity.ServiceMapActivity" />
     </application>
 </manifest>
