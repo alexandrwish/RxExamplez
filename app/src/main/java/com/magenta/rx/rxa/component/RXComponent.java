@@ -6,7 +6,7 @@ import com.magenta.rx.rxa.module.DictionaryModule;
 import com.magenta.rx.rxa.module.MapModule;
 import com.magenta.rx.rxa.module.RXModule;
 import com.magenta.rx.rxa.module.RetrofitModule;
-import com.magenta.rx.rxa.module.ServiceMapModule;
+import com.magenta.rx.rxa.module.ServiceModule;
 
 import javax.inject.Singleton;
 
@@ -18,9 +18,9 @@ public interface RXComponent {
 
     DictionaryComponent plusDictionaryComponent(DictionaryModule module);
 
-    ServiceMapComponent plusServiceMapComponent(ServiceMapModule module);
-
     RetrofitComponent plusRetrofitComponent(RetrofitModule module);
+
+    ServiceComponent plusServiceComponent(ServiceModule module);
 
     MapComponent plusMapComponent(MapModule module);
 

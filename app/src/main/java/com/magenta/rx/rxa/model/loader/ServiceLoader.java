@@ -20,11 +20,11 @@ import rx.Observable;
 import rx.functions.Action1;
 import rx.functions.Func1;
 
-public class GeoLocationLoader {
+public class ServiceLoader {
 
     private GeoLocationService locationService;
 
-    public GeoLocationLoader() {
+    public ServiceLoader() {
         Context context = RXApplication.getInstance();
         context.bindService(new Intent(context, GeoLocationService.class), new ServiceConnection() {
             public void onServiceConnected(ComponentName className, IBinder service) {

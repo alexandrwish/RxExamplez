@@ -38,7 +38,7 @@ public class MainActivity extends Activity {
                 break;
             }
             case 2: {
-                startActivity(new Intent(MainActivity.this, ServiceMapActivity.class)); // пример работы с сервисами (какой-то гибридный получился)
+                startActivity(new Intent(MainActivity.this, ServiceActivity.class)); // пример работы с сервисами (какой-то гибридный получился)
                 break;
             }
             case 3: {

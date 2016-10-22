@@ -4,7 +4,7 @@ import android.location.Location;
 
 import com.magenta.rx.rxa.RXApplication;
 import com.magenta.rx.rxa.event.ReceivedLocationEvent;
-import com.magenta.rx.rxa.model.loader.GeoLocationLoader;
+import com.magenta.rx.rxa.model.loader.ServiceLoader;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -13,12 +13,12 @@ import javax.inject.Inject;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
-public class ServiceMapPresenter {
+public class ServicePresenter {
 
     @Inject
-    GeoLocationLoader loader;
+    ServiceLoader loader;
 
-    public ServiceMapPresenter() {
+    public ServicePresenter() {
         RXApplication.getInstance().inject(this);
     }
 

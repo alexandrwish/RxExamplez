@@ -13,7 +13,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.magenta.rx.rxa.R;
 import com.magenta.rx.rxa.RXApplication;
 import com.magenta.rx.rxa.event.ReceivedLocationEvent;
-import com.magenta.rx.rxa.presenter.ServiceMapPresenter;
+import com.magenta.rx.rxa.presenter.ServicePresenter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -28,10 +28,10 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 
-public class ServiceMapActivity extends Activity implements OnMapReadyCallback {
+public class ServiceActivity extends Activity implements OnMapReadyCallback {
 
     @Inject
-    protected ServiceMapPresenter presenter;
+    protected ServicePresenter presenter;
 
     private GoogleMap map;
     private LatLng prevPoint;
@@ -39,15 +39,15 @@ public class ServiceMapActivity extends Activity implements OnMapReadyCallback {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_service_map);
+        setContentView(R.layout.activity_service);
         ButterKnife.bind(this);
-        RXApplication.getInstance().addServiceMapComponent(this);
+        RXApplication.getInstance().addServiceComponent(this);
         EventBus.getDefault().register(this);
         ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMapAsync(this);
     }
 
     protected void onDestroy() {
-        RXApplication.getInstance().removeServiceMapComponent();
+        RXApplication.getInstance().removeServiceComponent();
         EventBus.getDefault().unregister(this);
         super.onDestroy();
     }

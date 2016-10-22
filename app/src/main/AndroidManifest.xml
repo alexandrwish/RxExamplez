@@ -27,9 +27,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.RetrofitActivity" />
         <activity android:name=".activity.MapActivity" />
+        <activity android:name=".activity.ServiceActivity" />
+        <activity android:name=".activity.RetrofitActivity" />
         <activity android:name=".activity.DictionaryActivity" />
-        <activity android:name=".activity.ServiceMapActivity" />
     </application>
 </manifest>
