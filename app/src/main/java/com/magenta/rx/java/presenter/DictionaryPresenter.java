@@ -4,17 +4,17 @@ import android.util.Log;
 
 import com.magenta.rx.java.RXApplication;
 import com.magenta.rx.java.event.DictionaryAnswerEvent;
-import com.magenta.rx.java.model.loader.DictionaryLoader;
 import com.magenta.rx.java.model.record.Definition;
+import com.magenta.rx.kotlin.loader.DictionaryLoader;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import kotlin.Pair;
 import rx.Subscriber;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
@@ -47,9 +47,9 @@ public class DictionaryPresenter {
     }
 
     public void init() {
-        loader.getPublisher().subscribe(new Action1<HashMap.Entry<String, List<Definition>>>() {
-            public void call(HashMap.Entry<String, List<Definition>> stringListEntry) {
-                post(stringListEntry.getKey(), stringListEntry.getValue());
+        loader.getPublisher().subscribe(new Action1<Pair<String, List<Definition>>>() {
+            public void call(Pair<String, List<Definition>> stringListEntry) {
+                post(stringListEntry.getFirst(), stringListEntry.getSecond());
             }
         });
         loader.loadAll();

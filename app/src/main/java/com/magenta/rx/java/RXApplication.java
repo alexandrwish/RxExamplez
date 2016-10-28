@@ -17,7 +17,6 @@ import com.magenta.rx.java.component.RetrofitComponent;
 import com.magenta.rx.java.component.ServiceComponent;
 import com.magenta.rx.java.db.DBAdapter;
 import com.magenta.rx.java.model.entity.DaoSession;
-import com.magenta.rx.java.model.loader.DictionaryLoader;
 import com.magenta.rx.java.model.loader.TranslateAnswerLoader;
 import com.magenta.rx.java.module.DictionaryModule;
 import com.magenta.rx.java.module.MapModule;
@@ -27,6 +26,7 @@ import com.magenta.rx.java.module.ServiceModule;
 import com.magenta.rx.java.presenter.DictionaryPresenter;
 import com.magenta.rx.java.presenter.RetrofitPresenter;
 import com.magenta.rx.java.presenter.ServicePresenter;
+import com.magenta.rx.kotlin.loader.DictionaryLoader;
 
 import java.io.IOException;
 import java.io.InputStreamReader;

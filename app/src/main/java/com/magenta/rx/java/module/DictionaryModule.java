@@ -2,11 +2,11 @@ package com.magenta.rx.java.module;
 
 import com.magenta.rx.java.activity.DictionaryActivity;
 import com.magenta.rx.java.component.ActivityScope;
-import com.magenta.rx.java.model.loader.DictionaryLoader;
 import com.magenta.rx.java.model.record.Definition;
 import com.magenta.rx.java.presenter.DictionaryPresenter;
 import com.magenta.rx.java.view.DefinitionListAdapter;
 import com.magenta.rx.java.view.DictionaryViewHolder;
+import com.magenta.rx.kotlin.loader.DictionaryLoader;
 
 import java.util.LinkedHashMap;
 import java.util.List;
