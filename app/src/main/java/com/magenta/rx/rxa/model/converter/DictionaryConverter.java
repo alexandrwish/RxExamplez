@@ -1,5 +1,6 @@
 package com.magenta.rx.rxa.model.converter;
 
+import com.magenta.rx.kotlin.ConverterKt;
 import com.magenta.rx.rxa.RXApplication;
 import com.magenta.rx.rxa.model.entity.DefinitionEntity;
 import com.magenta.rx.rxa.model.entity.DefinitionEntityDao;
@@ -69,49 +70,13 @@ public class DictionaryConverter {
         DictionaryAnswer answer = new DictionaryAnswer();
         Definition[] definitions = new Definition[entity.getDef() != null ? entity.getDef().size() : 0];
         for (int i = 0; i < definitions.length; i++) {
-            definitions[i] = toRecord(entity.getDef().get(i));
+            definitions[i] = ConverterKt.convert(entity.getDef().get(i));
         }
         answer.setDef(definitions);
         return answer;
     }
 
-    private static Definition toRecord(DefinitionEntity definition) {
-        Transcription[] transcriptions = new Transcription[definition.getTr() != null ? definition.getTr().size() : 0];
-        for (int i = 0; i < transcriptions.length; i++) {
-            transcriptions[i] = toRecord(definition.getTr().get(i));
-        }
-        return new Definition(definition.getText(), definition.getPos(), definition.getTs(), transcriptions);
-    }
-
-    private static Transcription toRecord(TranscriptionEntity transcription) {
-        Synonym[] synonyms = new Synonym[transcription.getSyn() != null ? transcription.getSyn().size() : 0];
-        for (int i = 0; i < synonyms.length; i++) {
-            synonyms[i] = toRecord(transcription.getSyn().get(i));
-        }
-        Meaning[] meanings = new Meaning[transcription.getMean() != null ? transcription.getMean().size() : 0];
-        for (int i = 0; i < meanings.length; i++) {
-            meanings[i] = toRecord(transcription.getMean().get(i));
-        }
-        Example[] examples = new Example[transcription.getEx() != null ? transcription.getEx().size() : 0];
-        for (int i = 0; i < examples.length; i++) {
-            examples[i] = toRecord(transcription.getEx().get(i));
-        }
-        return new Transcription(transcription.getText(), transcription.getPos(), synonyms, meanings, examples);
-    }
-
-    private static Example toRecord(ExampleEntity example) {
-        Transcription[] transcriptions = new Transcription[example.getTr() != null ? example.getTr().size() : 0];
-        for (int i = 0; i < transcriptions.length; i++) {
-            transcriptions[i] = toRecord(example.getTr().get(i));
-        }
-        return new Example(example.getText(), transcriptions);
-    }
-
-    private static Synonym toRecord(SynonymEntity synonym) {
-        return new Synonym(synonym.getText());
-    }
-
-    private static Meaning toRecord(MeaningEntity meaning) {
-        return new Meaning(meaning.getText());
+    public static Transcription toRecord(TranscriptionEntity transcription) {
+        return ConverterKt.convert(transcription);
     }
 }
