@@ -3,7 +3,7 @@ package com.magenta.rx.java.activity;
 import android.app.Activity;
 import android.os.Bundle;
 
-import com.magenta.rx.R;
+import com.magenta.rx.java.R;
 import com.magenta.rx.java.RXApplication;
 import com.magenta.rx.java.event.DictionaryAnswerEvent;
 import com.magenta.rx.java.presenter.DictionaryPresenter;
@@ -35,7 +35,6 @@ public class DictionaryActivity extends Activity {
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
         holder.getDictionary().setAdapter(adapter);
-        presenter.init();
     }
 
     protected void onDestroy() {

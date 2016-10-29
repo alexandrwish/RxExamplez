@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.magenta.rx.rxa", appContext.getPackageName());
+        assertEquals("com.magenta.rx", appContext.getPackageName());
     }
 }

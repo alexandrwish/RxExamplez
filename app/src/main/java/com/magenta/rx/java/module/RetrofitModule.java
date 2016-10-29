@@ -4,9 +4,8 @@ import android.app.Activity;
 
 import com.magenta.rx.java.activity.RetrofitActivity;
 import com.magenta.rx.java.component.ActivityScope;
-import com.magenta.rx.java.model.loader.TranslateAnswerLoader;
-import com.magenta.rx.java.presenter.RetrofitPresenter;
 import com.magenta.rx.java.view.RetrofitViewHolder;
+import com.magenta.rx.kotlin.loader.TranslateLoader;
 
 import dagger.Module;
 import dagger.Provides;
@@ -34,13 +33,7 @@ public class RetrofitModule {
 
     @Provides
     @ActivityScope
-    public RetrofitPresenter provideRetrofitPresenter() {
-        return new RetrofitPresenter();
-    }
-
-    @Provides
-    @ActivityScope
-    public TranslateAnswerLoader provideTranslateAnswerLoader() {
-        return new TranslateAnswerLoader();
+    public TranslateLoader provideTranslateLoader() {
+        return new TranslateLoader();
     }
 }

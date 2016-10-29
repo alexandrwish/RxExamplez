@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.magenta.rx.kotlin.utils.ComporatorDictionaryStringsKt;
-import com.magenta.rx.R;
+import com.magenta.rx.java.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;

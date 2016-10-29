@@ -17,16 +17,15 @@ import com.magenta.rx.java.component.RetrofitComponent;
 import com.magenta.rx.java.component.ServiceComponent;
 import com.magenta.rx.java.db.DBAdapter;
 import com.magenta.rx.java.model.entity.DaoSession;
-import com.magenta.rx.java.model.loader.TranslateAnswerLoader;
 import com.magenta.rx.java.module.DictionaryModule;
 import com.magenta.rx.java.module.MapModule;
 import com.magenta.rx.java.module.RXModule;
 import com.magenta.rx.java.module.RetrofitModule;
 import com.magenta.rx.java.module.ServiceModule;
-import com.magenta.rx.java.presenter.DictionaryPresenter;
 import com.magenta.rx.java.presenter.RetrofitPresenter;
 import com.magenta.rx.java.presenter.ServicePresenter;
-import com.magenta.rx.kotlin.loader.DictionaryLoader;
+import com.magenta.rx.kotlin.loader.ServiceLoader;
+import com.magenta.rx.kotlin.loader.TranslateLoader;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -117,20 +116,12 @@ public class RXApplication extends Application {
         serviceComponent = null;
     }
 
-    public void inject(TranslateAnswerLoader loader) {
+    public void inject(TranslateLoader loader) {
         retrofitComponent.inject(loader);
     }
 
     public void inject(RetrofitPresenter presenter) {
         retrofitComponent.inject(presenter);
-    }
-
-    public void inject(DictionaryLoader loader) {
-        dictionaryComponent.inject(loader);
-    }
-
-    public void inject(DictionaryPresenter presenter) {
-        dictionaryComponent.inject(presenter);
     }
 
     public void inject(DBAdapter adapter) {
@@ -139,5 +130,9 @@ public class RXApplication extends Application {
 
     public void inject(ServicePresenter presenter) {
         serviceComponent.inject(presenter);
+    }
+
+    public void inject(ServiceLoader loader) {
+        serviceComponent.inject(loader);
     }
 }

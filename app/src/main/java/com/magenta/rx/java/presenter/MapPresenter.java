@@ -7,7 +7,13 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.Random;
 
+import javax.inject.Inject;
+
 public class MapPresenter {
+
+    @Inject
+    public MapPresenter() {
+    }
 
     public void draw() {
         Random random = new Random();

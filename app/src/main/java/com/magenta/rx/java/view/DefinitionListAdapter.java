@@ -7,12 +7,15 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.magenta.rx.R;
+import com.magenta.rx.java.R;
+import com.magenta.rx.java.activity.DictionaryActivity;
 import com.magenta.rx.java.model.record.Definition;
 
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,8 +25,9 @@ public class DefinitionListAdapter extends BaseExpandableListAdapter {
     private final LinkedHashMap<String, List<Definition>> entries;
     private final Activity activity;
 
-    public DefinitionListAdapter(LinkedHashMap<String, List<Definition>> entries, Activity context) {
-        this.entries = entries;
+    @Inject
+    public DefinitionListAdapter(DictionaryActivity context) {
+        this.entries = new LinkedHashMap<>();
         this.activity = context;
     }
 

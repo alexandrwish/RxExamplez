@@ -2,7 +2,6 @@ package com.magenta.rx.java.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.Handler;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -10,7 +9,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.magenta.rx.R;
+import com.magenta.rx.java.R;
 import com.magenta.rx.java.RXApplication;
 import com.magenta.rx.java.event.ReceivedLocationEvent;
 import com.magenta.rx.java.presenter.ServicePresenter;
@@ -56,11 +55,6 @@ public class ServiceActivity extends Activity implements OnMapReadyCallback {
         map = googleMap;
         map.getUiSettings().setZoomControlsEnabled(true);
         map.getUiSettings().setMyLocationButtonEnabled(true);
-        new Handler().postDelayed(new Runnable() {
-            public void run() {
-                presenter.load();   // TODO: 10/22/16 подумать, как менеджерить порядок загрузки ресурсов (>_<)
-            }
-        }, 5000);
     }
 
     @SuppressWarnings("unused")

@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.magenta.rx.R;
+import com.magenta.rx.java.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

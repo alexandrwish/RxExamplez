@@ -1,14 +1,18 @@
 package com.magenta.rx.java.activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.magenta.rx.R;
+import com.magenta.rx.java.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,6 +28,9 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         list.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new String[]{"Google Map v2", "Yandex translate + Retrofit", "Google Map v2 + Google Location Service", "Yandex dictionary + Retrofit"}));
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 29102016);
+        }
     }
 
     @OnItemClick(value = R.id.list)

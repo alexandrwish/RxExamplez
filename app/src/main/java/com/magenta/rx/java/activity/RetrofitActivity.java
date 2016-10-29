@@ -3,7 +3,7 @@ package com.magenta.rx.java.activity;
 import android.app.Activity;
 import android.os.Bundle;
 
-import com.magenta.rx.R;
+import com.magenta.rx.java.R;
 import com.magenta.rx.java.RXApplication;
 import com.magenta.rx.java.event.TranslateAnswerEvent;
 import com.magenta.rx.java.presenter.RetrofitPresenter;

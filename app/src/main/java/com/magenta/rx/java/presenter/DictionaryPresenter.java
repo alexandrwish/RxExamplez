@@ -2,7 +2,6 @@ package com.magenta.rx.java.presenter;
 
 import android.util.Log;
 
-import com.magenta.rx.java.RXApplication;
 import com.magenta.rx.java.event.DictionaryAnswerEvent;
 import com.magenta.rx.java.model.record.Definition;
 import com.magenta.rx.kotlin.loader.DictionaryLoader;
@@ -21,11 +20,12 @@ import rx.schedulers.Schedulers;
 
 public class DictionaryPresenter {
 
-    @Inject
-    DictionaryLoader loader;
+    private DictionaryLoader loader;
 
-    public DictionaryPresenter() {
-        RXApplication.getInstance().inject(this);
+    @Inject
+    public DictionaryPresenter(DictionaryLoader loader) {
+        this.loader = loader;
+        init();
     }
 
     public void onLoadClick(final String word) {
@@ -46,7 +46,7 @@ public class DictionaryPresenter {
                 });
     }
 
-    public void init() {
+    private void init() {
         loader.getPublisher().subscribe(new Action1<Pair<String, List<Definition>>>() {
             public void call(Pair<String, List<Definition>> stringListEntry) {
                 post(stringListEntry.getFirst(), stringListEntry.getSecond());
