@@ -16,6 +16,4 @@ public interface ServiceComponent {
     void inject(ServiceActivity activity);
 
     void inject(ServiceLoader loader);
-
-    ServicePresenter servicePresenter();
 }

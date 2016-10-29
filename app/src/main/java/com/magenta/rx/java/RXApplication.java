@@ -22,10 +22,6 @@ import com.magenta.rx.java.module.MapModule;
 import com.magenta.rx.java.module.RXModule;
 import com.magenta.rx.java.module.RetrofitModule;
 import com.magenta.rx.java.module.ServiceModule;
-import com.magenta.rx.java.presenter.RetrofitPresenter;
-import com.magenta.rx.java.presenter.ServicePresenter;
-import com.magenta.rx.kotlin.loader.ServiceLoader;
-import com.magenta.rx.kotlin.loader.TranslateLoader;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -114,25 +110,5 @@ public class RXApplication extends Application {
 
     public void removeServiceComponent() {
         serviceComponent = null;
-    }
-
-    public void inject(TranslateLoader loader) {
-        retrofitComponent.inject(loader);
-    }
-
-    public void inject(RetrofitPresenter presenter) {
-        retrofitComponent.inject(presenter);
-    }
-
-    public void inject(DBAdapter adapter) {
-        rxComponent.inject(adapter);
-    }
-
-    public void inject(ServicePresenter presenter) {
-        serviceComponent.inject(presenter);
-    }
-
-    public void inject(ServiceLoader loader) {
-        serviceComponent.inject(loader);
     }
 }

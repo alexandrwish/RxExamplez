@@ -33,6 +33,7 @@ public class MainActivity extends Activity {
         }
     }
 
+    @SuppressWarnings("unused")
     @OnItemClick(value = R.id.list)
     protected void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         switch (position) {

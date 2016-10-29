@@ -2,10 +2,9 @@ package com.magenta.rx.java.presenter;
 
 import android.util.Log;
 
-import com.magenta.rx.java.RXApplication;
 import com.magenta.rx.java.event.TranslateAnswerEvent;
 import com.magenta.rx.kotlin.loader.TranslateLoader;
-import com.magenta.rx.java.model.record.TranslateAnswer;
+import com.magenta.rx.kotlin.record.TranslateAnswer;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -16,12 +15,11 @@ import rx.schedulers.Schedulers;
 
 public class RetrofitPresenter {
 
-    @Inject
-    TranslateLoader loader;
+    private final TranslateLoader loader;
 
     @Inject
-    public RetrofitPresenter() {
-        RXApplication.getInstance().inject(this);
+    public RetrofitPresenter(TranslateLoader loader) {
+        this.loader = loader;
     }
 
     public void onLoadClick(final String text) {

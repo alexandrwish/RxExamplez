@@ -3,8 +3,8 @@ package com.magenta.rx.java.presenter;
 import android.util.Log;
 
 import com.magenta.rx.java.event.DictionaryAnswerEvent;
-import com.magenta.rx.java.model.record.Definition;
 import com.magenta.rx.kotlin.loader.DictionaryLoader;
+import com.magenta.rx.kotlin.record.Definition;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -25,7 +25,11 @@ public class DictionaryPresenter {
     @Inject
     public DictionaryPresenter(DictionaryLoader loader) {
         this.loader = loader;
-        init();
+        this.loader.loadAll().subscribe(new Action1<Pair<String, List<Definition>>>() {
+            public void call(Pair<String, List<Definition>> stringListEntry) {
+                post(stringListEntry.getFirst(), stringListEntry.getSecond());
+            }
+        });
     }
 
     public void onLoadClick(final String word) {
@@ -44,15 +48,6 @@ public class DictionaryPresenter {
                         post(word, definitions);
                     }
                 });
-    }
-
-    private void init() {
-        loader.getPublisher().subscribe(new Action1<Pair<String, List<Definition>>>() {
-            public void call(Pair<String, List<Definition>> stringListEntry) {
-                post(stringListEntry.getFirst(), stringListEntry.getSecond());
-            }
-        });
-        loader.loadAll();
     }
 
     private void post(String word, List<Definition> definitions) {

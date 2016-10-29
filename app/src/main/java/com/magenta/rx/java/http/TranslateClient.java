@@ -1,6 +1,6 @@
 package com.magenta.rx.java.http;
 
-import com.magenta.rx.java.model.record.TranslateAnswer;
+import com.magenta.rx.kotlin.record.TranslateAnswer;
 
 import retrofit2.http.GET;
 import retrofit2.http.Query;

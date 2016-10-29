@@ -1,6 +1,5 @@
 package com.magenta.rx.java.model.converter;
 
-import com.magenta.rx.kotlin.utils.ConverterDitionaryRecordsKt;
 import com.magenta.rx.java.RXApplication;
 import com.magenta.rx.java.model.entity.DefinitionEntity;
 import com.magenta.rx.java.model.entity.DefinitionEntityDao;
@@ -14,12 +13,13 @@ import com.magenta.rx.java.model.entity.SynonymEntity;
 import com.magenta.rx.java.model.entity.SynonymEntityDao;
 import com.magenta.rx.java.model.entity.TranscriptionEntity;
 import com.magenta.rx.java.model.entity.TranscriptionEntityDao;
-import com.magenta.rx.java.model.record.Definition;
-import com.magenta.rx.java.model.record.DictionaryAnswer;
-import com.magenta.rx.java.model.record.Example;
-import com.magenta.rx.java.model.record.Meaning;
-import com.magenta.rx.java.model.record.Synonym;
-import com.magenta.rx.java.model.record.Transcription;
+import com.magenta.rx.kotlin.record.Definition;
+import com.magenta.rx.kotlin.record.DictionaryAnswer;
+import com.magenta.rx.kotlin.record.Example;
+import com.magenta.rx.kotlin.record.Meaning;
+import com.magenta.rx.kotlin.record.Synonym;
+import com.magenta.rx.kotlin.record.Transcription;
+import com.magenta.rx.kotlin.utils.ConverterDitionaryRecordsKt;
 
 public class DictionaryConverter {
 

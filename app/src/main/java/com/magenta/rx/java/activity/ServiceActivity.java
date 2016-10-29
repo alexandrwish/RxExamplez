@@ -30,7 +30,7 @@ import butterknife.ButterKnife;
 public class ServiceActivity extends Activity implements OnMapReadyCallback {
 
     @Inject
-    protected ServicePresenter presenter;
+    ServicePresenter presenter;
 
     private GoogleMap map;
     private LatLng prevPoint;

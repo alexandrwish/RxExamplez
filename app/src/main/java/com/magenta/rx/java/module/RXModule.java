@@ -5,7 +5,6 @@ import android.preference.PreferenceManager;
 
 import com.google.gson.GsonBuilder;
 import com.magenta.rx.java.RXApplication;
-import com.magenta.rx.java.db.DBAdapter;
 import com.magenta.rx.java.http.DictionaryClient;
 import com.magenta.rx.java.http.TranslateClient;
 
@@ -46,11 +45,5 @@ public class RXModule {
     @Singleton
     public SharedPreferences provideSharedPreferences() {
         return PreferenceManager.getDefaultSharedPreferences(RXApplication.getInstance());
-    }
-
-    @Provides
-    @Singleton
-    public DBAdapter provideDBHelper() {
-        return new DBAdapter(RXApplication.getInstance());
     }
 }

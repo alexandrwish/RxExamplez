@@ -10,7 +10,7 @@ import org.greenrobot.greendao.annotation.ToOne;
 import java.util.List;
 
 @Entity(nameInDb = "definition")
-public class DefinitionEntity implements TextedEntity {
+public class DefinitionEntity {
 
     @Id(autoincrement = true)
     private Long id;
@@ -197,5 +197,4 @@ public class DefinitionEntity implements TextedEntity {
     @Generated(hash = 344093570)
     public DefinitionEntity() {
     }
-
 }

@@ -13,19 +13,16 @@ import com.magenta.rx.java.presenter.ServicePresenter
 import com.magenta.rx.java.service.GeoLocationService
 import org.greenrobot.greendao.rx.RxDao
 import rx.Observable
-import javax.inject.Inject
 
 class ServiceLoader {
 
-    @Inject
-    lateinit var presenter: ServicePresenter
+    private lateinit var listener: ServicePresenter.LocationListener
 
     constructor() {
         val context = RXApplication.getInstance()
         context.bindService(Intent(context, GeoLocationService::class.java), object : ServiceConnection {
             override fun onServiceConnected(className: ComponentName, service: IBinder) {
-                context.inject(this@ServiceLoader)
-                presenter.load(Observable.merge(
+                listener.load(Observable.merge(
                         ((service as LocalBinder<*>).service as GeoLocationService).locations
                                 .doOnNext { location -> RXApplication.getInstance().session.geoLocationEntityDao.insert(GeoLocationEntity(null, location.latitude, location.longitude, location.time)) },
                         RxDao(RXApplication.getInstance().session.geoLocationEntityDao).loadAll()
@@ -42,5 +39,9 @@ class ServiceLoader {
             override fun onServiceDisconnected(className: ComponentName) {
             }
         }, Context.BIND_AUTO_CREATE)
+    }
+
+    fun setLocationListener(listener: ServicePresenter.LocationListener) {
+        this.listener = listener
     }
 }

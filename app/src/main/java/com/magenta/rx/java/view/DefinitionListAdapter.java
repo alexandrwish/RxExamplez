@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.magenta.rx.java.R;
 import com.magenta.rx.java.activity.DictionaryActivity;
-import com.magenta.rx.java.model.record.Definition;
+import com.magenta.rx.kotlin.record.Definition;
 
 import java.util.Iterator;
 import java.util.LinkedHashMap;

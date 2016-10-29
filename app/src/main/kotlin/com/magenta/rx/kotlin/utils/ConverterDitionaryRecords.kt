@@ -2,7 +2,7 @@ package com.magenta.rx.kotlin.utils
 
 import com.magenta.rx.java.model.converter.DictionaryConverter
 import com.magenta.rx.java.model.entity.*
-import com.magenta.rx.java.model.record.*
+import com.magenta.rx.kotlin.record.*
 
 fun convert(synonym: SynonymEntity) = Synonym(synonym.text)
 

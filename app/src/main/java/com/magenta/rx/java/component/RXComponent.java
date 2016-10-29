@@ -1,7 +1,6 @@
 package com.magenta.rx.java.component;
 
 import com.magenta.rx.java.RXApplication;
-import com.magenta.rx.java.db.DBAdapter;
 import com.magenta.rx.java.module.DictionaryModule;
 import com.magenta.rx.java.module.MapModule;
 import com.magenta.rx.java.module.RXModule;
@@ -25,6 +24,4 @@ public interface RXComponent {
     MapComponent plusMapComponent(MapModule module);
 
     void inject(RXApplication application);
-
-    void inject(DBAdapter adapter);
 }

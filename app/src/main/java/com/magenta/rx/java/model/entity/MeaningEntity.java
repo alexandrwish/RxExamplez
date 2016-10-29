@@ -7,7 +7,7 @@ import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.ToOne;
 
 @Entity(nameInDb = "meaning")
-public class MeaningEntity implements TextedEntity {
+public class MeaningEntity {
 
     @Id(autoincrement = true)
     private Long id;

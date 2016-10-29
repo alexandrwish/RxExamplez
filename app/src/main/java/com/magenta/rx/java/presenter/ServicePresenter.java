@@ -2,7 +2,6 @@ package com.magenta.rx.java.presenter;
 
 import android.location.Location;
 
-import com.magenta.rx.java.RXApplication;
 import com.magenta.rx.java.event.ReceivedLocationEvent;
 import com.magenta.rx.kotlin.loader.ServiceLoader;
 
@@ -17,18 +16,23 @@ import rx.schedulers.Schedulers;
 public class ServicePresenter {
 
     @Inject
-    ServiceLoader loader;
-
-    @Inject
-    public ServicePresenter() {
-        RXApplication.getInstance().inject(this);
+    public ServicePresenter(ServiceLoader loader) {
+        loader.setLocationListener(new LocationListener() {
+            public void load(Observable<Location> observable) {
+                ServicePresenter.this.load(observable);
+            }
+        });
     }
 
-    public void load(Observable<Location> observable) {
+    private void load(Observable<Location> observable) {
         observable.observeOn(Schedulers.io()).subscribeOn(Schedulers.io()).subscribe(new Action1<Location>() {
             public void call(Location location) {
                 EventBus.getDefault().postSticky(new ReceivedLocationEvent(location.getLatitude(), location.getLongitude(), location.getTime()));
             }
         });
+    }
+
+    public interface LocationListener {
+        void load(Observable<Location> observable);
     }
 }

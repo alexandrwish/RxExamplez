@@ -1,6 +1,6 @@
 package com.magenta.rx.java.event;
 
-import com.magenta.rx.java.model.record.Definition;
+import com.magenta.rx.kotlin.record.Definition;
 
 import java.util.List;
 

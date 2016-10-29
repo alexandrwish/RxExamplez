@@ -10,7 +10,7 @@ import org.greenrobot.greendao.annotation.ToOne;
 import java.util.List;
 
 @Entity(nameInDb = "transcription")
-public class TranscriptionEntity implements TextedEntity {
+public class TranscriptionEntity {
 
     @Id(autoincrement = true)
     private Long id;

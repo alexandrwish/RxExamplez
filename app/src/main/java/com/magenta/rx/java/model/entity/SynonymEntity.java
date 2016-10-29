@@ -7,7 +7,7 @@ import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.ToOne;
 
 @Entity(nameInDb = "synonym")
-public class SynonymEntity implements TextedEntity {
+public class SynonymEntity {
 
     @Id(autoincrement = true)
     private Long id;

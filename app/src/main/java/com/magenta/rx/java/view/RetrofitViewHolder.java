@@ -1,10 +1,12 @@
 package com.magenta.rx.java.view;
 
-import android.app.Activity;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.magenta.rx.java.R;
+import com.magenta.rx.java.activity.RetrofitActivity;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -18,7 +20,8 @@ public class RetrofitViewHolder {
     @BindView(R.id.translate_text)
     TextView translateText;
 
-    public RetrofitViewHolder(Activity activity) {
+    @Inject
+    public RetrofitViewHolder(RetrofitActivity activity) {
         ButterKnife.bind(this, activity);
     }
 

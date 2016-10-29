@@ -30,7 +30,7 @@ public class MapActivity extends Activity implements OnMapReadyCallback {
     @Inject
     MapPresenter mapPresenter;
 
-    GoogleMap googleMap;
+    private GoogleMap googleMap;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,9 +73,10 @@ public class MapActivity extends Activity implements OnMapReadyCallback {
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(marker));
     }
 
-    @Subscribe
     @SuppressWarnings("unused")
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void onClean(CleanMapEvent event) {
         googleMap.clear();
+        EventBus.getDefault().removeStickyEvent(event);
     }
 }
