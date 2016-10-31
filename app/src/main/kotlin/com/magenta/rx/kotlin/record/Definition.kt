@@ -16,23 +16,23 @@ class Definition {
 
     fun getText() = text
 
+    fun getPos() = pos
+
+    fun getTs() = ts
+
+    fun getTr() = tr
+
     fun setText(text: String) {
         this.text = text
     }
-
-    fun getPos() = pos
 
     fun setPos(pos: String) {
         this.pos = pos
     }
 
-    fun getTs() = ts
-
     fun setTs(ts: String) {
         this.ts = ts
     }
-
-    fun getTr() = tr
 
     fun setTr(tr: Array<Transcription>) {
         this.tr = tr

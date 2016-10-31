@@ -4,15 +4,15 @@ import com.magenta.rx.java.model.converter.DictionaryConverter
 import com.magenta.rx.java.model.entity.*
 import com.magenta.rx.kotlin.record.*
 
-fun convert(synonym: SynonymEntity) = Synonym(synonym.text)
+fun convert(synonym: SynonymEntity?) = Synonym(synonym?.text)
 
-fun convert(meaning: MeaningEntity) = Meaning(meaning.text)
+fun convert(meaning: MeaningEntity?) = Meaning(meaning?.text)
 
-fun convert(definition: DefinitionEntity) = Definition(definition.text, definition.pos, definition.ts, if (definition.tr == null) Array(0, { i -> Transcription() }) else Array(definition.tr.size, { i -> convert(definition.tr[i]) }))
+fun convert(definition: DefinitionEntity?) = Definition(definition?.text, definition?.pos, definition?.ts, Array(definition?.tr?.size ?: 0, { i -> convert(definition!!.tr[i]) }))
 
-fun convert(example: ExampleEntity) = Example(example.text, if (example.tr == null) Array(0, { i -> Transcription() }) else Array(example.tr.size, { i -> DictionaryConverter.toRecord(example.tr[i]) }))
+fun convert(example: ExampleEntity?) = Example(example?.text, Array(example?.tr?.size ?: 0, { i -> DictionaryConverter.toRecord(example!!.tr[i]) }))
 
-fun convert(transcription: TranscriptionEntity) = Transcription(transcription.text, transcription.pos,
-        if (transcription.syn == null) Array(0, { i -> Synonym() }) else Array(transcription.syn.size, { i -> convert(transcription.syn[i]) }),
-        if (transcription.mean == null) Array(0, { i -> Meaning() }) else Array(transcription.mean.size, { i -> convert(transcription.mean[i]) }),
-        if (transcription.ex == null) Array(0, { i -> Example() }) else Array(transcription.ex.size, { i -> convert(transcription.ex[i]) }))
+fun convert(transcription: TranscriptionEntity?) = Transcription(transcription?.text, transcription?.pos,
+        Array(transcription?.syn?.size ?: 0, { i -> convert(transcription!!.syn[i]) }),
+        Array(transcription?.mean?.size ?: 0, { i -> convert(transcription!!.mean[i]) }),
+        Array(transcription?.ex?.size ?: 0, { i -> convert(transcription!!.ex[i]) }))

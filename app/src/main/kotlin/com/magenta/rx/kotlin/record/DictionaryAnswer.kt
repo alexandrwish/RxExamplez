@@ -14,11 +14,11 @@ class DictionaryAnswer {
 
     fun getHead() = head
 
+    fun getDef() = def
+
     fun setHead(head: Any) {
         this.head = head
     }
-
-    fun getDef() = def
 
     fun setDef(def: Array<Definition>) {
         this.def = def

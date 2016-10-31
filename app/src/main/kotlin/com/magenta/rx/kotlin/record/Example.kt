@@ -14,11 +14,11 @@ class Example {
 
     fun getText() = text
 
+    fun getTr() = tr
+
     fun setText(text: String) {
         this.text = text
     }
-
-    fun getTr() = tr
 
     fun setTr(tr: Array<Transcription>) {
         this.tr = tr

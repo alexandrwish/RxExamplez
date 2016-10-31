@@ -15,8 +15,8 @@ import javax.inject.Inject
 
 class DictionaryLoader {
 
-    var client: DictionaryClient
-    var preferences: SharedPreferences
+    private var client: DictionaryClient
+    private var preferences: SharedPreferences
 
     private val map = HashMap<String, List<Definition>>()
 

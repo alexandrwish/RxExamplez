@@ -8,17 +8,17 @@ class TranslateAnswer {
 
     fun getCode() = code
 
+    fun getLang() = lang
+
+    fun getText() = text
+
     fun setCode(code: String) {
         this.code = code
     }
 
-    fun getLang() = lang
-
     fun setLang(lang: String) {
         this.lang = lang
     }
-
-    fun getText() = text
 
     fun setText(text: Array<String>) {
         this.text = text
