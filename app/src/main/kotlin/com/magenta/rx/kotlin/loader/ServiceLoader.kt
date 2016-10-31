@@ -13,11 +13,13 @@ import com.magenta.rx.java.presenter.ServicePresenter
 import com.magenta.rx.java.service.GeoLocationService
 import org.greenrobot.greendao.rx.RxDao
 import rx.Observable
+import javax.inject.Inject
 
 class ServiceLoader {
 
     private lateinit var listener: ServicePresenter.LocationListener
 
+    @Inject
     constructor() {
         val context = RXApplication.getInstance()
         context.bindService(Intent(context, GeoLocationService::class.java), object : ServiceConnection {
