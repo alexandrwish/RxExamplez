@@ -5,23 +5,10 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.magenta.rx.java.activity.DictionaryActivity;
-import com.magenta.rx.java.activity.MapActivity;
-import com.magenta.rx.java.activity.RetrofitActivity;
-import com.magenta.rx.java.activity.ServiceActivity;
 import com.magenta.rx.java.component.DaggerRXComponent;
-import com.magenta.rx.java.component.DictionaryComponent;
-import com.magenta.rx.java.component.MapComponent;
-import com.magenta.rx.java.component.RXComponent;
-import com.magenta.rx.java.component.RetrofitComponent;
-import com.magenta.rx.java.component.ServiceComponent;
 import com.magenta.rx.java.db.DBAdapter;
 import com.magenta.rx.java.model.entity.DaoSession;
-import com.magenta.rx.java.module.DictionaryModule;
-import com.magenta.rx.java.module.MapModule;
 import com.magenta.rx.java.module.RXModule;
-import com.magenta.rx.java.module.RetrofitModule;
-import com.magenta.rx.java.module.ServiceModule;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -33,11 +20,7 @@ import javax.inject.Inject;
 public class RXApplication extends Application {
 
     protected static RXApplication instance;
-    private RetrofitComponent retrofitComponent;
-    private RXComponent rxComponent;
-    private MapComponent mapComponent;
-    private ServiceComponent serviceComponent;
-    private DictionaryComponent dictionaryComponent;
+    private DaggerHolder holder;
 
     @Inject
     DBAdapter adapter;
@@ -56,8 +39,11 @@ public class RXApplication extends Application {
         } catch (IOException e) {
             Log.e(getClass().getName(), e.getMessage(), e);
         }
-        rxComponent = DaggerRXComponent.builder().rXModule(new RXModule()).build();
-        rxComponent.inject(this);
+        holder = new DaggerHolder(DaggerRXComponent.builder().rXModule(new RXModule()).build());
+    }
+
+    public DaggerHolder getHolder() {
+        return holder;
     }
 
     public static RXApplication getInstance() {
@@ -68,47 +54,4 @@ public class RXApplication extends Application {
         return adapter.getMainSession();
     }
 
-    public void addRetrofitComponent(RetrofitActivity activity) {
-        if (retrofitComponent == null) {
-            retrofitComponent = rxComponent.plusRetrofitComponent(new RetrofitModule(activity));
-        }
-        retrofitComponent.inject(activity);
-    }
-
-    public void addMapComponent(MapActivity activity) {
-        if (mapComponent == null) {
-            mapComponent = rxComponent.plusMapComponent(new MapModule());
-        }
-        mapComponent.inject(activity);
-    }
-
-    public void addDictionaryComponent(DictionaryActivity activity) {
-        if (dictionaryComponent == null) {
-            dictionaryComponent = rxComponent.plusDictionaryComponent(new DictionaryModule(activity));
-        }
-        dictionaryComponent.inject(activity);
-    }
-
-    public void addServiceComponent(ServiceActivity activity) {
-        if (serviceComponent == null) {
-            serviceComponent = rxComponent.plusServiceComponent(new ServiceModule());
-        }
-        serviceComponent.inject(activity);
-    }
-
-    public void removeRetrofitComponent() {
-        retrofitComponent = null;
-    }
-
-    public void removeMapComponent() {
-        mapComponent = null;
-    }
-
-    public void removeDictionaryComponent() {
-        dictionaryComponent = null;
-    }
-
-    public void removeServiceComponent() {
-        serviceComponent = null;
-    }
 }

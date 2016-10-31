@@ -40,13 +40,13 @@ public class ServiceActivity extends Activity implements OnMapReadyCallback {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_service);
         ButterKnife.bind(this);
-        RXApplication.getInstance().addServiceComponent(this);
+        RXApplication.getInstance().getHolder().addServiceComponent(this);
         EventBus.getDefault().register(this);
         ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMapAsync(this);
     }
 
     protected void onDestroy() {
-        RXApplication.getInstance().removeServiceComponent();
+        RXApplication.getInstance().getHolder().removeServiceComponent();
         EventBus.getDefault().unregister(this);
         super.onDestroy();
     }

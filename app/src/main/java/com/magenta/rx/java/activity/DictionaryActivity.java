@@ -31,14 +31,14 @@ public class DictionaryActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dictionary);
-        RXApplication.getInstance().addDictionaryComponent(this);
+        RXApplication.getInstance().getHolder().addDictionaryComponent(this);
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
         holder.getDictionary().setAdapter(adapter);
     }
 
     protected void onDestroy() {
-        RXApplication.getInstance().removeDictionaryComponent();
+        RXApplication.getInstance().getHolder().removeDictionaryComponent();
         EventBus.getDefault().unregister(this);
         super.onDestroy();
     }

@@ -30,12 +30,12 @@ public class RetrofitActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_retrofit);
         ButterKnife.bind(this);
-        RXApplication.getInstance().addRetrofitComponent(this);
+        RXApplication.getInstance().getHolder().addRetrofitComponent(this);
         EventBus.getDefault().register(this);
     }
 
     protected void onDestroy() {
-        RXApplication.getInstance().removeRetrofitComponent();
+        RXApplication.getInstance().getHolder().removeRetrofitComponent();
         EventBus.getDefault().unregister(this);
         super.onDestroy();
     }

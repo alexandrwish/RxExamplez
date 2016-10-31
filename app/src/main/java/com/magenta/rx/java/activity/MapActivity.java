@@ -36,13 +36,13 @@ public class MapActivity extends Activity implements OnMapReadyCallback {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         ButterKnife.bind(this);
-        RXApplication.getInstance().addMapComponent(this);
+        RXApplication.getInstance().getHolder().addMapComponent(this);
         EventBus.getDefault().register(this);
         ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMapAsync(this);
     }
 
     protected void onDestroy() {
-        RXApplication.getInstance().removeMapComponent();
+        RXApplication.getInstance().getHolder().removeMapComponent();
         EventBus.getDefault().unregister(this);
         super.onDestroy();
     }
