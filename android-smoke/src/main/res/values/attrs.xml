@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--style attributes start-->
+    <attr name="defaultTextColor" format="color|reference" />
+    <attr name="defaultHintTextColor" format="color|reference" />
+    <attr name="defaultMcDetailTextColor" format="color|reference" />
+
+    <attr name="defaultEditTextBg" format="reference" />
+
+    <attr name="defaultFrame" format="color|reference" />
+    <attr name="defaultDivider" format="reference" />
+
+    <attr name="defaultButtonBg" format="reference" />
+    <attr name="defaultSmallButtonBg" format="reference" />
+    <attr name="defaultRoundedButtonBg" format="reference" />
+
+    <attr name="defaultListItemTextColor" format="color|reference" />
+
+    <attr name="defaultMcIconDrawable" format="reference" />
+
+    <attr name="defaultTitleBarBg" format="reference" />
+    <attr name="defaultTitleBarLeftSideStyle" format="reference" />
+    <attr name="defaultTitleBarRightSideStyle" format="reference" />
+    <!--style attributes end-->
+</resources>

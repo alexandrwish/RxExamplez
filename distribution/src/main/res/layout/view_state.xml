@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/state_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:clickable="false"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/total_jobs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="4dp"
+        android:text="@string/mx_empty"
+        android:textColor="#FFF"
+        android:textSize="15sp" />
+
+    <ImageView
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="2dp"
+        android:src="@drawable/state_done_icon" />
+
+    <TextView
+        android:id="@+id/complete_jobs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="4dp"
+        android:text="@string/mx_empty"
+        android:textColor="#88cc00"
+        android:textSize="15sp" />
+
+    <ImageView
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="2dp"
+        android:src="@drawable/state_cancel_icon" />
+
+    <TextView
+        android:id="@+id/failed_jobs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="4dp"
+        android:text="@string/mx_empty"
+        android:textColor="#ff5a00"
+        android:textSize="15sp" />
+
+    <ImageView
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="2dp"
+        android:src="@drawable/state_pause_icon" />
+
+    <TextView
+        android:id="@+id/suspended_jobs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="4dp"
+        android:text="@string/mx_empty"
+        android:textColor="#ffde00"
+        android:textSize="15sp" />
+
+    <ImageView
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="2dp"
+        android:src="@drawable/state_later_icon" />
+
+    <TextView
+        android:id="@+id/jobs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/mx_empty"
+        android:textColor="#b3b3b3"
+        android:textSize="15sp" />
+</LinearLayout>

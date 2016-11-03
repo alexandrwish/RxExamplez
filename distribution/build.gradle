@@ -1,0 +1,35 @@
+apply plugin: 'com.android.library'
+
+repositories {
+    jcenter()
+    maven { url 'https://github.com/yandexmobile/yandexmapkit-android/raw/maven/' }
+}
+
+android {
+    compileSdkVersion "Google Inc.:Google APIs:17"
+    buildToolsVersion "24.0.3"
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 17
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    lintOptions {
+        abortOnError false
+    }
+}
+
+dependencies {
+    compile project(':entities')
+    compile project(':mx')
+    compile 'ru.yandex:yandexmapkit:2.5.1@aar'
+    compile 'ch.acra:acra:4.5.0'
+    compile 'com.google.android.gms:play-services-maps:9.8.0'
+}

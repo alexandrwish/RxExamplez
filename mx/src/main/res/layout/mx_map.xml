@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.maps.MapView
+        android:id="@+id/mxMapView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:apiKey="@string/mx_map_key"
+        android:clickable="true" />
+
+    <RelativeLayout
+        android:id="@+id/controls"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="#20000000">
+
+        <ImageView
+            android:id="@+id/mx_map_go_to_current_position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:contentDescription="@string/mx_map_go_to_current_location"
+            android:src="@drawable/mc_img_icon_lorry" />
+
+        <ImageView
+            android:id="@+id/mx_map_options"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:contentDescription="@string/mx_map_tracking_options"
+            android:src="@drawable/mc_img_icon_instruments" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/notifications"
+        style="@style/MXMapActivityNotificationsPanel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/mx_routes_loading"
+        android:visibility="gone" />
+
+</RelativeLayout>

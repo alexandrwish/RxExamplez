@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/abort"
+        android:title="@string/abort"></item>
+    <item
+        android:id="@+id/fail"
+        android:title="@string/fail_run"></item>
+    <item
+        android:id="@+id/suspend"
+        android:title="@string/suspend"></item>
+    <item
+        android:id="@+id/logout"
+        android:title="@string/logout"></item>
+</menu>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+
+    <RelativeLayout
+        android:id="@+id/mcMainPanel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <FrameLayout
+            android:id="@+id/mcApplicationNamePanel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:contentDescription=" "
+                android:src="@drawable/mc_img_login_product_name_bg" />
+
+            <TextView
+                android:id="@+id/mcApplicationName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Echo"
+                android:textColor="?attr/defaultTextColor"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/version_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|top"
+                android:paddingRight="6dp"
+                android:paddingTop="4dp"
+                android:text=""
+                android:textColor="?attr/defaultTextColor" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/user_and_password_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/mcApplicationNamePanel">
+
+            <include layout="@layout/part_user_password" />
+        </FrameLayout>
+
+        <Button
+            android:id="@+id/login_button"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/user_and_password_container"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="8dp"
+            android:text="Login"
+            android:textSize="16dp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/login_button"
+            android:layout_marginTop="24dp">
+
+            <ImageView
+                style="@style/mcImageViewDivider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:contentDescription=" " />
+
+            <Button
+                android:id="@+id/settings_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:background="@drawable/mc_setup_button_bg" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/mcFooter"
+        style="@style/mcImageViewLogoFirst"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:contentDescription=" " />
+
+</RelativeLayout>

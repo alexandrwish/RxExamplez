@@ -1,0 +1,11 @@
+*.iml
+.gradle
+/local.properties
+/build
+.idea/
+distributionlib/libs/
+distributionlib/src/main/java/
+distributionlib/src/main/res/
+.DS_Store
+/captures
+.externalNativeBuild

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mc_update_notification_bar_title">Update is available</string>
+    <string name="mc_update_notification_title">New version</string>
+    <string name="mc_update_notification_msg">Click to update</string>
+
+    <string name="mc_notification_status_online">Online</string>
+    <string name="mc_notification_status_offline">Offline</string>
+
+    <string name="mc_commons_notification_gpsDisabled">GPS is disabled</string>
+    <string name="mc_commons_notification_gpsOpenSettings">Select to open Location settings</string>
+    <string name="mc_commons_string_noData">No data</string>
+</resources>

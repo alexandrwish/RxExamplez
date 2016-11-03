@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="Server settings">
+
+        <EditTextPreference
+            android:inputType="textUri"
+            android:key="server.address"
+            android:title="Host" />
+
+        <EditTextPreference
+            android:inputType="number"
+            android:key="server.port"
+            android:title="Port" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Tracking">
+        <CheckBoxPreference
+            android:key="tracking.enabled"
+            android:summary="Send GPS Coordinates"
+            android:title="Enabled" />
+
+        <EditTextPreference
+            android:dependency="tracking.enabled"
+            android:inputType="number"
+            android:key="tracking.retrieveIntervalSec"
+            android:title="Retrieve Interval" />
+
+        <EditTextPreference
+            android:dependency="tracking.enabled"
+            android:inputType="number"
+            android:key="tracking.batchCoverSec"
+            android:title="Batch Cover" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

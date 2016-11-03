@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/subtask_top_info_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <include layout="@layout/part_subtask_top_info" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/workflow_buttons_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/subtask_top_info_container"
+        android:padding="6dip">
+
+        <Button
+            android:id="@+id/subtask_button1"
+            android:layout_width="0dip"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:text="button1"
+            android:textSize="21dp" />
+
+        <Button
+            android:id="@+id/subtask_button2"
+            android:layout_width="0dip"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="-14dip"
+            android:layout_weight="1"
+            android:text="button2"
+            android:textSize="21dp" />
+
+        <Button
+            android:id="@+id/subtask_button3"
+            android:layout_width="0dip"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="-14dip"
+            android:layout_weight="1"
+            android:text="button3"
+            android:textSize="21dp" />
+    </LinearLayout>
+
+
+    <include
+        layout="@layout/part_subtask_bottom_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/bottom_logo"
+        android:layout_below="@id/workflow_buttons_panel" />
+
+    <include
+        layout="@layout/part_bottom_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true" />
+
+</RelativeLayout>

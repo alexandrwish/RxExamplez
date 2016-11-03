@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/hldr"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal"></LinearLayout>
+
+    <ImageButton
+        android:id="@+id/my_location"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/zoom_out"
+        android:alpha="0.7"
+        android:src="@drawable/my_location" />
+
+    <ImageButton
+        android:id="@+id/zoom_in"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="20dp"
+        android:alpha="0.7"
+        android:src="@drawable/zoom_in" />
+
+    <ImageButton
+        android:id="@+id/zoom_out"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/zoom_in"
+        android:alpha="0.7"
+        android:src="@drawable/zoom_out" />
+</RelativeLayout>

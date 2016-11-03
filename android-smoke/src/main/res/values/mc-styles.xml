@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="mcSmallFont">
+        <item name="android:textSize">16dip</item>
+    </style>
+
+    <style name="mcMediumFont">
+        <item name="android:textSize">18dip</item>
+    </style>
+
+    <style name="mcLargeFont">
+        <item name="android:textSize">23dip</item>
+    </style>
+
+    <style name="mcVeryLargeFont">
+        <item name="android:textSize">27dip</item>
+    </style>
+
+    <style name="mcEditTextField" parent="android:Widget.EditText">
+        <item name="android:background">?attr/defaultEditTextBg</item>
+        <item name="android:textColorHint">?attr/defaultHintTextColor</item>
+        <item name="android:textColor">?attr/defaultTextColor</item>
+    </style>
+
+    <style name="mcTitleStile">
+        <item name="android:textColor">?attr/defaultTextColor</item>
+        <item name="android:textSize">21dip</item>
+    </style>
+
+    <style name="mcListView">
+        <item name="android:divider">@drawable/mc_img_bevel_divider</item>
+        <item name="android:dividerHeight">3px</item>
+        <item name="android:listSelector">@drawable/mc_list_view_item_bg</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:cacheColorHint">@android:color/transparent</item>
+    </style>
+
+    <style name="mcListViewItem">
+        <item name="android:background">@drawable/mc_list_view_item_bg</item>
+    </style>
+
+    <style name="McImageViewLogoInside">
+        <item name="android:src">@drawable/mc_img_logo_bg</item>
+        <item name="android:background">@drawable/mc_logo_embos_icon</item>
+        <item name="android:scaleType">fitXY</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="mcImageViewLogoFirst">
+        <item name="android:src">@drawable/mc_img_logo_bg</item>
+        <item name="android:background">?attr/defaultMcIconDrawable</item>
+        <item name="android:scaleType">fitXY</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="mcImageViewDivider">
+        <item name="android:src">@drawable/mc_img_bevel_divider</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:scaleType">fitXY</item>
+    </style>
+
+    <style name="mcWindowTitleBackground">
+        <item name="android:background">@drawable/mc_titlebar_bg</item>
+    </style>
+
+    <style name="mcWindowTitleBackground.Light">
+        <item name="android:background">@drawable/mc_titlebar_light_bg</item>
+    </style>
+
+    <style name="mcWindowTitleText">
+        <item name="android:textColor">?attr/defaultTextColor</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">15dp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:paddingLeft">2dp</item>
+        <item name="android:gravity">left|center_vertical</item>
+    </style>
+
+    <style name="McThemeDialog" parent="android:Theme.Dialog">
+        <item name="android:editTextStyle">@style/mcEditTextField</item>
+        <item name="android:buttonStyle">@style/McButtonDefault</item>
+        <item name="android:windowTitleStyle">@style/mcTitleStile</item>
+        <item name="android:windowBackground">?attr/defaultEditTextBg</item>
+        <item name="android:windowFrame">?attr/defaultFrame</item>
+    </style>
+
+    <style name="McTheme" parent="android:Theme">
+        <item name="android:windowTitleSize">38dip</item>
+        <item name="android:windowTitleBackgroundStyle">@style/mcWindowTitleBackground</item>
+        <item name="android:windowBackground">@drawable/mc_common_bg</item>
+        <item name="android:editTextStyle">@style/mcEditTextField</item>
+        <item name="android:buttonStyle">@style/McButtonDefault</item>
+
+        <item name="defaultTextColor">#ffffff</item>
+        <item name="defaultHintTextColor">#b3b3b3</item>
+        <item name="defaultMcDetailTextColor">#b3b3b3</item>
+        <item name="defaultEditTextBg">@drawable/mc_img_text_field_bg</item>
+        <item name="defaultButtonBg">@drawable/mc_button_default_bg</item>
+        <item name="defaultSmallButtonBg">@drawable/mc_button_sq_small</item>
+        <item name="defaultRoundedButtonBg">@drawable/mc_button_rounded_bg</item>
+        <item name="defaultListItemTextColor">@drawable/mc_list_view_item_fg</item>
+        <item name="defaultIconDownDrawable">@drawable/mc_button_expand</item>
+        <item name="defaultIconUpDrawable">@drawable/mc_button_collapse</item>
+        <item name="defaultMcIconDrawable">@drawable/mc_logo_icon</item>
+
+        <item name="defaultDivider">@drawable/mc_img_divider</item>
+        <item name="defaultFrame">#ffffff</item>
+
+        <item name="defaultTitleBarBg">@drawable/mc_titlebar_bg</item>
+        <item name="defaultTitleBarLeftSideStyle">@style/McTitleBar.Left</item>
+        <item name="defaultTitleBarRightSideStyle">@style/McTitleBar.Right</item>
+    </style>
+
+    <style name="McTheme.Light" parent="android:Theme.Light">
+        <item name="android:windowTitleSize">38dip</item>
+        <item name="android:windowTitleBackgroundStyle">@style/mcWindowTitleBackground.Light</item>
+        <item name="android:windowBackground">@drawable/mc_light_bg</item>
+        <item name="android:editTextStyle">@style/mcEditTextField</item>
+        <item name="android:buttonStyle">@style/McButtonDefault</item>
+
+        <item name="defaultTextColor">#000000</item>
+        <item name="defaultHintTextColor">#757575</item>
+        <item name="defaultMcDetailTextColor">#000000</item>
+        <item name="defaultEditTextBg">@drawable/mc_img_text_field_bg_light</item>
+        <item name="defaultButtonBg">@drawable/mc_button_light_bg</item>
+        <item name="defaultSmallButtonBg">@drawable/mc_button_sq_small_light</item>
+        <item name="defaultRoundedButtonBg">@drawable/mc_button_rounded_bg</item>
+        <!--TODO add light style-->
+        <item name="defaultListItemTextColor">@drawable/mc_list_view_item_light_fg</item>
+        <item name="defaultIconDownDrawable">@drawable/mc_button_expand_light</item>
+        <item name="defaultIconUpDrawable">@drawable/mc_button_collapse_light</item>
+        <item name="defaultMcIconDrawable">@drawable/mc_logo_light_icon</item>
+
+        <item name="defaultDivider">@drawable/mc_img_divider_light</item>
+        <item name="defaultFrame">#000000</item>
+
+        <item name="defaultTitleBarBg">@drawable/mc_titlebar_light_bg</item>
+        <item name="defaultTitleBarLeftSideStyle">@style/McTitleBar.Light.Left</item>
+        <item name="defaultTitleBarRightSideStyle">@style/McTitleBar.Light.Right</item>
+    </style>
+
+    <style name="McTitleBar">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="McTitleBar.Left" parent="McTitleBar">
+        <item name="android:background">@drawable/mc_titlebar_left_bg</item>
+    </style>
+
+    <style name="McTitleBar.Right" parent="McTitleBar">
+        <item name="android:background">@drawable/mc_titlebar_right_bg</item>
+    </style>
+
+    <style name="McTitleBar.Light">
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">40dp</item>
+    </style>
+
+    <style name="McTitleBar.Light.Left" parent="McTitleBar.Light">
+        <item name="android:background">@drawable/mc_titlebar_left_light_bg</item>
+    </style>
+
+    <style name="McTitleBar.Light.Right" parent="McTitleBar.Light">
+        <item name="android:background">@drawable/mc_titlebar_right_light_bg</item>
+    </style>
+
+    <style name="McTheme.NoTitleBar" parent="McTheme">
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="McTheme.NoTitleBar.Light" parent="McTheme.Light">
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="McDetailsScreenAttribute">
+        <item name="android:layout_width">80dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">12dp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">?attr/defaultMcDetailTextColor</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:paddingRight">6dp</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:gravity">top</item>
+    </style>
+
+    <style name="McDetailsScreenValue">
+        <item name="android:layout_width">0dip</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">15dp</item>
+        <item name="android:textColor">?attr/defaultTextColor</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingRight">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:paddingLeft">4dp</item>
+    </style>
+
+    <style name="McDetailsSeparator">
+        <item name="android:layout_height">1dip</item>
+        <item name="android:background">?attr/defaultDivider</item>
+    </style>
+
+    <style name="McDetailsScreenValueWarning" parent="style/McDetailsScreenValue">
+        <item name="android:textColor">#ff0000</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+</resources>

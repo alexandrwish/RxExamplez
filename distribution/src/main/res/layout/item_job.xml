@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto/com.magenta.maxunits.mobile.dlib"
+    android:id="@+id/stop_list_item"
+    style="@style/mcListViewItem"
+    android:layout_width="fill_parent"
+    android:layout_height="20dp"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+        android:layout_width="58dp"
+        android:layout_height="match_parent"
+        android:padding="4dp">
+
+        <com.magenta.maxunits.mobile.dlib.view.TimeView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            custom:hours_color="?attr/defaultListItemTextColor"
+            custom:hours_text_size="16dp"
+            custom:minutes_color="?attr/defaultListItemTextColor"
+            custom:minutes_text_size="12dp" />
+
+        <TextView
+            android:id="@+id/date"
+            style="@style/mxJobCardThirdLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:singleLine="true"
+            android:text="12 Dec" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="10dp"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/status_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:contentDescription=" "
+            android:src="@drawable/mc_img_list_view_item_gray_divider" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="4dp">
+
+        <TextView
+            android:id="@+id/name"
+            style="@style/mxJobCardFirstLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text="Client" />
+
+        <TextView
+            android:id="@+id/address"
+            style="@style/mxJobCardSecondLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="County Road G, Lakin, KS, 67860, US" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/mxJobCardThirdGrayLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:paddingRight="2dp"
+                android:text="@string/total_jobs" />
+
+            <include layout="@layout/view_state" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/mxJobCardThirdGrayLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="2dp"
+                android:text="@string/job_card_status" />
+
+            <TextView
+                android:id="@+id/status"
+                style="@style/mxJobCardThirdLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="Received" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

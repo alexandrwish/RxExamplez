@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <declare-styleable name="MxTextView">
+        <attr name="customTypeface" format="string" />
+    </declare-styleable>
+    <attr name="defaultSendMessageFg" format="reference" />
+    <attr name="defaultAddStopFg" format="reference" />
+</resources>

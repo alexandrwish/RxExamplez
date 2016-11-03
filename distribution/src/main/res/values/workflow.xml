@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="activities">
+        <item>.activity.JobExpandableList</item>
+        <item>.activity.ArriveMap</item>
+        <item>.activity.Drop</item>
+        <item>.activity.Signature</item>
+    </string-array>
+    <string-array name="abby_activities">
+        <item>.activity.Jobs</item>
+        <item>.activity.JobInfoActivity</item>
+        <item>.activity.JobActivity</item>
+        <item>.activity.Start</item>
+        <item>.activity.ArriveMap</item>
+    </string-array>
+    <!--
+        save up to better times
+        <string-array name="abby_status_activity">
+        <item>STOP_IDLE|.activity.abby.Start</item>
+        <item>STOP_RUN_ACCEPTED|.activity.abby.Start</item>
+        <item>STOP_RUN_STARTED|.activity.abby.Start</item>
+        <item>STOP_ON_ROUTE|.activity.demo.ArriveMap</item>
+        <item>STOP_ARRIVED|.activity.abby.Signature</item>
+        <item>STOP_RUN_FINISHED|.activity.abby.Jobs</item>
+        <item>STOP_FAIL|.activity.abby.JobActivity</item>
+        <item>STOP_ABORTED|.activity.abby.JobActivity</item>
+    </string-array>-->
+</resources>

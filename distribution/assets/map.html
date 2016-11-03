@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8"
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title></title>
+    <link rel="stylesheet" href="leaflet/leaflet.css"/>
+    <link rel="stylesheet" href="hd.css"/>
+    <script src="lib/jquery.min.js"></script>
+    <script src="leaflet/leaflet.js"></script>
+    <script src="leaflet/utils.min.js"></script>
+    <script src="leaflet/tiles.min.js"></script>
+    <script src="leaflet/icon.min.js"></script>
+</head>
+<body>
+<div id="map"></div>
+<div id="loading-div-background">
+    <div id="loading-div" class="ui-corner-all">
+        <img style="height:24px;margin:24px;" src="img/loading.gif" alt="Loading.."/>
+
+        <h2 style="color:gray;font-weight:normal;">Please wait....</h2>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#loading-div-background").css({ opacity: 0.8 });
+    });
+    function ShowProgressAnimation() {
+        $("#loading-div-background").show();
+    }
+    function HideProgressAnimation() {
+        $("#loading-div-background").hide();
+    }
+
+
+
+</script>
+<script type="text/javascript">
+    ShowProgressAnimation();
+    var map = L.map("map", {
+                center: [55.7529297,37.6265709],
+                zoom: 8,
+                zoomControl: false
+            }),
+            routeLayer = L.featureGroup(),
+            orderLayer = L.featureGroup(),
+            currentLocationLayer = L.featureGroup(),
+            order = {},
+            loadCallback;
+
+    map.on("tilelayersload", loadCallback = function () {
+        map.off("tilelayersload", loadCallback)
+        HideProgressAnimation();
+    });
+    map.addLayer(routeLayer);
+    map.addLayer(orderLayer);
+    map.addLayer(currentLocationLayer);
+    initConfig = function (mapConfig) {
+        map.setConfig(mapConfig, map);
+         setTimeout(function(){
+         window.mapletJS.onload();
+      }, 500);
+
+    };
+    showOrder = function (lat, lng, type, priority, reference, orderHrs, orderMns) {
+        if (window.order[reference]) {
+            orderLayer.removeLayer(order[reference]);
+        }
+        window.order[reference] = L.marker(L.latLng(lat, lng), {
+            icon: L.timeIcon({
+                hr: orderHrs,
+                min: orderMns,
+                isPU: type,
+                priority: priority == 0 ? 'lightgreen' : priority == 1 ? 'yellow' : 'red',
+                iconAnchor: [0, 0],
+                iconSize: [0, 0]
+            })
+        }).on('click', function () {
+            window.mapletJS.onJobTap(reference);
+        }).addTo(orderLayer);
+    };
+    showDC = function (lat, lng) {
+        if (window.dc) {
+            orderLayer.removeLayer(dc);
+        }
+        window.dc = L.marker(L.latLng(lat, lng), {
+            icon: L.icon({
+                iconUrl: 'img/icon_home.png',
+                iconAnchor: [8, 1],
+                iconSize: [16, 19]
+            })
+        }).on('click', function () {
+            window.mapletJS.onDCTap();
+        }).addTo(orderLayer);
+    };
+    showEnd = function (lat, lng) {
+        if (window.end) {
+            orderLayer.removeLayer(end);
+        }
+        window.end = L.marker(L.latLng(lat, lng), {
+            icon: L.icon({
+                iconUrl: 'img/icon_home.png',
+                iconAnchor: [8, 1],
+                iconSize: [16, 19]
+            })
+        }).on('click', function () {
+            window.mapletJS.onEndTap();
+        }).addTo(orderLayer);
+    };
+    showStart = function (lat, lng) {
+        if (window.start) {
+            orderLayer.removeLayer(start);
+        }
+        window.start = L.marker(L.latLng(lat, lng), {
+            icon: L.icon({
+                iconUrl: 'img/icon_home.png',
+                iconAnchor: [8, 1],
+                iconSize: [16, 19]
+            })
+        }).on('click', function () {
+            window.mapletJS.onStartTap();
+        }).addTo(orderLayer);
+    };
+    showRunRoute = function (pointsArray) {
+        if (window.route) {
+            routeLayer.removeLayer(route);
+        }
+        var points = [];
+        for (var i = 0; i < pointsArray.length; i++) {
+            points.push(L.latLng(pointsArray[i][0], pointsArray[i][1]));
+        }
+        window.route = L.polyline(points, {color: '#000000'}).addTo(routeLayer);
+    };
+
+    fitBounds = function (pointsArray) {
+     var points = [];
+        for (var i = 0; i < pointsArray.length; i++) {
+            points.push(L.latLng(pointsArray[i][0], pointsArray[i][1]));
+        }
+     map.fitBounds(points, {padding: [10, 10], animate: false, maxZoom: 16});
+    }
+
+    zoomIn = function(){
+      map.zoomIn();
+    }
+
+    zoomOut = function(){
+      map.zoomOut();
+    }
+
+    panToCurrent = function(lat, lng){
+      <!--map.fitBounds(L.latLng(lat, lng), {padding: [10, 10], animate: false, maxZoom: 16});-->
+      map.panTo(L.latLng(lat, lng),{animate: false});
+      map.setZoom(16,{animate: false});
+    }
+
+    showCurrentPosition = function (lat, lng) {
+        var point = L.latLng(lat, lng);
+        if (window.currentLoc) {
+            currentLocationLayer.removeLayer(currentLoc);
+        }
+        window.currentLoc = L.marker(point, {
+            icon: L.icon({
+                iconUrl: 'img/icon_truck.png',
+                iconAnchor: [8, 1],
+                iconSize: [16, 19]
+            })
+        }).addTo(currentLocationLayer);
+        map.panTo(point);
+    };
+    <!--var CurrentLocationControl = L.Control.extend({-->
+        <!--options: {-->
+            <!--position: 'topright'-->
+        <!--},-->
+        <!--onAdd: function (map) {-->
+            <!--var container = L.DomUtil.create('div', 'controls'),-->
+                    <!--currentLockationCtrl = L.DomUtil.create('div', 'current-location-control', container),-->
+                    <!--settingsCtrl = L.DomUtil.create('div', 'map-settings-control', container);-->
+            <!--L.DomEvent.addListener(currentLockationCtrl, 'click', function () {-->
+                <!--window.mapletJS.getCurrentLocation();-->
+            <!--});-->
+            <!--L.DomEvent.addListener(settingsCtrl, 'click', function () {-->
+                <!--window.mapletJS.showSettingsDialog();-->
+            <!--});-->
+            <!--return container;-->
+        <!--}-->
+    <!--});-->
+    <!--map.addControl(new CurrentLocationControl());-->
+
+
+
+</script>
+</body>
+</html>

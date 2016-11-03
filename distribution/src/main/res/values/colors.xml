@@ -1,0 +1,5 @@
+<resources>
+    <color name="connection_online_green">#83C916</color>
+    <color name="connection_connecting_yellow">#FFDF00</color>
+    <color name="job_summary_stops_separator">#ffebebeb</color>
+</resources>

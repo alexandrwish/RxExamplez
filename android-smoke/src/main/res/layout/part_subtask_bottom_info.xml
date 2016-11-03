@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/subtask.bottom.details"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:stretchColumns="1">
+
+    <!-- Example
+
+    <TableRow android:id="@+id/bottom.example1.row">
+        <TextView android:text="Example1 key"
+                  style="@style/McDetailsScreenAttribute"/>
+        <TextView android:id="@+id/bottom.example1"
+                  style="@style/McDetailsScreenValue"
+                  android:text="Example1 Value"/>
+    </TableRow>
+
+    <View android:id="@+id/bottom.example1.separator"
+          style="@style/McDetailsSeparator"/>
+
+    <TableRow android:id="@+id/bottom.example2.row">
+        <TextView android:text="Example1 key"
+                  style="@style/McDetailsScreenAttribute"/>
+        <TextView android:id="@+id/bottom.example2"
+                  style="@style/McDetailsScreenValue"
+                  android:text="Example1 Value"/>
+    </TableRow>
+
+    <View style="@style/McDetailsSeparator"/>
+
+    -->
+
+</TableLayout>

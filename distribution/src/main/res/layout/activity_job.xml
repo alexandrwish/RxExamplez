@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <RelativeLayout
+        android:id="@+id/header_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp">
+
+        <ImageView
+            android:id="@+id/collapse_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/mx_empty"
+            android:paddingBottom="2dp"
+            android:paddingLeft="4dp"
+            android:paddingTop="2dp"
+            android:src="@drawable/mc_icon_right_arrow" />
+
+        <TextView
+            android:id="@+id/header_text"
+            style="@style/mcWindowTitleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/collapse_img"
+            android:paddingLeft="4dp"
+            android:text="@string/info"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/job_view_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@android:drawable/ic_menu_view" />
+
+        <ImageView
+            android:id="@+id/job_allread_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/job_view_btn"
+            android:background="@drawable/img_all_read" />
+
+        <ImageView
+            android:id="@+id/job_map_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/job_allread_btn"
+            android:background="@android:drawable/ic_dialog_map" />
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/header_panel_splitter"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/header_panel"
+        android:background="@drawable/mc_img_divider" />
+
+    <TableLayout
+        android:id="@+id/details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/header_panel_splitter"
+        android:stretchColumns="1"
+        android:visibility="gone">
+
+        <TableRow android:id="@+id/loading_row">
+
+            <TextView
+                style="@style/McDetailsScreenAttribute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/loading" />
+
+            <TextView
+                android:id="@+id/loading"
+                style="@style/McDetailsScreenValue"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content" />
+        </TableRow>
+
+        <View
+            android:layout_height="1dp"
+            android:background="@drawable/mc_img_divider" />
+
+        <TableRow>
+
+            <TextView
+                style="@style/McDetailsScreenAttribute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pickup_location" />
+
+            <TextView
+                android:id="@+id/pickup_location"
+                style="@style/McDetailsScreenValue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+        </TableRow>
+
+        <View
+            android:layout_height="1dp"
+            android:background="@drawable/mc_img_divider" />
+
+        <TableRow>
+
+            <TextView
+                style="@style/McDetailsScreenAttribute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/drop_location" />
+
+            <TextView
+                android:id="@+id/drop_location"
+                style="@style/McDetailsScreenValue"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content" />
+        </TableRow>
+
+        <View
+            android:layout_height="1dp"
+            android:background="@drawable/mc_img_divider" />
+
+        <TableRow android:id="@+id/unloading_row">
+
+            <TextView
+                style="@style/McDetailsScreenAttribute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/unloading" />
+
+            <TextView
+                android:id="@+id/unloading"
+                style="@style/McDetailsScreenValue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+        </TableRow>
+
+        <View
+            android:layout_height="1dp"
+            android:background="@drawable/mc_img_divider" />
+
+        <TableRow>
+
+            <TextView
+                style="@style/McDetailsScreenAttribute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/total_load" />
+
+            <TextView
+                android:id="@+id/total_load"
+                style="@style/McDetailsScreenValue"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:text="12 kg / 10 m3" />
+        </TableRow>
+
+        <View
+            android:layout_height="1dp"
+            android:background="@drawable/mc_img_divider" />
+
+        <TableRow>
+
+            <TextView
+                style="@style/McDetailsScreenAttribute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/route" />
+
+            <TextView
+                android:id="@+id/route"
+                style="@style/McDetailsScreenValue"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content" />
+        </TableRow>
+
+        <View
+            android:layout_height="1dp"
+            android:background="@drawable/mc_img_divider" />
+
+        <TableRow>
+
+            <TextView
+                style="@style/McDetailsScreenAttribute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/statistics" />
+
+            <include layout="@layout/view_state" />
+        </TableRow>
+
+        <View
+            android:layout_height="1dp"
+            android:background="@drawable/mc_img_divider" />
+    </TableLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/details"
+        android:orientation="vertical">
+
+        <ListView
+            android:id="@+id/stop_list"
+            style="@style/mcListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:background="@drawable/mc_common_bg" />
+    </LinearLayout>
+</RelativeLayout>

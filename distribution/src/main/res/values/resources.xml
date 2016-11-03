@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="TimeView">
+        <attr name="minutes" format="integer" />
+        <attr name="hours" format="integer" />
+        <attr name="hours_color" format="color" />
+        <attr name="minutes_color" format="color" />
+        <attr name="hours_text_size" format="dimension" />
+        <attr name="minutes_text_size" format="dimension" />
+        <attr name="left_bound" format="string" />
+        <attr name="right_bound" format="string" />
+    </declare-styleable>
+</resources>

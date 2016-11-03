@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="mcButtonRounded" parent="android:Widget.Button">
+        <item name="android:background">?attr/defaultRoundedButtonBg</item>
+        <item name="android:textColor">?attr/defaultTextColor</item>
+    </style>
+
+    <style name="mcButtonSmall" parent="android:Widget.Button">
+        <item name="android:background">?attr/defaultSmallButtonBg</item>
+        <item name="android:textColor">?attr/defaultTextColor</item>
+    </style>
+
+    <style name="McButtonDefault" parent="android:Widget.Button">
+        <item name="android:background">?attr/defaultButtonBg</item>
+        <item name="android:textColor">?attr/defaultTextColor</item>
+    </style>
+
+    <style name="mcActionButtonsPanel">
+        <item name="android:padding">6dp</item>
+        <item name="android:background">@drawable/mc_action_buttons_panel_bg</item>
+    </style>
+
+    <style name="McButtonAction" parent="android:Widget.Button">
+        <item name="android:textColor">?attr/defaultTextColor</item>
+        <item name="android:textSize">17dp</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
+    <!--<style name="McButtonActionLeftGreen" parent="McButtonAction">-->
+    <!--<item name="android:background">@drawable/mc_action_button_left_green_bg</item>-->
+    <!--</style>-->
+
+    <!--<style name="McButtonActionCenterBlack" parent="McButtonAction">-->
+    <!--<item name="android:background">@drawable/mc_action_button_center_black_bg</item>-->
+    <!--<item name="android:layout_marginLeft">-14dp</item>-->
+    <!--</style>-->
+
+    <!--<style name="McButtonActionRightRed" parent="McButtonAction">-->
+    <!--<item name="android:background">@drawable/mc_action_button_right_red_bg</item>-->
+    <!--<item name="android:layout_marginLeft">-14dp</item>-->
+    <!--</style>-->
+    <!--<style name="McButtonActionRightBlack" parent="McButtonAction">-->
+    <!--<item name="android:background">@drawable/mc_action_button_right_black_bg</item>-->
+    <!--<item name="android:layout_marginLeft">-14dp</item>-->
+    <!--</style>-->
+
+</resources>

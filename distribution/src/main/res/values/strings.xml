@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="new_information">New information has arrived</string>
+    <string name="stop">Stop</string>
+    <string name="job">Job</string>
+    <string name="job_activity_title">Jobs</string>
+    <string name="status">Status</string>
+    <string name="job_card_status">Status:</string>
+    <string name="logout">Logout</string>
+    <string name="done">Done</string>
+    <string name="pod">POD</string>
+    <string name="start">Start</string>
+    <string name="abort">Abort</string>
+    <string name="resume">Resume</string>
+    <string name="aborted">Aborted</string>
+    <string name="arrive">Arrive</string>
+    <string name="give_over">Done</string>
+    <string name="scan">Scan</string>
+    <string name="add">Add</string>
+    <string name="abort_code">Choose a code</string>
+    <string name="comment">Comment</string>
+    <string name="name">Name</string>
+    <string name="reference_label">Reference number</string>
+    <string name="accept">Accept</string>
+    <string name="reject">Reject</string>
+    <string name="address_label">Address</string>
+    <string name="contact_label">Contact name</string>
+    <string name="customer_label">Customer</string>
+    <string name="phone_label">Contact phone</string>
+    <string name="notes_label">Notes:</string>
+    <string name="cost_label">Cost:</string>
+    <string name="order_type_label">Vehicle requirement:</string>
+    <string name="no_data">No data</string>
+    <string name="barcode_label">Barcodes</string>
+    <string name="complete">Complete</string>
+    <string name="fail_run">Fail run</string>
+    <string name="run_failed">Run failed</string>
+    <string name="clear">Clear</string>
+    <string name="run">Run</string>
+    <string name="runs">Runs</string>
+    <string name="cancel">Cancel</string>
+    <string name="market_not_installed">Android Market is not installed; cannot install Barcode Scanner</string>
+    <string name="total_jobs">Total jobs:</string>
+    <string name="loading">Loading</string>
+    <string name="unloading">Unloading</string>
+    <string name="arrive_to_pickup">Arrive to pickup</string>
+    <string name="pickup_duration">Pickup duration</string>
+    <string name="pickup_location">Start location</string>
+    <string name="drop_location">End location</string>
+    <string name="route">Route</string>
+    <string name="statistics">Statistics</string>
+    <string name="statistics_done">Done:</string>
+    <string name="statistics_fail">Fail:</string>
+    <string name="statistics_suspended">Suspended:</string>
+    <string name="total_load">Total load/volume</string>
+    <string name="total_time">Total time</string>
+    <string name="driving_time">Driving time</string>
+    <string name="depart_from_pickup">Depart from pickup</string>
+    <string name="mins">mins</string>
+    <string name="kg">kg</string>
+    <string name="info">Details</string>
+    <string name="arrival_time">Arrival time</string>
+    <string name="drop_duration">Drop duration</string>
+    <string name="departure_time">Departure time</string>
+    <string name="load">Load</string>
+    <string name="volume">Volume</string>
+    <string name="window">Time window</string>
+    <string name="refresh_jobs">Refresh jobs</string>
+    <string name="late">late!</string>
+    <string name="stop_type_pu">PU</string>
+    <string name="stop_type_do">DO</string>
+    <string name="stop_type_su">SU</string>
+    <string name="collection">Collection</string>
+    <string name="delivery">Delivery</string>
+    <string name="stop_type">Task</string>
+    <string name="order">Order</string>
+    <string name="order_details">Order details</string>
+    <string name="km">km</string>
+    <string name="show_route">Show route</string>
+    <string name="service">Planned time</string>
+    <string name="suspend">Suspend</string>
+    <string name="abort_short">Abort</string>
+    <string name="day">day (s)</string>
+    <string name="launch_navi_app">Do you want to start navigation to order?</string>
+    <string name="tarificator_not_found">TarificatorApp not found</string>
+    <string name="suspend_other_job">Do you want to suspend other jobs?</string>
+    <string name="clear_cache">Clear map cache</string>
+    <string name="enable_cache">Enable cache</string>
+    <string name="enable_api">Enable api</string>
+    <string name="mx_activity_preferences_map_cache">Map settings</string>
+    <string name="mx_activity_preferences_mx_api">Maxoptra api</string>
+    <string name="please_wait">Please wait</string>
+    <string name="clear_cache_msg">Are you sure you want to clear cache?</string>
+    <string name="complete_previous">You should complete previous job to start this.</string>
+    <string name="mx_show">Show</string>
+    <string name="mx_ignore">Ignore</string>
+    <string name="performer_alert">You have update for your schedule</string>
+    <string name="max_cache_age">Max age in cache</string>
+    <string name="api_path">Api path</string>
+    <string name="used_cache_space">Used cache space</string>
+    <string name="api_address">Api address</string>
+    <string name="customer_location">Customer location</string>
+    <string name="barcode_item">barcode</string>
+    <string name="barcode_name">name</string>
+    <string name="complete_barcode">%s items not yet scanned. Are you sure you want to complete?</string>
+    <string name="wrong_barcode">Attention! This item does not belong to this job</string>
+    <string name="duplicate_barcode">Attention! This item already scanned</string>
+    <string name="complete_job_question">Are you sure you want to complete?</string>
+    <string name="abort_job_question">Are you sure you want to abort?</string>
+    <string name="empty_field">Incorrect values</string>
+    <string name="fact_cost">Actual cost:</string>
+    <string name="cost">Cost</string>
+    <string name="time_label">Time:</string>
+    <string name="date_label">Date:</string>
+    <string name="fill_all_attributes">Please, fill all attributes with *.</string>
+    <string name="map_provider">Map provider:</string>
+    <string name="enable_map">Enable map:</string>
+    <string-array name="abort_code_array">
+        <item>Weather conditions</item>
+        <item>Double</item>
+        <item>Incorrect</item>
+        <item>Wrong address</item>
+        <item>No reply</item>
+        <item>Date changed</item>
+    </string-array>
+    <string-array name="pickup_abort_code_array">
+        <item>Weather conditions</item>
+        <item>Double</item>
+        <item>Incorrect</item>
+        <item>Wrong address</item>
+        <item>No reply</item>
+        <item>Date changed</item>
+    </string-array>
+    <string-array name="mx_locale_list">
+        <item>en</item>
+        <item>ru</item>
+        <item>es</item>
+        <item>fr</item>
+        <item>pt</item>
+    </string-array>
+    <array name="map_providers_list">
+        <item>Google</item>
+        <item>Leaflet</item>
+        <item>Yandex</item>
+    </array>
+    <string name="map_dialog">What map do you want to use?</string>
+    <string name="do_not_ask">Don\'t ask me again</string>
+    <string name="alert_map_title">Default map was changed</string>
+    <string name="alert_map_value">For change map settings connect with your dispather</string>
+
+    <string name="update_needed_title">Update</string>
+    <string name="update_needed_text">New app version available</string>
+    <string name="update_install">Install</string>
+    <string name="update_cancel">Cancel</string>
+
+</resources>

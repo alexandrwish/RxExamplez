@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dip">
+
+        <Button
+            android:id="@+id/plus_button"
+            android:layout_width="60dip"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="2dip"
+            android:background="@drawable/mc_icon_plus" />
+    </FrameLayout>
+
+    <EditText
+        android:id="@+id/number_field"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-4dip"
+        android:editable="false"
+        android:focusable="false"
+        android:gravity="center" />
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="2dip"
+        android:layout_marginTop="-2dip">
+
+        <Button
+            android:id="@+id/minus_button"
+            android:layout_width="60dip"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="2dip"
+            android:background="@drawable/mc_icon_minus" />
+    </FrameLayout>
+
+</LinearLayout>

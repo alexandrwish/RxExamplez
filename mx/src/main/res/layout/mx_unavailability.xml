@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:paddingTop="4dp">
+
+    <ScrollView
+        android:id="@+id/mxScroll"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/mxActions"
+        android:layout_alignParentTop="true">
+
+        <RelativeLayout
+            android:id="@+id/mxContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/mxReason"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:gravity="top"
+                android:hint="@string/mx_activity_unavailability_reason"
+                android:inputType="textMultiLine"
+                android:lines="5">
+
+                <requestFocus />
+            </EditText>
+
+            <RelativeLayout
+                android:id="@+id/mxStartDateLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/mxReason"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/mxStartDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/mxSetStartDateButton"
+                    android:hint="@string/mx_activity_unavailability_startDate"
+                    android:inputType="datetime" />
+
+                <Button
+                    android:id="@+id/mxSetStartDateButton"
+                    android:layout_width="64dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+
+                    android:layout_centerVertical="true"
+                    android:text="@string/mx_activity_unavailability_set" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/mxEndDateLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/mxStartDateLayout"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/mxEndDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/mxSetEndDateButton"
+                    android:hint="@string/mx_activity_unavailability_endDate"
+                    android:inputType="datetime" />
+
+                <Button
+                    android:id="@+id/mxSetEndDateButton"
+                    android:layout_width="64dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:text="@string/mx_activity_unavailability_set" />
+            </RelativeLayout>
+
+            <EditText
+                android:id="@+id/mxAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/mxEndDateLayout"
+                android:hint="@string/mx_activity_unavailability_nextAvailableAddress"
+                android:inputType="textPostalAddress" />
+
+            <EditText
+                android:id="@+id/mxPostcode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/mxAddress"
+                android:hint="@string/mx_activity_unavailability_nextAvailablePostcode"
+                android:inputType="textPostalAddress" />
+        </RelativeLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/mxActions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true">
+
+        <Button
+            android:id="@+id/mxOkButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/mx_activity_unavailability_ok" />
+
+        <Button
+            android:id="@+id/mxCancelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/mx_activity_unavailability_cancel" />
+    </LinearLayout>
+
+</RelativeLayout>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/mcTitleBarLeftBlock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true">
+
+        <ImageButton
+            android:id="@+id/mcTitleBarLeftButton"
+            style="?attr/defaultTitleBarLeftSideStyle"
+            android:contentDescription=" " />
+
+        <ImageView
+            android:id="@+id/mcTitleBarLeftIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription=" "
+            android:scrollX="5dp"
+            android:src="@drawable/mc_img_icon_list" />
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/mcTitleBarRightBlock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true">
+
+        <ImageButton
+            android:id="@+id/mcTitleBarRightButton"
+            style="?attr/defaultTitleBarRightSideStyle"
+            android:layout_gravity="left"
+            android:contentDescription=" " />
+
+        <ImageView
+            android:id="@+id/mcTitleBarRightIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:contentDescription=" "
+            android:src="@drawable/mc_img_icon_available" />
+
+
+        <ImageView
+            android:id="@+id/mcTitleBarRightIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:contentDescription=" "
+            android:src="@drawable/mc_img_indicator_green_light" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/mcTitleBarText"
+        style="@style/mcWindowTitleText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@id/mcTitleBarRightBlock"
+        android:layout_toRightOf="@id/mcTitleBarLeftBlock"
+        android:background="?attr/defaultTitleBarBg"
+        android:text="Title bar" />
+</RelativeLayout>

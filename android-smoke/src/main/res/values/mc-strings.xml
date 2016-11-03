@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="login.user.hint">Login</string>
+    <string name="login.password.hint">Password</string>
+</resources>
