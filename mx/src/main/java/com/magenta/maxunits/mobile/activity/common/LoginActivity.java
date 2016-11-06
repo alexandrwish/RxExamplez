@@ -1,5 +1,6 @@
 package com.magenta.maxunits.mobile.activity.common;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -7,11 +8,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -48,9 +52,12 @@ import com.magenta.mc.client.setup.Setup;
 import com.magenta.mc.client.util.McDiagnosticAgent;
 
 import java.io.File;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 public class LoginActivity extends SmokeLoginActivity implements RemoteSettingsCallback {
+
     private String oldLocale;
     private SharedPreferences preferences;
     private Activity previous;
@@ -69,7 +76,50 @@ public class LoginActivity extends SmokeLoginActivity implements RemoteSettingsC
         mLoginButton = ((Button) findViewById(com.magenta.mc.client.android.smoke.R.id.login_button));
         mLoginButton.setText(getString(R.string.mx_activity_login_login));
         ((TextView) findViewById(R.id.mcApplicationName)).setText(Settings.get().getAppName());
-
+        List<String> permission = new LinkedList<String>();
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
+            permission.add(Manifest.permission.INTERNET);
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            permission.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_NETWORK_STATE) != PackageManager.PERMISSION_GRANTED) {
+            permission.add(Manifest.permission.ACCESS_NETWORK_STATE);
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            permission.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            permission.add(Manifest.permission.CALL_PHONE);
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            permission.add(Manifest.permission.READ_PHONE_STATE);
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.VIBRATE) != PackageManager.PERMISSION_GRANTED) {
+            permission.add(Manifest.permission.VIBRATE);
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_SETTINGS) != PackageManager.PERMISSION_GRANTED) {
+            permission.add(Manifest.permission.WRITE_SETTINGS);
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            permission.add(Manifest.permission.CAMERA);
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            permission.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WAKE_LOCK) != PackageManager.PERMISSION_GRANTED) {
+            permission.add(Manifest.permission.WAKE_LOCK);
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_LOGS) != PackageManager.PERMISSION_GRANTED) {
+            permission.add(Manifest.permission.READ_LOGS);
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_CALL_LOG) != PackageManager.PERMISSION_GRANTED) {
+            permission.add(Manifest.permission.WRITE_CALL_LOG);
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALL_LOG) != PackageManager.PERMISSION_GRANTED) {
+            permission.add(Manifest.permission.READ_CALL_LOG);
+        }
+        ActivityCompat.requestPermissions(this, permission.toArray(new String[permission.size()]), 27102016);
         findViewById(R.id.login_button).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 setCurrentActivity();

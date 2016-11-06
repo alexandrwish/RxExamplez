@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:custom="http://schemas.android.com/apk/res-auto/com.magenta.maxunits.mobile.dlib"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <RelativeLayout android:id="@+id/complete_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/mc_common_bg"
+                    android:layout_alignParentTop="true"
+                    android:paddingBottom="2dp">
+
+        <TextView android:id="@+id/date_value"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_alignParentTop="true"
+                  android:textColorHighlight="#E8E8E8"
+                  android:textColor="#E8E8E8"
+                  style="@style/mxMediumFont"/>
+
+        <com.magenta.maxunits.mobile.dlib.view.TimeView android:id="@+id/time_value"
+                                                        android:layout_width="wrap_content"
+                                                        android:layout_height="wrap_content"
+                                                        custom:hours_text_size="18sp"
+                                                        custom:minutes_text_size="12sp"
+                                                        custom:hours_color="?attr/defaultListItemTextColor"
+                                                        custom:minutes_color="?attr/defaultListItemTextColor"
+                                                        android:layout_toRightOf="@id/date_value"
+                                                        android:paddingLeft="2dp"
+                                                        android:paddingRight="2dp"/>
+
+        <com.magenta.maxunits.mobile.dlib.view.TimeWindowView custom:hours_text_size="18sp"
+                                                              custom:minutes_text_size="12sp"
+                                                              custom:hours_color="?attr/defaultListItemTextColor"
+                                                              custom:minutes_color="?attr/defaultListItemTextColor"
+                                                              android:id="@+id/time_window"
+                                                              android:layout_alignParentTop="true"
+                                                              android:layout_width="wrap_content"
+                                                              android:layout_height="wrap_content"
+                                                              android:layout_toRightOf="@id/time_value"/>
+
+        <TextView android:id="@+id/timer"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginLeft="10dp"
+                  android:layout_alignParentTop="true"
+                  android:layout_toRightOf="@id/time_window"
+                  android:textColorHighlight="#00FF00"
+                  android:textColor="#00FF00"
+                  style="@style/mxMediumFont"/>
+
+        <TextView style="@style/mxMediumFont"
+                  android:id="@+id/arrive_map_customer_value"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_below="@id/date_value"
+                  android:textColorHighlight="#E8E8E8"
+                  android:textColor="#E8E8E8"/>
+
+        <TextView style="@style/mxMediumFont"
+                  android:id="@+id/arrive_map_address_value"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_below="@id/arrive_map_customer_value"
+                  android:textColorHighlight="#E8E8E8"
+                  android:textColor="#E8E8E8"/>
+    </RelativeLayout>
+
+    <GridView android:id="@+id/button_grid"
+              android:verticalSpacing="5dp"
+              android:horizontalSpacing="5dp"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_alignParentBottom="true"/>
+
+    <ScrollView android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/complete_header"
+                android:layout_above="@+id/button_grid">
+
+        <TableLayout android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:stretchColumns="1"
+                     android:id="@+id/details"/>
+    </ScrollView>
+</RelativeLayout>

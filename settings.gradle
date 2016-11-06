@@ -1,1 +1,1 @@
-include ':core', ':android', ':android-smoke', ':entities', ':mx', 'distribution'
+include ':core', ':android', ':android-smoke', ':entities', ':mx', ':hd', ':vr', ':gd', 'distribution'

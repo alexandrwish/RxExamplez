@@ -1,4 +1,8 @@
-apply plugin: 'com.android.library'
+apply plugin: 'com.android.application'
+
+repositories {
+    maven { url 'https://github.com/yandexmobile/yandexmapkit-android/raw/maven/' }
+}
 
 android {
     compileSdkVersion "Google Inc.:Google APIs:17"
@@ -7,6 +11,7 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 24
+        applicationId "com.magenta.maxunits.mobile.gd"
         versionCode 1
         versionName "1.0"
     }
@@ -29,5 +34,5 @@ android {
 }
 
 dependencies {
-    compile project(':android')
+    compile project(path: ':distribution')
 }
