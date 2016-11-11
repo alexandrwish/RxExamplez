@@ -1,13 +1,10 @@
 package com.magenta.mc.client.tracking;
 
+import com.magenta.mc.client.settings.Settings;
 import com.magenta.mc.client.util.StrUtil;
 
 import java.util.Properties;
 
-/**
- * @author Petr Popov
- *         Created: 06.12.11 20:44
- */
 public class GeoLocationServiceConfig {
 
     private boolean enabled;
@@ -35,11 +32,11 @@ public class GeoLocationServiceConfig {
     private boolean fakeMode;
 
     public GeoLocationServiceConfig(Properties props) {
-        enabled = "true".equals(props.getProperty("tracking.enabled", "false").trim());
+        enabled = "true".equals(props.getProperty(Settings.TRACKING_ENABLED, "false").trim());
         logoutEnabled = "true".equals(props.getProperty("tracking.enabled.logout", "false").trim());
-        retrieveInterval = Integer.parseInt(props.getProperty("tracking.retrieveIntervalSec", "30")) * 1000;
-        batchCover = Integer.parseInt(props.getProperty("tracking.batchCoverSec", "120")) * 1000;
-        locationMaxAge = Integer.parseInt(props.getProperty("tracking.locationMaxAge", "600")) * 1000;
+        retrieveInterval = Integer.parseInt(props.getProperty(Settings.RETRIEVE_INTERVAL_SEC, "30")) * 1000;
+        batchCover = Integer.parseInt(props.getProperty(Settings.BATCH_COVER_SEC, "120")) * 1000;
+        locationMaxAge = Integer.parseInt(props.getProperty(Settings.LOCATION_MAX_AGE, "600")) * 1000;
         fakeMode = "true".equals(props.getProperty("tracking.fake", "false").trim());
 
         startStopEnabled = "true".equals(props.getProperty("tracking.startStop.enabled", "false").trim());

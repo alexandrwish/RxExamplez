@@ -6,20 +6,19 @@ import android.os.Environment;
 
 import com.magenta.mc.client.android.ui.theme.Theme;
 import com.magenta.mc.client.log.MCLoggerFactory;
+import com.magenta.mc.client.settings.PropertyEventListener;
 import com.magenta.mc.client.settings.Settings;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
-/**
- * @author Petr Popov
- *         Created: 26.12.11 20:51
- */
 public class AndroidSettings extends Settings {
-    public static final String PROPERTY_UPDATE_SERVER_PORT = "update.server.port";
-    public static final String PROPERTY_UI_THEME = "ui.theme";
 
-    public static final int PROPERTY_UPDATE_SERVER_PORT_DEFAULT = 8280;
-    public static final Theme PROPERTY_UI_THEME_DEFAULT = Theme.night;
+    public static final String PROPERTY_UI_THEME = "ui.theme";
+    private static final String PROPERTY_UPDATE_SERVER_PORT = "update.server.port";
+    private static final int PROPERTY_UPDATE_SERVER_PORT_DEFAULT = 8280;
+    private static final Theme PROPERTY_UI_THEME_DEFAULT = Theme.night;
 
     protected Context applicationContext;
 
@@ -28,7 +27,6 @@ public class AndroidSettings extends Settings {
         setInstance(this);
     }
 
-    @Override
     public File getLogFolder() {
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
             return new File(Environment.getExternalStorageDirectory(), this.getAppName());
@@ -36,13 +34,35 @@ public class AndroidSettings extends Settings {
         return super.getLogFolder();
     }
 
-    @Override
     protected void preInit(Object context) {
         this.applicationContext = (Context) context;
         setAppFolder(applicationContext.getDir("settings", Context.MODE_PRIVATE));
     }
 
-    @Override
+    protected void init(Object context) {
+        try {
+            initDefaultValues();
+            initAppNameAndVersion(); //load appName & and versions from jar, and then from file if exists
+            getApplicationFolder(); // init appFolder property
+            // load settings from jar first, overwriting default values
+            inboundProperties.load(new InputStreamReader(((Context) context).getResources().getAssets().open("settings.properties")));
+            putAll(inboundProperties);
+            // now try to load properties from file (overriden by user or updater)
+            loadSettingsFromFile();
+            saveSettings(); // at this time settings may not exist, if loaded from jar
+            initHosts();
+            addPropertyListener(new PropertyEventListener() {
+                public void propertyChanged(String property, String oldValue, String newValue) {
+                    if (Settings.HOST.equals(property)) {
+                        initHosts();
+                    }
+                }
+            });
+        } catch (IOException e) {
+            MCLoggerFactory.getLogger(getClass()).debug("Settings loading failed: " + e.getMessage());
+        }
+    }
+
     protected void initAppNameAndVersion() {
         PackageManager packageManager = applicationContext.getPackageManager();
         appName = packageManager.getApplicationLabel(applicationContext.getApplicationInfo()).toString();
@@ -61,10 +81,6 @@ public class AndroidSettings extends Settings {
         }
     }
 
-    public void setUpdateServerPort(final int updateServerPort) {
-        setProperty(PROPERTY_UPDATE_SERVER_PORT, Integer.toString(updateServerPort));
-    }
-
     public Theme getApplicationTheme() {
         String propertyVal = getProperty(PROPERTY_UI_THEME);
         Theme val = null;
@@ -80,11 +96,5 @@ public class AndroidSettings extends Settings {
             val = PROPERTY_UI_THEME_DEFAULT;
         }
         return val;
-    }
-
-    public void savePropertyUiTheme(Theme theme) {
-        setProperty(PROPERTY_UI_THEME, String.valueOf(theme.getCode()));
-
-        saveSettings();
     }
 }

@@ -211,14 +211,14 @@ public class LoginActivity extends SmokeLoginActivity implements RemoteSettingsC
                 }
             }, this);
         } else {
-            oldLocale = MxSettings.get().getProperty(MxSettings.LOCALE);
+            oldLocale = MxSettings.get().getProperty(Settings.LOCALE_KEY);
             ServicesRegistry.getWorkflowService().showSettings(LoginActivity.this, SettingsActivity.class.hashCode());
         }
     }
 
     public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         if (SettingsActivity.class.hashCode() == requestCode) {
-            final String newLocale = MxSettings.get().getProperty(MxSettings.LOCALE);
+            final String newLocale = MxSettings.get().getProperty(Settings.LOCALE_KEY);
             if (oldLocale == null ? newLocale != null : !oldLocale.equals(newLocale)) { // restart
                 finish();
                 startActivity(new Intent(this, getClass()));

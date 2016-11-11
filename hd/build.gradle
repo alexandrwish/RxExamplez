@@ -1,16 +1,43 @@
+import groovy.json.JsonSlurper
+
 apply plugin: 'com.android.application'
 
 repositories {
     maven { url 'https://github.com/yandexmobile/yandexmapkit-android/raw/maven/' }
 }
 
-android {
-    compileSdkVersion 24
-    buildToolsVersion "23.0.3"
+def buildConfig = new JsonSlurper().parseText(file(System.getProperty("BUILD_CONFIG", "./src/main/assets/build_config.json")).text)
+def getCommitHash = { ->
+    def stdout = new ByteArrayOutputStream()
+    exec {
+        commandLine 'git', 'rev-parse', 'HEAD'
+        standardOutput = stdout
+    }
+    return stdout.toString().trim()
+}
+def getCommitDate = { ->
+    def stdout = new ByteArrayOutputStream()
+    exec {
+        commandLine 'git', 'log', '-1', '--format=%cd'
+        standardOutput = stdout
+    }
+    return stdout.toString().trim()
+}
 
+android {
+    signingConfigs {
+        release {
+            keyAlias 'magenta_mobile_android'
+            keyPassword 'Wq6Qe53b0p9A90px'
+            storeFile file('/opt/data/projects/MaxUnits/certificate/keystore.jks')
+            storePassword 'Wq6Qe53b0p9A90px'
+        }
+    }
+    compileSdkVersion 22
+    buildToolsVersion "22.0.1"
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 24
+        targetSdkVersion 22
         applicationId "com.magenta.maxunits.mobile.hd"
         versionCode 1
         versionName "1.0"
@@ -18,6 +45,8 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+            zipAlignEnabled true
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -27,6 +56,76 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
+    }
+    def Properties versionProps = new Properties()
+    def code = System.getenv("BUILD_NUMBER") ?: "0"
+    versionProps['VERSION_CODE'] = code.toString()
+    versionProps['VERSION_HASH'] = getCommitHash()
+    versionProps['VERSION_DATE'] = getCommitDate()
+    def versionPropsFile = file('./src/main/assets/version.properties')
+    versionProps.store(versionPropsFile.newWriter(), null)
+    applicationVariants.all { variant ->
+        variant.assemble.doLast {
+            variant.outputs.each { output ->
+                File unaligned = output.packageApplication.outputFile;
+                File aligned = output.outputFile
+                if (!unaligned.getName().equalsIgnoreCase(aligned.getName())) {
+                    unaligned.delete()
+                } else {
+                    output.outputFile = new File(
+                            output.outputFile.parent,
+                            output.outputFile.name.replace(".apk", "-${variant.versionName}.apk"))
+                }
+            }
+        }
+    }
+    android.variantFilter { variant ->
+        buildConfig.each { k, v ->
+            if (variant.buildType.name.equals('release') && variant.getFlavors().get(0).name.equals(k) && v.build_release.equals("false")) {
+                variant.setIgnore(true);
+            } else if (variant.buildType.name.equals('debug') && variant.getFlavors().get(0).name.equals(k) && v.build_debug.equals("false")) {
+                variant.setIgnore(true);
+            }
+        }
+    }
+    productFlavors {
+        buildConfig.each { k, v ->
+            "$k" {
+            }
+        }
+    }
+}
+
+tasks.whenTaskAdded { task ->
+    copy {
+        from './src/main/assets/settings_default.properties'
+        into './src/main/assets/'
+        rename { String fileName ->
+            fileName.replace('_default', '')
+        }
+    }
+    buildConfig.each { k, v ->
+        if ((task.name.equalsIgnoreCase('generate' + k + 'DebugBuildConfig')) || (task.name.equalsIgnoreCase('generate' + k + 'ReleaseBuildConfig'))) {
+            def taskName = 'configure' + k
+            tasks.create(taskName) {
+                doLast {
+                    ant.propertyfile(file: file('./src/main/assets/settings.properties')) {
+                        entry(key: "locale.key", value: v.language)
+                        entry(key: "server.address", value: v.server)
+                        entry(key: "server.port", value: v.port)
+                        entry(key: "server.component.name", value: v.component)
+                        entry(key: "tracking.retrieveIntervalSec", value: v.retrieveInterval)
+                        entry(key: "tracking.tracking.batchCoverSec", value: v.batchCover)
+                        entry(key: "update.server.port", value: v.updatePort)
+                        entry(key: "api.address", value: v.apiAddress)
+                        entry(key: "keepAlive.period", value: v.keepAlive)
+                        entry(key: "save.locations.interval", value: v.saveLocations)
+                        entry(key: "settings.password", value: v.password)
+                    }
+                }
+            }
+            task.dependsOn taskName
+        }
     }
 }
 

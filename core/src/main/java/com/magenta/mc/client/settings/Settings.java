@@ -5,7 +5,6 @@ import com.magenta.mc.client.util.ResourceManager;
 import com.magenta.mc.client.util.StrUtil;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
@@ -22,31 +20,34 @@ import java.util.Set;
 public class Settings extends Properties {
 
     public static final String HOST = "server.address";
-    public static final String SERVER_NAME = "server.name";
     public static final String PORT = "server.port";
-    public static final String USE_SSL = "useSSL";
-    public static final String PLAIN_AUTH = "plainAuth";
-    public static final String COMPRESSION = "compression";
     public static final String KEEP_ALIVE_PERIOD = "keepAlive.period";
     public static final String KEEP_ALIVE_TYPE = "keepAlive.type";
-    public static final String AUTOLOGIN = "autologin";
-    public static final String STORAGE_PATH = "cache.file.path";
-    public static final String AUTOAWAY = "autoaway";
-    public static final String USER_ID = "user.id";
-    public static final String SERVER_COMPONENT_NAME = "server.component.name";
-    public static final String XMPP_RESOURCE = "xmpp.resource";
     public static final String TIMEZONE_PROPERTY = "timezone";
     public static final String LOCALE_KEY = "locale.key";
     public static final String LOGGING_ENABLED = "logging.enabled";
-    public static final String LOGGING_FILE = "logging.file";
-    public static final String LOGGING_CONSOLE = "logging.console";
     public static final String LOG_USING_ONE_LOGGER_PROPERTY = "logging.one.logger";
-    public static final String UPDATE_APPLICATION_NAME = "update.applicationName";
-    public static final String OFFLINE_VERSION = "offline.version";
+    public static final String RETRIEVE_INTERVAL_SEC = "tracking.retrieveIntervalSec";
+    public static final String BATCH_COVER_SEC = "tracking.batchCoverSec";
+    public static final String LOCATION_MAX_AGE = "tracking.locationMaxAgeSec";
+    public static final String TRACKING_ENABLED = "tracking.enabled";
+
+    private static final String USE_SSL = "useSSL";
+    private static final String PLAIN_AUTH = "plainAuth";
+    private static final String COMPRESSION = "compression";
+    private static final String SERVER_NAME = "server.name";
+    private static final String AUTOLOGIN = "autologin";
+    private static final String STORAGE_PATH = "cache.file.path";
+    private static final String AUTOAWAY = "autoaway";
+    private static final String USER_ID = "user.id";
+    private static final String SERVER_COMPONENT_NAME = "server.component.name";
+    private static final String XMPP_RESOURCE = "xmpp.resource";
+    private static final String LOGGING_FILE = "logging.file";
+    private static final String LOGGING_CONSOLE = "logging.console";
+    private static final String UPDATE_APPLICATION_NAME = "update.applicationName";
+    private static final String OFFLINE_VERSION = "offline.version";
     private static final String FRAME_TITLE_SUFFIX = "frame.title.suffix";
     private static final String FILE_NAME = "settings.properties";
-    private static final String VERSION_FILE_NAME = "version.properties";
-    private static final String DEFAULT_APP_NAME = "mc-client";
     private static final String SERVER_NAME_DEFAULT_VALUE = "mobile-central";
     private static final String SERVER_COMPONENT_NAME_DEFAULT_VALUE = "echo-core";
     private static final String HOST_DEFAULT_VALUE = "127.0.0.1";
@@ -65,17 +66,19 @@ public class Settings extends Properties {
     private static final String LOGGING_FILE_DEFAULT_VALUE = "false";
     private static final String LOGGING_ENABLED_DEFAULT_VALUE = "false";
     private static final String LOGGING_CONSOLE_DEFAULT_VALUE = "false";
+
     private static Settings instance;
-    private static String DEFAULT_PARENT_FOLDER = "\\Program Files";
     private static File appFolder;
     private static File logFolder;
+
     protected String appVersion;
     protected String appName;
-    protected Properties inboundProperties = new Properties();
+
+    private Properties inboundProperties = new Properties();
     private String password;
     private int devLaunch;
     private long timeDelta;
-    private Set propertyListeners = new HashSet();
+    private Set<PropertyEventListener> propertyListeners = new HashSet<>();
     private int serverTimezoneOffset;
     private List hosts;
     private String currentHost;
@@ -91,11 +94,6 @@ public class Settings extends Properties {
         init();
     }
 
-    /**
-     * Deprecated, use Setup.get().getSettings()
-     *
-     * @return
-     */
     public static Settings get() {
         if (instance == null) {
             instance = new Settings();
@@ -115,7 +113,7 @@ public class Settings extends Properties {
     }
 
     //add and overwrite settings by overriding this method. dont forget call to super
-    protected void initDefaultValues() {
+    private void initDefaultValues() {
         inboundProperties.put(SERVER_NAME, SERVER_NAME_DEFAULT_VALUE);
         inboundProperties.put(HOST, HOST_DEFAULT_VALUE);
         inboundProperties.put(PORT, PORT_DEFAULT_VALUE);
@@ -135,47 +133,9 @@ public class Settings extends Properties {
     }
 
     protected void initAppNameAndVersion() {
-        // initialize appName and appVersion from version.properties file
-        appVersion = "0.1";
-        appName = DEFAULT_APP_NAME;
-        final Properties versionProp = new Properties();
-        try {
-            versionProp.load(ResourceManager.getInstance().getResourceAsStream(VERSION_FILE_NAME));
-            appVersion = versionProp.getProperty("application.version");
-            appName = versionProp.getProperty("application.name");
-        } catch (IOException e) {
-            MCLoggerFactory.getLogger(getClass()).error("cannot load version.properties from jar", e);
-        }
-
-        final InputStream stream = openFile(VERSION_FILE_NAME);
-        if (stream == null) {
-            MCLoggerFactory.getLogger(getClass()).debug("Warning: version.properties file not found");
-        } else {
-            try {
-                versionProp.load(stream);
-                appVersion = versionProp.getProperty("application.version");
-                appName = versionProp.getProperty("application.name");
-                if (appName.indexOf("@") > -1) {
-                    // we run from IDE, version.properties contains template, use default
-                    appName = DEFAULT_APP_NAME;
-                }
-            } catch (IOException e) {
-                MCLoggerFactory.getLogger(getClass()).debug("Warning: cannot load version.properties");
-            } finally {
-                try {
-                    stream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
     }
 
-    public boolean isDevLaunch() {
-        return devLaunch == 1;
-    }
-
-    protected String getParentFolder() {
+    private String getParentFolder() {
         if (devLaunch != 2) {
             if (devLaunch == 0) {
                 if ("Linux".equals(System.getProperty("os.name"))
@@ -187,10 +147,10 @@ public class Settings extends Properties {
                 }
             }
         }
-        return DEFAULT_PARENT_FOLDER;
+        return "\\Program Files";
     }
 
-    public File getApplicationFolder() {
+    private File getApplicationFolder() {
         if (appFolder == null) {
             return appFolder = new File(getParentFolder() + File.separator + appName + File.separator);
         } else {
@@ -200,10 +160,6 @@ public class Settings extends Properties {
 
     public File getLogFolder() {
         return logFolder == null ? (logFolder = getApplicationFolder()) : logFolder;
-    }
-
-    public String getResourcesFolder() {
-        return new File(getApplicationFolder(), "res").getPath() + File.separator;
     }
 
     public void addPropertyListener(PropertyEventListener listener) {
@@ -244,15 +200,14 @@ public class Settings extends Properties {
         }
     }
 
-    protected void loadSettingsFromFile() throws IOException {
+    private void loadSettingsFromFile() throws IOException {
         // Remove old settings
         File dir = getApplicationFolder();
         if (dir.isDirectory()) {
             String[] children = dir.list();
-            for (int i = 0; i < children.length; i++) {
-                if (!children[i].equals(getSettingsFileName()) &&
-                        children[i].startsWith("settings") && children[i].endsWith(".properties")) {
-                    (new File(dir, children[i])).delete();
+            for (String child : children) {
+                if (!child.equals(getSettingsFileName()) && child.startsWith("settings") && child.endsWith(".properties")) {
+                    (new File(dir, child)).delete();
                 }
             }
         }
@@ -270,20 +225,14 @@ public class Settings extends Properties {
         return appName;
     }
 
-    protected String getJarSettingsFileName() {
-        return FILE_NAME;
+    private String getJarSettingsFileName() {
+        return FILE_NAME;/**/
     }
 
-    protected String getSettingsFileName() {
-        return FILE_NAME;
+    private String getSettingsFileName() {
+        return FILE_NAME;/**/
     }
 
-    /**
-     * Returns stream of file in path if it exists or file in jar otherwize
-     *
-     * @param filename
-     * @return
-     */
     public InputStream openFile(String filename) {
         final File file = new File(getApplicationFolder(), filename);
         if (file.exists()) { // file not found, let's look inside the jar
@@ -313,8 +262,6 @@ public class Settings extends Properties {
                 } else {
                     MCLoggerFactory.getLogger(getClass()).debug("Warning: Failed to create settings file: " + settingsFile.getPath());
                 }
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
@@ -345,8 +292,7 @@ public class Settings extends Properties {
     }
 
     private void triggerPropertyEvent(final String key, final String oldValue, final String newValue) {
-        for (Iterator iterator = propertyListeners.iterator(); iterator.hasNext(); ) {
-            PropertyEventListener listener = (PropertyEventListener) iterator.next();
+        for (PropertyEventListener listener : propertyListeners) {
             listener.propertyChanged(key, oldValue, newValue);
         }
     }
@@ -356,7 +302,7 @@ public class Settings extends Properties {
     }
 
     public int getIntProperty(String key, String defValue) {
-        return Integer.valueOf(getProperty(key, defValue)).intValue();
+        return Integer.valueOf(getProperty(key, defValue));
     }
 
     public boolean getBooleanProperty(String key) {
@@ -364,15 +310,15 @@ public class Settings extends Properties {
     }
 
     public boolean getBooleanProperty(String key, String defValue) {
-        return Boolean.valueOf(getProperty(key, defValue).trim()).booleanValue();
+        return Boolean.valueOf(getProperty(key, defValue).trim());
     }
 
     public long getLongProperty(String key, long defValue) {
         String val = getProperty(key);
         if (val != null) {
             try {
-                return Long.valueOf(val).longValue();
-            } catch (NumberFormatException e) {
+                return Long.valueOf(val);
+            } catch (NumberFormatException ignored) {
             }
         }
         return defValue;
@@ -487,10 +433,6 @@ public class Settings extends Properties {
         return getBooleanProperty(AUTOLOGIN, AUTO_LOGIN_DEFAULT_FALUE);
     }
 
-    public void setAutoLogin(boolean autologin) {
-        setProperty(AUTOLOGIN, Boolean.toString(autologin));
-    }
-
     public Date getCurrentDate() {
         return new Date(System.currentTimeMillis() + timeDelta);
     }
@@ -511,10 +453,6 @@ public class Settings extends Properties {
         return serverTimezoneOffset;
     }
 
-    public String getStoragePath() {
-        return getProperty(STORAGE_PATH, STORAGE_PATH_DEFAULT_FALUE);
-    }
-
     public String getUpdateApplicationName() {
         return getProperty(UPDATE_APPLICATION_NAME, "");
     }
@@ -530,7 +468,7 @@ public class Settings extends Properties {
             currentHost = null;
             switchHost();
         } else {
-            hosts = new ArrayList();//Collections.emptyList();
+            hosts = new ArrayList();
         }
     }
 
@@ -553,10 +491,6 @@ public class Settings extends Properties {
         return getBooleanProperty(LOGGING_ENABLED, LOGGING_ENABLED_DEFAULT_VALUE);
     }
 
-    public String getFrameTitleSuffix() {
-        return getProperty(FRAME_TITLE_SUFFIX, FRAME_TITLE_SUFFIX_DEFAULT_FALUE);
-    }
-
     public String getMcClientCoreVersion() {
         return "1.0.0";
     }
@@ -569,17 +503,7 @@ public class Settings extends Properties {
         return getBooleanProperty(OFFLINE_VERSION, "false");
     }
 
-    /**
-     * Is need to use DemoStorageInitializer before login (for testing purposes)
-     *
-     * @return
-     */
     public boolean needToInitializeStorage() {
         return false;
     }
-
-    public void addProperty(String name, String value) {
-        //Override this method for add property
-    }
-
 }

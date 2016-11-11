@@ -1,0 +1,3 @@
+map key		0pX8apUQaWq5uMd06F5iRCzadx_6-Y99DBu2SjQ
+storepass	Wq6Qe53b0p9A90px
+keypass		Wq6Qe53b0p9A90px

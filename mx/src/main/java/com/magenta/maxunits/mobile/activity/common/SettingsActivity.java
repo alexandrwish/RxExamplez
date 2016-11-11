@@ -86,7 +86,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
             checkBoxPreference.setChecked("true".equals(value));
         } else if (preference instanceof ListPreference) {
             ListPreference listPreference = (ListPreference) preference;
-            if (MxSettings.LOCALE.equals(preference.getKey())) {
+            if (Settings.LOCALE_KEY.equals(preference.getKey())) {
                 listPreference.setEntries(LocaleUtils.listOfAvailableLocales(getApplication()));
                 listPreference.setValue(value);
             }
@@ -129,7 +129,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         if (value != null) {
             final Preference preference = findPreference(key);
             Setup.get().getSettings().setProperty(key, value.toString());
-            if (MxSettings.LOCALE.equals(key)) {
+            if (Settings.LOCALE_KEY.equals(key)) {
                 LocaleUtils.changeLocale(getApplication(), String.valueOf(value));
                 preference.setSummary(LocaleUtils.getDisplayName(String.valueOf(value)));
             } else if (!(value instanceof Boolean)) {

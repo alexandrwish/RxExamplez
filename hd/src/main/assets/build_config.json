@@ -1,0 +1,32 @@
+{
+  "live.maxoptra.ru": {
+    "language": "en",
+    "server": "live.maxoptra.ru",
+    "port": 9876,
+    "component": "maxoptra",
+    "retrieveInterval": 30,
+    "batchCover": 120,
+    "updatePort": 8280,
+    "apiAddress": "live.maxoptra.ru",
+    "keepAlive": 120,
+    "saveLocations": 30000,
+    "password": "",
+    "build_release": "true",
+    "build_debug": "false"
+  },
+  "beta.maxoptra.ru": {
+    "language": "es",
+    "server": "beta.maxoptra.ru",
+    "port": 9876,
+    "component": "maxoptra",
+    "retrieveInterval": 30,
+    "batchCover": 120,
+    "updatePort": 8280,
+    "apiAddress": "live.maxoptra.ru",
+    "keepAlive": 120,
+    "saveLocations": 30000,
+    "password": "",
+    "build_release": "false",
+    "build_debug": "true"
+  }
+}

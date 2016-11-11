@@ -14,6 +14,7 @@ import com.magenta.mc.client.android.service.McService;
 import com.magenta.mc.client.android.smoke.SmokeApplication;
 import com.magenta.mc.client.android.ui.theme.Theme;
 import com.magenta.mc.client.android.ui.theme.ThemeManager;
+import com.magenta.mc.client.settings.Settings;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -96,7 +97,7 @@ public abstract class MxApplication extends SmokeApplication {
 
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        LocaleUtils.changeLocale(this, MxSettings.get().getProperty(MxSettings.LOCALE));
+        LocaleUtils.changeLocale(this, MxSettings.get().getProperty(Settings.LOCALE_KEY));
     }
 
     public void completeStatisticSending(Date date) {
