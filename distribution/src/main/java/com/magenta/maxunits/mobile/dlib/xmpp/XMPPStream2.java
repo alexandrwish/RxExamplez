@@ -11,32 +11,23 @@ import com.magenta.mc.client.settings.Settings;
 import com.magenta.mc.client.setup.Setup;
 import com.magenta.mc.client.xmpp.XMPPStream;
 
-import org.apache.http.client.HttpClient;
-import org.apache.http.conn.ClientConnectionManager;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
-import org.apache.http.params.HttpParams;
-
 import java.io.IOException;
 import java.sql.SQLException;
 
+import okhttp3.OkHttpClient;
+
 public class XMPPStream2 extends XMPPStream {
 
-    final LoginCheckReceiver receiver = new LoginCheckReceiver();
-    KeepAliveTask2 keepAlive;
+    private final LoginCheckReceiver receiver = new LoginCheckReceiver();
+    private KeepAliveTask2 keepAlive;
 
     public XMPPStream2(String server, String host, int port, boolean ssl, long connectionId) throws IOException {
         super(server, host, port, ssl, connectionId);
         iostream = new Utf8IOStream(socket);
     }
 
-    public static DefaultHttpClient getThreadSafeClient() {
-        DefaultHttpClient client = new DefaultHttpClient();
-        ClientConnectionManager mgr = client.getConnectionManager();
-        HttpParams params = client.getParams();
-        client = new DefaultHttpClient(new ThreadSafeClientConnManager(params, mgr.getSchemeRegistry()), params);
-        return client;
-
+    public static OkHttpClient getThreadSafeClient() {
+        return new OkHttpClient();
     }
 
     public void restartKeepAliveTask() {
@@ -44,14 +35,14 @@ public class XMPPStream2 extends XMPPStream {
         startKeepAliveTask();
     }
 
-    void stopKeepAliveTask() {
+    private void stopKeepAliveTask() {
         if (keepAlive != null) {
             keepAlive.destroyTask();
             keepAlive = null;
         }
     }
 
-    void startKeepAliveTask() {
+    private void startKeepAliveTask() {
         pingSent = false;
         keepAlive = new KeepAliveTask2(Setup.get().getSettings().keepAlivePeriod(), Setup.get().getSettings().keepAliveType());
     }
@@ -66,7 +57,7 @@ public class XMPPStream2 extends XMPPStream {
         long id;
         int type;
 
-        public KeepAliveTask2(int periodSeconds, int type) {
+        KeepAliveTask2(int periodSeconds, int type) {
             this.type = type;
             Log.d("---dbg1", "periodSeconds " + periodSeconds);
             long periodRun = ((long) periodSeconds) * 1000; // milliseconds
@@ -76,15 +67,13 @@ public class XMPPStream2 extends XMPPStream {
         }
 
         public void runTask() {
-            final HttpClient client = getThreadSafeClient();
+            final OkHttpClient client = getThreadSafeClient();
             if (Boolean.valueOf((String) Setup.get().getSettings().get(MxSettings.ENABLE_API))) {
                 receiver.run(keepAlive, client);
             } else {
                 try {
                     receiver.sendLocations(client, UserUtils.cutComponentName(Settings.get().getUserId()));
-                } catch (IOException e) {
-                    MCLoggerFactory.getLogger(getClass()).error(e.getMessage(), e);
-                } catch (SQLException e) {
+                } catch (IOException | SQLException e) {
                     MCLoggerFactory.getLogger(getClass()).error(e.getMessage(), e);
                 }
                 tryToSend();
@@ -102,7 +91,7 @@ public class XMPPStream2 extends XMPPStream {
             MCLoggerFactory.getLogger(getClass()).debug("Keep-Alive complete: " + id);
         }
 
-        public void destroyTask() {
+        void destroyTask() {
             MCLoggerFactory.getLogger(getClass()).debug("Cancelling Keep-Alive: " + id);
             cancel();
         }

@@ -1,36 +1,33 @@
 package com.magenta.maxunits.mobile.task;
 
 import android.content.SharedPreferences;
-import android.net.http.AndroidHttpClient;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 
 import com.google.gson.Gson;
 import com.magenta.maxunits.mobile.MxApplication;
-import com.magenta.maxunits.mobile.mc.MxAndroidUtil;
 import com.magenta.maxunits.mobile.mc.MxSettings;
 import com.magenta.mc.client.log.MCLoggerFactory;
 import com.magenta.mc.client.settings.Settings;
 import com.magenta.mc.client.setup.Setup;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-
 import java.util.Map;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class GetRemoteSettings {
 
-    private static final String DISTRIBUTION_HTTP_CLIENT = "distributionHttpClient";
     private static final int RESULT_OK = 0;
     private static final int RESULT_ERROR = 1;
-    private HttpClient httpclient;
+    private OkHttpClient httpclient;
     private RemoteSettingsCallback mUpdSettingsCallback;
     private WaitDbUpdate mWaitDbUpdate;
 
     public GetRemoteSettings(RemoteSettingsCallback updSettingsCallback) {
         mUpdSettingsCallback = updSettingsCallback;
-        httpclient = AndroidHttpClient.newInstance(DISTRIBUTION_HTTP_CLIENT, MxApplication.getInstance());
+        httpclient = new OkHttpClient.Builder().build();
     }
 
     public void update() {
@@ -45,11 +42,11 @@ public class GetRemoteSettings {
         return "http://" + Setup.get().getSettings().get(MxSettings.API_ADDRESS) + Setup.get().getSettings().get(MxSettings.API_PATH) + "/getSettings?account=" + MxSettings.getInstance().getUserAccount();
     }
 
-    class WaitDbUpdate extends AsyncTask<Void, Void, Integer> {
+    private class WaitDbUpdate extends AsyncTask<Void, Void, Integer> {
         protected Integer doInBackground(Void... params) {
             try {
-                HttpResponse response = httpclient.execute(new HttpGet(getPath()));
-                String result = MxAndroidUtil.readResponse(response.getEntity().getContent());
+                Response response = httpclient.newCall(new Request.Builder().url(getPath()).get().build()).execute();
+                String result = response.body().string();
                 if (!result.isEmpty()) {
                     Map<String, String> settings = new Gson().fromJson(result, Map.class);
                     if (settings.containsKey("errorCode")) {

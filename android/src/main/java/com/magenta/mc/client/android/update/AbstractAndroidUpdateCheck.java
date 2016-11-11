@@ -26,15 +26,6 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-/**
- * Project: mobile-central
- * Author:  Alexey Osipov
- * Created: 27.11.13
- * <p/>
- * Copyright (c) 1999-2013 Magenta Corporation Ltd. All Rights Reserved.
- * Magenta Technology proprietary and confidential.
- * Use is subject to license terms.
- */
 abstract class AbstractAndroidUpdateCheck implements UpdateCheck {
 
     private static final String NOTIFICATION_TAG = AbstractAndroidUpdateCheck.class.getName();
@@ -47,12 +38,12 @@ abstract class AbstractAndroidUpdateCheck implements UpdateCheck {
     private static long lastRequest = -1;
     private final Context context;
 
-    public AbstractAndroidUpdateCheck(final Context context) {
+    AbstractAndroidUpdateCheck(final Context context) {
         this.context = context;
     }
 
     private static void writeFile(final InputStream is, final OutputStream os) throws Throwable {
-        int read = 0;
+        int read;
         final byte[] bytes = new byte[1024];
         while ((read = is.read(bytes)) != -1) {
             os.write(bytes, 0, read);
@@ -60,7 +51,6 @@ abstract class AbstractAndroidUpdateCheck implements UpdateCheck {
     }
 
     public void check() {
-        // todo: remove old update files
         if (System.currentTimeMillis() - lastRequest < MIN_REQUEST_PERIOD) {
             // nothing, imei check has already been done by this user since application start
             MCLoggerFactory.getLogger(AndroidUpdateCheck.class).debug("skipping update check as it was done recently");
@@ -96,9 +86,6 @@ abstract class AbstractAndroidUpdateCheck implements UpdateCheck {
                         if (downloadUpdate()) {
                             onUpdateDownloaded();
                         }
-                    } catch (Exception e) {
-                        MCLoggerFactory.getLogger(getClass()).error("UC: Error: Failed download APK");
-                        e.printStackTrace();
                     } catch (Throwable throwable) {
                         MCLoggerFactory.getLogger(getClass()).error("UC: Error: Failed download APK");
                         throwable.printStackTrace();
@@ -131,7 +118,6 @@ abstract class AbstractAndroidUpdateCheck implements UpdateCheck {
                 if ((conn.getContentType() != null) && (conn.getContentType().equals("application/vnd.android.package-archive"))) {
                     File apkFile = getUpdateFile();
                     File crcFile = getCrcFile();
-
                     if (apkFile.exists() && crcFile.exists()) {
                         // already downloaded, ignore
                         return true;
@@ -142,7 +128,6 @@ abstract class AbstractAndroidUpdateCheck implements UpdateCheck {
                         if (crcFile.exists()) {
                             FileUtils.deleteFile(crcFile);
                         }
-
                         FileOutputStream os = getContext().openFileOutput(getUpdateFile().getName(), Context.MODE_WORLD_READABLE);
                         try {
                             writeFile(is, os);
@@ -160,25 +145,23 @@ abstract class AbstractAndroidUpdateCheck implements UpdateCheck {
         } finally {
             conn.disconnect();
         }
-
         return success;
     }
 
-    protected void createCrcFile() throws IOException {
+    void createCrcFile() throws IOException {
         String crc32 = Long.toHexString(org.apache.commons.io.FileUtils.checksumCRC32(getUpdateFile()));
         org.apache.commons.io.FileUtils.writeStringToFile(getCrcFile(), crc32);
     }
 
-    protected String getCrc() throws IOException {
+    String getCrc() throws IOException {
         File crcFile = getCrcFile();
         if (crcFile != null && crcFile.exists()) {
             return org.apache.commons.io.FileUtils.readFileToString(crcFile);
         }
-
         return "0";
     }
 
-    protected String getUpdateServiceUrl() {
+    String getUpdateServiceUrl() {
         final String applicationName = Setup.get().getSettings().getUpdateApplicationName();
         return getUpdateServerUrl()
                 + "/" + Setup.get().getSettings().getServerComponentName()
@@ -204,22 +187,16 @@ abstract class AbstractAndroidUpdateCheck implements UpdateCheck {
     }
 
     private void createNotification() {
-        final NotificationManager notificationManager = (NotificationManager) getContext().getSystemService("notification");
-
-        final Intent updateIntent = createUpdateIntent();
-
-        final Notification notification = new Notification(
-                ((AndroidUI) Setup.get().getUI()).getApplicationIcons().getAlert(),
-                getContext().getString(R.string.mc_update_notification_bar_title), System.currentTimeMillis());
-
+        Context context = getContext();
+        Intent updateIntent = createUpdateIntent();
+        NotificationManager notificationManager = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        Notification notification = new Notification.Builder(context)
+                .setSmallIcon(((AndroidUI) Setup.get().getUI()).getApplicationIcons().getAlert())
+                .setContentTitle(getContext().getString(R.string.mc_update_notification_title))
+                .setContentText(getContext().getString(R.string.mc_update_notification_msg))
+                .setContentIntent(PendingIntent.getActivity(getContext(), 0, updateIntent, 0))
+                .build();
         notification.flags |= Notification.FLAG_NO_CLEAR;
-
-        notification.setLatestEventInfo(
-                getContext(),
-                getContext().getString(R.string.mc_update_notification_title),
-                getContext().getString(R.string.mc_update_notification_msg),
-                PendingIntent.getActivity(getContext(), 0, updateIntent, 0));
-
         notificationManager.cancel(NOTIFICATION_TAG, NOTIFICATION_ID);
         notificationManager.notify(NOTIFICATION_TAG, NOTIFICATION_ID, notification);
     }
@@ -228,7 +205,7 @@ abstract class AbstractAndroidUpdateCheck implements UpdateCheck {
         return getContext().getFilesDir();
     }
 
-    public File getUpdateFile() {
+    protected File getUpdateFile() {
         return new File(getUpdatesFolder(), getUpdateFileName() + APK);
     }
 
@@ -253,11 +230,10 @@ abstract class AbstractAndroidUpdateCheck implements UpdateCheck {
         }
     }
 
-    protected boolean isDownloadedUpdateAvailable() {
+    private boolean isDownloadedUpdateAvailable() {
         File apkFile = getUpdateFile();
         File crcFile = getCrcFile();
         boolean allFilesExist = apkFile.exists() && crcFile.exists();
-
         if (allFilesExist) {
             try {
                 String apkFilePath = apkFile.getPath();
@@ -295,7 +271,6 @@ abstract class AbstractAndroidUpdateCheck implements UpdateCheck {
     private String getUpdateServerUrl() {
         final AndroidSettings settings = (AndroidSettings) AndroidSettings.get();
         String url = settings.getProperty("update.server.url.pattern", "http://%s:%d/mc/update-servlet/v2");
-
         String myApiVersion = getMyUploadApiVersion();
         if (url.endsWith("/")) {
             myApiVersion += "/";

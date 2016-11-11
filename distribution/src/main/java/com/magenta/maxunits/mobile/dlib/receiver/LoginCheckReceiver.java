@@ -17,24 +17,20 @@ import com.magenta.mc.client.log.MCLoggerFactory;
 import com.magenta.mc.client.settings.Settings;
 import com.magenta.mc.client.setup.Setup;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.message.BasicHeader;
-import org.apache.http.protocol.HTTP;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.TimerTask;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
 public class LoginCheckReceiver extends TimerTask implements Runnable {
 
     private XMPPStream2.KeepAliveTask2 keepAliveTask;
-    private HttpClient httpClient;
+    private OkHttpClient httpClient;
 
     public static String generateLoginURL(String driver) {
         Uri.Builder builder = Uri.parse("http://" + Setup.get().getSettings().get(MxSettings.API_ADDRESS)).buildUpon();
@@ -49,7 +45,7 @@ public class LoginCheckReceiver extends TimerTask implements Runnable {
         return builder.toString();
     }
 
-    public void run(XMPPStream2.KeepAliveTask2 keepAliveTask, HttpClient client) {
+    public void run(XMPPStream2.KeepAliveTask2 keepAliveTask, OkHttpClient client) {
         this.keepAliveTask = keepAliveTask;
         this.httpClient = client;
         run();
@@ -64,11 +60,11 @@ public class LoginCheckReceiver extends TimerTask implements Runnable {
         cancel();
     }
 
-    public void checkDriverAndSentLocations(HttpClient httpClient, String driver, boolean withKeepAlive) {
+    public void checkDriverAndSentLocations(OkHttpClient httpClient, String driver, boolean withKeepAlive) {
         try {
             if (!driver.isEmpty()) {
-                HttpResponse response = httpClient.execute(new HttpGet(generateLoginURL(driver)));
-                String result = MxAndroidUtil.readResponse(response.getEntity().getContent());
+                Response response = httpClient.newCall(new Request.Builder().url(generateLoginURL(driver)).get().build()).execute();
+                String result = response.body().string();
                 if (result.trim().isEmpty()) {
                     if (withKeepAlive) {
                         keepAliveTask.tryToSend();
@@ -81,12 +77,7 @@ public class LoginCheckReceiver extends TimerTask implements Runnable {
                             Login.getInstance().logout(true);
                             ServicesRegistry.getWorkflowService().logout();
                         }
-                    } catch (NumberFormatException e) {
-                        MCLoggerFactory.getLogger(getClass()).error(e.getMessage(), e);
-                        if (withKeepAlive) {
-                            keepAliveTask.tryToSend();
-                        }
-                    } catch (SQLException e) {
+                    } catch (NumberFormatException | SQLException e) {
                         MCLoggerFactory.getLogger(getClass()).error(e.getMessage(), e);
                         if (withKeepAlive) {
                             keepAliveTask.tryToSend();
@@ -95,37 +86,28 @@ public class LoginCheckReceiver extends TimerTask implements Runnable {
                 }
                 sendLocations(httpClient, driver);
             }
-        } catch (IOException e) {
-            MCLoggerFactory.getLogger(getClass()).error(e.getStackTrace());
-        } catch (SQLException e) {
-            MCLoggerFactory.getLogger(getClass()).error(e.getStackTrace());
         } catch (Exception e) {
             MCLoggerFactory.getLogger(getClass()).error(e.getStackTrace());
         }
     }
 
-    public void sendLocations(final HttpClient client, String driver) throws IOException, SQLException {
-        final List<LocationEntity> geoLocations = DistributionDAO.getInstance(DistributionApplication.getContext()).getGeoLocations(driver);
+    public void sendLocations(OkHttpClient client, String driver) throws IOException, SQLException {
+        List<LocationEntity> geoLocations = DistributionDAO.getInstance(DistributionApplication.getContext()).getGeoLocations(driver);
         int locationsCount = geoLocations.size();
         if (locationsCount == 0) {
             return;
         }
-        final HttpPost post = new HttpPost(generateLocationURL());
-        final Gson gson = new Gson();
         StringBuilder sb = new StringBuilder("[");
         long max = 0;
+        Gson gson = new Gson();
         for (LocationEntity location : geoLocations) {
             sb.append(gson.toJson(location.toRecord())).append(",");
             max = max > location.getId() ? max : location.getId();
         }
         sb.append("]");
-        post.setHeader(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-        post.setHeader(new BasicHeader(HTTP.CHARSET_PARAM, "UTF-8"));
-        post.setEntity(new StringEntity(sb.toString().replace(",]", "]"), "UTF-8"));
+        Request request = new Request.Builder().url(generateLocationURL()).method("POST", RequestBody.create(null, sb.toString().replace(",]", "]"))).addHeader("Content-Type", "application/json; charset=utf-8").build();
         MCLoggerFactory.getLogger(getClass()).info("sending " + locationsCount + " locations...");
-        final HttpResponse response = client.execute(post);
-        HttpEntity entity = response.getEntity();
-        if (entity == null) {
+        if (client.newCall(request).execute().body().string().trim().isEmpty()) {
             DistributionDAO.getInstance(DistributionApplication.getContext()).clearLocations(max, driver);
             MCLoggerFactory.getLogger(getClass()).info("locations sent!");
         } else {

@@ -5,12 +5,12 @@ repositories {
 }
 
 android {
-    compileSdkVersion "Google Inc.:Google APIs:17"
-    buildToolsVersion "24.0.3"
+    compileSdkVersion 22
+    buildToolsVersion "22.0.1"
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 24
+        targetSdkVersion 22
         applicationId "com.magenta.maxunits.mobile.vr"
         versionCode 1
         versionName "1.0"
@@ -23,9 +23,6 @@ android {
     }
     lintOptions {
         abortOnError false
-    }
-    dexOptions {
-        incremental true
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7

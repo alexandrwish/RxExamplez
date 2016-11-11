@@ -29,11 +29,14 @@ import com.magenta.maxunits.mobile.utils.StringUtils;
 import com.magenta.mc.client.log.MCLoggerFactory;
 
 import org.acra.annotation.ReportsCrashes;
-import org.apache.http.client.HttpClient;
 
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
+
+import okhttp3.OkHttpClient;
+
+//import org.apache.http.client.HttpClient;
 
 @ReportsCrashes(formKey = "")
 public abstract class DistributionApplication extends MxApplication {
@@ -105,7 +108,7 @@ public abstract class DistributionApplication extends MxApplication {
     public void checkHistory(final Runnable runnable) {
         DistributionApp.runConsecutiveTask(new Runnable() {
             public void run() {
-                final HttpClient client = XMPPStream2.getThreadSafeClient();
+                OkHttpClient client = XMPPStream2.getThreadSafeClient();
                 List<String> drivers = DistributionDAO.getInstance(DistributionApplication.getContext()).getDrivers();
                 final LoginCheckReceiver receiver = new LoginCheckReceiver();
                 for (String driver : drivers) {

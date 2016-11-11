@@ -168,7 +168,7 @@ public class LoginActivity extends SmokeLoginActivity implements RemoteSettingsC
         }
         try {
             final InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+            inputManager.hideSoftInputFromWindow(getCurrentFocus() != null ? getCurrentFocus().getWindowToken() : null, InputMethodManager.HIDE_NOT_ALWAYS);
         } catch (Exception ignore) {
         }
         mUpdateSettingsProgress = new ProgressDialog(this);

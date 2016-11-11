@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion "Google Inc.:Google APIs:17"
+    compileSdkVersion 24
     buildToolsVersion "24.0.3"
 
     defaultConfig {
@@ -19,9 +19,6 @@ android {
     lintOptions {
         abortOnError false
     }
-    dexOptions {
-        incremental true
-    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_6
         targetCompatibility JavaVersion.VERSION_1_6
@@ -29,9 +26,7 @@ android {
 }
 
 dependencies {
-    compile project(':entities')
     compile project(':android-smoke')
     compile 'com.google.code.gson:gson:2.4'
     compile 'com.j256.ormlite:ormlite-android:4.48'
-    compile 'com.android.support:support-v4:25.0.0'
 }
