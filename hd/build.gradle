@@ -29,7 +29,7 @@ android {
         release {
             keyAlias 'magenta_mobile_android'
             keyPassword 'Wq6Qe53b0p9A90px'
-            storeFile file('/opt/data/projects/MaxUnits/certificate/keystore.jks')
+            storeFile file('../certificate/keystore.jks')
             storePassword 'Wq6Qe53b0p9A90px'
         }
     }
