@@ -101,7 +101,7 @@ public class ArrayLoader {
     }
 
     private InputStream getResource(String name) {
-        return ResourceManager.getInstance().getResourceAsStream(RESOURCES_PATH + name);
+        return Thread.currentThread().getContextClassLoader().getResourceAsStream(name);
     }
 
 /*

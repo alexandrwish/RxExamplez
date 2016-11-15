@@ -138,7 +138,7 @@ final class Tree {
     // must not have side effects. _dist_code[256] and _dist_code[257] are never
     // used.
     static int d_code(int dist) {
-        if (_dist_code == null) _dist_code = new ArrayLoader().readByteArray("/dist_code");
+        if (_dist_code == null) _dist_code = new ArrayLoader().readByteArray("dist_code");
         //ArrayLoader.writeByteArray("dist_code", _dist_code);
         return ((dist) < 256 ? _dist_code[dist] : _dist_code[256 + ((dist) >>> 7)]);
     }
@@ -196,7 +196,7 @@ final class Tree {
 
     public static byte getLength_code(int lc) {
         //ArrayLoader.writeByteArray("length_code",_length_code);
-        if (_length_code == null) _length_code = new ArrayLoader().readByteArray("/length_code");
+        if (_length_code == null) _length_code = new ArrayLoader().readByteArray("length_code");
         return _length_code[lc];
     }
 

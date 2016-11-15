@@ -231,9 +231,9 @@ final class InfTree {
         bl[0] = fixed_bl;
         bd[0] = fixed_bd;
 
-        if (fixed_tl == null) fixed_tl = new ArrayLoader().readIntArray("/fixed_tl");
+        if (fixed_tl == null) fixed_tl = new ArrayLoader().readIntArray("fixed_tl");
         tl[0] = fixed_tl;
-        if (fixed_td == null) fixed_td = new ArrayLoader().readIntArray("/fixed_td");
+        if (fixed_td == null) fixed_td = new ArrayLoader().readIntArray("fixed_td");
         td[0] = fixed_td;
         return Z_OK;
     }

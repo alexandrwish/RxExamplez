@@ -144,7 +144,7 @@ final class StaticTree {
     }
 
     public static short[] getStatic_ltree() {
-        if (static_ltree == null) static_ltree = new ArrayLoader().readShortArray("/static_ltree");
+        if (static_ltree == null) static_ltree = new ArrayLoader().readShortArray("static_ltree");
         return static_ltree;
     }
 }
