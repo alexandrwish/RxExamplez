@@ -38,7 +38,6 @@ import java.util.List;
 public class Maplet extends WebView {
 
     public static final int DIALOG_MAP_OPTIONS = 7823645;
-    private final static String TAG = "----Maplet";
     private final static String PAGE_URL = "file:///android_asset/map.html";
     protected boolean mTrackCurrentPosition;
     Boolean isInit = false;
