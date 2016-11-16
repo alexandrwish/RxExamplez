@@ -2,7 +2,9 @@ package com.magenta.maxunits.mobile.dlib.activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.MenuItem;
 
 import com.google.gson.Gson;
@@ -31,6 +33,9 @@ public abstract class DistributionActivity extends GenericActivity<HDActivityDec
     protected String currentStopId;
     protected boolean mIsMapDisplayingEnabled;
     protected MxSettings mSettings;
+    private boolean isUpdateDialogShowed = false;
+    private boolean isDialogShowedAfterLoseFocus = false;
+    private String updateFilePathFromEvent;
 
     {
         decorator = (HDActivityDecorator) ServicesRegistry.getWorkflowService().getDecorator(this);
@@ -47,6 +52,17 @@ public abstract class DistributionActivity extends GenericActivity<HDActivityDec
         }
         mSettings = ((MxSettings) Setup.get().getSettings());
         mIsMapDisplayingEnabled = mSettings.isMapDisplayingEnabled();
+        if (savedInstanceState != null) {
+            isUpdateDialogShowed = savedInstanceState.getBoolean(IntentAttributes.UPDATE_DIALOG_SHOWED);
+            updateFilePathFromEvent = savedInstanceState.getString(IntentAttributes.UPDATE_DIALOG_PATH);
+        } else {
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            isUpdateDialogShowed = preferences.getBoolean(IntentAttributes.UPDATE_DIALOG_SHOWED, isUpdateDialogShowed);
+            updateFilePathFromEvent = preferences.getString(IntentAttributes.UPDATE_DIALOG_PATH, updateFilePathFromEvent);
+        }
+        if (isUpdateDialogShowed && updateFilePathFromEvent != null) {
+            showUpdateDialog(updateFilePathFromEvent);
+        }
     }
 
     protected void initView() {
@@ -57,15 +73,29 @@ public abstract class DistributionActivity extends GenericActivity<HDActivityDec
         return decorator.onMenuSelected(item) || super.onContextItemSelected(item);
     }
 
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus && isUpdateDialogShowed && updateFilePathFromEvent != null && !isDialogShowedAfterLoseFocus) {
+            showUpdateDialog(updateFilePathFromEvent);
+            isDialogShowedAfterLoseFocus = true;
+        }
+    }
+
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         currentJobId = savedInstanceState.getString(IntentAttributes.JOB_ID);
         currentStopId = savedInstanceState.getString(IntentAttributes.STOP_ID);
+        isUpdateDialogShowed = savedInstanceState.getBoolean(IntentAttributes.UPDATE_DIALOG_SHOWED);
+        updateFilePathFromEvent = savedInstanceState.getString(IntentAttributes.UPDATE_DIALOG_PATH);
+        isDialogShowedAfterLoseFocus = savedInstanceState.getBoolean(IntentAttributes.DIALOG_SHOWED_AFTER_LOSE_FOCUS);
     }
 
     protected void onSaveInstanceState(Bundle outState) {
         outState.putString(IntentAttributes.JOB_ID, currentJobId);
         outState.putString(IntentAttributes.STOP_ID, currentStopId);
+        outState.putBoolean(IntentAttributes.UPDATE_DIALOG_SHOWED, isUpdateDialogShowed);
+        outState.putString(IntentAttributes.UPDATE_DIALOG_PATH, updateFilePathFromEvent);
+        outState.putBoolean(IntentAttributes.DIALOG_SHOWED_AFTER_LOSE_FOCUS, isDialogShowedAfterLoseFocus);
         super.onSaveInstanceState(outState);
     }
 
@@ -91,37 +121,8 @@ public abstract class DistributionActivity extends GenericActivity<HDActivityDec
 
     @MxBroadcastEvents({EventType.INSTALL_UPDATE})
     public void onInstallUpdate(BroadcastEvent<String> e) {
-        if (!isFinishing()) {
-            final String path = ((InstallUpdateEvent) e).getPath();
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(DistributionActivity.this)
-                            .setMessage(R.string.update_needed_text)
-                            .setPositiveButton(R.string.update_install, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    final Bundle bundle = new Bundle(3);
-                                    bundle.clear();
-                                    bundle.putBoolean("update", true);
-                                    bundle.putString("path", path);
-                                    Login.getInstance().logout(true);
-                                    ServicesRegistry.getWorkflowService().logout(bundle);
-                                }
-                            })
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .setCancelable(false);
-                    if (!mSettings.isUpdateDelayed()) {
-                        builder.setNegativeButton(R.string.update_cancel, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                mSettings.setUpdateDelayed(true);
-                            }
-                        });
-                    }
-                    builder.show();
-                }
-            });
-        }
+        updateFilePathFromEvent = ((InstallUpdateEvent) e).getPath();
+        showUpdateDialog(updateFilePathFromEvent);
     }
 
     public void updateMapSettings() {
@@ -133,5 +134,56 @@ public abstract class DistributionActivity extends GenericActivity<HDActivityDec
             DistributionDialogFragment fragment = DialogFactory.create(DialogFactory.MAP_CHOOSER_DIALOG, bundle);
             fragment.show(getFragmentManager(), fragment.getName());
         }
+    }
+
+    private void showUpdateDialog(final String path) {
+        if (isFinishing()) {
+            return;
+        }
+        runOnUiThread(new Runnable() {
+            public void run() {
+                AlertDialog.Builder builder = new AlertDialog.Builder(DistributionActivity.this)
+                        .setMessage(R.string.update_needed_text)
+                        .setPositiveButton(R.string.update_install, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                resetRestoreUpdateData();
+                                final Bundle bundle = new Bundle(3);
+                                bundle.clear();
+                                bundle.putBoolean("update", true);
+                                bundle.putString("path", path);
+                                Login.getInstance().logout(true);
+                                ServicesRegistry.getWorkflowService().logout(bundle);
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setCancelable(false);
+                if (!mSettings.isUpdateDelayed()) {
+                    builder.setNegativeButton(R.string.update_cancel, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            resetRestoreUpdateData();
+                            mSettings.setUpdateDelayed(true);
+                        }
+                    });
+                }
+                saveDialogStateToPref();
+                isUpdateDialogShowed = true;
+                builder.show();
+            }
+        });
+    }
+
+    private void resetRestoreUpdateData() {
+        isDialogShowedAfterLoseFocus = false;
+        isUpdateDialogShowed = false;
+        saveDialogStateToPref();
+    }
+
+    private void saveDialogStateToPref() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        preferences
+                .edit()
+                .putBoolean(IntentAttributes.UPDATE_DIALOG_SHOWED, isUpdateDialogShowed)
+                .putString(IntentAttributes.UPDATE_DIALOG_PATH, updateFilePathFromEvent)
+                .apply();
     }
 }

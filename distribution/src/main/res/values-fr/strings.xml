@@ -128,9 +128,8 @@
     <string name="msg_schedule_updated_title">Planning mis à jour</string>
     <string name="msg_schedule_updated_message">Votre planning a été mis à jour</string>
 
-    <string name="update_needed_title">Update</string>
-    <string name="update_needed_text">New app version available</string>
-    <string name="update_install">Install</string>
-    <string name="update_cancel">Cancel</string>
-
+    <string name="update_needed_text">Nouvelle version application disponible</string>
+    <string name="update_needed_title">Mise à jour application</string>
+    <string name="update_install">Ok</string>
+    <string name="update_cancel">Annuler</string>
 </resources>

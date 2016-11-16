@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.InputFilter;
-import android.util.Pair;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
@@ -126,7 +125,7 @@ public class CompleteActivity extends DistributionActivity {
 
     protected void initView() {
         timerField = (TextView) findViewById(R.id.timer);
-        List<Button> btnList = new LinkedList<Button>();
+        List<Button> btnList = new LinkedList<>();
         AbsListView.LayoutParams params = new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.MATCH_PARENT);
         if (((MxSettings) Settings.get()).isFactCostEnabled()) {
             Button costButton = new Button(this);
@@ -178,10 +177,12 @@ public class CompleteActivity extends DistributionActivity {
             pobButton.setId(R.string.pod + 201412);
             pobButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    Pair<String, String> signature = new SignatureDAO(CompleteActivity.this).get(currentJobId, currentStopId);
+                    Object[] signature = new SignatureDAO(CompleteActivity.this).get(currentJobId, currentStopId);
                     Intent intent = new Intent(CompleteActivity.this, SignatureActivity.class);
                     if (signature != null) {
-                        intent.putExtra(SignatureActivity.EXTRA_CONTACT_NAME, signature.first).putExtra(SignatureActivity.EXTRA_SIGNATURE, signature.second);
+                        intent.putExtra(SignatureActivity.EXTRA_CONTACT_NAME, (String) signature[0])
+                                .putExtra(SignatureActivity.EXTRA_SIGNATURE, (String) signature[1])
+                                .putExtra(SignatureActivity.EXTRA_SIGNATURE_TIMESTAMP, (Long) signature[2]);
                     }
                     startActivityForResult(intent, SignatureActivity.REQUEST_CODE);
                 }
@@ -212,7 +213,7 @@ public class CompleteActivity extends DistributionActivity {
         btnList.add(doneButton);
         GridView buttonGrid = (GridView) findViewById(R.id.button_grid);
         buttonGrid.setNumColumns(btnList.size() < 4 ? btnList.size() : GridView.AUTO_FIT);
-        buttonGrid.setAdapter(new ViewGridAdapter<Button>(btnList));
+        buttonGrid.setAdapter(new ViewGridAdapter<>(btnList));
     }
 
     private void setTimeWindow(Stop stop) {
@@ -237,7 +238,7 @@ public class CompleteActivity extends DistributionActivity {
 
     private void completeJob(Job job, Stop stop) {
         try {
-            List<DynamicAttributeRecord> records = new LinkedList<DynamicAttributeRecord>();
+            List<DynamicAttributeRecord> records = new LinkedList<>();
             for (DynamicAttributeEntity entity : DistributionDAO.getInstance(CompleteActivity.this).getDynamicAttributes(currentJobId, currentStopId)) {
                 if (entity.isPdaEditable() && entity.isPdaRequired() && StringUtils.isBlank(entity.getValue()) && !entity.getTypeName().equals(DynamicAttributeType.BOOLEAN)) {
                     Toast.makeText(this, R.string.fill_all_attributes, Toast.LENGTH_LONG).show();
@@ -250,7 +251,7 @@ public class CompleteActivity extends DistributionActivity {
         } catch (SQLException ignore) {
         }
         try {
-            List<OrderItemRecord> records = new LinkedList<OrderItemRecord>();
+            List<OrderItemRecord> records = new LinkedList<>();
             for (OrderItemEntity entity : DistributionDAO.getInstance(CompleteActivity.this).getOrderItems(currentJobId, currentStopId)) {
                 records.add(entity.toRecord());
             }
@@ -258,10 +259,11 @@ public class CompleteActivity extends DistributionActivity {
             DistributionDAO.getInstance(CompleteActivity.this).clearOrderItems(stop.getReferenceId());
         } catch (SQLException ignore) {
         }
-        Pair<String, String> signature = new SignatureDAO(CompleteActivity.this).get(currentJobId, currentStopId);
+        Object[] signature = new SignatureDAO(CompleteActivity.this).get(currentJobId, currentStopId);
         if (signature != null) {
-            stop.setValue("name", signature.first);
-            stop.setValue("signature", signature.second);
+            stop.setValue("name", signature[0]);
+            stop.setValue("signature", signature[1]);
+            stop.setValue("signature_time", signature[2]);
         }
         stop.processSetState(TaskState.STOP_COMPLETED);
         if (job.isCompleted() || job.stopsDone()) {
@@ -288,9 +290,9 @@ public class CompleteActivity extends DistributionActivity {
                 }
                 String leftTime;
                 if (days > 0) {
-                    leftTime = String.format("%d day(s) %s%02d:%02d", days, isLate ? "-" : "", hours, minutes);
+                    leftTime = String.format(Locale.UK, "%d day(s) %s%02d:%02d", days, isLate ? "-" : "", hours, minutes);
                 } else {
-                    leftTime = String.format("%s%02d:%02d", isLate ? "-" : "", hours, minutes);
+                    leftTime = String.format(Locale.UK, "%s%02d:%02d", isLate ? "-" : "", hours, minutes);
                 }
                 timerField.setText(leftTime);
             }
@@ -349,7 +351,8 @@ public class CompleteActivity extends DistributionActivity {
         if (SignatureActivity.REQUEST_CODE == requestCode) {
             String signature = data.getStringExtra(SignatureActivity.EXTRA_SIGNATURE);
             String contactName = data.getStringExtra(SignatureActivity.EXTRA_CONTACT_NAME);
-            new SignatureDAO(this).update(currentJobId, currentStopId, contactName, signature);
+            Long time = data.getLongExtra(SignatureActivity.EXTRA_SIGNATURE_TIMESTAMP, 0);
+            new SignatureDAO(this).update(currentJobId, currentStopId, contactName, signature, time);
         }
     }
 }

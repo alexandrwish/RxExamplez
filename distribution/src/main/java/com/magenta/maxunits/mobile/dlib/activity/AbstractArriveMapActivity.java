@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Pair;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -16,10 +15,8 @@ import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
 import com.magenta.maxunits.distribution.R;
 import com.magenta.maxunits.mobile.activity.WorkflowActivity;
-import com.magenta.maxunits.mobile.db.dao.SignatureDAO;
 import com.magenta.maxunits.mobile.db.dao.StopsDAO;
 import com.magenta.maxunits.mobile.dlib.controller.EmptyMapController;
 import com.magenta.maxunits.mobile.dlib.controller.GoogleMapController;
@@ -29,9 +26,7 @@ import com.magenta.maxunits.mobile.dlib.controller.YandexMapController;
 import com.magenta.maxunits.mobile.dlib.db.dao.DistributionDAO;
 import com.magenta.maxunits.mobile.dlib.entity.DynamicAttributeType;
 import com.magenta.maxunits.mobile.dlib.entity.MapSettingsEntity;
-import com.magenta.maxunits.mobile.dlib.entity.OrderItemEntity;
 import com.magenta.maxunits.mobile.dlib.mc.HDSettings;
-import com.magenta.maxunits.mobile.dlib.record.OrderItemRecord;
 import com.magenta.maxunits.mobile.dlib.service.storage.entity.Job;
 import com.magenta.maxunits.mobile.dlib.service.storage.entity.Stop;
 import com.magenta.maxunits.mobile.dlib.utils.Attribute;
@@ -39,7 +34,6 @@ import com.magenta.maxunits.mobile.dlib.utils.IntentAttributes;
 import com.magenta.maxunits.mobile.dlib.view.DynamicAttributeView;
 import com.magenta.maxunits.mobile.dlib.view.Maplet;
 import com.magenta.maxunits.mobile.dlib.view.TimeView;
-import com.magenta.maxunits.mobile.entity.AbstractJobStatus;
 import com.magenta.maxunits.mobile.entity.TaskState;
 import com.magenta.maxunits.mobile.mc.MxAndroidUtil;
 import com.magenta.maxunits.mobile.mc.MxSettings;
@@ -52,8 +46,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 public abstract class AbstractArriveMapActivity extends DistributionActivity implements WorkflowActivity {
 
@@ -88,7 +82,7 @@ public abstract class AbstractArriveMapActivity extends DistributionActivity imp
         try {
             entities = DistributionDAO.getInstance(this).getMapSettings(Setup.get().getSettings().getLogin());
         } catch (SQLException ignore) {
-            entities = new ArrayList<MapSettingsEntity>(0);
+            entities = new ArrayList<>(0);
         }
         if (!entities.isEmpty() && mIsMapDisplayingEnabled) {
             switch (entities.get(0).getMapProviderType()) {
@@ -262,33 +256,6 @@ public abstract class AbstractArriveMapActivity extends DistributionActivity imp
         }
     }
 
-    protected void completeJob(Job job, Stop stop) {
-        try {
-            List<OrderItemRecord> records = new LinkedList<OrderItemRecord>();
-            for (OrderItemEntity entity : DistributionDAO.getInstance(AbstractArriveMapActivity.this).getOrderItems(currentJobId, currentStopId)) {
-                records.add(entity.toRecord());
-            }
-            stop.setOrderItems(new Gson().toJson(records.toArray(new OrderItemRecord[records.size()])));
-            DistributionDAO.getInstance(AbstractArriveMapActivity.this).clearOrderItems(stop.getReferenceId());
-        } catch (SQLException ignore) {
-        }
-        Pair<String, String> signature = new SignatureDAO(AbstractArriveMapActivity.this).get(currentJobId, currentStopId);
-        if (signature != null) {
-            stop.setValue("name", signature.first);
-            stop.setValue("signature", signature.second);
-        }
-        lockStatus(stop.processSetState(TaskState.STOP_COMPLETED));
-        if (job.isCompleted() || job.stopsDone()) {
-            startActivity(new Intent(AbstractArriveMapActivity.this, ServicesRegistry.getWorkflowService().getFirstActivity()).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-        } else {
-            finish();
-        }
-    }
-
-    protected void lockStatus(AbstractJobStatus status) {
-        //Your awesome code here
-    }
-
     private void startLateTimer(Stop stop) {
         Date current = new Date();
         long millisFinished = stop.getDate().getTime() + 1000 * 60 * 30 - current.getTime();
@@ -306,9 +273,9 @@ public abstract class AbstractArriveMapActivity extends DistributionActivity imp
                 }
                 String leftTime;
                 if (days > 0) {
-                    leftTime = String.format("%d %s %s%02d:%02d", days, getString(R.string.day), isLate ? "-" : "", hours, minutes);
+                    leftTime = String.format(Locale.UK, "%d %s %s%02d:%02d", days, getString(R.string.day), isLate ? "-" : "", hours, minutes);
                 } else {
-                    leftTime = String.format("%s%02d:%02d", isLate ? "-" : "", hours, minutes);
+                    leftTime = String.format(Locale.UK, "%s%02d:%02d", isLate ? "-" : "", hours, minutes);
                 }
                 timerField.setText(leftTime);
             }

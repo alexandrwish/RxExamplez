@@ -2,6 +2,8 @@
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:gravity="center_vertical">
 
     <TextView
@@ -11,10 +13,12 @@
         android:layout_height="wrap_content" />
 
     <EditText
-        android:id="@+id/attribute_value"
+        android:id="@+id/attribute_value_edit"
         style="@style/McDetailsScreenValue"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:imeOptions="flagNoExtractUi"
         android:paddingLeft="10dp" />
 

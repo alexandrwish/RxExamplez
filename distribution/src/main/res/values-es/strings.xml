@@ -130,8 +130,8 @@
     <string name="unloading">Descargando</string>
     <string name="drop_location">Localización final</string>
 
-    <string name="update_needed_text">New app version available</string>
-    <string name="update_install">Install</string>
-    <string name="update_cancel">Cancel</string>
-    <string name="update_needed_title">Actualización </string>
+    <string name="update_needed_text">Nueva versión del App disponible</string>
+    <string name="update_needed_title">Actualización App</string>
+    <string name="update_install">Aceptar</string>
+    <string name="update_cancel">Cancelar</string>
 </resources>

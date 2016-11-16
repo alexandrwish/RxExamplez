@@ -1,8 +1,13 @@
 package com.magenta.maxunits.mobile.dlib.utils;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 
+import com.magenta.maxunits.mobile.dlib.entity.DynamicAttributeEntity;
 import com.magenta.maxunits.mobile.dlib.entity.DynamicAttributeType;
+import com.magenta.maxunits.mobile.dlib.entity.LocalizeStringEntity;
+import com.magenta.maxunits.mobile.mc.MxSettings;
+import com.magenta.mc.client.setup.Setup;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,6 +38,19 @@ public class Attribute {
 
     public Attribute(String title, String value) {
         this(null, title, null, false, false, value, null, DynamicAttributeType.STRING);
+    }
+
+    public static Attribute fromEntity(DynamicAttributeEntity entity, Context ctx) {
+        LocalizeStringEntity.LocalizeStringType type = LocalizeStringEntity.LocalizeStringType.getType(((MxSettings) Setup.get().getSettings()).getLocale());
+        return new Attribute(
+                entity.getId(),
+                entity.getTitle().getLocalizeString(type),
+                entity.getUnit(),
+                entity.isPdaRequired(),
+                entity.isPdaEditable(),
+                entity.getValue(),
+                entity.getTypeName().equals(DynamicAttributeType.DATETIME) ? ctx.getResources().getDrawable(android.R.drawable.ic_menu_today) : null,
+                entity.getTypeName());
     }
 
     public Integer getId() {

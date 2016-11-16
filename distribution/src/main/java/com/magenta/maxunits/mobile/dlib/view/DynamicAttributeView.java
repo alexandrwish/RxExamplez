@@ -11,6 +11,7 @@ import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -19,15 +20,12 @@ import com.magenta.maxunits.distribution.R;
 import com.magenta.maxunits.mobile.dlib.db.dao.DistributionDAO;
 import com.magenta.maxunits.mobile.dlib.entity.DynamicAttributeEntity;
 import com.magenta.maxunits.mobile.dlib.entity.DynamicAttributeType;
-import com.magenta.maxunits.mobile.dlib.entity.LocalizeStringEntity;
 import com.magenta.maxunits.mobile.dlib.utils.Attribute;
 import com.magenta.maxunits.mobile.dlib.utils.TextFilter;
 import com.magenta.maxunits.mobile.dlib.utils.TextWatcher;
-import com.magenta.maxunits.mobile.mc.MxSettings;
 import com.magenta.maxunits.mobile.ui.dialogs.DateTimePickerDialog;
 import com.magenta.maxunits.mobile.utils.PhoneUtils;
 import com.magenta.maxunits.mobile.utils.StringUtils;
-import com.magenta.mc.client.setup.Setup;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -37,10 +35,10 @@ import java.util.List;
 
 public class DynamicAttributeView {
 
-    Activity activity;
-    LayoutInflater inflater;
-    ViewGroup parentView;
-    List<Attribute> attributes = new ArrayList<Attribute>();
+    private Activity activity;
+    private LayoutInflater inflater;
+    private ViewGroup parentView;
+    private List<Attribute> attributes = new ArrayList<>();
 
     public DynamicAttributeView(Activity activity, ViewGroup parentView) {
         this.activity = activity;
@@ -54,24 +52,30 @@ public class DynamicAttributeView {
     }
 
     public DynamicAttributeView render() {
-        final List<View> views = new ArrayList<View>(attributes.size());
+        int countViews = 0;
         for (final Attribute attribute : attributes) {
-            if (StringUtils.isBlank(attribute.getValue()) && !attribute.isEditable()) continue;
+            if (StringUtils.isBlank(attribute.getValue()) && !attribute.isEditable()) {
+                continue;
+            }
             boolean editable = attribute.isEditable() && !(attribute.getType().equals(DynamicAttributeType.DATETIME) || attribute.getType().equals(DynamicAttributeType.BOOLEAN));
             View view;
+            final TextView valueView;
             if (editable) {
                 view = inflater.inflate(R.layout.item_editable_attribute, null);
+                valueView = ((EditText) view.findViewById(R.id.attribute_value_edit));
             } else if (attribute.getType().equals(DynamicAttributeType.BOOLEAN)) {
                 view = inflater.inflate(R.layout.item_boolean_attribute, null);
+                valueView = ((CheckBox) view.findViewById(R.id.attribute_value_check));
             } else {
                 view = inflater.inflate(R.layout.item_attribute, null);
+                valueView = ((TextView) view.findViewById(R.id.attribute_value));
             }
             ((TextView) view.findViewById(R.id.attribute_title)).setText(getTitle(attribute));
-            final TextView valueView = ((TextView) view.findViewById(R.id.attribute_value));
             switch (attribute.getType()) {
                 case BOOLEAN: {
-                    ((CheckBox) valueView).setChecked(!StringUtils.isBlank(attribute.getValue()) && Boolean.valueOf(attribute.getValue()));
-                    ((CheckBox) valueView).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    CheckBox checkBoxValue = (CheckBox) valueView;
+                    checkBoxValue.setChecked(!StringUtils.isBlank(attribute.getValue()) && Boolean.valueOf(attribute.getValue()));
+                    checkBoxValue.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                         public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                             attribute.setValue(String.valueOf(b));
                             updateDynamicAttribute(attribute);
@@ -95,6 +99,7 @@ public class DynamicAttributeView {
                 }
                 default: {
                     valueView.setText(getValue(attribute));
+                    valueView.clearFocus();
                     if (editable) {
                         TextFilter filter = null;
                         switch (attribute.getType()) {
@@ -128,12 +133,9 @@ public class DynamicAttributeView {
                     view.setOnClickListener((View.OnClickListener) listener);
                 }
             }
-            if (views.size() > 0) {
-                views.add(inflater.inflate(R.layout.mx_attribute_table_splitter, null));
+            if (countViews++ > 0) {
+                parentView.addView(inflater.inflate(R.layout.mx_attribute_table_splitter, null));
             }
-            views.add(view);
-        }
-        for (View view : views) {
             parentView.addView(view);
         }
         try {
@@ -143,7 +145,7 @@ public class DynamicAttributeView {
         return this;
     }
 
-    protected void updateDynamicAttribute(Attribute attribute) {
+    private void updateDynamicAttribute(Attribute attribute) {
         try {
             DistributionDAO.getInstance(activity.getApplicationContext()).updateDynamicAttribute(attribute.getId(), attribute.getValue());
         } catch (SQLException ignore) {
@@ -151,41 +153,33 @@ public class DynamicAttributeView {
     }
 
     public DynamicAttributeView addAll(final Collection<DynamicAttributeEntity> entities) {
-        if (entities != null) {
-            for (final DynamicAttributeEntity entity : entities) {
-                LocalizeStringEntity.LocalizeStringType type = LocalizeStringEntity.LocalizeStringType.getType(((MxSettings) Setup.get().getSettings()).getLocale());
-                final Attribute attribute = new Attribute(
-                        entity.getId(),
-                        entity.getTitle().getLocalizeString(type),
-                        entity.getUnit(),
-                        entity.isPdaRequired(),
-                        entity.isPdaEditable(),
-                        entity.getValue(),
-                        entity.getTypeName().equals(DynamicAttributeType.DATETIME) ? activity.getResources().getDrawable(android.R.drawable.ic_menu_today) : null,
-                        entity.getTypeName());
-                if (entity.isPdaEditable()) {
-                    attribute.addListeners(new View.OnClickListener() {
-                        public void onClick(final View view) {
-                            if (entity.getTypeName().equals(DynamicAttributeType.DATETIME)) {
-                                new DateTimePickerDialog(activity, new DateTimePickerDialog.Listener() {
-                                    public void onSet(Date time) {
-                                        attribute.setValue(time.toString());
-                                        updateDynamicAttribute(attribute);
-                                        clear().render();
-                                    }
-                                }, StringUtils.isBlank(attribute.getValue()) ? new Date() : new Date(attribute.getValue())) {
-                                    protected void onCreate(Bundle savedInstanceState) {
-                                        super.onCreate(savedInstanceState);
-                                        datePicker.setDescendantFocusability(DatePicker.FOCUS_BLOCK_DESCENDANTS);
-                                        timePicker.setDescendantFocusability(TimePicker.FOCUS_BLOCK_DESCENDANTS);
-                                    }
-                                }.show();
-                            }
+        if (entities == null || entities.isEmpty()) {
+            return this;
+        }
+        for (final DynamicAttributeEntity entity : entities) {
+            final Attribute attribute = Attribute.fromEntity(entity, activity);
+            if (entity.isPdaEditable()) {
+                attribute.addListeners(new View.OnClickListener() {
+                    public void onClick(final View view) {
+                        if (entity.getTypeName().equals(DynamicAttributeType.DATETIME)) {
+                            new DateTimePickerDialog(activity, new DateTimePickerDialog.Listener() {
+                                public void onSet(Date time) {
+                                    attribute.setValue(time.toString());
+                                    updateDynamicAttribute(attribute);
+                                    clear().render();
+                                }
+                            }, StringUtils.isBlank(attribute.getValue()) ? new Date() : new Date(attribute.getValue())) {
+                                protected void onCreate(Bundle savedInstanceState) {
+                                    super.onCreate(savedInstanceState);
+                                    datePicker.setDescendantFocusability(DatePicker.FOCUS_BLOCK_DESCENDANTS);
+                                    timePicker.setDescendantFocusability(TimePicker.FOCUS_BLOCK_DESCENDANTS);
+                                }
+                            }.show();
                         }
-                    });
-                }
-                attributes.add(attribute);
+                    }
+                });
             }
+            add(attribute);
         }
         return this;
     }

@@ -10,12 +10,9 @@ import com.magenta.maxunits.mobile.db.dao.StopsDAO;
 
 import static java.lang.String.format;
 
-/**
- * @author Sergey Grachev
- */
 public class MxDBOpenHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final TableMeta[] TABLES = new TableMeta[]{
             new TableMeta(StopsDAO.TABLE, StopsDAO.SQL_CREATE_TABLE, StopsDAO.INDEX),
             new TableMeta(BarcodesDAO.TABLE, BarcodesDAO.SQL_CREATE_TABLE, BarcodesDAO.INDEX),
@@ -31,7 +28,6 @@ public class MxDBOpenHelper extends SQLiteOpenHelper {
         DATABASE_NAME = dbName;
     }
 
-    @Override
     public void onCreate(final SQLiteDatabase db) {
         for (final TableMeta meta : TABLES) {
             db.execSQL(meta.sqlCreateTable);
@@ -43,7 +39,6 @@ public class MxDBOpenHelper extends SQLiteOpenHelper {
         }
     }
 
-    @Override
     public void onUpgrade(final SQLiteDatabase db, final int oldVersion, final int newVersion) {
         for (final TableMeta meta : TABLES) {
             db.execSQL(String.format("DROP TABLE IF EXISTS %s", meta.table));
@@ -54,15 +49,6 @@ public class MxDBOpenHelper extends SQLiteOpenHelper {
             }
         }
         onCreate(db);
-    }
-
-    public void recreate() {
-        final SQLiteDatabase db = getWritableDatabase();
-        try {
-            onUpgrade(db, -1, -1);
-        } finally {
-            db.close();
-        }
     }
 
     private static final class TableMeta {

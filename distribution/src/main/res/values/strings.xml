@@ -148,9 +148,8 @@
     <string name="alert_map_title">Default map was changed</string>
     <string name="alert_map_value">For change map settings connect with your dispather</string>
 
-    <string name="update_needed_title">Update</string>
-    <string name="update_needed_text">New app version available</string>
-    <string name="update_install">Install</string>
+    <string name="update_needed_text">New version app available</string>
+    <string name="update_needed_title">App updating</string>
+    <string name="update_install">OK</string>
     <string name="update_cancel">Cancel</string>
-
 </resources>

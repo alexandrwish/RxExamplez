@@ -18,6 +18,7 @@ public class SignatureActivity extends DistributionActivity implements WorkflowA
     public static final int REQUEST_CODE = SignatureActivity.class.hashCode();
     public static final String EXTRA_SIGNATURE = "SIGNATURE";
     public static final String EXTRA_CONTACT_NAME = "CONTACT_NAME";
+    public static final String EXTRA_SIGNATURE_TIMESTAMP = "SIGNATURE_TIMESTAMP";
 
     SignatureView signature;
 
@@ -44,6 +45,7 @@ public class SignatureActivity extends DistributionActivity implements WorkflowA
                 SignatureActivity.this.setResult(RESULT_OK, new Intent()
                         .putExtra(EXTRA_SIGNATURE, signature.sign())
                         .putExtra(EXTRA_CONTACT_NAME, name.getText().toString())
+                        .putExtra(EXTRA_SIGNATURE_TIMESTAMP, System.currentTimeMillis())
                 );
                 finish();
             }

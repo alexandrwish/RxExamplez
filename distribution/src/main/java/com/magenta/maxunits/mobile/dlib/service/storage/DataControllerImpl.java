@@ -43,9 +43,9 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
 
     private static final MCLogger LOG = MCLoggerFactory.getLogger(DataController.class);
 
-    private Map<String, Job> refToJob = new HashMap<String, Job>();
+    private Map<String, Job> refToJob = new HashMap<>();
     private Map refToHistory = new HashMap();
-    private Map<String, FullJobHistory> fullJobHistory = new HashMap<String, FullJobHistory>();
+    private Map<String, FullJobHistory> fullJobHistory = new HashMap<>();
     private boolean clear = true;
 
     public void clear() {
@@ -104,8 +104,8 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
 
     public void checkCancelledAndCompletedJobs() {
         // clonning keyset not to produce concurrent modification of 'refToJob' map
-        Set referenceSet = refToJob.keySet();
-        for (String jobRef : (String[]) referenceSet.toArray(new String[referenceSet.size()])) {
+        Set<String> referenceSet = refToJob.keySet();
+        for (String jobRef : referenceSet.toArray(new String[referenceSet.size()])) {
             Job nextJob = refToJob.get(jobRef);
             if (nextJob == null) {
                 LOG.error("Job [" + jobRef + "] is null");
