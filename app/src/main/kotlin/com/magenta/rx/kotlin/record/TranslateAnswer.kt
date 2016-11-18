@@ -1,10 +1,6 @@
 package com.magenta.rx.kotlin.record
 
-class TranslateAnswer {
-
-    private var code: String? = null
-    private var lang: String? = null
-    private var text: Array<String>? = null
+class TranslateAnswer(private var code: String?, private var lang: String?, private var text: Array<String>?) {
 
     fun getCode() = code
 

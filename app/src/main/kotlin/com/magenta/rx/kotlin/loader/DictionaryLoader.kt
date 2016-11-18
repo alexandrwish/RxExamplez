@@ -13,18 +13,9 @@ import rx.schedulers.Schedulers
 import java.util.*
 import javax.inject.Inject
 
-class DictionaryLoader {
-
-    private var client: DictionaryClient
-    private var preferences: SharedPreferences
+class DictionaryLoader @Inject constructor(private var client: DictionaryClient, private var preferences: SharedPreferences) {
 
     private val map = HashMap<String, List<Definition>>()
-
-    @Inject
-    constructor(client: DictionaryClient, preferences: SharedPreferences) {
-        this.client = client
-        this.preferences = preferences
-    }
 
     fun loadAll() = RxDao(RXApplication.getInstance().session.dictionaryEntityDao).loadAll()
             .subscribeOn(Schedulers.io())

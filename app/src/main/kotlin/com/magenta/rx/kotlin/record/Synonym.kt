@@ -1,14 +1,6 @@
 package com.magenta.rx.kotlin.record
 
-class Synonym {
-
-    private var text: String? = null
-
-    constructor(text: String?) {
-        this.text = text
-    }
-
-    constructor()
+class Synonym(private var text: String?) {
 
     fun getText() = text
 

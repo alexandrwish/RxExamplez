@@ -19,7 +19,7 @@ import com.magenta.rx.java.binder.LocalBinder;
 
 import rx.subjects.PublishSubject;
 
-public class GeoLocationService extends Service implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+public class LocationService extends Service implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     private IBinder binder;
     private GoogleApiClient client;

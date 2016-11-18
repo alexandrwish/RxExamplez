@@ -67,13 +67,11 @@ public class DictionaryConverter {
     }
 
     public static DictionaryAnswer fromEntity(DictionaryEntity entity) {
-        DictionaryAnswer answer = new DictionaryAnswer();
         Definition[] definitions = new Definition[entity.getDef() != null ? entity.getDef().size() : 0];
         for (int i = 0; i < definitions.length; i++) {
             definitions[i] = ConverterDitionaryRecordsKt.convert(entity.getDef().get(i));
         }
-        answer.setDef(definitions);
-        return answer;
+        return new DictionaryAnswer(null, definitions);
     }
 
     //hack for recursive call

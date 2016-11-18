@@ -1,22 +1,6 @@
 package com.magenta.rx.kotlin.record
 
-class Transcription {
-
-    private var text: String? = null
-    private var pos: String? = null
-    private var syn: Array<Synonym>? = null
-    private var mean: Array<Meaning>? = null
-    private var ex: Array<Example>? = null
-
-    constructor(text: String?, pos: String?, syn: Array<Synonym>?, mean: Array<Meaning>?, ex: Array<Example>?) {
-        this.text = text
-        this.pos = pos
-        this.syn = syn
-        this.mean = mean
-        this.ex = ex
-    }
-
-    constructor()
+class Transcription(private var text: String?, private var pos: String?, private var syn: Array<Synonym>?, private var mean: Array<Meaning>?, private var ex: Array<Example>?) {
 
     fun getText() = text
 

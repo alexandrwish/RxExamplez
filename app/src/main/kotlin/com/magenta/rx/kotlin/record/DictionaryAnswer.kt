@@ -1,16 +1,6 @@
 package com.magenta.rx.kotlin.record
 
-class DictionaryAnswer {
-
-    private var head: Any? = null
-    private lateinit var def: Array<Definition>
-
-    constructor(head: Any?, def: Array<Definition>) {
-        this.head = head
-        this.def = def
-    }
-
-    constructor()
+class DictionaryAnswer(private var head: Any?, private var def: Array<Definition>) {
 
     fun getHead() = head
 

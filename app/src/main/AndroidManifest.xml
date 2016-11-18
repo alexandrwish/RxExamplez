@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme">
 
         <service
-            android:name=".service.GeoLocationService"
+            android:name=".service.LocationService"
             android:enabled="true" />
 
         <meta-data

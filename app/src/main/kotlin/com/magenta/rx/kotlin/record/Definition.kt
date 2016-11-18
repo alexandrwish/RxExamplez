@@ -1,18 +1,6 @@
 package com.magenta.rx.kotlin.record
 
-class Definition {
-
-    private var text: String? = null
-    private var pos: String? = null
-    private var ts: String? = null
-    private var tr: Array<Transcription>? = null
-
-    constructor(text: String?, pos: String?, ts: String?, tr: Array<Transcription>?) {
-        this.text = text
-        this.pos = pos
-        this.ts = ts
-        this.tr = tr
-    }
+class Definition(private var text: String?, private var pos: String?, private var ts: String?, private var tr: Array<Transcription>?) {
 
     fun getText() = text
 
