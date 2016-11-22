@@ -1,6 +1,7 @@
 package com.magenta.rx.java.component;
 
 import com.magenta.rx.java.RXApplication;
+import com.magenta.rx.java.module.ConcurrentModule;
 import com.magenta.rx.java.module.DictionaryModule;
 import com.magenta.rx.java.module.MapModule;
 import com.magenta.rx.java.module.RXModule;
@@ -16,6 +17,8 @@ import dagger.Component;
 public interface RXComponent {
 
     DictionaryComponent plusDictionaryComponent(DictionaryModule module);
+
+    ConcurrentComponent plusConcurrentComponent(ConcurrentModule module);
 
     RetrofitComponent plusRetrofitComponent(RetrofitModule module);
 

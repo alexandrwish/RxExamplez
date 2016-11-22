@@ -27,7 +27,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        list.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new String[]{"Google Map v2", "Yandex translate + Retrofit", "Google Map v2 + Google Location Service", "Yandex dictionary + Retrofit"}));
+        list.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, new String[]{"Google Map v2", "Yandex translate + Retrofit", "Google Map v2 + Google Location Service", "Yandex dictionary + Retrofit", "Concurrent"}));
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 29102016);
         }
@@ -54,7 +54,7 @@ public class MainActivity extends Activity {
                 break;
             }
             case 4: {
-                // пример разграничения доступа к ресурсам
+                startActivity(new Intent(MainActivity.this, ConcurrentActivity.class));// пример разграничения доступа к ресурсам
             }
             default: {
 

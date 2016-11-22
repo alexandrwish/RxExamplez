@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.magenta.rx.java">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.magenta.rx.java">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -30,5 +31,6 @@
         <activity android:name=".activity.ServiceActivity" />
         <activity android:name=".activity.RetrofitActivity" />
         <activity android:name=".activity.DictionaryActivity" />
+        <activity android:name=".activity.ConcurrentActivity" />
     </application>
 </manifest>

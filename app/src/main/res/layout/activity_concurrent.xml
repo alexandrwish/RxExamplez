@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Switch
+        android:id="@+id/multithreading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:text="@string/multithreading" />
+
+    <SeekBar
+        android:id="@+id/seek_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/multithreading" />
+
+    <TableLayout
+        android:id="@+id/initial_holder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/seek_bar">
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".3"
+                android:text="@string/xn" />
+
+            <EditText
+                android:id="@+id/xn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".7"
+                android:inputType="number" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".3"
+                android:text="@string/xk" />
+
+            <EditText
+                android:id="@+id/xk"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".7"
+                android:inputType="number" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".3"
+                android:text="@string/dx" />
+
+            <EditText
+                android:id="@+id/dx"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".7"
+                android:inputType="number" />
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".3"
+                android:text="@string/eps" />
+
+            <EditText
+                android:id="@+id/eps"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".7"
+                android:inputType="number" />
+        </TableRow>
+    </TableLayout>
+
+    <Button
+        android:id="@+id/start_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="@string/stat" />
+
+    <TableLayout
+        android:id="@+id/result_holder"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/start_btn"
+        android:layout_below="@id/initial_holder">
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_column="0"
+                android:layout_weight="1"
+                android:text="@string/x" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_column="1"
+                android:layout_weight="1"
+                android:text="@string/fx" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_column="2"
+                android:layout_weight="1"
+                android:text="@string/asin" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_column="2"
+                android:layout_weight="1"
+                android:text="@string/sin_f_f" />
+        </TableRow>
+
+        <ScrollView>
+
+            <TableLayout
+                android:id="@+id/score_table"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+        </ScrollView>
+    </TableLayout>
+</RelativeLayout>

@@ -1,14 +1,17 @@
 package com.magenta.rx.java;
 
+import com.magenta.rx.java.activity.ConcurrentActivity;
 import com.magenta.rx.java.activity.DictionaryActivity;
 import com.magenta.rx.java.activity.MapActivity;
 import com.magenta.rx.java.activity.RetrofitActivity;
 import com.magenta.rx.java.activity.ServiceActivity;
+import com.magenta.rx.java.component.ConcurrentComponent;
 import com.magenta.rx.java.component.DictionaryComponent;
 import com.magenta.rx.java.component.MapComponent;
 import com.magenta.rx.java.component.RXComponent;
 import com.magenta.rx.java.component.RetrofitComponent;
 import com.magenta.rx.java.component.ServiceComponent;
+import com.magenta.rx.java.module.ConcurrentModule;
 import com.magenta.rx.java.module.DictionaryModule;
 import com.magenta.rx.java.module.MapModule;
 import com.magenta.rx.java.module.RetrofitModule;
@@ -21,6 +24,7 @@ public class DaggerHolder {
     private ServiceComponent serviceComponent;
     private RetrofitComponent retrofitComponent;
     private DictionaryComponent dictionaryComponent;
+    private ConcurrentComponent concurrentComponent;
 
     public DaggerHolder(RXComponent rxComponent) {
         this.rxComponent = rxComponent;
@@ -55,6 +59,13 @@ public class DaggerHolder {
         serviceComponent.inject(activity);
     }
 
+    public void addConcurrentComponent(ConcurrentActivity activity) {
+        if (concurrentComponent == null) {
+            concurrentComponent = rxComponent.plusConcurrentComponent(new ConcurrentModule(activity));
+        }
+        concurrentComponent.inject(activity);
+    }
+
     public void removeRetrofitComponent() {
         retrofitComponent = null;
     }
@@ -69,5 +80,9 @@ public class DaggerHolder {
 
     public void removeServiceComponent() {
         serviceComponent = null;
+    }
+
+    public void removeConcurrentComponent() {
+        concurrentComponent = null;
     }
 }

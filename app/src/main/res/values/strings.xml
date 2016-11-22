@@ -7,4 +7,15 @@
     <string name="meaning">Meaning:</string>
     <string name="examples">Examples:</string>
     <string name="definition">Definition:</string>
+    <string name="multithreading">Multithreading</string>
+    <string name="stat">Stat</string>
+    <string name="stop">Stop</string>
+    <string name="xn">xn = </string>
+    <string name="xk">xk = </string>
+    <string name="dx">dx = </string>
+    <string name="eps">eps = </string>
+    <string name="x">x</string>
+    <string name="fx">fx</string>
+    <string name="asin">asin</string>
+    <string name="sin_f_f">(sin - f) / f</string>
 </resources>
