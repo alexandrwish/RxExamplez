@@ -88,7 +88,7 @@ public class ConcurrentActivity extends Activity {
         fx.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
         tr.addView(fx);
         TextView asin = new TextView(this);
-        asin.setText(new DecimalFormat("#.####").format(event.getResult().getAsin()));
+        asin.setText(new DecimalFormat("#.####").format(event.getResult().getASin()));
         asin.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
         tr.addView(asin);
         TextView sinf = new TextView(this);
