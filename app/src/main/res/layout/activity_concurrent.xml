@@ -35,7 +35,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight=".7"
-                android:inputType="number" />
+                android:inputType="numberDecimal" />
         </TableRow>
 
         <TableRow>
@@ -51,7 +51,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight=".7"
-                android:inputType="number" />
+                android:inputType="numberDecimal" />
         </TableRow>
 
         <TableRow>
@@ -67,7 +67,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight=".7"
-                android:inputType="number" />
+                android:inputType="numberDecimal" />
         </TableRow>
 
         <TableRow>
@@ -83,22 +83,37 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight=".7"
-                android:inputType="number" />
+                android:inputType="numberDecimal" />
         </TableRow>
     </TableLayout>
 
-    <Button
-        android:id="@+id/start_btn"
+    <LinearLayout
+        android:id="@+id/btn_holder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:text="@string/stat" />
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/start_btn"
+            android:layout_width=".0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/stat" />
+
+        <Button
+            android:id="@+id/clean_btn"
+            android:layout_width=".0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/clean" />
+    </LinearLayout>
 
     <TableLayout
         android:id="@+id/result_holder"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/start_btn"
+        android:layout_above="@id/btn_holder"
         android:layout_below="@id/initial_holder">
 
         <TableRow>

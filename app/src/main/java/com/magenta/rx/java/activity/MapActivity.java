@@ -12,9 +12,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.magenta.rx.java.R;
 import com.magenta.rx.java.RXApplication;
-import com.magenta.rx.java.event.CleanMapEvent;
-import com.magenta.rx.java.event.DrawMapEvent;
 import com.magenta.rx.java.presenter.MapPresenter;
+import com.magenta.rx.kotlin.event.CleanEvent;
+import com.magenta.rx.kotlin.event.DrawMapEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -75,7 +75,7 @@ public class MapActivity extends Activity implements OnMapReadyCallback {
 
     @SuppressWarnings("unused")
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
-    public void onClean(CleanMapEvent event) {
+    public void onClean(CleanEvent event) {
         googleMap.clear();
         EventBus.getDefault().removeStickyEvent(event);
     }

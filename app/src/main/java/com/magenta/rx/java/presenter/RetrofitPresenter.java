@@ -2,7 +2,7 @@ package com.magenta.rx.java.presenter;
 
 import android.util.Log;
 
-import com.magenta.rx.java.event.TranslateAnswerEvent;
+import com.magenta.rx.kotlin.event.TranslateAnswerEvent;
 import com.magenta.rx.kotlin.loader.TranslateLoader;
 import com.magenta.rx.kotlin.record.TranslateAnswer;
 

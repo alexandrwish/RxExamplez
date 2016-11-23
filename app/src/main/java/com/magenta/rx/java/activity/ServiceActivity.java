@@ -11,8 +11,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.magenta.rx.java.R;
 import com.magenta.rx.java.RXApplication;
-import com.magenta.rx.java.event.ReceivedLocationEvent;
 import com.magenta.rx.java.presenter.ServicePresenter;
+import com.magenta.rx.kotlin.event.ReceivedLocationEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -29,12 +29,11 @@ import butterknife.ButterKnife;
 
 public class ServiceActivity extends Activity implements OnMapReadyCallback {
 
+    private final DateFormat format = new SimpleDateFormat("yyyy.MMM.dd EEE HH:mm:ss", Locale.UK);
     @Inject
     ServicePresenter presenter;
-
     private GoogleMap map;
     private LatLng prevPoint;
-    private final DateFormat format = new SimpleDateFormat("yyyy.MMM.dd EEE HH:mm:ss", Locale.UK);
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

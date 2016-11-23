@@ -2,7 +2,7 @@ package com.magenta.rx.java.presenter;
 
 import android.location.Location;
 
-import com.magenta.rx.java.event.ReceivedLocationEvent;
+import com.magenta.rx.kotlin.event.ReceivedLocationEvent;
 import com.magenta.rx.kotlin.loader.ServiceLoader;
 
 import org.greenrobot.eventbus.EventBus;

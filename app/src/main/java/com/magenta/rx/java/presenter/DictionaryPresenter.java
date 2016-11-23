@@ -2,7 +2,7 @@ package com.magenta.rx.java.presenter;
 
 import android.util.Log;
 
-import com.magenta.rx.java.event.DictionaryAnswerEvent;
+import com.magenta.rx.kotlin.event.DictionaryAnswerEvent;
 import com.magenta.rx.kotlin.loader.DictionaryLoader;
 import com.magenta.rx.kotlin.record.Definition;
 

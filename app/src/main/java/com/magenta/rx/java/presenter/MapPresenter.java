@@ -1,7 +1,7 @@
 package com.magenta.rx.java.presenter;
 
-import com.magenta.rx.java.event.CleanMapEvent;
-import com.magenta.rx.java.event.DrawMapEvent;
+import com.magenta.rx.kotlin.event.CleanEvent;
+import com.magenta.rx.kotlin.event.DrawMapEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -22,6 +22,6 @@ public class MapPresenter {
     }
 
     public void clear() {
-        EventBus.getDefault().postSticky(new CleanMapEvent());
+        EventBus.getDefault().postSticky(new CleanEvent());
     }
 }

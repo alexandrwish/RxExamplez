@@ -5,10 +5,10 @@ import android.os.Bundle;
 
 import com.magenta.rx.java.R;
 import com.magenta.rx.java.RXApplication;
-import com.magenta.rx.java.event.DictionaryAnswerEvent;
 import com.magenta.rx.java.presenter.DictionaryPresenter;
 import com.magenta.rx.java.view.DefinitionListAdapter;
 import com.magenta.rx.java.view.DictionaryViewHolder;
+import com.magenta.rx.kotlin.event.DictionaryAnswerEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
