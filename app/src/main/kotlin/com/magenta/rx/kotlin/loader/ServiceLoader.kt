@@ -7,10 +7,10 @@ import android.content.ServiceConnection
 import android.location.Location
 import android.os.IBinder
 import com.magenta.rx.java.RXApplication
-import com.magenta.rx.java.binder.LocalBinder
 import com.magenta.rx.java.model.entity.GeoLocationEntity
 import com.magenta.rx.java.presenter.ServicePresenter
 import com.magenta.rx.java.service.LocationService
+import com.magenta.rx.kotlin.binder.LocalBinder
 import org.greenrobot.greendao.rx.RxDao
 import rx.Observable
 import javax.inject.Inject

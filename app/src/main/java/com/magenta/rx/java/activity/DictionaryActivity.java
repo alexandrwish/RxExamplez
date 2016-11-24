@@ -44,7 +44,6 @@ public class DictionaryActivity extends Activity {
     }
 
     @OnClick(R.id.load)
-    @SuppressWarnings("unused")
     public void onClick() {
         presenter.onLoadClick(holder.getText().getText().toString());
     }

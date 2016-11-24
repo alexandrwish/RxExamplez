@@ -9,6 +9,7 @@ import com.magenta.rx.java.component.DaggerRXComponent;
 import com.magenta.rx.java.db.DBAdapter;
 import com.magenta.rx.java.model.entity.DaoSession;
 import com.magenta.rx.java.module.RXModule;
+import com.magenta.rx.kotlin.holder.DaggerHolder;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -20,10 +21,14 @@ import javax.inject.Inject;
 public class RXApplication extends Application {
 
     protected static RXApplication instance;
-    private DaggerHolder holder;
 
     @Inject
     DBAdapter adapter;
+    private DaggerHolder holder;
+
+    public static RXApplication getInstance() {
+        return instance;
+    }
 
     public void onCreate() {
         super.onCreate();
@@ -44,10 +49,6 @@ public class RXApplication extends Application {
 
     public DaggerHolder getHolder() {
         return holder;
-    }
-
-    public static RXApplication getInstance() {
-        return instance;
     }
 
     public DaoSession getSession() {

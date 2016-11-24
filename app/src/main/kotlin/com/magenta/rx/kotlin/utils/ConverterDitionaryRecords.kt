@@ -21,7 +21,7 @@ fun convert(transcription: TranscriptionEntity?) = Transcription(transcription?.
         Array(transcription?.ex?.size ?: 0, { i -> convert(transcription!!.ex[i]) }))
 
 fun toEntity(word: String, answer: DictionaryAnswer): DictionaryEntity {
-    val application = RXApplication.getInstance();
+    val application = RXApplication.getInstance()
     val dictionaryDao = application.session.dictionaryEntityDao
     val definitionDao = application.session.definitionEntityDao
     val transcriptionDao = application.session.transcriptionEntityDao

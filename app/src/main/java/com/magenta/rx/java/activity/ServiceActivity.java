@@ -18,7 +18,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -29,7 +28,6 @@ import butterknife.ButterKnife;
 
 public class ServiceActivity extends Activity implements OnMapReadyCallback {
 
-    private final DateFormat format = new SimpleDateFormat("yyyy.MMM.dd EEE HH:mm:ss", Locale.UK);
     @Inject
     ServicePresenter presenter;
     private GoogleMap map;
@@ -60,7 +58,7 @@ public class ServiceActivity extends Activity implements OnMapReadyCallback {
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void onReceivedLocation(ReceivedLocationEvent event) {
         LatLng newPoint = new LatLng(event.getLat(), event.getLon());
-        map.addMarker(new MarkerOptions().position(newPoint).title(format.format(new Date(event.getTime()))));
+        map.addMarker(new MarkerOptions().position(newPoint).title(new SimpleDateFormat("yyyy.MMM.dd EEE HH:mm:ss", Locale.UK).format(new Date(event.getTime()))));
         if (prevPoint != null) {
             map.addPolyline(new PolylineOptions().add(prevPoint).add(newPoint));
         }

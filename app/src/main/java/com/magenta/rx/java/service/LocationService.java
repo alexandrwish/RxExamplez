@@ -15,7 +15,7 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.magenta.rx.java.RXApplication;
-import com.magenta.rx.java.binder.LocalBinder;
+import com.magenta.rx.kotlin.binder.LocalBinder;
 
 import rx.subjects.PublishSubject;
 
