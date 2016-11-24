@@ -4,18 +4,17 @@ import java.util.concurrent.LinkedBlockingDeque
 import java.util.concurrent.ThreadPoolExecutor
 import java.util.concurrent.TimeUnit
 
-class RXThreadPool private constructor() {
+class RXThreadPool private constructor(val count: Int, deque: LinkedBlockingDeque<Runnable>) {
 
     private object Holder {
-        val INSTANCE = RXThreadPool()
+        val INSTANCE = RXThreadPool(Runtime.getRuntime().availableProcessors(), LinkedBlockingDeque<Runnable>())
     }
 
     companion object {
         val instance: RXThreadPool by lazy { Holder.INSTANCE }
     }
 
-    private val deque = LinkedBlockingDeque<Runnable>()
-    private val executor = ThreadPoolExecutor(Runtime.getRuntime().availableProcessors(), Runtime.getRuntime().availableProcessors(), 5, TimeUnit.SECONDS, deque)
+    private val executor = ThreadPoolExecutor(count, count, 5, TimeUnit.SECONDS, deque)
 
     fun put(runnable: Runnable) {
         executor.execute(runnable)

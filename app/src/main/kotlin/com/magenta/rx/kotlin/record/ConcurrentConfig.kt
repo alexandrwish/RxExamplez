@@ -4,32 +4,25 @@ import javax.inject.Inject
 
 class ConcurrentConfig @Inject constructor() {
 
-    private var xn: Double? = null
-    private var xk: Double? = null
-    private var dx: Double? = null
-    private var eps: Double? = null
+    private var start: Int? = null
+    private var end: Int? = null
+    private var step: Int? = null
 
-    fun getXn() = xn ?: 0.0
+    fun getStart() = start ?: 0
 
-    fun getXk() = xk ?: 0.0
+    fun getEnd() = end ?: 0
 
-    fun getDx() = dx ?: 0.0
+    fun getStep() = step ?: 0
 
-    fun getEps() = eps ?: 0.0
-
-    fun setXn(xn: Double) {
-        this.xn = xn
+    fun setStart(start: Int) {
+        this.start = start
     }
 
-    fun setXk(xk: Double) {
-        this.xk = xk
+    fun setEnd(end: Int) {
+        this.end = end
     }
 
-    fun setDx(dx: Double) {
-        this.dx = dx
-    }
-
-    fun setEps(eps: Double) {
-        this.eps = eps
+    fun setStep(step: Int) {
+        this.step = step
     }
 }

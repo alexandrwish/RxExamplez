@@ -23,7 +23,7 @@ public class ConcurrentViewHolder {
     Switch multithreading;
     @BindView(R.id.seek_bar)
     SeekBar seekBar;
-    @BindViews({R.id.xn, R.id.xk, R.id.dx, R.id.eps})
+    @BindViews({R.id.start_x, R.id.end_x, R.id.step})
     List<EditText> params;
     @BindView(R.id.score_table)
     TableLayout score;

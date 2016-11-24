@@ -10,12 +10,9 @@
     <string name="multithreading">Multithreading</string>
     <string name="stat">Stat</string>
     <string name="stop">Stop</string>
-    <string name="xn">xn = </string>
-    <string name="xk">xk = </string>
-    <string name="dx">dx = </string>
-    <string name="eps">eps = </string>
-    <string name="x">x</string>
-    <string name="fx">fx</string>
-    <string name="asin">asin</string>
-    <string name="sin_f_f">(sin - f) / f</string>
+    <string name="start_x">min X =</string>
+    <string name="end_x">max X =</string>
+    <string name="step">Step =</string>
+    <string name="date">DateTime</string>
+    <string name="x">X</string>
 </resources>

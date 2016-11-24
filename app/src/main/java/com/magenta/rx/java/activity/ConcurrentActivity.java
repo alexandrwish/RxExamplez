@@ -20,8 +20,10 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -37,7 +39,7 @@ public class ConcurrentActivity extends Activity {
     @Inject
     ConcurrentPresenter presenter;
 
-    private List<Subscription> subscriptions = new ArrayList<>(4);
+    private List<Subscription> subscriptions = new ArrayList<>(3);
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +65,19 @@ public class ConcurrentActivity extends Activity {
         super.onDestroy();
     }
 
+    private void addRow(CalcEvent event) {
+        TableRow tr = new TableRow(this);
+        tr.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+        TextView time = new TextView(this);
+        time.setText(new SimpleDateFormat("yyyy.MM.dd HH:mm:ss.SSS", Locale.UK).format(event.getResult().getTime()));
+        time.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+        tr.addView(time);
+        TextView x = new TextView(this);
+        x.setText(new DecimalFormat("#.####").format(event.getResult().getX()));
+        x.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+        tr.addView(x);
+        holder.getScore().addView(tr, new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+    }
 
     @OnClick(R.id.start_btn)
     public void onStartClick() {
@@ -74,33 +89,15 @@ public class ConcurrentActivity extends Activity {
         presenter.clean();
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     @SuppressWarnings("unused")
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void onCalcResult(CalcEvent event) {
-        TableRow tr = new TableRow(this);
-        tr.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-        TextView x = new TextView(this);
-        x.setText(new DecimalFormat("#.####").format(event.getResult().getX()));
-        x.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
-        tr.addView(x);
-        TextView fx = new TextView(this);
-        fx.setText(new DecimalFormat("#.####").format(event.getResult().getFx()));
-        fx.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
-        tr.addView(fx);
-        TextView asin = new TextView(this);
-        asin.setText(new DecimalFormat("#.####").format(event.getResult().getASin()));
-        asin.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
-        tr.addView(asin);
-        TextView sinf = new TextView(this);
-        sinf.setText(new DecimalFormat("#.####").format(event.getResult().getSinF()));
-        sinf.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
-        tr.addView(sinf);
-        holder.getScore().addView(tr, new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+        addRow(event);
         EventBus.getDefault().removeStickyEvent(event);
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     @SuppressWarnings("unused")
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void onCleanResult(CleanEvent event) {
         holder.getScore().removeAllViews();
     }

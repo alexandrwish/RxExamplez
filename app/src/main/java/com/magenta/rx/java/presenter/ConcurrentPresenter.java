@@ -16,35 +16,35 @@ import javax.inject.Inject;
 
 public class ConcurrentPresenter {
 
+    private final RXThreadPool pool;
     private final ConcurrentConfig concurrentConfig;
 
     @Inject
     public ConcurrentPresenter(ConcurrentConfig concurrentConfig) {
+        this.pool = RXThreadPool.Companion.getInstance();
         this.concurrentConfig = concurrentConfig;
     }
 
     public void start(boolean multithreading, int progress) {
-        if (multithreading) {
-            double x = concurrentConfig.getXn();
-            while (x < concurrentConfig.getXk()) {
-                for (int i = 0; i < progress; i++) {
-                    final double finalX = x;
-                    RXThreadPool.Companion.getInstance().put(new Runnable() {
+        if (multithreading && progress > 1) {
+            double count = (concurrentConfig.getStart() - concurrentConfig.getEnd()) / concurrentConfig.getStep();
+            int coreCount = pool.getCount();
+            if ((Math.min(progress, coreCount) >= count) || (progress >= coreCount && progress >= count)) {
+                for (int i = concurrentConfig.getStart(); i <= concurrentConfig.getEnd(); i += concurrentConfig.getStep()) {
+                    final int finalI = i;
+                    pool.put(new Runnable() {
                         public void run() {
-                            EventBus.getDefault().postSticky(AlgotithmKt.singleCalc(concurrentConfig.getEps(), finalX));
+                            EventBus.getDefault().postSticky(new CalcEvent(AlgotithmKt.calc(finalI)));
                         }
                     });
-                    if (x >= concurrentConfig.getXk()) {
-                        break;
-                    } else {
-                        x += concurrentConfig.getDx();
-                    }
                 }
+            } else {
+                // TODO: 11/24/16 your awesome code here
             }
         } else {
-            RXThreadPool.Companion.getInstance().put(new Runnable() {
+            pool.put(new Runnable() {
                 public void run() {
-                    for (RowResult result : AlgotithmKt.calc(concurrentConfig.getXn(), concurrentConfig.getXk(), concurrentConfig.getDx(), concurrentConfig.getEps())) {
+                    for (RowResult result : AlgotithmKt.calc(concurrentConfig.getStart(), concurrentConfig.getEnd(), concurrentConfig.getStep())) {
                         EventBus.getDefault().postSticky(new CalcEvent(result));
                     }
                 }
@@ -56,20 +56,16 @@ public class ConcurrentPresenter {
         if (charSequence != null && charSequence.length() > 0) {
             try {
                 switch (id) {
-                    case R.id.xn: {
-                        concurrentConfig.setXn(Double.valueOf(String.valueOf(charSequence)));
+                    case R.id.start_x: {
+                        concurrentConfig.setStart(Integer.valueOf(String.valueOf(charSequence)));
                         break;
                     }
-                    case R.id.xk: {
-                        concurrentConfig.setXk(Double.valueOf(String.valueOf(charSequence)));
+                    case R.id.end_x: {
+                        concurrentConfig.setEnd(Integer.valueOf(String.valueOf(charSequence)));
                         break;
                     }
-                    case R.id.dx: {
-                        concurrentConfig.setDx(Double.valueOf(String.valueOf(charSequence)));
-                        break;
-                    }
-                    case R.id.eps: {
-                        concurrentConfig.setEps(Double.valueOf(String.valueOf(charSequence)));
+                    case R.id.step: {
+                        concurrentConfig.setStep(Integer.valueOf(String.valueOf(charSequence)));
                         break;
                     }
                 }
