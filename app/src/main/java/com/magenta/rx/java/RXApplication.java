@@ -53,5 +53,4 @@ public class RXApplication extends Application {
     public DaoSession getSession() {
         return adapter.getMainSession();
     }
-
 }
