@@ -2,23 +2,23 @@ package com.magenta.rx.java.presenter;
 
 import com.magenta.rx.kotlin.event.CleanEvent;
 import com.magenta.rx.kotlin.event.DrawMapEvent;
+import com.magenta.rx.kotlin.loader.MapLoader;
 
 import org.greenrobot.eventbus.EventBus;
-
-import java.util.Random;
 
 import javax.inject.Inject;
 
 public class MapPresenter {
 
+    private final MapLoader loader;
+
     @Inject
-    public MapPresenter() {
+    public MapPresenter(MapLoader loader) {
+        this.loader = loader;
     }
 
     public void draw() {
-        Random random = new Random();
-        int max = 900, min = -900;
-        EventBus.getDefault().postSticky(new DrawMapEvent((random.nextInt(max - min + 1) + min) / 10.0, (random.nextInt(max - min + 1) + min) / 10.0));
+        EventBus.getDefault().postSticky(new DrawMapEvent(loader.getX(), loader.getY()));
     }
 
     public void clear() {
