@@ -12,7 +12,7 @@ class ConcurrentConfig @Inject constructor() {
 
     fun getEnd() = end ?: 0
 
-    fun getStep() = step ?: 0
+    fun getStep() = step ?: 1
 
     fun setStart(start: Int) {
         this.start = start

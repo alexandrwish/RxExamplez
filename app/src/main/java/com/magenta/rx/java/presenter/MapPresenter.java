@@ -17,7 +17,7 @@ public class MapPresenter {
 
     public void draw() {
         Random random = new Random();
-        int max = 1800, min = -1800;
+        int max = 900, min = -900;
         EventBus.getDefault().postSticky(new DrawMapEvent((random.nextInt(max - min + 1) + min) / 10.0, (random.nextInt(max - min + 1) + min) / 10.0));
     }
 
