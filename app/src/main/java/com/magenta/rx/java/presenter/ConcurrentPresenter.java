@@ -39,32 +39,32 @@ public class ConcurrentPresenter {
             int coreCount = pool.getCount();
             if (count > 0) {
                 EventBus.getDefault().postSticky(new LockEvent());
-            }
-            if ((Math.min(progress, coreCount) >= count) || (progress >= coreCount && progress >= count)) {
-                operationsCount = (int) count;
-                for (int i = concurrentConfig.getStart(); i <= concurrentConfig.getEnd(); i += concurrentConfig.getStep()) {
-                    final int finalI = i;
-                    pool.put(new Runnable() {
-                        public void run() {
-                            EventBus.getDefault().postSticky(new CalcEvent(loader.calc(finalI), false, Thread.currentThread().getName()));
-                            if (--operationsCount <= 0) {
-                                EventBus.getDefault().postSticky(new UnlockEvent());
+                if ((Math.min(progress, coreCount) >= count) || (progress >= coreCount && progress >= count)) {
+                    operationsCount = (int) count;
+                    for (int i = concurrentConfig.getStart(); i <= concurrentConfig.getEnd(); i += concurrentConfig.getStep()) {
+                        final int finalI = i;
+                        pool.put(new Runnable() {
+                            public void run() {
+                                EventBus.getDefault().postSticky(new CalcEvent(loader.calc(finalI), false, Thread.currentThread().getName()));
+                                if (--operationsCount <= 0) {
+                                    EventBus.getDefault().postSticky(new UnlockEvent());
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
+                } else {
+                    for (int i = 0; i < coreCount; i++) {
+                        final int x = concurrentConfig.getStart() + concurrentConfig.getStep() * i;
+                        pool.put(new Runnable() {
+                            public void run() {
+                                EventBus.getDefault().postSticky(new CalcEvent(loader.calc(x), true, Thread.currentThread().getName()));
+                            }
+                        });
+                    }
+                    lazyConfig.setMax(concurrentConfig.getEnd());
+                    lazyConfig.setStep(concurrentConfig.getStep());
+                    lazyConfig.setCurrent(concurrentConfig.getStart() + concurrentConfig.getStep() * coreCount);
                 }
-            } else {
-                for (int i = 0; i < coreCount; i++) {
-                    final int x = concurrentConfig.getStart() + concurrentConfig.getStep() * i;
-                    pool.put(new Runnable() {
-                        public void run() {
-                            EventBus.getDefault().postSticky(new CalcEvent(loader.calc(x), true, Thread.currentThread().getName()));
-                        }
-                    });
-                }
-                lazyConfig.setMax(concurrentConfig.getEnd());
-                lazyConfig.setStep(concurrentConfig.getStep());
-                lazyConfig.setCurrent(concurrentConfig.getStart() + concurrentConfig.getStep() * coreCount);
             }
         } else {
             pool.put(new Runnable() {
