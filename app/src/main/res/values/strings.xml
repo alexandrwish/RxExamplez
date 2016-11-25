@@ -15,4 +15,5 @@
     <string name="step">Step =</string>
     <string name="date">DateTime</string>
     <string name="x">X</string>
+    <string name="thread_name">Thread name</string>
 </resources>

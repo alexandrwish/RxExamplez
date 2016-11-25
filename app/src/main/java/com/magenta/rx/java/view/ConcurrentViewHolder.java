@@ -1,5 +1,6 @@
 package com.magenta.rx.java.view;
 
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.SeekBar;
@@ -27,6 +28,8 @@ public class ConcurrentViewHolder {
     List<EditText> params;
     @BindView(R.id.score_table)
     TableLayout score;
+    @BindViews({R.id.start_btn, R.id.clean_btn})
+    List<Button> btns;
 
     private boolean checked;
 
@@ -57,5 +60,17 @@ public class ConcurrentViewHolder {
 
     public TableLayout getScore() {
         return score;
+    }
+
+    public void enableBtns() {
+        for (Button btn : btns) {
+            btn.setEnabled(true);
+        }
+    }
+
+    public void disableBtns() {
+        for (Button btn : btns) {
+            btn.setEnabled(false);
+        }
     }
 }

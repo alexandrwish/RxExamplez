@@ -14,6 +14,8 @@ import com.magenta.rx.java.presenter.ConcurrentPresenter;
 import com.magenta.rx.java.view.ConcurrentViewHolder;
 import com.magenta.rx.kotlin.event.CalcEvent;
 import com.magenta.rx.kotlin.event.CleanEvent;
+import com.magenta.rx.kotlin.event.LockEvent;
+import com.magenta.rx.kotlin.event.UnlockEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -74,8 +76,12 @@ public class ConcurrentActivity extends Activity {
         tr.addView(time);
         TextView x = new TextView(this);
         x.setText(new DecimalFormat("#.####").format(event.getResult().getX()));
-        x.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+        x.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, .2f));
         tr.addView(x);
+        TextView name = new TextView(this);
+        name.setText(event.getName());
+        name.setLayoutParams(new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f));
+        tr.addView(name);
         holder.getScore().addView(tr, new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
     }
 
@@ -93,6 +99,9 @@ public class ConcurrentActivity extends Activity {
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void onCalcResult(CalcEvent event) {
         addRow(event);
+        if (event.getReport()) {
+            presenter.continueCalc();
+        }
         EventBus.getDefault().removeStickyEvent(event);
     }
 
@@ -100,5 +109,20 @@ public class ConcurrentActivity extends Activity {
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void onCleanResult(CleanEvent event) {
         holder.getScore().removeAllViews();
+        EventBus.getDefault().removeStickyEvent(event);
+    }
+
+    @SuppressWarnings("unused")
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    public void onLock(LockEvent event) {
+        holder.disableBtns();
+        EventBus.getDefault().removeStickyEvent(event);
+    }
+
+    @SuppressWarnings("unused")
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    public void onUnlock(UnlockEvent event) {
+        holder.enableBtns();
+        EventBus.getDefault().removeStickyEvent(event);
     }
 }
