@@ -54,7 +54,8 @@ public class MainActivity extends Activity {
                 break;
             }
             case 4: {
-                startActivity(new Intent(MainActivity.this, ConcurrentActivity.class));// пример разграничения доступа к ресурсам
+                startActivity(new Intent(MainActivity.this, ConcurrentActivity.class)); // пример разграничения доступа к ресурсам
+                break;
             }
             default: {
 
