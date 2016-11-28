@@ -11,11 +11,7 @@ import javax.inject.Inject
 
 class DBAdapter @Inject constructor(preferences: SharedPreferences) {
 
-    val mainSession: DaoSession
-
-    init {
-        mainSession = DaoMaster(DBHelper(RXApplication.getInstance(), preferences.getString("db_name", ""), Integer.valueOf(preferences.getString("db_version", "0"))!!).writableDatabase).newSession()
-    }
+    val mainSession: DaoSession = DaoMaster(DBHelper(RXApplication.getInstance(), preferences.getString("db_name", ""), Integer.valueOf(preferences.getString("db_version", "0"))!!).writableDatabase).newSession()
 
     private class DBHelper internal constructor(context: Context, name: String, version: Int) : DatabaseOpenHelper(context, name, version) {
 
