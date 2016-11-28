@@ -22,7 +22,6 @@ public class RetrofitActivity extends Activity {
 
     @Inject
     RetrofitViewHolder holder;
-
     @Inject
     RetrofitPresenter presenter;
 

@@ -6,7 +6,6 @@ import android.preference.PreferenceManager;
 import com.google.gson.GsonBuilder;
 import com.magenta.rx.java.RXApplication;
 import com.magenta.rx.java.http.DictionaryClient;
-import com.magenta.rx.java.http.MusicClient;
 import com.magenta.rx.java.http.TranslateClient;
 
 import javax.inject.Singleton;
@@ -40,17 +39,6 @@ public class RXModule {
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build()
                 .create(DictionaryClient.class);
-    }
-
-    @Provides
-    @Singleton
-    public MusicClient provideMusicClient() {
-        return new Retrofit.Builder()
-                .baseUrl("https://oauth.vk.com")
-                .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()))
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .build()
-                .create(MusicClient.class);
     }
 
     @Provides

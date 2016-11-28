@@ -29,7 +29,6 @@ public class MapActivity extends Activity implements OnMapReadyCallback {
 
     @Inject
     MapPresenter mapPresenter;
-
     private GoogleMap googleMap;
 
     protected void onCreate(Bundle savedInstanceState) {

@@ -6,9 +6,9 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.magenta.rx.java.component.DaggerRXComponent;
-import com.magenta.rx.java.db.DBAdapter;
 import com.magenta.rx.java.model.entity.DaoSession;
 import com.magenta.rx.java.module.RXModule;
+import com.magenta.rx.kotlin.db.DBAdapter;
 import com.magenta.rx.kotlin.holder.DaggerHolder;
 
 import java.io.IOException;
