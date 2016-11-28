@@ -1,6 +1,5 @@
 package com.magenta.rx.kotlin.db
 
-import android.content.Context
 import android.content.SharedPreferences
 import com.magenta.rx.java.RXApplication
 import com.magenta.rx.java.model.entity.DaoMaster
@@ -11,9 +10,9 @@ import javax.inject.Inject
 
 class DBAdapter @Inject constructor(preferences: SharedPreferences) {
 
-    val mainSession: DaoSession = DaoMaster(DBHelper(RXApplication.getInstance(), preferences.getString("db_name", ""), Integer.valueOf(preferences.getString("db_version", "0"))!!).writableDatabase).newSession()
+    val mainSession: DaoSession = DaoMaster(DBHelper(preferences).writableDatabase).newSession()
 
-    private class DBHelper internal constructor(context: Context, name: String, version: Int) : DatabaseOpenHelper(context, name, version) {
+    private class DBHelper internal constructor(preferences: SharedPreferences) : DatabaseOpenHelper(RXApplication.getInstance(), preferences.getString("db_name", ""), Integer.valueOf(preferences.getString("db_version", "0"))) {
 
         override fun onCreate(db: Database?) {
             DaoMaster.createAllTables(db, false)
