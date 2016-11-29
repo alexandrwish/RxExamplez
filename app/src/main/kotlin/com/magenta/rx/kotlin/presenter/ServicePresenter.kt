@@ -9,6 +9,7 @@ import rx.schedulers.Schedulers
 import javax.inject.Inject
 
 class ServicePresenter @Inject constructor(loader: ServiceLoader) {
+
     init {
         loader.setLocationListener(object : LocationListener {
             override fun load(observable: Observable<Location>) {
