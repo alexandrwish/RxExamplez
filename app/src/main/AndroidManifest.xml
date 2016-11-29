@@ -14,7 +14,7 @@
         android:theme="@style/AppTheme">
 
         <service
-            android:name=".service.LocationService"
+            android:name="com.magenta.rx.kotlin.service.LocationService"
             android:enabled="true" />
 
         <meta-data

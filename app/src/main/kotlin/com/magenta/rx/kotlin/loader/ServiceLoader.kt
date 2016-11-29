@@ -8,9 +8,9 @@ import android.location.Location
 import android.os.IBinder
 import com.magenta.rx.java.RXApplication
 import com.magenta.rx.java.model.entity.GeoLocationEntity
-import com.magenta.rx.java.service.LocationService
 import com.magenta.rx.kotlin.binder.LocalBinder
 import com.magenta.rx.kotlin.presenter.ServicePresenter
+import com.magenta.rx.kotlin.service.LocationService
 import org.greenrobot.greendao.rx.RxDao
 import rx.Observable
 import javax.inject.Inject
