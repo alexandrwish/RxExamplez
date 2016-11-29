@@ -5,9 +5,9 @@ import android.os.Bundle;
 
 import com.magenta.rx.java.R;
 import com.magenta.rx.java.RXApplication;
-import com.magenta.rx.java.presenter.RetrofitPresenter;
 import com.magenta.rx.java.view.RetrofitViewHolder;
 import com.magenta.rx.kotlin.event.TranslateAnswerEvent;
+import com.magenta.rx.kotlin.presenter.RetrofitPresenter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

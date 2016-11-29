@@ -11,8 +11,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.magenta.rx.java.R;
 import com.magenta.rx.java.RXApplication;
-import com.magenta.rx.java.presenter.ServicePresenter;
 import com.magenta.rx.kotlin.event.ReceivedLocationEvent;
+import com.magenta.rx.kotlin.presenter.ServicePresenter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

@@ -10,12 +10,12 @@ import android.widget.TextView;
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.magenta.rx.java.R;
 import com.magenta.rx.java.RXApplication;
-import com.magenta.rx.java.presenter.ConcurrentPresenter;
 import com.magenta.rx.java.view.ConcurrentViewHolder;
 import com.magenta.rx.kotlin.event.CalcEvent;
 import com.magenta.rx.kotlin.event.CleanEvent;
 import com.magenta.rx.kotlin.event.LockEvent;
 import com.magenta.rx.kotlin.event.UnlockEvent;
+import com.magenta.rx.kotlin.presenter.ConcurrentPresenter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

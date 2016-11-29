@@ -12,9 +12,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.magenta.rx.java.R;
 import com.magenta.rx.java.RXApplication;
-import com.magenta.rx.java.presenter.MapPresenter;
 import com.magenta.rx.kotlin.event.CleanEvent;
 import com.magenta.rx.kotlin.event.DrawMapEvent;
+import com.magenta.rx.kotlin.presenter.MapPresenter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
