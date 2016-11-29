@@ -5,8 +5,8 @@ import android.preference.PreferenceManager;
 
 import com.google.gson.GsonBuilder;
 import com.magenta.rx.java.RXApplication;
-import com.magenta.rx.java.http.DictionaryClient;
-import com.magenta.rx.java.http.TranslateClient;
+import com.magenta.rx.kotlin.http.DictionaryClient;
+import com.magenta.rx.kotlin.http.TranslateClient;
 
 import javax.inject.Singleton;
 

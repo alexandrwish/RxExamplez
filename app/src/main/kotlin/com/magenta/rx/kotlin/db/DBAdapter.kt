@@ -12,7 +12,7 @@ class DBAdapter @Inject constructor(preferences: SharedPreferences) {
 
     val mainSession: DaoSession = DaoMaster(DBHelper(preferences).writableDatabase).newSession()
 
-    private class DBHelper internal constructor(preferences: SharedPreferences) : DatabaseOpenHelper(RXApplication.getInstance(), preferences.getString("db_name", ""), Integer.valueOf(preferences.getString("db_version", "0"))) {
+    private class DBHelper internal constructor(preferences: SharedPreferences) : DatabaseOpenHelper(RXApplication.getInstance(), preferences.getString("db_name", ""), preferences.getString("db_version", "0").toInt()) {
 
         override fun onCreate(db: Database?) {
             DaoMaster.createAllTables(db, false)

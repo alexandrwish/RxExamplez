@@ -3,7 +3,7 @@ package com.magenta.rx.kotlin.loader
 import android.content.SharedPreferences
 import android.util.Log
 import com.magenta.rx.java.RXApplication
-import com.magenta.rx.java.http.DictionaryClient
+import com.magenta.rx.kotlin.http.DictionaryClient
 import com.magenta.rx.kotlin.record.Definition
 import com.magenta.rx.kotlin.record.DictionaryAnswer
 import com.magenta.rx.kotlin.utils.convert

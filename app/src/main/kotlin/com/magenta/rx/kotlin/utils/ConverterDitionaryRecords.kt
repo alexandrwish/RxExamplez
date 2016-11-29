@@ -30,25 +30,19 @@ fun toEntity(word: String, answer: DictionaryAnswer): DictionaryEntity {
     val synonymDao = application.session.synonymEntityDao
     val entity = DictionaryEntity(word)
     dictionaryDao.insert(entity)
-    for (definition in answer.def) {
+    answer.def.forEach { definition ->
         val definitionEntity = DefinitionEntity(null, word, definition.text, definition.pos, definition.ts)
         definitionDao.insert(definitionEntity)
-        for (transcription in definition.tr!!) {
+        definition.tr?.forEach { transcription ->
             val transcriptionEntity = TranscriptionEntity(null, definitionEntity.id, transcription.text, transcription.pos, null)
             transcriptionDao.insert(transcriptionEntity)
-            for (example in transcription.ex!!) {
+            transcription.ex?.forEach { example ->
                 val exampleEntity = ExampleEntity(null, transcriptionEntity.id, example.text)
                 exampleDao.insert(exampleEntity)
-                for (tr in example.tr!!) {
-                    transcriptionDao.insert(TranscriptionEntity(null, null, tr.text, tr.pos, exampleEntity.id))
-                }
+                example.tr?.forEach { transcriptionDao.insert(TranscriptionEntity(null, null, it.text, it.pos, exampleEntity.id)) }
             }
-            for (meaning in transcription.mean!!) {
-                meaningDao.insert(MeaningEntity(null, transcriptionEntity.id, meaning.text))
-            }
-            for (synonym in transcription.syn!!) {
-                synonymDao.insert(SynonymEntity(null, transcriptionEntity.id, synonym.text))
-            }
+            transcription.mean?.forEach { meaningDao.insert(MeaningEntity(null, transcriptionEntity.id, it.text)) }
+            transcription.mean?.forEach { synonymDao.insert(SynonymEntity(null, transcriptionEntity.id, it.text)) }
         }
     }
     return entity
