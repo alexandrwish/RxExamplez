@@ -57,7 +57,7 @@ class ConcurrentPresenter @Inject constructor(private val concurrentConfig: Conc
     }
 
     fun change(id: Int, charSequence: CharSequence?) {
-        if (charSequence != null && charSequence.isNotEmpty()) {
+        if (charSequence?.isNotEmpty() ?: false) {
             try {
                 when (id) {
                     R.id.start_x -> {

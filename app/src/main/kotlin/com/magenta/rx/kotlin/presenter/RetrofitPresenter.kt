@@ -1,5 +1,6 @@
 package com.magenta.rx.kotlin.presenter
 
+import android.text.TextUtils
 import android.util.Log
 import com.magenta.rx.kotlin.event.TranslateAnswerEvent
 import com.magenta.rx.kotlin.loader.TranslateLoader
@@ -25,7 +26,7 @@ class RetrofitPresenter @Inject constructor(private val loader: TranslateLoader)
 
                     override fun onNext(translate: TranslateAnswer) {
                         Log.d(javaClass.name, "[onNext]")
-                        onReceiveAnswer(text, join(translate.text, ","))
+                        onReceiveAnswer(text, TextUtils.join(",", translate.text))
                     }
                 })
     }

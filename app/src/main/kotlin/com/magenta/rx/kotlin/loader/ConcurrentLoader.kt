@@ -8,7 +8,7 @@ class ConcurrentLoader @Inject constructor() {
 
     fun calc(start: Int, end: Int, step: Int): List<RowResult> {
         val result = LinkedList<RowResult>()
-        (start..end step step).forEach { i -> result.add(calc(i)) }
+        (start..end step step).forEach { result.add(calc(it)) }
         return result
     }
 
