@@ -78,20 +78,26 @@
     <string name="please_wait">Por favor espere</string>
     <string name="customer_location">Localização do cliente</string>
     <string-array name="abort_code_array">
-        <item>Condiciones Climáticas</item>
-        <item>Duplicado</item>
-        <item>Ped. Incorrecto</item>
-        <item>Dirección errónea</item>
-        <item>Cliente Ausente</item>
-        <item>Fecha cambiada</item>
+        <item>Cliente fechou</item>
+        <item>Cliente ausente</item>
+        <item>Entrega atrasada a pedido do cliente</item>
+        <item>Recusa em receber</item>
+        <item>Razões Técnicas</item>
+        <item>Morada não encontrada</item>
+        <item>Morada incorreta/errada</item>
+        <item>Condições meterológicas</item>
+        <item>Outro</item>
     </string-array>
     <string-array name="pickup_abort_code_array">
-        <item>Condiciones Climáticas</item>
-        <item>Duplicado</item>
-        <item>Ped. Incorrecto</item>
-        <item>Dirección errónea</item>
-        <item>Cliente Ausente</item>
-        <item>Fecha cambiada</item>
+        <item>Cliente fechou</item>
+        <item>Cliente ausente</item>
+        <item>Entrega atrasada a pedido do cliente</item>
+        <item>Recusa em receber</item>
+        <item>Razões Técnicas</item>
+        <item>Morada não encontrada</item>
+        <item>Morada incorreta/errada</item>
+        <item>Condições meterológicas</item>
+        <item>Outro</item>
     </string-array>
     <string name="fact_cost">Custo atual:</string>
     <string name="abort_job_question">Está seguro que quer cancelar?</string>

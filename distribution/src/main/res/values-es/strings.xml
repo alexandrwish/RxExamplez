@@ -78,20 +78,26 @@
     <string name="please_wait">Por favor espere</string>
     <string name="customer_location">Ubicación del cliente</string>
     <string-array name="abort_code_array">
+        <item>Cliente retirado</item>
+        <item>El cliente está ausente</item>
+        <item>La entrega se ha retirado por requerimeinto del cliente</item>
+        <item>Negarse a obtener</item>
+        <item>Razones técnicas</item>
+        <item>No se ha encontrado la dirección</item>
+        <item>Dirección incorrecta/errónea</item>
         <item>Condiciones del tiempo</item>
-        <item>Duplicado</item>
-        <item>Pedido incorreto</item>
-        <item>Morada errada</item>
-        <item>Cliente Ausente</item>
-        <item>Data alterada</item>
+        <item>Otro</item>
     </string-array>
     <string-array name="pickup_abort_code_array">
+        <item>Cliente retirado</item>
+        <item>El cliente está ausente</item>
+        <item>La entrega se ha retirado por requerimeinto del cliente</item>
+        <item>Negarse a obtener</item>
+        <item>Razones técnicas</item>
+        <item>No se ha encontrado la dirección</item>
+        <item>Dirección incorrecta/errónea</item>
         <item>Condiciones del tiempo</item>
-        <item>Duplicado</item>
-        <item>Pedido incorreto</item>
-        <item>Morada errada</item>
-        <item>Cliente Ausente</item>
-        <item>Data alterada</item>
+        <item>Otro</item>
     </string-array>
     <string name="fact_cost">Coste actual:</string>
     <string name="abort_job_question">¿Estás seguro de querer abortar?</string>

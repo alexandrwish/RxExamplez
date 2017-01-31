@@ -73,20 +73,26 @@
     <string name="please_wait">Merci d’attendre</string>
     <string name="customer_location">Client</string>
     <string-array name="abort_code_array">
+        <item>Client isolé</item>
+        <item>Le client est absent</item>
+        <item>La livraison a été reportée à la demande du client</item>
+        <item>Refus d’obtention</item>
+        <item>Raisons techniques</item>
+        <item>L’adresse n’a pas été trouvée</item>
+        <item>Adresse incorrecte</item>
         <item>Conditions climatiques</item>
-        <item>Double</item>
-        <item>Incorrect</item>
-        <item>Mauvaise adresse</item>
-        <item>Pas de réponse</item>
-        <item>Date changée</item>
+        <item>Autre</item>
     </string-array>
     <string-array name="pickup_abort_code_array">
+        <item>Client isolé</item>
+        <item>Le client est absent</item>
+        <item>La livraison a été reportée à la demande du client</item>
+        <item>Refus d’obtention</item>
+        <item>Raisons techniques</item>
+        <item>L’adresse n’a pas été trouvée</item>
+        <item>Adresse incorrecte</item>
         <item>Conditions climatiques</item>
-        <item>Double</item>
-        <item>Incorrect</item>
-        <item>Mauvaise adresse</item>
-        <item>Pas de réponse</item>
-        <item>Date changée</item>
+        <item>Autre</item>
     </string-array>
     <string name="abort_job_question">Etes-vous sûr de vouloir interrompre?</string>
     <string name="add">Ajouter</string>

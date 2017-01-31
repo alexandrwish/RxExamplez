@@ -111,31 +111,25 @@
     <string name="enable_map">Использовать карту:</string>
     <string-array name="abort_code_array">
         <item>Адресат выбыл</item>
-        <item>Адресат заберет отправление сам</item>
-        <item>Временное отсутствие адресата</item>
-        <item>Доставка отложена по просьбе адресата</item>
-        <item>Иная</item>
-        <item>Нет адресата</item>
-        <item>Неточный адрес</item>
-        <item>Обстоятельства непреодолимой силы</item>
+        <item>Адресат отсутствует</item>
+        <item>Доставка перенесена по просьбе адресата</item>
         <item>Отказ от получения</item>
         <item>По техническим причинам</item>
-        <item>Не хватило времени</item>
-        <item>Поменялись приоритеты</item>
+        <item>Не найден адрес</item>
+        <item>Неточный/неверный адрес</item>
+        <item>Погодные условия</item>
+        <item>Иная</item>
     </string-array>
     <string-array name="pickup_abort_code_array">
         <item>Адресат выбыл</item>
-        <item>Адресат заберет отправление сам</item>
-        <item>Временное отсутствие адресата</item>
-        <item>Доставка отложена по просьбе адресата</item>
-        <item>Иная</item>
-        <item>Нет адресата</item>
-        <item>Неточный адрес</item>
-        <item>Обстоятельства непреодолимой силы</item>
+        <item>Адресат отсутствует</item>
+        <item>Доставка перенесена по просьбе адресата</item>
         <item>Отказ от получения</item>
         <item>По техническим причинам</item>
-        <item>Не хватило времени</item>
-        <item>Поменялись приоритеты</item>
+        <item>Не найден адрес</item>
+        <item>Неточный/неверный адрес</item>
+        <item>Погодные условия</item>
+        <item>Иная</item>
     </string-array>
     <string name="fill_all_attributes">Заполните поля со звездочкой</string>
     <string name="duplicate_barcode">Внимание! Данный товар уже отсканирован</string>

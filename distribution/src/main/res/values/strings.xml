@@ -116,20 +116,26 @@
     <string name="map_provider">Map provider:</string>
     <string name="enable_map">Enable map:</string>
     <string-array name="abort_code_array">
-        <item>Weather conditions</item>
-        <item>Double</item>
-        <item>Incorrect</item>
-        <item>Wrong address</item>
-        <item>No reply</item>
-        <item>Date changed</item>
+        <item>Customer no longer at this address</item>
+        <item>Customer temporarily absent</item>
+        <item>Customer requested to reschedule</item>
+        <item>Customer unwilling/unable to accept</item>
+        <item>Unable to complete for technical reasons</item>
+        <item>Customer address not found</item>
+        <item>Incorrect address</item>
+        <item>Unable to complete due to weather conditions</item>
+        <item>Other</item>
     </string-array>
     <string-array name="pickup_abort_code_array">
-        <item>Weather conditions</item>
-        <item>Double</item>
-        <item>Incorrect</item>
-        <item>Wrong address</item>
-        <item>No reply</item>
-        <item>Date changed</item>
+        <item>Customer no longer at this address</item>
+        <item>Customer temporarily absent</item>
+        <item>Customer requested to reschedule</item>
+        <item>Customer unwilling/unable to accept</item>
+        <item>Unable to complete for technical reasons</item>
+        <item>Customer address not found</item>
+        <item>Incorrect address</item>
+        <item>Unable to complete due to weather conditions</item>
+        <item>Other</item>
     </string-array>
     <string-array name="mx_locale_list">
         <item>en</item>
