@@ -11,6 +11,7 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
@@ -26,6 +27,7 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "false",
     "build_debug": "true"
   }

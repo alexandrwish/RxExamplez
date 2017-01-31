@@ -30,9 +30,9 @@ public class SaveLocationService extends SaveLocationsService {
         Log.d("---dbg1", "saveToDbInterval " + saveToDbInterval);
         mCdt = new CountDownTimer(mSendToServerInterval, saveToDbInterval) {
             public void onTick(long millisUntilFinished) {
-                boolean isTrackinfEnabled = preferences.getBoolean("tracking.enabled", true);
+                boolean isTrackingEnabled = preferences.getBoolean("tracking.enabled", true);
                 boolean isUserIdEmpty = Settings.get().getUserId().isEmpty();
-                if (isTrackinfEnabled && !isUserIdEmpty) {
+                if (isTrackingEnabled && !isUserIdEmpty) {
                     LocationService locationService = ServicesRegistry.getLocationService();
                     if (locationService != null) {
                         Location loc = locationService.getLocation();

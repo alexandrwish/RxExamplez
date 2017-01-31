@@ -124,6 +124,7 @@ tasks.whenTaskAdded { task ->
                         entry(key: "keepAlive.period", value: v.keepAlive)
                         entry(key: "save.locations.interval", value: v.saveLocations)
                         entry(key: "settings.password", value: v.password)
+                        entry(key: "tracking.enabled", value: v.trackingEnabled)
                     }
                 }
             }

@@ -11,6 +11,7 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
@@ -26,6 +27,7 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
@@ -41,6 +43,7 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
@@ -56,6 +59,7 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
@@ -71,10 +75,10 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
-
   "distribution.maxoptra.com-en": {
     "language": "en",
     "server": "distribution.maxoptra.com",
@@ -87,6 +91,7 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
@@ -102,6 +107,7 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
@@ -117,6 +123,7 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
@@ -132,6 +139,7 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
@@ -147,10 +155,10 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
-
   "live.maxoptra.com-en": {
     "language": "en",
     "server": "live.maxoptra.com",
@@ -163,6 +171,7 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
@@ -178,6 +187,7 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
@@ -193,6 +203,7 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
@@ -208,6 +219,7 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
@@ -223,10 +235,10 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
-
   "logist.maxoptra.com-en": {
     "language": "en",
     "server": "logist.maxoptra.com",
@@ -239,6 +251,7 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
@@ -254,6 +267,7 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
@@ -269,6 +283,7 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
@@ -284,6 +299,7 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
@@ -299,10 +315,10 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
-
   "prof.maxoptra.com-en": {
     "language": "en",
     "server": "prof.maxoptra.com",
@@ -315,6 +331,7 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
@@ -330,6 +347,7 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
@@ -345,6 +363,7 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
@@ -360,6 +379,7 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
@@ -375,10 +395,10 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
-
   "review.maxoptra.com-en": {
     "language": "en",
     "server": "review.maxoptra.com",
@@ -391,6 +411,7 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
@@ -406,6 +427,7 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
@@ -421,6 +443,7 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
@@ -436,6 +459,7 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
@@ -451,10 +475,10 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
-
   "start.maxoptra.com-en": {
     "language": "en",
     "server": "start.maxoptra.com",
@@ -467,6 +491,7 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
@@ -482,6 +507,7 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
@@ -497,6 +523,7 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
@@ -512,6 +539,7 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
@@ -527,10 +555,10 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
-
   "start.maxoptra.ru-en": {
     "language": "en",
     "server": "start.maxoptra.ru",
@@ -543,6 +571,7 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
@@ -558,6 +587,7 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
@@ -573,6 +603,7 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
@@ -588,6 +619,7 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
@@ -603,10 +635,10 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
-
   "trial.maxoptra.com-en": {
     "language": "en",
     "server": "trial.maxoptra.com",
@@ -619,6 +651,7 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
@@ -634,6 +667,7 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
@@ -649,6 +683,7 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
@@ -664,6 +699,7 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
@@ -679,10 +715,10 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "true",
     "build_debug": "false"
   },
-
   "ekaterina-ru": {
     "language": "ru",
     "server": "192.0.2.162",
@@ -695,6 +731,7 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "false",
     "build_debug": "true"
   },
@@ -710,6 +747,7 @@
     "keepAlive": 120,
     "saveLocations": 30000,
     "password": "",
+    "trackingEnabled": "true",
     "build_release": "false",
     "build_debug": "true"
   }
