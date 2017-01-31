@@ -77,7 +77,7 @@
     <string name="settings_theme_day">Tema DIA</string>
     <string name="settings_theme_night">Tema NOITE</string>
     <string name="states_run_aborted">Abortado</string>
-    <string name="states_run_accepted">Aceitado</string>
+    <string name="states_run_accepted">Aceite</string>
     <string name="states_run_assigned">Atribuído</string>
     <string name="states_run_cancelled">Cancelado</string>
     <string name="states_run_completed">Completo</string>
@@ -93,7 +93,7 @@
     <string name="states_run_started">Iniciado</string>
     <string name="states_run_unassigned">Não atribuído</string>
     <string name="states_stop_aborted">Abortado</string>
-    <string name="states_stop_accepted">Aceitado</string>
+    <string name="states_stop_accepted">Aceite</string>
     <string name="states_stop_arrive10">Chegada em 10 min</string>
     <string name="states_stop_arrive5">Chegada em 5 min</string>
     <string name="states_stop_completed">Completo</string>
