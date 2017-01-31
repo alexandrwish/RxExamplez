@@ -66,6 +66,9 @@ public class DynamicAttributeView {
             } else if (attribute.getType().equals(DynamicAttributeType.BOOLEAN)) {
                 view = inflater.inflate(R.layout.item_boolean_attribute, null);
                 valueView = ((CheckBox) view.findViewById(R.id.attribute_value_check));
+                if (!attribute.isEditable()) {
+                    valueView.setEnabled(false);
+                }
             } else {
                 view = inflater.inflate(R.layout.item_attribute, null);
                 valueView = ((TextView) view.findViewById(R.id.attribute_value));

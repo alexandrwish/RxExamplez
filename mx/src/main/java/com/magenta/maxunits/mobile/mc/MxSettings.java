@@ -53,6 +53,7 @@ public class MxSettings extends AndroidSettings {
             "geobase",
             "geoserver",
             "yahoo",
+            "mapquest",
             "map24"
     };
 
