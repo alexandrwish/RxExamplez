@@ -25,7 +25,6 @@ import com.magenta.mc.client.log.MCLogger;
 import com.magenta.mc.client.log.MCLoggerFactory;
 import com.magenta.mc.client.settings.Settings;
 import com.magenta.mc.client.setup.Setup;
-import com.magenta.mc.client.storage.Storable;
 import com.magenta.mc.client.util.Resources;
 
 import java.util.ArrayList;
@@ -44,13 +43,11 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
     private static final MCLogger LOG = MCLoggerFactory.getLogger(DataController.class);
 
     private Map<String, Job> refToJob = new HashMap<>();
-    private Map refToHistory = new HashMap();
     private Map<String, FullJobHistory> fullJobHistory = new HashMap<>();
     private boolean clear = true;
 
     public void clear() {
         refToJob.clear();
-        refToHistory.clear();
         fullJobHistory.clear();
         clear = true;
     }
@@ -69,7 +66,7 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
             return;
         }
         List jobs = Setup.get().getStorage().load(Job.STORABLE_METADATA);
-        refToJob = listToMap(jobs);
+        refToJob = listJobToMap(jobs);
     }
 
     private void loadFullHistory() {
@@ -77,12 +74,12 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
             return;
         }
         List jobs = Setup.get().getStorage().load(FullJobHistory.STORABLE_METADATA);
-        fullJobHistory = listToMap(jobs);
+        fullJobHistory = listFullJobHistoryToMap(jobs);
         deleteUnusedHistory();
     }
 
     private void deleteUnusedHistory() {
-        List<String> historyForRemove = new ArrayList<String>();
+        List<String> historyForRemove = new ArrayList<>();
         for (Map.Entry<String, FullJobHistory> entry : fullJobHistory.entrySet()) {
             if (isOldDate(entry.getValue().getDate(), "deleteUnusedHistory jobId:" + entry.getValue().getId())) {
                 historyForRemove.add(entry.getKey());
@@ -94,24 +91,48 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
         }
     }
 
-    private HashMap listToMap(List list) {
-        HashMap result = new HashMap();
+    private HashMap<String, Job> listJobToMap(List list) {
+        if (list == null || list.isEmpty()) {
+            return new HashMap<>(0);
+        }
+        HashMap<String, Job> result = new HashMap<>(list.size());
         for (Object aList : list) {
-            result.put(((Storable) aList).getId(), aList);
+            if (aList instanceof Job) {
+                Job job = (Job) aList;
+                result.put(job.getId(), job);
+            }
+        }
+        return result;
+    }
+
+    private HashMap<String, FullJobHistory> listFullJobHistoryToMap(List list) {
+        if (list == null || list.isEmpty()) {
+            return new HashMap<>(0);
+        }
+        HashMap<String, FullJobHistory> result = new HashMap<>(list.size());
+        for (Object aList : list) {
+            if (aList instanceof FullJobHistory) {
+                FullJobHistory fullJobHistory = (FullJobHistory) aList;
+                result.put(fullJobHistory.getId(), fullJobHistory);
+            }
         }
         return result;
     }
 
     public void checkCancelledAndCompletedJobs() {
-        // clonning keyset not to produce concurrent modification of 'refToJob' map
-        Set<String> referenceSet = refToJob.keySet();
-        for (String jobRef : referenceSet.toArray(new String[referenceSet.size()])) {
-            Job nextJob = refToJob.get(jobRef);
-            if (nextJob == null) {
-                LOG.error("Job [" + jobRef + "] is null");
-            } else if (nextJob.isCompleted() || nextJob.isCancelled() || nextJob.getState() == TaskState.RUN_REJECTED) {
-                moveToHistory(nextJob);
+        try {
+            // clonning keyset not to produce concurrent modification of 'refToJob' map
+            Set referenceSet = refToJob.keySet();
+            for (String jobRef : (String[]) referenceSet.toArray(new String[referenceSet.size()])) {
+                Job nextJob = refToJob.get(jobRef);
+                if (nextJob == null) {
+                    LOG.error("Job [" + jobRef + "] is null");
+                } else if (nextJob.isCompleted() || nextJob.isCancelled() || nextJob.getState() == TaskState.RUN_REJECTED) {
+                    moveToHistory(nextJob);
+                }
             }
+        } catch (Exception e) {
+            LOG.error("checkCancelledAndCompletedJobs exception: " + e.getMessage());
         }
     }
 
@@ -129,7 +150,7 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
     @Override
     public Pair<Job, Stop> find(final String jobId, final String stopId) {
         final Job job = refToJob.get(jobId);
-        return job != null ? new Pair<Job, Stop>(job, (Stop) job.getStop(stopId)) : null;
+        return job != null ? new Pair<>(job, (Stop) job.getStop(stopId)) : null;
     }
 
     public void addJob(final Job job) {
@@ -162,17 +183,6 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
         } else {
             throw new IllegalStateException("duplicate job: " + jobRef);
         }
-    }
-
-//    private void removeJobHistory(String jobRef) {
-//        JobHistory deletedHistory = (JobHistory) refToHistory.remove(jobRef);
-//        if (deletedHistory != null) {
-//            Setup.get().getStorage().delete(JobHistory.STORABLE_METADATA, jobRef);
-//            checkRefreshHistory();
-//        }
-//    }
-
-    private void checkRefreshHistory() {
     }
 
     public void updateJob(final Job job, final boolean silent) {
@@ -265,7 +275,7 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
         Date nextDate = new Date(dayStart + 24 * 60 * 60 * 1000);
         CommonsDAO dao = new CommonsDAO(DistributionApplication.getContext());
         dao.removeAllJobData(jobForCancel.getReferenceId());
-        Map<String, String> refToNewRef = new TreeMap<String, String>(new Comparator<String>() {
+        Map<String, String> refToNewRef = new TreeMap<>(new Comparator<String>() {
             @Override
             public int compare(String o1, String o2) {
                 long l1 = Long.valueOf(o1, Character.MAX_RADIX);
@@ -291,16 +301,6 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
         }
         ServicesRegistry.getCoreService().notifyListeners(new JobEvent(EventType.JOB_CANCELLED, referenceId, true));
     }
-
-//    private boolean isCancelled(String jobRef) {
-//        final JobHistory history = findHistory(jobRef);
-//        return history != null && ("Cancelled".equalsIgnoreCase(history.getStatus()) || "COA".equalsIgnoreCase(history.getStatus()));
-//    }
-
-//    private boolean isCompleted(String jobRef) {
-//        final JobHistory history = findHistory(jobRef);
-//        return history != null && "Completed".equalsIgnoreCase(history.getStatus());
-//    }
 
     public JobStatus saveJobStatus(final Job job, final Map parameters) {
         final JobStatus jobStatus = saveStatus(job, null, parameters);
@@ -352,12 +352,12 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
         return jobStatus;
     }
 
-    public JobStatus createJobStatusVO(String jobReferenceId, String jobStatusString, Map additionalParams) {
+    private JobStatus createJobStatusVO(String jobReferenceId, String jobStatusString, Map additionalParams) {
         final JobStatus jobStatus = new JobStatus();
         jobStatus.setId("" + System.currentTimeMillis());
         jobStatus.setJobReferenceId(jobReferenceId);
         jobStatus.setJobStatus(jobStatusString);
-        final Map<String, String> params = new HashMap();
+        final Map<String, String> params = new HashMap<>();
         params.put("date", Resources.UTC_DATE_FORMAT.format(Setup.get().getSettings().getCurrentDate()));
         if (additionalParams != null) {
             params.putAll(additionalParams);
@@ -384,7 +384,7 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
                 active.add(job);
             }
         }
-        final ArrayList<Job> jobsArray = new ArrayList<Job>(active);
+        final ArrayList<Job> jobsArray = new ArrayList<>(active);
         Collections.sort(jobsArray, new Comparator<Job>() {
             public int compare(Job job1, Job job2) {
                 return job1.getDate() != null && job2.getDate() != null
@@ -485,23 +485,6 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
         refToJob.put(job.getReferenceId(), job);
     }
 
-    /*
-        we receive incoming / canceled / updated jobs one by one.
-        waiting 'timeout' milliseconds for the next job to arrive
-        not to show multiple notifications upon receiving multiple jobs
-     */
-    private void scheduleCumulativeAction(final Object nextElement, final List container, CumulativeAction action, long timeout) {
-        synchronized (container) {
-            int prevCount = container.size();
-            container.add(nextElement);
-            if (prevCount > 0) {
-                // previous "addition is still waiting, don't schedule new timer"
-                return;
-            }
-        }
-        executeCumulativeAction(container, action, timeout);
-    }
-
     private void executeCumulativeAction(final List container, final CumulativeAction action, final long timeout) {
         final int previousAddedCount = container.size();
         MobileApp.getInstance().getTimer().schedule(new MCTimerTask() {
@@ -520,8 +503,7 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
     }
 
     private void clearCurrentJobsStorageAndCache() {
-        for (Iterator iterator = refToJob.keySet().iterator(); iterator.hasNext(); ) {
-            final String reference = (String) iterator.next();
+        for (final String reference : refToJob.keySet()) {
             Setup.get().getStorage().delete(Job.STORABLE_METADATA, reference);
         }
         refToJob.clear();
@@ -540,5 +522,4 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
     private interface CumulativeAction {
         void run(List contents);
     }
-
 }
