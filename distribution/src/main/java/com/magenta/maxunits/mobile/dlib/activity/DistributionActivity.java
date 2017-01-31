@@ -169,10 +169,11 @@ public abstract class DistributionActivity extends GenericActivity<HDActivityDec
                     });
                 }
                 if (!mSettings.isUpdateDelayed()) {
-                    builder.setNegativeButton(R.string.update_cancel, new DialogInterface.OnClickListener() {
+                    builder.setNegativeButton(R.string.mx_cancel, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             resetRestoreUpdateData();
                             mSettings.setUpdateDelayed(true);
+                            Toast.makeText(DistributionActivity.this, R.string.update_needed_toast_text, Toast.LENGTH_LONG).show();
                         }
                     });
                 }
