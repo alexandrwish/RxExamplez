@@ -55,7 +55,8 @@
         <activity
             android:name="com.magenta.maxunits.mobile.activity.common.LoginActivity"
             android:configChanges="locale|orientation"
-            android:label="@string/mx_app_name">
+            android:label="@string/mx_app_name"
+            android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
