@@ -11,15 +11,7 @@ import com.magenta.mc.client.xmpp.extensions.rpc.DefaultRPCQueryListener;
 import java.util.ArrayList;
 import java.util.Vector;
 
-/**
- * Created 03.03.2010
- * <p/>
- * this class is a target for the RPC method-calls
- * <p/>
- * create new public methods to support new RPC methods invocation
- *
- * @author Konstantin Pestrikov
- */
+@SuppressWarnings("unused")
 public class RPCTarget extends DefaultRPCQueryListener {
 
     private static RPCTarget instance;
@@ -73,5 +65,4 @@ public class RPCTarget extends DefaultRPCQueryListener {
             ServicesRegistry.getCoreService().notifyListeners(new BroadcastEvent<String>("CANCEL_REASONS_UPDATE"));
         }
     }
-
 }

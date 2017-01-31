@@ -132,8 +132,7 @@
     <string name="unloading">A descarregar</string>
     <string name="drop_location">Localização final</string>
 
-    <string name="update_needed_text">Nova versão App disponível</string>
-    <string name="update_needed_title">Atualização App</string>
-    <string name="update_install">OK</string>
-    <string name="update_cancel">Cancelar</string>
+    <string name="update_needed_text">Está disponível uma nova versão da aplicação. Deseja iniciar a atualização?</string>
+    <string name="update_needed_toast_text">A aplicação deve ser atualizada após o próximo início de sessão.</string>
+    <string name="update_needed_second_text">Está disponível uma nova versão da aplicação. Por favor instale as atualizações andes de prosseguir.</string>
 </resources>

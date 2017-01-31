@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.magenta.maxunits.distribution.R;
@@ -143,8 +144,8 @@ public abstract class DistributionActivity extends GenericActivity<HDActivityDec
         runOnUiThread(new Runnable() {
             public void run() {
                 AlertDialog.Builder builder = new AlertDialog.Builder(DistributionActivity.this)
-                        .setMessage(R.string.update_needed_text)
-                        .setPositiveButton(R.string.update_install, new DialogInterface.OnClickListener() {
+                        .setMessage(!mSettings.isUpdateDelayed() ? R.string.update_needed_text : R.string.update_needed_second_text)
+                        .setPositiveButton(R.string.mx_ok, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 resetRestoreUpdateData();
                                 final Bundle bundle = new Bundle(3);
@@ -157,6 +158,16 @@ public abstract class DistributionActivity extends GenericActivity<HDActivityDec
                         })
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .setCancelable(false);
+                if (!mSettings.isUpdateDelayed()) {
+                    builder.setNegativeButton(R.string.mx_cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            resetRestoreUpdateData();
+                            mSettings.setUpdateDelayed(true);
+                            Toast.makeText(DistributionActivity.this, R.string.update_needed_toast_text, Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
                 if (!mSettings.isUpdateDelayed()) {
                     builder.setNegativeButton(R.string.update_cancel, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {

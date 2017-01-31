@@ -148,8 +148,7 @@
     <string name="alert_map_title">Default map was changed</string>
     <string name="alert_map_value">For change map settings connect with your dispather</string>
 
-    <string name="update_needed_text">New version app available</string>
-    <string name="update_needed_title">App updating</string>
-    <string name="update_install">OK</string>
-    <string name="update_cancel">Cancel</string>
+    <string name="update_needed_text">New version of the application is available. Start the update?</string>
+    <string name="update_needed_toast_text">The application must be updated after the next logging in.</string>
+    <string name="update_needed_second_text">New version of the application is available. Please install the updates to continue.</string>
 </resources>

@@ -154,8 +154,7 @@
     <string name="mc_commons_notification_gpsOpenSettings">Нажмите для перехода к настройкам</string>
     <string name="mc_commons_string_noData">Нет данных</string>
 
-    <string name="update_needed_text">Доступна новая версия приложения</string>
-    <string name="update_needed_title">Загрузка приложения</string>
-    <string name="update_install">Установить</string>
-    <string name="update_cancel">Отмена</string>
+    <string name="update_needed_text">Доступна новая версия приложения. Начать установку?</string>
+    <string name="update_needed_toast_text">При следующем входе в приложение оно должно быть обновлено.</string>
+    <string name="update_needed_second_text">Доступна новая версия приложения. Чтобы продолжить работу, установите обновления.</string>
 </resources>

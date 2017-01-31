@@ -128,8 +128,7 @@
     <string name="msg_schedule_updated_title">Planning mis à jour</string>
     <string name="msg_schedule_updated_message">Votre planning a été mis à jour</string>
 
-    <string name="update_needed_text">Nouvelle version application disponible</string>
-    <string name="update_needed_title">Mise à jour application</string>
-    <string name="update_install">Ok</string>
-    <string name="update_cancel">Annuler</string>
+    <string name="update_needed_text">Une nouvelle version de l’application est disponible. Voulez-vous débuter la mise à jour ?</string>
+    <string name="update_needed_toast_text">L’application doit être mise à jour après la prochaine connexion.</string>
+    <string name="update_needed_second_text">Une nouvelle version de l’application est disponible. Veuillez installer les mises à jour pour continuer.</string>
 </resources>
