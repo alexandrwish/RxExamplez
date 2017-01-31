@@ -16,8 +16,6 @@ import com.magenta.maxunits.mobile.dlib.controller.MapletController;
 import com.magenta.maxunits.mobile.dlib.controller.YandexMapController;
 import com.magenta.maxunits.mobile.dlib.db.dao.DistributionDAO;
 import com.magenta.maxunits.mobile.dlib.entity.MapSettingsEntity;
-import com.magenta.maxunits.mobile.dlib.service.events.EventType;
-import com.magenta.maxunits.mobile.dlib.service.events.JobEvent;
 import com.magenta.maxunits.mobile.dlib.service.storage.DataControllerImpl;
 import com.magenta.maxunits.mobile.dlib.service.storage.entity.Job;
 import com.magenta.maxunits.mobile.dlib.service.storage.entity.Stop;
@@ -26,8 +24,6 @@ import com.magenta.maxunits.mobile.dlib.view.Maplet;
 import com.magenta.maxunits.mobile.entity.Address;
 import com.magenta.maxunits.mobile.mc.MxSettings;
 import com.magenta.maxunits.mobile.service.ServicesRegistry;
-import com.magenta.maxunits.mobile.service.listeners.BroadcastEvent;
-import com.magenta.maxunits.mobile.service.listeners.MxBroadcastEvents;
 import com.magenta.mc.client.setup.Setup;
 
 import java.sql.SQLException;
@@ -148,13 +144,6 @@ public class MapActivity extends DistributionActivity implements WorkflowActivit
             }
             default:
                 return super.onCreateDialog(id);
-        }
-    }
-
-    @MxBroadcastEvents({EventType.JOB_UPDATED})
-    public void onScheduleUpdate(BroadcastEvent<String> e) {
-        if (currentJobId.equals(((JobEvent) e).getReferenceId())) {
-            finish();
         }
     }
 

@@ -262,12 +262,36 @@ public abstract class MapController implements View.OnClickListener {
         }
     }
 
-    public void onJobTap(Stop stop) {
-        int state = stop.getState();
-        showDialog((Job) stop.getParentJob(),
-                !(TaskState.STOP_IDLE != state && TaskState.STOP_RUN_ACCEPTED != state && TaskState.STOP_RUN_STARTED != state),
-                !stop.isCompleted(),
-                stop);
+    public void onJobTap(final Stop stop) {
+        final Stop startedStop = getStartedStop(stop);
+        if (startedStop == null) {
+            showArriveDialog(stop);
+            return;
+        }
+
+        for (Object o : startedStop.getParentJob().getStops()) {
+            Stop stp = (Stop) o;
+            if (stp.equalsStops(stop) &&
+                    stop.isProcessing() &&
+                    !stop.isCompleted()) {
+                showArriveDialog(stop);
+                return;
+            }
+        }
+
+        new AlertDialog.Builder(mActivity)
+                .setMessage(R.string.suspend_other_job)
+                .setPositiveButton(R.string.mx_yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        startedStop.processSetState(TaskState.STOP_SUSPENDED);
+                        processStop(stop);
+                    }
+                })
+                .setNegativeButton(R.string.mx_no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).show();
     }
 
     public boolean isSameAddress(List<Address> al1, List<Address> al2) {
@@ -363,5 +387,42 @@ public abstract class MapController implements View.OnClickListener {
     protected void myLocation() {
         mTrackCurrentPosition = true;
         Log.d("----", "mTrackCurrentPosition = true");
+    }
+
+    private Stop getStartedStop(Stop stop) {
+        for (Object o : stop.getParentJob().getStops()) {
+            Stop s = (Stop) o;
+            if (s.isProcessing() && !s.isCompleted()) {
+                return s;
+            }
+        }
+        return null;
+    }
+
+    private void processStop(final Stop stop) {
+        stop.processSetState(TaskState.STOP_ON_ROUTE);
+        new AlertDialog.Builder(mActivity)
+                .setMessage(R.string.launch_navi_app)
+                .setPositiveButton(R.string.mx_yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        MxAndroidUtil.showTomTomOrDefaultNavigator(stop.getAddress(), mActivity);
+                        dialog.dismiss();
+                        mActivity.finish();
+                    }
+                })
+                .setNegativeButton(R.string.mx_no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        goToArriveMapActivity(stop.getParentJob().getReferenceId(), stop.getReferenceId());
+                        dialog.dismiss();
+                    }
+                }).show();
+    }
+
+    private void showArriveDialog(final Stop stop) {
+        int state = stop.getState();
+        showDialog((Job) stop.getParentJob(),
+                !(TaskState.STOP_IDLE != state && TaskState.STOP_RUN_ACCEPTED != state && TaskState.STOP_RUN_STARTED != state),
+                !stop.isCompleted(),
+                stop);
     }
 }
