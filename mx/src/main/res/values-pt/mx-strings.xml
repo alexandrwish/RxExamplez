@@ -45,7 +45,7 @@
     <string name="mx_audio_alerts">Alertas sonoros</string>
     <string name="mx_cancel">Cancelar</string>
     <string name="mx_country_and_town">País e Cidade</string>
-    <string name="mx_empty"></string>
+    <string name="mx_empty" />
     <string name="mx_enter_password">Senha</string>
     <string name="mx_fast_login">Início de sessão rápida</string>
     <string name="mx_incorrect_password">Senha imcorreta</string>
@@ -57,6 +57,7 @@
     <string name="mx_map_tracking_options">Opções de seguimento</string>
     <string name="mx_min">min</string>
     <string name="mx_msg_error_no_current_gps_location">Não foi possível estabelecer ligação ao serviço GPS. Por favor tentar mais tarde.</string>
+    <string name="mx_msg_verify_location_question">A localização exata do cliente não está guardade na base de dados Maxoptra. Deseja atualizar a localização, para a posição GPS atual?</string>
     <string name="mx_no">Não</string>
     <string name="mx_noData">Não há dados</string>
     <string name="mx_notification_gpsDisabled">GPS está desligado</string>
