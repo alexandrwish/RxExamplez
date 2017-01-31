@@ -38,10 +38,10 @@ import java.util.Map;
 public class AbortActivity extends DistributionActivity implements WorkflowActivity {
 
     public static final String EXTRA_APPLY_FOR_RUN = "APPLY_FOR_RUN";
-    Job job;
-    Stop stop;
-    ArrayAdapter<String> mReasonsAdapter;
-    ArrayList<String> mReasons;
+    private Job job;
+    private Stop stop;
+    private ArrayAdapter<String> mReasonsAdapter;
+    private ArrayList<String> mReasons;
 
     @MxBroadcastEvents({"CANCEL_REASONS_UPDATE"})
     public void onScheduleUpdate(BroadcastEvent<String> e) {
@@ -50,7 +50,9 @@ public class AbortActivity extends DistributionActivity implements WorkflowActiv
 
     private void updateReasons() {
         mReasons.clear();
-        mReasons.addAll(MxSettings.getInstance().getOrderCancelReasons());
+        if (!MxSettings.getInstance().isOfflineVersion()) {
+            mReasons.addAll(MxSettings.getInstance().getOrderCancelReasons());
+        }
         if (mReasons.isEmpty()) {
             mReasons.addAll(Arrays.asList(MxApplication.getContext().getResources().getStringArray(R.array.pickup_abort_code_array)));
         }
@@ -70,8 +72,8 @@ public class AbortActivity extends DistributionActivity implements WorkflowActiv
         if (!isApplyForRun && job != null) {
             stop = (Stop) job.getStop(currentStopId);
         }
-        mReasons = new ArrayList<String>();
-        mReasonsAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item_cancel_reason, mReasons);
+        mReasons = new ArrayList<>();
+        mReasonsAdapter = new ArrayAdapter<>(this, R.layout.spinner_item_cancel_reason, mReasons);
         mReasonsAdapter.setDropDownViewResource(R.layout.spinner_dropdown_cancel_reason);
         final Spinner spinner = (Spinner) findViewById(R.id.code);
         spinner.setAdapter(mReasonsAdapter);
@@ -85,13 +87,13 @@ public class AbortActivity extends DistributionActivity implements WorkflowActiv
                                 Intent intent = null;
                                 if (job != null) {
                                     if (isApplyForRun) {
-                                        Map<String, String> parameters = new HashMap<String, String>(2);
+                                        Map<String, String> parameters = new HashMap<>(2);
                                         parameters.put("abort-stop-code", spinner.getSelectedItem().toString());
                                         parameters.put("comment", comment.getText().toString());
-                                        Map<String, String> attrMap = new HashMap<String, String>();
+                                        Map<String, String> attrMap = new HashMap<>();
                                         for (Stop stop : (List<Stop>) job.getStops()) {
                                             try {
-                                                List<DynamicAttributeRecord> records = new LinkedList<DynamicAttributeRecord>();
+                                                List<DynamicAttributeRecord> records = new LinkedList<>();
                                                 for (DynamicAttributeEntity entity : DistributionDAO.getInstance(AbortActivity.this).getDynamicAttributes(currentJobId, currentStopId)) {
                                                     records.add(entity.toRecord());
                                                 }
@@ -107,7 +109,7 @@ public class AbortActivity extends DistributionActivity implements WorkflowActiv
                                     } else {
                                         if (stop != null) {
                                             try {
-                                                List<DynamicAttributeRecord> records = new LinkedList<DynamicAttributeRecord>();
+                                                List<DynamicAttributeRecord> records = new LinkedList<>();
                                                 for (DynamicAttributeEntity entity : DistributionDAO.getInstance(AbortActivity.this).getDynamicAttributes(currentJobId, currentStopId)) {
                                                     records.add(entity.toRecord());
                                                 }
