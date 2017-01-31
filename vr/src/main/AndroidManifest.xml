@@ -1,53 +1,97 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="5000000" android:versionName="3.4.10.10" package="com.magenta.maxunits.mobile.vr">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.magenta.maxunits.mobile.vr">
 
-    <uses-sdk android:maxSdkVersion="20" android:minSdkVersion="14" android:targetSdkVersion="21"/>
+    <uses-sdk android:maxSdkVersion="24" />
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.VIBRATE"/>
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <uses-permission android:name="android.permission.READ_LOGS"/>
-    <uses-permission android:name="android.permission.WRITE_CALL_LOG"/>
-    <uses-permission android:name="android.permission.READ_CALL_LOG"/>
-    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.WRITE_CALL_LOG" />
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
 
-    <uses-feature android:name="android.hardware.camera"/>
-    <uses-feature android:name="android.hardware.camera.autofocus" android:required="false"/>
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
 
-    <application android:allowBackup="false" android:icon="@drawable/mc_img_application" android:label="@string/mx_app_name" android:name=".VRDistributionApp" android:theme="@style/McTheme">
+    <application
+        android:name=".VRDistributionApp"
+        android:allowBackup="false"
+        android:icon="@drawable/mc_img_application"
+        android:label="@string/mx_app_name"
+        android:theme="@style/McTheme">
 
-        <meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyDpiW0qjaYg6rapr_WhRey2N8J-jFtdHY8"/>
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyDpiW0qjaYg6rapr_WhRey2N8J-jFtdHY8" />
 
-        <service android:enabled="true" android:name="com.magenta.maxunits.mobile.dlib.service.SaveLocationService"/>
+        <service
+            android:name="com.magenta.maxunits.mobile.dlib.service.SaveLocationService"
+            android:enabled="true" />
 
-        <service android:enabled="true" android:name="com.magenta.maxunits.mobile.dlib.service.CoreServiceImpl"/>
+        <service
+            android:name="com.magenta.maxunits.mobile.dlib.service.CoreServiceImpl"
+            android:enabled="true" />
 
-        <service android:enabled="true" android:name="com.magenta.maxunits.mobile.dlib.service.PhoneStatisticService"/>
+        <service
+            android:name="com.magenta.maxunits.mobile.dlib.service.PhoneStatisticService"
+            android:enabled="true" />
 
-        <service android:enabled="true" android:name="com.magenta.maxunits.mobile.service.LocationService"/>
+        <service
+            android:name="com.magenta.maxunits.mobile.service.LocationService"
+            android:enabled="true" />
 
-        <activity android:configChanges="locale|orientation" android:label="@string/mx_app_name" android:name="com.magenta.maxunits.mobile.activity.common.LoginActivity">
+        <activity
+            android:name="com.magenta.maxunits.mobile.activity.common.LoginActivity"
+            android:configChanges="locale|orientation"
+            android:label="@string/mx_app_name">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:configChanges="locale|orientation" android:name="com.magenta.maxunits.mobile.dlib.activity.common.DistributionSettingsActivity" android:theme="@android:style/Theme.Black"/>
-        <activity android:configChanges="locale|orientation" android:name="com.magenta.maxunits.mobile.dlib.activity.JobsActivity"/>
-        <activity android:configChanges="locale|orientation" android:name="com.magenta.maxunits.mobile.dlib.activity.JobInfoActivity"/>
-        <activity android:configChanges="locale|orientation" android:name="com.magenta.maxunits.mobile.dlib.activity.JobActivity"/>
-        <activity android:configChanges="locale|orientation" android:name="com.magenta.maxunits.mobile.dlib.activity.StartActivity"/>
-        <activity android:configChanges="locale|orientation" android:name="com.magenta.maxunits.mobile.dlib.activity.AbortActivity"/>
-        <activity android:configChanges="locale|orientation" android:name="com.magenta.maxunits.mobile.dlib.activity.MapActivity"/>
-        <activity android:configChanges="locale|orientation" android:name="com.magenta.maxunits.mobile.dlib.activity.SignatureActivity"/>
-        <activity android:configChanges="locale|orientation" android:name="com.magenta.maxunits.mobile.dlib.activity.OrderItemActivity"/>
-        <activity android:configChanges="locale|orientation" android:name="com.magenta.maxunits.mobile.dlib.activity.ArriveMapActivity"/>
-        <activity android:configChanges="locale|orientation" android:name="com.magenta.maxunits.mobile.dlib.activity.CompleteActivity"/>
+        <activity
+            android:name="com.magenta.maxunits.mobile.dlib.activity.common.DistributionSettingsActivity"
+            android:configChanges="locale|orientation"
+            android:theme="@android:style/Theme.Black" />
+        <activity
+            android:name="com.magenta.maxunits.mobile.dlib.activity.JobsActivity"
+            android:configChanges="locale|orientation" />
+        <activity
+            android:name="com.magenta.maxunits.mobile.dlib.activity.JobInfoActivity"
+            android:configChanges="locale|orientation" />
+        <activity
+            android:name="com.magenta.maxunits.mobile.dlib.activity.JobActivity"
+            android:configChanges="locale|orientation" />
+        <activity
+            android:name="com.magenta.maxunits.mobile.dlib.activity.StartActivity"
+            android:configChanges="locale|orientation" />
+        <activity
+            android:name="com.magenta.maxunits.mobile.dlib.activity.AbortActivity"
+            android:configChanges="locale|orientation" />
+        <activity
+            android:name="com.magenta.maxunits.mobile.dlib.activity.MapActivity"
+            android:configChanges="locale|orientation" />
+        <activity
+            android:name="com.magenta.maxunits.mobile.dlib.activity.SignatureActivity"
+            android:configChanges="locale|orientation" />
+        <activity
+            android:name="com.magenta.maxunits.mobile.dlib.activity.OrderItemActivity"
+            android:configChanges="locale|orientation" />
+        <activity
+            android:name="com.magenta.maxunits.mobile.dlib.activity.ArriveMapActivity"
+            android:configChanges="locale|orientation" />
+        <activity
+            android:name="com.magenta.maxunits.mobile.dlib.activity.CompleteActivity"
+            android:configChanges="locale|orientation" />
     </application>
 </manifest>
