@@ -27,8 +27,8 @@
     <string name="customer_label">Cliente</string>
     <string name="phone_label">Telef. del contacto</string>
     <string name="notes_label">Notas:</string>
-    <string name="cost_label">Coste:</string>
-    <string name="cost">Coste</string>
+    <string name="cost_label">Reembolso:</string>
+    <string name="cost">Reembolso</string>
     <string name="no_data">No hay datos</string>
     <string name="barcode_label">Código de barras</string>
     <string name="complete">Completar</string>
