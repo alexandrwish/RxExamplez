@@ -1,7 +1,9 @@
+apply plugin: 'maven'
 apply plugin: 'com.android.library'
 
 repositories {
     maven { url 'https://github.com/yandexmobile/yandexmapkit-android/raw/maven/' }
+    maven { url 'http://192.0.2.125:8080/nexus/content/groups/public' }
 }
 
 android {
@@ -20,6 +22,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    packagingOptions {
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
+    }
     lintOptions {
         abortOnError false
     }
@@ -33,6 +38,8 @@ dependencies {
     compile project(':entities')
     compile project(':mx')
     compile 'ru.yandex:yandexmapkit:2.5.1@aar'
-    compile 'ch.acra:acra:4.5.0'
-    compile 'com.google.android.gms:play-services-maps:9.8.0'
+    compile('ch.acra:acra:4.5.0') {
+        exclude group: 'org.json', module: 'json'
+    }
+    compile 'com.google.android.gms:play-services-maps:10.0.1'
 }

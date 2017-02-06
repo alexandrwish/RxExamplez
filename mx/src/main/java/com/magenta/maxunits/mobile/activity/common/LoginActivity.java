@@ -28,6 +28,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.magenta.maxunits.mobile.MxApplication;
+import com.magenta.maxunits.mobile.common.Constants;
+import com.magenta.maxunits.mobile.http.HttpClient;
+import com.magenta.maxunits.mobile.http.record.LoginResultRecord;
 import com.magenta.maxunits.mobile.mc.MxAndroidUtil;
 import com.magenta.maxunits.mobile.mc.MxMobile;
 import com.magenta.maxunits.mobile.mc.MxSettings;
@@ -56,6 +59,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class LoginActivity extends SmokeLoginActivity implements RemoteSettingsCallback {
 
     private String oldLocale;
@@ -66,14 +73,13 @@ public class LoginActivity extends SmokeLoginActivity implements RemoteSettingsC
     private EditText mEditTextpassword;
     private ProgressDialog mUpdateSettingsProgress;
     private GetRemoteSettings mGetRemoteSettings;
-    private Button mLoginButton;
 
     public void initActivity(Bundle savedInstanceState) {
         setContentView(R.layout.login_activity);
         mEditTextAccount = (EditText) findViewById(R.id.mxAccount);
         mEditTextLogin = (EditText) findViewById(R.id.mxUsername);
         mEditTextpassword = (EditText) findViewById(R.id.mxPassword);
-        mLoginButton = ((Button) findViewById(com.magenta.mc.client.android.smoke.R.id.login_button));
+        Button mLoginButton = ((Button) findViewById(com.magenta.mc.client.android.smoke.R.id.login_button));
         mLoginButton.setText(getString(R.string.mx_activity_login_login));
         ((TextView) findViewById(R.id.mcApplicationName)).setText(Settings.get().getAppName());
         List<String> permission = new LinkedList<String>();
@@ -124,6 +130,20 @@ public class LoginActivity extends SmokeLoginActivity implements RemoteSettingsC
             public void onClick(View v) {
                 setCurrentActivity();
                 processLogin();
+                HttpClient.getInstance().login(mEditTextAccount.getText().toString(), mEditTextLogin.getText().toString(), mEditTextpassword.getText().toString())
+                        .enqueue(new Callback<LoginResultRecord>() {
+                            public void onResponse(Call<LoginResultRecord> call, Response<LoginResultRecord> response) {
+                                if (response != null && response.body() != null && !response.body().getError()) {
+                                    LoginResultRecord record = response.body();
+                                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                                    preferences.edit().putString(Constants.AUTH_TOKEN, record.getToken()).apply();
+                                }
+                            }
+
+                            public void onFailure(Call<LoginResultRecord> call, Throwable t) {
+                                MCLoggerFactory.getLogger(LoginActivity.class).error(t.getMessage(), t);
+                            }
+                        });
             }
         });
         findViewById(R.id.settings_button).setOnClickListener(new View.OnClickListener() {
@@ -153,12 +173,10 @@ public class LoginActivity extends SmokeLoginActivity implements RemoteSettingsC
     }
 
     protected void processLogin() {
-
         if (Settings.get().isOfflineVersion()) {
             login();
             return;
         }
-
         String login = mEditTextLogin.getText().toString().trim();
         String account = mEditTextAccount.getText().toString().trim();
         preferences.edit().putString("user.login", login).putString("user.account", account).apply();
@@ -177,7 +195,6 @@ public class LoginActivity extends SmokeLoginActivity implements RemoteSettingsC
         mUpdateSettingsProgress.setCancelable(false);
         mUpdateSettingsProgress.show();
         mGetRemoteSettings.update();
-
     }
 
     protected void checkHistory(Runnable runnable) {
@@ -302,6 +319,7 @@ public class LoginActivity extends SmokeLoginActivity implements RemoteSettingsC
             public void run() {
                 MxApplication.getInstance().setLoginPress(true);
                 Login.login(Settings.get().getUserId(), Settings.get().getPassword(),
+
                         new SynchronousCallback() {
                             public void done(boolean ok) {
                                 if ((ok && XMPPClient.getInstance().isLoggedIn()) || Settings.get().isOfflineVersion()) {
@@ -325,7 +343,6 @@ public class LoginActivity extends SmokeLoginActivity implements RemoteSettingsC
         });
     }
 
-    @Override
     public void getRemoteSettingsSuccess() {
         if (!isFinishing() && mUpdateSettingsProgress.isShowing()) {
             mUpdateSettingsProgress.dismiss();
@@ -333,7 +350,6 @@ public class LoginActivity extends SmokeLoginActivity implements RemoteSettingsC
         login();
     }
 
-    @Override
     public void getRemoteSettingsError() {
         if (!isFinishing()) {
 

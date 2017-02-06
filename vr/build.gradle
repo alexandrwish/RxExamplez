@@ -4,6 +4,7 @@ apply plugin: 'com.android.application'
 
 repositories {
     maven { url 'https://github.com/yandexmobile/yandexmapkit-android/raw/maven/' }
+    maven { url 'http://192.0.2.125:8080/nexus/content/groups/public' }
 }
 
 def buildConfig = new JsonSlurper().parseText(file(System.getProperty("BUILD_CONFIG", "./src/main/assets/build_config.json")).text)

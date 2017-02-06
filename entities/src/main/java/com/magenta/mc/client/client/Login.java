@@ -12,21 +12,17 @@ import com.magenta.mc.client.util.FutureRunnable;
 import com.magenta.mc.client.util.McDiagnosticAgent;
 import com.magenta.mc.client.xmpp.XmppError;
 
-/**
- * Created 29.04.2010
- *
- * @author Konstantin Pestrikov
- */
 public class Login implements LoginListener {
+
     private static boolean loginSuccess;
     private static boolean loginFailReported;
-
     private static boolean userLoggedIn = false;
-
     private static Login instance;
     private static Runnable wakeUp;
     private static boolean logout = false;
-    Listener listener = new Listener() {
+
+    private Listener listener = new Listener() {
+
         public void fail() {
         }
 
@@ -61,26 +57,6 @@ public class Login implements LoginListener {
 
     public static void setUserLoggout() {
         userLoggedIn = false;
-    }
-
-    public static void login(final String userId, final String pin) {
-        login(userId, pin, null);
-    }
-
-    public static void reLoginIfNeeded(String id, String pas) {
-        MCLoggerFactory.getLogger(Login.class).debug("Try to reLogin after refresh");
-        if (!userLoggedIn) {
-            MCLoggerFactory.getLogger(Login.class).debug("Try to login with UserId [" + id + "] and Password [" + pas + "]");
-            if (id != null && !"".equals(id) && pas != null && !"".equals(pas)) {
-                Login.login(id, id, new DialogCallback() {
-                    public void done(boolean ok) {
-//                        if (ok) {
-//                            DriverStatus.ONLINE.saveCurrentState();
-//                        }
-                    }
-                });
-            }
-        }
     }
 
     public static void login(final String userId, final String pin, DialogCallback dialogHidingCallback) {
@@ -120,15 +96,11 @@ public class Login implements LoginListener {
         }
     }
 
-    public static void setLogout() {
-        logout = true;
-    }
-
     public static boolean isLogout() {
         return logout;
     }
 
-    protected void showLoginAuthFailedMessage() {
+    private void showLoginAuthFailedMessage() {
         final String message = MobileApp.localize("auth.failed");
         Setup.get().getUI().getDialogManager().asyncMessageSafe(MobileApp.localize("Error"), message);
     }
@@ -167,7 +139,7 @@ public class Login implements LoginListener {
         ConnectionListener.startConnecting();
     }
 
-    protected void reloginIfNeeded(String userId, String pin, Runnable future) {
+    private void reloginIfNeeded(String userId, String pin, Runnable future) {
         WaitIcon.setShowingPaused(true);
         if (Setup.get().getUI().getDialogManager().confirmSafe(MobileApp.localize("connection.failed"), MobileApp.localize("connection.failed.reconnect"))) {
             doLogin(userId, pin, future);
@@ -205,11 +177,9 @@ public class Login implements LoginListener {
                 showLoginAuthFailedMessage();
                 loginFailReported = true;
             }
-
             loginSuccess = false;
             ConnectionListener.stopConnecting();
             XMPPClient.getInstance().stop();
-
             if (listener != null) {
                 listener.fail();
             }
@@ -221,17 +191,12 @@ public class Login implements LoginListener {
         MobileApp.runTask(new Runnable() {
 
             public void run() {
-
                 loginSuccess = true;
-
                 if (listener != null) {
                     listener.successBeforeWake(initiatedByUser);
                 }
-
                 ConnectionListener.stopConnecting();
-
                 wake();
-
                 if (listener != null) {
                     listener.successAfterWake(initiatedByUser);
                 }
@@ -248,6 +213,7 @@ public class Login implements LoginListener {
     }
 
     public interface Listener {
+
         void fail();
 
         void successBeforeWake(boolean initiatedByUser);
