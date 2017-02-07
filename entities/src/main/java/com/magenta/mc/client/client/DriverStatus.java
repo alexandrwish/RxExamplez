@@ -46,7 +46,7 @@ public class DriverStatus {
             load current status from settings
          */
     private static void initState() {
-        String currentName = null;
+        String currentName;
         if (Setup.isInitialized()) {
             currentName = Setup.get().getSettings().getProperty(DRIVER_STATUS_PROPERTY, BREAK.getName());
         } else {
