@@ -8,6 +8,7 @@ repositories {
 }
 
 def buildConfig = new JsonSlurper().parseText(file(System.getProperty("BUILD_CONFIG", "./src/main/assets/build_config.json")).text)
+def code = System.getenv("BUILD_NUMBER") ?: "0"
 def getCommitHash = { ->
     def stdout = new ByteArrayOutputStream()
     exec {
@@ -41,7 +42,7 @@ android {
         targetSdkVersion 22
         applicationId "com.magenta.maxunits.mobile.vr"
         versionCode 1
-        versionName "1.0"
+        versionName "1.0." + code
     }
     buildTypes {
         release {
@@ -62,24 +63,21 @@ android {
         targetCompatibility JavaVersion.VERSION_1_7
     }
     def Properties versionProps = new Properties()
-    def code = System.getenv("BUILD_NUMBER") ?: "0"
     versionProps['VERSION_CODE'] = code.toString()
     versionProps['VERSION_HASH'] = getCommitHash()
     versionProps['VERSION_DATE'] = getCommitDate()
     def versionPropsFile = file('./src/main/assets/version.properties')
     versionProps.store(versionPropsFile.newWriter(), null)
     applicationVariants.all { variant ->
-        variant.assemble.doLast {
-            variant.outputs.each { output ->
-                File unaligned = output.packageApplication.outputFile;
-                File aligned = output.outputFile
-                if (!unaligned.getName().equalsIgnoreCase(aligned.getName())) {
-                    unaligned.delete()
-                } else {
-                    output.outputFile = new File(
-                            output.outputFile.parent,
-                            output.outputFile.name.replace(".apk", "-${variant.versionName}.apk"))
-                }
+        variant.outputs.each { output ->
+            File unaligned = output.packageApplication.outputFile;
+            File aligned = output.outputFile
+            if (!unaligned.getName().equalsIgnoreCase(aligned.getName())) {
+                unaligned.delete()
+            } else {
+                output.outputFile = new File(
+                        output.outputFile.parent,
+                        output.outputFile.name.replace(".apk", "-${versionName}.apk"))
             }
         }
     }
