@@ -2,7 +2,6 @@ package com.magenta.maxunits.mobile.dlib.controller;
 
 import android.app.Activity;
 import android.graphics.drawable.BitmapDrawable;
-import android.location.Location;
 import android.os.Build;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -11,14 +10,13 @@ import com.google.gson.Gson;
 import com.magenta.maxunits.distribution.R;
 import com.magenta.maxunits.mobile.dlib.controller.yandex.BalloonClickListener;
 import com.magenta.maxunits.mobile.dlib.controller.yandex.RouteOverLay;
+import com.magenta.maxunits.mobile.dlib.entity.LocationEntity;
 import com.magenta.maxunits.mobile.dlib.handler.MapUpdateHandler;
+import com.magenta.maxunits.mobile.dlib.mc.MxAndroidUtil;
 import com.magenta.maxunits.mobile.dlib.service.storage.entity.Job;
 import com.magenta.maxunits.mobile.dlib.service.storage.entity.Stop;
+import com.magenta.maxunits.mobile.dlib.utils.StringUtils;
 import com.magenta.maxunits.mobile.entity.Address;
-import com.magenta.maxunits.mobile.entity.LocationEntity;
-import com.magenta.maxunits.mobile.mc.MxAndroidUtil;
-import com.magenta.maxunits.mobile.service.ServicesRegistry;
-import com.magenta.maxunits.mobile.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,11 +30,11 @@ import ru.yandex.yandexmapkit.utils.GeoPoint;
 
 public class YandexMapController extends MapController {
 
-    ru.yandex.yandexmapkit.MapController controller;
-    OverlayManager overlayManager;
-    Overlay routeOverLay;
-    Overlay overlay;
-    Job job;
+    private ru.yandex.yandexmapkit.MapController controller;
+    private OverlayManager overlayManager;
+    private Overlay routeOverLay;
+    private Overlay overlay;
+    private Job job;
 
     public YandexMapController(final Activity activity, final List<Stop> stops, final boolean routeWithDriver) {
         super(activity, stops, routeWithDriver);
@@ -53,7 +51,7 @@ public class YandexMapController extends MapController {
         mHandler = new YandexHandler(this);
         mHandler.start();
         mapView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            public boolean isBuilding = true;
+            private boolean isBuilding = true;
 
             public void onGlobalLayout() {
                 if (isBuilding) {
@@ -82,7 +80,7 @@ public class YandexMapController extends MapController {
         overlayManager.addOverlay(routeOverLay);
     }
 
-    protected Job paintMap(List<Stop> stops) {
+    private Job paintMap(List<Stop> stops) {
         if (overlay != null) {
             overlayManager.removeOverlay(overlay);
         }
@@ -154,11 +152,9 @@ public class YandexMapController extends MapController {
     }
 
     public void fitBounds(List<Address> addresses) {
-        Location location = ServicesRegistry.getLocationService().getLocation();
         if (addresses == null || addresses.isEmpty()) {
             return;
         }
-
         if (addresses.size() == 1) {
             controller.setPositionNoAnimationTo(new GeoPoint(addresses.get(0).getLatitude(), addresses.get(0).getLongitude()));
             controller.setZoomCurrent(18);
@@ -199,9 +195,9 @@ public class YandexMapController extends MapController {
         }
     }
 
-    static class YandexHandler extends MapUpdateHandler {
+    private static class YandexHandler extends MapUpdateHandler {
 
-        final YandexMapController controller;
+        private final YandexMapController controller;
 
         public YandexHandler(YandexMapController controller) {
             this.controller = controller;
@@ -209,14 +205,12 @@ public class YandexMapController extends MapController {
 
         protected void updateMap(boolean firstRun) {
             LocationEntity location = MxAndroidUtil.getGeoLocation();
-
             if (location != null) {
                 if (controller.mTrackCurrentPosition) {
                     controller.controller.setPositionAnimationTo(new GeoPoint(location.getLat(), location.getLon()));
                 }
             }
-
-            List<Address> addressList = new ArrayList<Address>();
+            List<Address> addressList = new ArrayList<>();
             if (controller.routeWithDriver) {
                 if (location != null) {
                     Address address = new Address();
@@ -237,5 +231,4 @@ public class YandexMapController extends MapController {
             controller.sendUpdateRequest(addressList);
         }
     }
-
 }

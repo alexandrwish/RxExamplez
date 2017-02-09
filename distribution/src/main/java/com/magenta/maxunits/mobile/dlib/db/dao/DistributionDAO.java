@@ -11,18 +11,18 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.SelectArg;
 import com.j256.ormlite.stmt.UpdateBuilder;
 import com.j256.ormlite.support.ConnectionSource;
-import com.magenta.maxunits.mobile.MxApplication;
+import com.magenta.maxunits.mobile.dlib.MxApplication;
 import com.magenta.maxunits.mobile.dlib.db.DBAdapter;
 import com.magenta.maxunits.mobile.dlib.db.DistributionDBHelper;
 import com.magenta.maxunits.mobile.dlib.entity.DynamicAttributeEntity;
 import com.magenta.maxunits.mobile.dlib.entity.LocalizeStringEntity;
+import com.magenta.maxunits.mobile.dlib.entity.LocationEntity;
 import com.magenta.maxunits.mobile.dlib.entity.MapSettingsEntity;
 import com.magenta.maxunits.mobile.dlib.entity.OrderItemEntity;
 import com.magenta.maxunits.mobile.dlib.entity.PhoneStatisticEntity;
 import com.magenta.maxunits.mobile.dlib.entity.StatusSenderLock;
+import com.magenta.maxunits.mobile.dlib.utils.StringUtils;
 import com.magenta.maxunits.mobile.entity.AbstractJobStatus;
-import com.magenta.maxunits.mobile.entity.LocationEntity;
-import com.magenta.maxunits.mobile.utils.StringUtils;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -33,9 +33,9 @@ import java.util.concurrent.Callable;
 
 public class DistributionDAO {
 
-    static DistributionDAO instance;
-    Context context;
-    DBAdapter adapter;
+    private static DistributionDAO instance;
+    private DBAdapter adapter;
+    private Context context;
 
     private DistributionDAO(Context context) {
         this.context = context;
@@ -53,7 +53,6 @@ public class DistributionDAO {
         final ConnectionSource source = new AndroidConnectionSource(adapter.getDB(DistributionDBHelper.DATABASE_NAME));
         final Dao<OrderItemEntity, Integer> dao = DaoManager.createDao(source, OrderItemEntity.class);
         dao.callBatchTasks(new Callable<Void>() {
-            @Override
             public Void call() throws Exception {
                 for (OrderItemEntity entity : entities) {
                     dao.createOrUpdate(entity);
@@ -106,7 +105,6 @@ public class DistributionDAO {
         final Dao<DynamicAttributeEntity, Integer> dao = DaoManager.createDao(source, DynamicAttributeEntity.class);
         final Dao<LocalizeStringEntity, Integer> additionalDao = DaoManager.createDao(source, LocalizeStringEntity.class);
         dao.callBatchTasks(new Callable<Void>() {
-            @Override
             public Void call() throws Exception {
                 for (DynamicAttributeEntity entity : entities) {
                     additionalDao.createOrUpdate(entity.getTitle());
@@ -223,7 +221,7 @@ public class DistributionDAO {
     }
 
     public List<String> getDrivers() {
-        List<String> clients = new ArrayList<String>();
+        List<String> clients = new ArrayList<>();
         Cursor cursor = adapter.getDB(DistributionDBHelper.DATABASE_NAME).rawQuery("select distinct loc.user_id from geo_locations loc", new String[]{});
         try {
             cursor.moveToFirst();

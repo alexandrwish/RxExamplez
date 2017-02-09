@@ -1,6 +1,7 @@
 package com.magenta.mc.client.android.ui.theme;
 
 public enum Theme {
+
     night(0), day(1);
 
     private final int code;

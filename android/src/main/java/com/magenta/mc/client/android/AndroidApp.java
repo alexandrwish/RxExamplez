@@ -15,13 +15,6 @@ import com.magenta.mc.client.log.MCLoggerFactory;
 import com.magenta.mc.client.setup.Setup;
 import com.magenta.mc.client.util.ResourceManager;
 
-/**
- * Created by IntelliJ IDEA.
- * User: const
- * Date: 14.12.11
- * Time: 20:11
- * To change this template use File | Settings | File Templates.
- */
 public class AndroidApp extends MobileApp {
 
     protected Context applicationContext;
@@ -33,12 +26,10 @@ public class AndroidApp extends MobileApp {
         this.applicationContext = applicationContext;
     }
 
-    @Override
     protected void afterSetInstance() {
         run();
     }
 
-    @Override
     protected void run() {
         super.run();
         McAndroidApplication.resetSettingsUserId();
@@ -62,7 +53,6 @@ public class AndroidApp extends MobileApp {
                                     MCLoggerFactory.getLogger(getClass()).debug("log in completed after service restart");
                                 }
                             });
-
                         }
                     });
                 } else {
@@ -77,7 +67,6 @@ public class AndroidApp extends MobileApp {
     protected void initUncaughtExceptionHandler() {
         final Thread.UncaughtExceptionHandler defaultUncaughtExceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
-            @Override
             public void uncaughtException(Thread thread, final Throwable throwable) {
                 MCLoggerFactory.getLogger(Thread.UncaughtExceptionHandler.class).error(throwable.getMessage(), throwable);
                 defaultUncaughtExceptionHandler.uncaughtException(thread, throwable);
@@ -85,17 +74,14 @@ public class AndroidApp extends MobileApp {
         });
     }
 
-    @Override
     protected void initResourceManager() {
         ResourceManager.init(new AndroidResourceManager(applicationContext));
     }
 
-    @Override
     protected void initSetup() {
         Setup.init(new AndroidSetup(applicationContext));
     }
 
-    @Override
     protected void setupConnectionListener() {
         super.setupConnectionListener();
         final ConnectionListener.Listener listener = ConnectionListener.getInstance().getListener();
@@ -120,7 +106,6 @@ public class AndroidApp extends MobileApp {
                 if (notification != null) {
                     notificationManager.notify(McService.MAIN_NOTIFICATION_ID, notification);
                 }
-
             }
         });
     }

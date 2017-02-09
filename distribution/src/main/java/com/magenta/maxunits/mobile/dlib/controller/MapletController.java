@@ -13,12 +13,10 @@ import com.magenta.maxunits.mobile.entity.Address;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class MapletController extends MapController {
 
     private final static String TAG = "----MapletController";
     private Maplet maplet;
-
 
     public MapletController(Activity activity, List<Stop> stops, boolean routeWithDriver) {
         super(activity, stops, routeWithDriver);
@@ -30,24 +28,21 @@ public class MapletController extends MapController {
 
     public void fitBounds(final List<Address> addresses) {
         new Handler().postDelayed(new Runnable() {
-            @Override
             public void run() {
                 if (addresses.isEmpty()) {
                     return;
                 }
-                List<String> bounds = new ArrayList<String>(addresses.size());
+                List<String> bounds = new ArrayList<>(addresses.size());
                 for (Address address : addresses) {
                     bounds.add("[" + address.getLatitude() + "," + address.getLongitude() + "]");
                 }
                 String s = "[" + TextUtils.join(",", bounds) + "]";
                 maplet.fitBounds(s);
-
             }
         }, 300);
         Log.d(TAG, "fitBounds " + addresses.size());
     }
 
-    @Override
     public void onMapReady() {
         Log.d(TAG, "onMapReady");
         maplet.showJobs();
@@ -58,12 +53,10 @@ public class MapletController extends MapController {
         super.onMapReady();
     }
 
-    @Override
     public void updateRoute(String route) {
         maplet.updateRoute(route);
     }
 
-    @Override
     public void onResume() {
         super.onResume();
         if (maplet.isShown()) {
@@ -71,7 +64,6 @@ public class MapletController extends MapController {
         }
     }
 
-    @Override
     public void onPause() {
         super.onPause();
         if (maplet.isShown()) {

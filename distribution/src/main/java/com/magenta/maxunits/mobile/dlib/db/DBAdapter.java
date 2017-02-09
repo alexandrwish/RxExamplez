@@ -2,8 +2,6 @@ package com.magenta.maxunits.mobile.dlib.db;
 
 import android.content.Context;
 
-import com.magenta.maxunits.mobile.db.MxDBAdapter;
-
 public class DBAdapter extends MxDBAdapter {
 
     public DBAdapter(Context context) {

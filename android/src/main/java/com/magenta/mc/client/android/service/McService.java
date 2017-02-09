@@ -15,10 +15,6 @@ import com.magenta.mc.client.setup.Setup;
 
 import roboguice.service.RoboService;
 
-/**
- * @autor Petr Popov
- * Created 24.04.12 16:42
- */
 public class McService extends RoboService {
 
     public static final int MAIN_NOTIFICATION_ID = 433442;
@@ -30,7 +26,6 @@ public class McService extends RoboService {
         MCLoggerFactory.getLogger(getClass()).trace("Instantiating");
     }
 
-    @Override
     public void onCreate() {
         super.onCreate();
         PowerManager pm = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
@@ -51,13 +46,11 @@ public class McService extends RoboService {
         return new AndroidApp(new String[]{}, this);
     }
 
-    @Override
     public void onStart(Intent intent, int startId) {
         super.onStart(intent, startId);
         MCLoggerFactory.getLogger(getClass()).info("onStart");
     }
 
-    @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         MCLoggerFactory.getLogger(getClass()).trace("onStartCommand: Received start id " + startId + ": " + intent);
         try {
@@ -70,13 +63,11 @@ public class McService extends RoboService {
         return START_STICKY;
     }
 
-    @Override
     public IBinder onBind(Intent intent) {
         MCLoggerFactory.getLogger(getClass()).info("onBind");
         return binder;
     }
 
-    @Override
     public void onDestroy() {
         MCLoggerFactory.getLogger(getClass()).info("onDestroy");
         if (partialLock.isHeld()) {
@@ -85,13 +76,11 @@ public class McService extends RoboService {
         super.onDestroy();
     }
 
-    @Override
     public boolean onUnbind(Intent intent) {
         MCLoggerFactory.getLogger(getClass()).trace("onUnbind");
         return super.onUnbind(intent);
     }
 
-    @Override
     public void onLowMemory() {
         MCLoggerFactory.getLogger(getClass()).info("onLowMemory");
         super.onLowMemory();
@@ -102,6 +91,4 @@ public class McService extends RoboService {
             return McService.this;
         }
     }
-
 }
-

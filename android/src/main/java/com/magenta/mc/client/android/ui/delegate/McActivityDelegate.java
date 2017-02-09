@@ -17,18 +17,6 @@ import com.magenta.mc.client.setup.Setup;
 
 import javax.inject.Inject;
 
-/**
- * Project: Santa-cruz
- * Author:  Alexandr Komarov
- * Created: 23.12.13 10:14
- * <p/>
- * Copyright (c) 1999-2013 Magenta Corporation Ltd. All Rights Reserved.
- * Magenta Technology proprietary and confidential.
- * Use is subject to license terms.
- * <p/>
- * $Id$
- */
-
 public class McActivityDelegate implements ActivityDelegate {
 
     protected final MCLogger LOG = MCLoggerFactory.getLogger(getClass());
@@ -79,7 +67,7 @@ public class McActivityDelegate implements ActivityDelegate {
         LOG.trace(getActivity().getLocalClassName() + ": onBackPressed.");
     }
 
-    protected void setUiCurrentActivity() {
+    private void setUiCurrentActivity() {
         try {
             ((AndroidUI) Setup.get().getUI()).switchToActivity(getActivity());
         } catch (Exception e) {
@@ -91,7 +79,7 @@ public class McActivityDelegate implements ActivityDelegate {
         LOG.trace("Set driver status = " + driverStatus.getName());
     }
 
-    protected void checkGPS() {
+    private void checkGPS() {
         if (notificationManager != null && locationManager != null) {
             boolean online = XMPPClient.getInstance().isLoggedIn();
             if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {

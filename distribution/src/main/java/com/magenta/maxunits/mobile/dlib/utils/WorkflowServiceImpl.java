@@ -5,24 +5,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.magenta.maxunits.mobile.MxApplication;
-import com.magenta.maxunits.mobile.activity.ActivityDecorator;
-import com.magenta.maxunits.mobile.activity.WorkflowActivity;
-import com.magenta.maxunits.mobile.activity.common.LoginActivity;
+import com.magenta.maxunits.mobile.dlib.MxApplication;
+import com.magenta.maxunits.mobile.dlib.activity.ActivityDecorator;
 import com.magenta.maxunits.mobile.dlib.activity.ArriveMapActivity;
 import com.magenta.maxunits.mobile.dlib.activity.HDActivityDecorator;
 import com.magenta.maxunits.mobile.dlib.activity.JobActivity;
 import com.magenta.maxunits.mobile.dlib.activity.JobsActivity;
 import com.magenta.maxunits.mobile.dlib.activity.StartActivity;
-import com.magenta.maxunits.mobile.dlib.activity.common.DistributionSettingsActivity;
+import com.magenta.maxunits.mobile.dlib.activity.WorkflowActivity;
+import com.magenta.maxunits.mobile.dlib.activity.common.LoginActivity;
+import com.magenta.maxunits.mobile.dlib.activity.common.SettingsActivity;
 import com.magenta.maxunits.mobile.dlib.handler.HDUpdateHandler;
-import com.magenta.maxunits.mobile.handler.UpdateHandler;
-import com.magenta.maxunits.mobile.service.WorkflowService;
+import com.magenta.maxunits.mobile.dlib.handler.UpdateHandler;
+import com.magenta.maxunits.mobile.dlib.service.WorkflowService;
 
 public class WorkflowServiceImpl implements WorkflowService {
 
-    static final UpdateHandler updateHandler = new HDUpdateHandler();
-    Context context;
+    private static final UpdateHandler updateHandler = new HDUpdateHandler();
+    private final Context context;
 
     public WorkflowServiceImpl(Context context) {
         this.context = context;
@@ -36,10 +36,6 @@ public class WorkflowServiceImpl implements WorkflowService {
         MxApplication.getContext().startActivity(intent);
     }
 
-    public void showNextActivity() {
-        showNextActivity(0);
-    }
-
     public void showNextActivity(int flags) {
         context.startActivity(new Intent(context, getFirstActivity()).putExtra("after-login", true).addFlags(flags));
     }
@@ -49,7 +45,7 @@ public class WorkflowServiceImpl implements WorkflowService {
     }
 
     public void showSettings(Activity activity, int requestCode) {
-        activity.startActivityForResult(new Intent(activity, DistributionSettingsActivity.class), requestCode);
+        activity.startActivityForResult(new Intent(activity, SettingsActivity.class), requestCode);
     }
 
     public Class<? extends WorkflowActivity> getStartActivity() {

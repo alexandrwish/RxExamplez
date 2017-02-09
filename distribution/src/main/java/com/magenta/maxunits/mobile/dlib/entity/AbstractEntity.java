@@ -4,7 +4,7 @@ import com.j256.ormlite.field.DatabaseField;
 
 public abstract class AbstractEntity<T> {
 
-    @DatabaseField(id = false, generatedId = true, allowGeneratedIdInsert = true)
+    @DatabaseField(generatedId = true, allowGeneratedIdInsert = true)
     protected int id;
 
     public int getId() {

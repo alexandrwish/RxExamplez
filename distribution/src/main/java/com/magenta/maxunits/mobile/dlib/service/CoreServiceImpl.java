@@ -9,14 +9,12 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 
 import com.magenta.maxunits.distribution.R;
-import com.magenta.maxunits.mobile.activity.WorkflowActivity;
 import com.magenta.maxunits.mobile.dlib.activity.JobsActivity;
+import com.magenta.maxunits.mobile.dlib.activity.WorkflowActivity;
+import com.magenta.maxunits.mobile.dlib.mc.MxSettings;
 import com.magenta.maxunits.mobile.dlib.service.events.EventType;
 import com.magenta.maxunits.mobile.dlib.service.events.JobEvent;
-import com.magenta.maxunits.mobile.mc.MxSettings;
-import com.magenta.maxunits.mobile.service.CoreServiceGeneric;
-import com.magenta.maxunits.mobile.service.ServicesRegistry;
-import com.magenta.maxunits.mobile.service.listeners.BroadcastEvent;
+import com.magenta.maxunits.mobile.dlib.service.listeners.BroadcastEvent;
 import com.magenta.mc.client.android.ui.AndroidUI;
 import com.magenta.mc.client.android.ui.Notifications;
 import com.magenta.mc.client.log.MCLoggerFactory;
@@ -24,9 +22,6 @@ import com.magenta.mc.client.setup.Setup;
 
 import java.util.concurrent.locks.ReentrantLock;
 
-/**
- * @author Sergey Grachev
- */
 public class CoreServiceImpl extends CoreServiceGeneric {
 
     ReentrantLock alertLock = new ReentrantLock(true);

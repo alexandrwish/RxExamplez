@@ -11,33 +11,18 @@ import com.magenta.mc.client.android.ui.view.WheelView;
 
 import java.util.Calendar;
 
-/**
- * Project: Santa-cruz
- * Author:  Alexandr Komarov
- * Created: 25.03.13 9:44
- * <p/>
- * Copyright (c) 1999-2013 Magenta Corporation Ltd. All Rights Reserved.
- * Magenta Technology proprietary and confidential.
- * Use is subject to license terms.
- * <p/>
- * $Id$
- */
 public class WheelDialog extends WideDialog {
 
-    protected WheelView firstWheel;
-    protected WheelView secondWheel;
-
-    protected int firstMin;
-    protected int firstMax;
-    protected int secondMin;
-    protected int secondMax;
-
     protected WheelType type;
-
-    protected NumericWheelAdapter firstWheelAdapter;
-    protected NumericWheelAdapter secondWheelAdapter;
-
-    protected View.OnClickListener okListener;
+    private WheelView firstWheel;
+    private WheelView secondWheel;
+    private int firstMin;
+    private int firstMax;
+    private int secondMin;
+    private int secondMax;
+    private NumericWheelAdapter firstWheelAdapter;
+    private NumericWheelAdapter secondWheelAdapter;
+    private View.OnClickListener okListener;
 
     public WheelDialog(Context context) {
         super(R.layout.dialog_time_input, context);
@@ -47,32 +32,20 @@ public class WheelDialog extends WideDialog {
         super(layout, context, theme);
     }
 
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        beforeCreate();
-
         firstWheelAdapter = new NumericWheelAdapter(firstMin, firstMax);
         firstWheel = (WheelView) findViewById(R.id.wheel_hour);
         firstWheel.setLabelBeforeValue(type.equals(WheelType.Money));
         firstWheel.setAdapter(firstWheelAdapter);
-
         secondWheelAdapter = new NumericWheelAdapter(secondMin, secondMax);
         secondWheel = (WheelView) findViewById(R.id.wheel_mins);
         secondWheel.setAdapter(secondWheelAdapter);
-
         Button okBtn = (Button) findViewById(R.id.wheel_ok_btn);
         okBtn.setOnClickListener(okListener);
-
         Button cancelBtn = (Button) findViewById(R.id.wheel_cancel_btn);
         cancelBtn.setOnClickListener(getCancelBtnListener());
-
         initialize();
-    }
-
-    protected void beforeCreate() {
-        //Todo initialize before create
     }
 
     protected void initialize() {
@@ -130,7 +103,7 @@ public class WheelDialog extends WideDialog {
         secondWheel.setLabel(label);
     }
 
-    public enum WheelType {
+    private enum WheelType {
         Time,
         Money,
         Break,

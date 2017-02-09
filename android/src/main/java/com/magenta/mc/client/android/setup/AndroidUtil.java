@@ -15,10 +15,8 @@ import com.magenta.mc.client.tracking.GeoLocation;
 import com.magenta.mc.client.tracking.GeoLocationSource;
 import com.magenta.mc.client.util.PlatformUtil;
 
-/**
- * @author Sergey Grachev
- */
 public class AndroidUtil implements PlatformUtil {
+
     protected final Context applicationContext;
 
     public AndroidUtil(final Context applicationContext) {
@@ -26,8 +24,7 @@ public class AndroidUtil implements PlatformUtil {
     }
 
     public boolean startConnection() {
-        final ConnectivityManager connectivityManager
-                = (ConnectivityManager) applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        final ConnectivityManager connectivityManager = (ConnectivityManager) applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         final NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
@@ -64,11 +61,9 @@ public class AndroidUtil implements PlatformUtil {
     }
 
     public void initLocationAPI() {
-        //
     }
 
     public void shutdownLocationAPI() {
-        //
     }
 
     protected boolean checkLocationAge(Location location, long locationMaxAge) {
@@ -80,7 +75,7 @@ public class AndroidUtil implements PlatformUtil {
                 location.getTime(),
                 location.getLatitude(),
                 location.getLongitude(),
-                new Float(location.getSpeed() * 3.6),
+                location.getSpeed() * 3.6F,
                 location.getBearing(),
                 satellitesCount);
         result.setRetrieveTimestamp(System.currentTimeMillis() + Setup.get().getSettings().getTimeDelta());

@@ -2,24 +2,23 @@ package com.magenta.maxunits.mobile.dlib.service.storage;
 
 import android.util.Pair;
 
-import com.magenta.maxunits.mobile.db.dao.CommonsDAO;
 import com.magenta.maxunits.mobile.dlib.DistributionApplication;
+import com.magenta.maxunits.mobile.dlib.db.dao.CommonsDAO;
+import com.magenta.maxunits.mobile.dlib.mc.MxSettings;
+import com.magenta.maxunits.mobile.dlib.service.DataController;
+import com.magenta.maxunits.mobile.dlib.service.ServicesRegistry;
 import com.magenta.maxunits.mobile.dlib.service.events.EventType;
 import com.magenta.maxunits.mobile.dlib.service.events.JobEvent;
+import com.magenta.maxunits.mobile.dlib.service.listeners.BroadcastEvent;
 import com.magenta.maxunits.mobile.dlib.service.storage.entity.FullJobHistory;
 import com.magenta.maxunits.mobile.dlib.service.storage.entity.Job;
 import com.magenta.maxunits.mobile.dlib.service.storage.entity.JobStatus;
 import com.magenta.maxunits.mobile.dlib.service.storage.entity.Stop;
+import com.magenta.maxunits.mobile.dlib.utils.DateUtils;
 import com.magenta.maxunits.mobile.entity.JobType;
 import com.magenta.maxunits.mobile.entity.TaskState;
-import com.magenta.maxunits.mobile.mc.MxSettings;
-import com.magenta.maxunits.mobile.service.DataController;
-import com.magenta.maxunits.mobile.service.ServicesRegistry;
-import com.magenta.maxunits.mobile.service.listeners.BroadcastEvent;
-import com.magenta.maxunits.mobile.utils.DateUtils;
 import com.magenta.mc.client.MobileApp;
 import com.magenta.mc.client.client.resend.Resender;
-import com.magenta.mc.client.components.MCTimerTask;
 import com.magenta.mc.client.exception.UnknownJobStatusException;
 import com.magenta.mc.client.log.MCLogger;
 import com.magenta.mc.client.log.MCLoggerFactory;
@@ -32,7 +31,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -147,7 +145,6 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
         return new Job(fullJobHistory.get(refId));
     }
 
-    @Override
     public Pair<Job, Stop> find(final String jobId, final String stopId) {
         final Job job = refToJob.get(jobId);
         return job != null ? new Pair<>(job, (Stop) job.getStop(stopId)) : null;
@@ -236,7 +233,6 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
         }
     }
 
-    @Override
     public void updateJob(Job job) {
         updateJob(job, false);
     }
@@ -276,7 +272,6 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
         CommonsDAO dao = new CommonsDAO(DistributionApplication.getContext());
         dao.removeAllJobData(jobForCancel.getReferenceId());
         Map<String, String> refToNewRef = new TreeMap<>(new Comparator<String>() {
-            @Override
             public int compare(String o1, String o2) {
                 long l1 = Long.valueOf(o1, Character.MAX_RADIX);
                 long l2 = Long.valueOf(o2, Character.MAX_RADIX);
@@ -376,7 +371,7 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
     }
 
     public List<Job> loadCurrentJobs() {
-        final List<Job> active = new ArrayList<Job>();
+        final List<Job> active = new ArrayList<>();
         for (final Job job : refToJob.values()) {
             if (!job.isCompleted() && job.isAllStopsCompleted() && job.isAcknowledged()) {
                 moveToHistory(job);
@@ -400,7 +395,7 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
     }
 
     public List<Job> getJobsFromHistory() {
-        List<Job> result = new ArrayList<Job>();
+        List<Job> result = new ArrayList<>();
         if (fullJobHistory.isEmpty()) {
             loadFullHistory();
         }
@@ -460,7 +455,7 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
         ServicesRegistry.getCoreService().notifyListeners(new BroadcastEvent<String>(EventType.RELOAD_SCHEDULE));
     }
 
-    protected void updateStopFlags(Job job) {
+    private void updateStopFlags(Job job) {
         boolean upd;
         Job j = refToJob.get(job.getReferenceId());
         if (j != null) {
@@ -485,23 +480,6 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
         refToJob.put(job.getReferenceId(), job);
     }
 
-    private void executeCumulativeAction(final List container, final CumulativeAction action, final long timeout) {
-        final int previousAddedCount = container.size();
-        MobileApp.getInstance().getTimer().schedule(new MCTimerTask() {
-            public void runTask() {
-                synchronized (container) {
-                    if (previousAddedCount < container.size()) {
-                        // more jobs added, waiting again
-                        executeCumulativeAction(container, action, timeout);
-                    } else {
-                        final ArrayList containerCopy = new ArrayList(container);
-                        container.clear();
-                    }
-                }
-            }
-        }, timeout);
-    }
-
     private void clearCurrentJobsStorageAndCache() {
         for (final String reference : refToJob.keySet()) {
             Setup.get().getStorage().delete(Job.STORABLE_METADATA, reference);
@@ -517,9 +495,5 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
             MCLoggerFactory.getLogger(this.getClass()).info(logprefix + ", " + date);
         }
         return isOld;
-    }
-
-    private interface CumulativeAction {
-        void run(List contents);
     }
 }

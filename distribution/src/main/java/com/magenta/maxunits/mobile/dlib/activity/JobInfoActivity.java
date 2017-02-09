@@ -8,7 +8,6 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.magenta.maxunits.distribution.R;
-import com.magenta.maxunits.mobile.activity.WorkflowActivity;
 import com.magenta.maxunits.mobile.dlib.adapter.JobDetailStopsAdapter;
 import com.magenta.maxunits.mobile.dlib.mc.HDSettings;
 import com.magenta.maxunits.mobile.dlib.service.events.EventType;
@@ -17,11 +16,11 @@ import com.magenta.maxunits.mobile.dlib.service.storage.entity.Job;
 import com.magenta.maxunits.mobile.dlib.service.storage.entity.Stop;
 import com.magenta.maxunits.mobile.dlib.utils.IntentAttributes;
 import com.magenta.maxunits.mobile.entity.TaskState;
-import com.magenta.maxunits.mobile.mc.MxSettings;
-import com.magenta.maxunits.mobile.service.ServicesRegistry;
-import com.magenta.maxunits.mobile.service.listeners.BroadcastEvent;
-import com.magenta.maxunits.mobile.service.listeners.MxBroadcastEvents;
-import com.magenta.maxunits.mobile.utils.DateUtils;
+import com.magenta.maxunits.mobile.dlib.mc.MxSettings;
+import com.magenta.maxunits.mobile.dlib.service.ServicesRegistry;
+import com.magenta.maxunits.mobile.dlib.service.listeners.BroadcastEvent;
+import com.magenta.maxunits.mobile.dlib.service.listeners.MxBroadcastEvents;
+import com.magenta.maxunits.mobile.dlib.utils.DateUtils;
 import com.magenta.mc.client.android.ui.AndroidUI;
 import com.magenta.mc.client.setup.Setup;
 

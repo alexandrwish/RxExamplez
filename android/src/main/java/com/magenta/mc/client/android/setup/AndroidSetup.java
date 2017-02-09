@@ -1,6 +1,5 @@
 package com.magenta.mc.client.android.setup;
 
-
 import android.content.Context;
 
 import com.magenta.mc.client.android.settings.AndroidSettings;
@@ -14,10 +13,6 @@ import com.magenta.mc.client.ui.UI;
 import com.magenta.mc.client.update.UpdateCheck;
 import com.magenta.mc.client.util.PlatformUtil;
 
-/**
- * @author Petr Popov
- *         Created: 13.12.11 18:03
- */
 public class AndroidSetup extends Setup {
 
     protected Storage storage;
@@ -46,7 +41,7 @@ public class AndroidSetup extends Setup {
         androidUtil = new AndroidUtil(applicationContext);
     }
 
-    protected void initSettings(Context applicationContext) {
+    private void initSettings(Context applicationContext) {
         settings = new AndroidSettings(applicationContext);
     }
 
@@ -58,17 +53,14 @@ public class AndroidSetup extends Setup {
         return storage;
     }
 
-    @Override
     public Settings getSettings() {
         return settings;
     }
 
-    @Override
     public PlatformUtil getPlatformUtil() {
         return androidUtil;
     }
 
-    @Override
     public UI getUI() {
         return ui;
     }
@@ -76,5 +68,4 @@ public class AndroidSetup extends Setup {
     public UpdateCheck getUpdateCheck() {
         return updateCheck;
     }
-
 }

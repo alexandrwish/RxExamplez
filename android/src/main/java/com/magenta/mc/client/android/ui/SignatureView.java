@@ -14,20 +14,16 @@ import com.magenta.mc.client.log.MCLoggerFactory;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * @autor Petr Popov
- * Created 03.05.12 15:42
- */
 public class SignatureView extends View {
 
     private static final float TOUCH_TOLERANCE = 4;
-    protected List<Rect> lines = new LinkedList<Rect>();
+    protected List<Rect> lines = new LinkedList<>();
     private int width;
+    private Paint mBitmapPaint;
+    private Paint mPaint;
     private Bitmap mBitmap;
     private Canvas mCanvas;
     private Path mPath;
-    private Paint mBitmapPaint;
-    private Paint mPaint;
     private int strokeWidth;
     private float mX, mY;
 
@@ -40,22 +36,17 @@ public class SignatureView extends View {
         this.strokeWidth = strokeWidth;
     }
 
-    @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
     }
 
-    @Override
     protected void onDraw(Canvas canvas) {
         if (width != getWidth()) { // todo: check if that's what happens on screen rotation (not onDestroy()?)
             width = getWidth();
             clear();
         }
-
         canvas.drawColor(0xFFAAAAAA);
-
         canvas.drawBitmap(mBitmap, 0, 0, mBitmapPaint);
-
         canvas.drawPath(mPath, mPaint);
     }
 
@@ -87,13 +78,11 @@ public class SignatureView extends View {
         //lines.add(new Rect((int) mX, (int) mY, 1, 1));
     }
 
-    @Override
     public boolean onTouchEvent(MotionEvent event) {
         String eventName = "";
         try {
             float x = event.getX();
             float y = event.getY();
-
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     touch_start(x, y);
@@ -114,7 +103,6 @@ public class SignatureView extends View {
         } catch (Exception e) {
             MCLoggerFactory.getLogger(getClass()).error(String.format("Something wrong when user %s on SignatureVie", eventName), e);
         }
-
         return true;
     }
 
@@ -122,10 +110,9 @@ public class SignatureView extends View {
         free();
         mBitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
         mCanvas = new Canvas(mBitmap);
-        lines = new LinkedList<Rect>();
+        lines = new LinkedList<>();
         mPath = new Path();
         mBitmapPaint = new Paint(Paint.DITHER_FLAG);
-
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setDither(true);
@@ -134,7 +121,6 @@ public class SignatureView extends View {
         mPaint.setStrokeJoin(Paint.Join.ROUND);
         mPaint.setStrokeCap(Paint.Cap.ROUND);
         mPaint.setStrokeWidth(this.strokeWidth);
-
         invalidate();
     }
 
@@ -168,6 +154,4 @@ public class SignatureView extends View {
             }
         }
     }
-
 }
-

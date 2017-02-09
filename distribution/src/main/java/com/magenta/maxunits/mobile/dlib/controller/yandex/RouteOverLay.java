@@ -12,8 +12,8 @@ import ru.yandex.yandexmapkit.utils.GeoPoint;
 
 public class RouteOverLay extends Overlay {
 
-    protected OverlayRectItem overlayRectItem;
-    protected MapController mMapController;
+    private OverlayRectItem overlayRectItem;
+    private MapController mMapController;
 
     public RouteOverLay(MapController mapController, Double[][] coordinates) {
         super(mapController);
@@ -21,7 +21,7 @@ public class RouteOverLay extends Overlay {
         mMapController = mapController;
         setIRender(new RectRender());
         overlayRectItem = new OverlayRectItem(new GeoPoint(0, 0), mapController.getContext().getResources().getDrawable(R.drawable.home_icon));
-        List<GeoPoint> gp = new ArrayList<GeoPoint>();
+        List<GeoPoint> gp = new ArrayList<>();
         for (Double[] coordinate : coordinates) {
             gp.add(new GeoPoint(coordinate[0], coordinate[1]));
         }
@@ -30,7 +30,7 @@ public class RouteOverLay extends Overlay {
     }
 
     public List<OverlayItem> prepareDraw() {
-        ArrayList<OverlayItem> draw = new ArrayList<OverlayItem>();
+        ArrayList<OverlayItem> draw = new ArrayList<>();
         overlayRectItem.getScreenPoints().clear();
         for (GeoPoint point : overlayRectItem.getGeoPoints()) {
             overlayRectItem.getScreenPoints().add(mMapController.getScreenPoint(point));
@@ -39,7 +39,6 @@ public class RouteOverLay extends Overlay {
         return draw;
     }
 
-    @Override
     public int compareTo(Object another) {
         return 0;
     }

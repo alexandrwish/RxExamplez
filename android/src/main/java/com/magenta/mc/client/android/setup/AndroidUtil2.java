@@ -18,13 +18,9 @@ import com.magenta.mc.client.tracking.GeoLocationSource;
 
 import java.text.SimpleDateFormat;
 
-/**
- * @autor Petr Popov
- * Created 18.07.12 18:04
- */
 public class AndroidUtil2 extends AndroidUtil {
 
-    public static final int LOCATION_SOURCE_LOG_TIMEOUT = 1 * 60 * 1000; // 1 minute
+    public static final int LOCATION_SOURCE_LOG_TIMEOUT = 60 * 1000; // 1 minute
     private static final int TWO_MINUTES = 1000 * 60 * 2;
     private final LocationListener gpsLocationListener;
     private final LocationListener networkLocationListener;
@@ -84,7 +80,6 @@ public class AndroidUtil2 extends AndroidUtil {
         }
     }
 
-    @Override
     public void initLocationAPI() {
         final LocationManager locationManager = (LocationManager) applicationContext.getSystemService(Context.LOCATION_SERVICE);
         handler.post(new Runnable() {
@@ -95,7 +90,6 @@ public class AndroidUtil2 extends AndroidUtil {
         });
     }
 
-    @Override
     public void shutdownLocationAPI() {
         super.shutdownLocationAPI();
         final LocationManager locationManager = (LocationManager) applicationContext.getSystemService(Context.LOCATION_SERVICE);
@@ -120,7 +114,6 @@ public class AndroidUtil2 extends AndroidUtil {
         long networkElapsedRealtime = this.networkElapsedRealtime;
         Location gpsLocation = this.gpsLocation;
         long gpsElapsedRealtime = this.gpsElapsedRealtime;
-
         GeoLocationSource source = GeoLocationSource.UNKNOWN;
         String locationSource = "last";
         if (location == null && networkLocation == null && gpsLocation == null) {
@@ -199,23 +192,18 @@ public class AndroidUtil2 extends AndroidUtil {
             // A new location is always better than no location
             return true;
         }
-
         // Check whether the new location fix is newer or older
         long newLocationTime = location.getTime();
         long currentLocationTime = currentBestLocation.getTime();
-
         SimpleDateFormat df = new SimpleDateFormat();
         //MCLoggerFactory.getLogger(AndroidUtil2.class).debug("new location time: " + df.format(new Date(newLocationTime)) + ", elapsed: " + newElapsedRealtime);
         //MCLoggerFactory.getLogger(AndroidUtil2.class).debug("current location time: " + df.format(new Date(currentLocationTime)) + ", elapsed: " + currentElapsedRealtime);
-
         long timeDelta = newElapsedRealtime - currentElapsedRealtime;
         boolean isSignificantlyNewer = timeDelta > TWO_MINUTES;
         boolean isSignificantlyOlder = timeDelta < -TWO_MINUTES;
         boolean isNewer = timeDelta > 0;
-
         String newLocationProvider = location.getProvider();
         String currentLocationProvider = currentBestLocation.getProvider();
-
         // If it's been more than two minutes since the current location, use the new location
         // because the user has likely moved
         if (isSignificantlyNewer) {
@@ -226,13 +214,11 @@ public class AndroidUtil2 extends AndroidUtil {
             //MCLoggerFactory.getLogger(AndroidUtil2.class).debug(newLocationProvider + " is older than " + currentLocationProvider + ", time delta " + timeDelta);
             return false;
         }
-
         // Check whether the new location fix is more or less accurate
         float newLocationAccuracy = location.getAccuracy();
         float currentLocationAccuracy = currentBestLocation.getAccuracy();
         //MCLoggerFactory.getLogger(AndroidUtil2.class).debug(newLocationProvider + " location accuracy: " + newLocationAccuracy);
         //MCLoggerFactory.getLogger(AndroidUtil2.class).debug(currentLocationProvider + " location accuracy: " + currentLocationAccuracy);
-
         float accuracyDelta = newLocationAccuracy - currentLocationAccuracy;
         boolean isLessAccurate = false;
         boolean isMoreAccurate = false;
@@ -249,11 +235,8 @@ public class AndroidUtil2 extends AndroidUtil {
             isMoreAccurate = accuracyDelta < 0;
             isSignificantlyLessAccurate = accuracyDelta > 200;
         }
-
         // Check if the old and new location are from the same provider
-        boolean isFromSameProvider = isSameProvider(newLocationProvider,
-                currentLocationProvider);
-
+        boolean isFromSameProvider = isSameProvider(newLocationProvider, currentLocationProvider);
         // Determine location quality using a combination of timeliness and accuracy
         if (isMoreAccurate) {
             //MCLoggerFactory.getLogger(AndroidUtil2.class).debug(newLocationProvider + " is more accurate than " + currentLocationProvider + ", accuracyDelta: " + accuracyDelta);
@@ -287,5 +270,4 @@ public class AndroidUtil2 extends AndroidUtil {
         }
         return provider1.equals(provider2);
     }
-
 }

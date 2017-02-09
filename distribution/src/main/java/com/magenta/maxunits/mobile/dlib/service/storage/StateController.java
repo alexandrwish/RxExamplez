@@ -1,14 +1,14 @@
 package com.magenta.maxunits.mobile.dlib.service.storage;
 
-import com.magenta.maxunits.mobile.entity.JobEntity;
-import com.magenta.maxunits.mobile.service.ServicesRegistry;
+import com.magenta.maxunits.mobile.dlib.entity.JobEntity;
+import com.magenta.maxunits.mobile.dlib.service.ServicesRegistry;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class StateController {
 
-    private final static Map<String, String> currentJobActivity = new HashMap<String, String>();
+    private final static Map<String, String> currentJobActivity = new HashMap<>();
     private static String currentJob;
 
     @SuppressWarnings("unchecked")

@@ -1,7 +1,7 @@
 package com.magenta.maxunits.mobile.dlib.acra;
 
 import com.magenta.maxunits.mobile.dlib.DistributionApplication;
-import com.magenta.maxunits.mobile.mc.MxAndroidUtil;
+import com.magenta.maxunits.mobile.dlib.mc.MxAndroidUtil;
 import com.magenta.mc.client.log.MCLoggerFactory;
 
 import org.acra.ACRA;

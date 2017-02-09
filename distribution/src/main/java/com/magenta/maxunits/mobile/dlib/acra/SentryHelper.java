@@ -3,7 +3,7 @@ package com.magenta.maxunits.mobile.dlib.acra;
 import android.net.Uri;
 
 import com.magenta.maxunits.mobile.dlib.http.HTTPHelper;
-import com.magenta.maxunits.mobile.mc.MxSettings;
+import com.magenta.maxunits.mobile.dlib.mc.MxSettings;
 import com.magenta.mc.client.log.MCLoggerFactory;
 
 import org.json.JSONObject;
@@ -16,20 +16,18 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.UUID;
 
-public class SentryHelper {
+final class SentryHelper {
 
     private static final String DEFAULT_BASE_URL = "https://app.getsentry.com";
     private static final String VERSION = "0.2.0";
 
-    public void captureEvent(final SentryEventBuilder builder) {
-
+    void captureEvent(final SentryEventBuilder builder) {
         Runnable runnable = new Runnable() {
-            @Override
             public void run() {
                 final Map<String, Object> requestBody = builder.event;
                 Uri dsn = getDsn();
                 if (dsn != null) {
-                    Map<String, String> headers = new HashMap<String, String>(3);
+                    Map<String, String> headers = new HashMap<>(3);
                     headers.put("X-Sentry-Auth", createXSentryAuthHeader(dsn));
                     headers.put("User-Agent", "sentry-android");
                     headers.put("Content-Type", "text/html; charset=utf-8");
@@ -38,7 +36,6 @@ public class SentryHelper {
                     httpHelper.postJson(url, requestBody, headers);
                 }
             }
-
         };
         Thread thread = new Thread(runnable);
         thread.start();
@@ -73,7 +70,7 @@ public class SentryHelper {
         return path.substring(path.lastIndexOf("/") + 1);
     }
 
-    public static class SentryEventBuilder {
+    final static class SentryEventBuilder {
 
         final static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.UK);
 
@@ -81,10 +78,10 @@ public class SentryHelper {
             sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         }
 
-        Map<String, Object> event;
+        private final Map<String, Object> event;
 
-        public SentryEventBuilder() {
-            event = new HashMap<String, Object>();
+        SentryEventBuilder() {
+            event = new HashMap<>();
             event.put("event_id", UUID.randomUUID().toString().replace("-", ""));
             event.put("platform", "java");
             this.setTimestamp(System.currentTimeMillis());
@@ -105,22 +102,22 @@ public class SentryHelper {
             return this;
         }
 
-        public SentryEventBuilder setCulprit(String culprit) {
+        SentryEventBuilder setCulprit(String culprit) {
             event.put("culprit", culprit);
             return this;
         }
 
-        public SentryEventBuilder setExtra(Map<String, String> extra) {
+        SentryEventBuilder setExtra(Map<String, String> extra) {
             setExtra(new JSONObject(extra));
             return this;
         }
 
-        public SentryEventBuilder setExtra(JSONObject extra) {
+        SentryEventBuilder setExtra(JSONObject extra) {
             event.put("extra", extra);
             return this;
         }
 
-        public enum SentryEventLevel {
+        enum SentryEventLevel {
 
             FATAL("fatal"),
             ERROR("error"),
@@ -128,7 +125,7 @@ public class SentryHelper {
             INFO("info"),
             DEBUG("debug");
 
-            String value;
+            private String value;
 
             SentryEventLevel(String value) {
                 this.value = value;

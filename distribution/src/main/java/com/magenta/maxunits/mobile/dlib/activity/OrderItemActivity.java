@@ -16,7 +16,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.magenta.maxunits.distribution.R;
-import com.magenta.maxunits.mobile.activity.WorkflowActivity;
 import com.magenta.maxunits.mobile.dlib.adapter.ExpandableOrderItemAdapter;
 import com.magenta.maxunits.mobile.dlib.db.dao.DistributionDAO;
 import com.magenta.maxunits.mobile.dlib.entity.OrderItemCheckStatus;
@@ -26,8 +25,8 @@ import com.magenta.maxunits.mobile.dlib.integrator.IntentIntegrator;
 import com.magenta.maxunits.mobile.dlib.integrator.IntentResult;
 import com.magenta.maxunits.mobile.dlib.sound.DSound;
 import com.magenta.maxunits.mobile.dlib.utils.DSoundPool;
-import com.magenta.maxunits.mobile.mc.MxSettings;
-import com.magenta.maxunits.mobile.utils.StringUtils;
+import com.magenta.maxunits.mobile.dlib.mc.MxSettings;
+import com.magenta.maxunits.mobile.dlib.utils.StringUtils;
 import com.magenta.mc.client.setup.Setup;
 
 import java.sql.SQLException;

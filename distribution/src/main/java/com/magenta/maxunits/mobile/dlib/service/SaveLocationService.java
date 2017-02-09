@@ -8,12 +8,9 @@ import android.util.Log;
 
 import com.magenta.maxunits.mobile.dlib.DistributionApplication;
 import com.magenta.maxunits.mobile.dlib.db.dao.DistributionDAO;
-import com.magenta.maxunits.mobile.entity.LocationEntity;
-import com.magenta.maxunits.mobile.mc.MxSettings;
-import com.magenta.maxunits.mobile.service.LocationService;
-import com.magenta.maxunits.mobile.service.SaveLocationsService;
-import com.magenta.maxunits.mobile.service.ServicesRegistry;
-import com.magenta.maxunits.mobile.utils.UserUtils;
+import com.magenta.maxunits.mobile.dlib.entity.LocationEntity;
+import com.magenta.maxunits.mobile.dlib.mc.MxSettings;
+import com.magenta.maxunits.mobile.dlib.utils.UserUtils;
 import com.magenta.mc.client.log.MCLoggerFactory;
 import com.magenta.mc.client.settings.Settings;
 

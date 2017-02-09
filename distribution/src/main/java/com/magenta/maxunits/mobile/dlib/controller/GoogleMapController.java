@@ -20,14 +20,14 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
 import com.magenta.maxunits.distribution.R;
+import com.magenta.maxunits.mobile.dlib.entity.LocationEntity;
 import com.magenta.maxunits.mobile.dlib.handler.MapUpdateHandler;
+import com.magenta.maxunits.mobile.dlib.mc.MxAndroidUtil;
+import com.magenta.maxunits.mobile.dlib.service.ServicesRegistry;
 import com.magenta.maxunits.mobile.dlib.service.storage.entity.Job;
 import com.magenta.maxunits.mobile.dlib.service.storage.entity.Stop;
+import com.magenta.maxunits.mobile.dlib.utils.StringUtils;
 import com.magenta.maxunits.mobile.entity.Address;
-import com.magenta.maxunits.mobile.entity.LocationEntity;
-import com.magenta.maxunits.mobile.mc.MxAndroidUtil;
-import com.magenta.maxunits.mobile.service.ServicesRegistry;
-import com.magenta.maxunits.mobile.utils.StringUtils;
 import com.magenta.mc.client.log.MCLoggerFactory;
 
 import java.util.ArrayList;
@@ -35,10 +35,10 @@ import java.util.List;
 
 public class GoogleMapController extends MapController implements OnMapReadyCallback {
 
-    GoogleMap map;
-    MarkerOptions currentLocation;
-    boolean traffic;
-    Job job;
+    private GoogleMap map;
+    private MarkerOptions currentLocation;
+    private boolean traffic;
+    private Job job;
 
     public GoogleMapController(Activity activity, final List<Stop> stops, final boolean routeWithDriver) {
         super(activity, stops, routeWithDriver);
@@ -46,8 +46,7 @@ public class GoogleMapController extends MapController implements OnMapReadyCall
         mHolder.addView(view);
         ((MapFragment) activity.getFragmentManager().findFragmentById(R.id.map)).getMapAsync(this);
         view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            public boolean isBuilding = true;
-
+            protected boolean isBuilding = true;
             public void onGlobalLayout() {
                 if (isBuilding) {
                     isBuilding = false;
@@ -171,7 +170,6 @@ public class GoogleMapController extends MapController implements OnMapReadyCall
         }
     }
 
-    @Override
     public void fitBounds(List<Address> addresses) {
         if (addresses.size() == 0) {
             return;
@@ -180,7 +178,6 @@ public class GoogleMapController extends MapController implements OnMapReadyCall
             map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(addresses.get(0).getLatitude(), addresses.get(0).getLongitude()), 16f));
             return;
         }
-
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         for (Address address : addresses) {
             builder.include(new LatLng(address.getLatitude(), address.getLongitude()));
@@ -206,7 +203,7 @@ public class GoogleMapController extends MapController implements OnMapReadyCall
         }
     }
 
-    static class GoogleHandler extends MapUpdateHandler {
+    private static class GoogleHandler extends MapUpdateHandler {
 
         final GoogleMapController controller;
 
@@ -222,10 +219,6 @@ public class GoogleMapController extends MapController implements OnMapReadyCall
                 if (controller.mTrackCurrentPosition) {
                     controller.map.animateCamera(CameraUpdateFactory.newLatLng(centerCoordinates));
                 }
-                //CameraUpdate center = CameraUpdateFactory.newLatLng(centerCoordinates);
-                //CameraUpdate zoom = CameraUpdateFactory.zoomTo(15);
-                //controller.map.moveCamera(center);
-                //controller.map.animateCamera(zoom);
                 if (controller.currentLocation == null) {
                     controller.currentLocation = new MarkerOptions()
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.truck_icon))

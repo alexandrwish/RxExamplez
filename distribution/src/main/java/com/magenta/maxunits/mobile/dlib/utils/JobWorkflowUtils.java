@@ -4,11 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.magenta.maxunits.mobile.dlib.activity.StartActivity;
+import com.magenta.maxunits.mobile.dlib.mc.MxSettings;
+import com.magenta.maxunits.mobile.dlib.service.ServicesRegistry;
 import com.magenta.maxunits.mobile.dlib.service.storage.entity.Job;
 import com.magenta.maxunits.mobile.dlib.service.storage.entity.Stop;
 import com.magenta.maxunits.mobile.entity.TaskState;
-import com.magenta.maxunits.mobile.mc.MxSettings;
-import com.magenta.maxunits.mobile.service.ServicesRegistry;
 import com.magenta.mc.client.setup.Setup;
 
 import java.util.HashMap;
@@ -16,7 +16,7 @@ import java.util.List;
 
 public class JobWorkflowUtils {
 
-    static final WorkflowStatusAuto AUTO_STATUSES = new WorkflowStatusAuto();
+    private static final WorkflowStatusAuto AUTO_STATUSES = new WorkflowStatusAuto();
 
     static {
         AUTO_STATUSES.addEntityStatus(WorkflowStatusAuto.Entity.KIND_JOB, new WorkflowStatusAuto.Status(TaskState.RUN_ABORTED, new WorkflowStatusAuto.Expression(WorkflowStatusAuto.Expression.GROUP_STOPS, TaskState.STOP_ABORTED)));
@@ -32,9 +32,9 @@ public class JobWorkflowUtils {
      * @param stop stop for checking
      * @return new state or {@link Integer#MIN_VALUE} if state not founded
      */
-    public static int nextStatus(final byte kind, final Job job, final Stop stop) {
+    private static int nextStatus(final byte kind, final Job job, final Stop stop) {
         final HashMap entities = AUTO_STATUSES.getEntities();
-        final WorkflowStatusAuto.Entity entity = (WorkflowStatusAuto.Entity) entities.get(Byte.valueOf(kind));
+        final WorkflowStatusAuto.Entity entity = (WorkflowStatusAuto.Entity) entities.get(kind);
         return entity == null ? Integer.MIN_VALUE : nextEntityStatus(entity, kind, job, stop);
     }
 
@@ -42,7 +42,7 @@ public class JobWorkflowUtils {
         return nextStatus(kind, job, null);
     }
 
-    static int nextEntityStatus(final WorkflowStatusAuto.Entity entity, final byte kind, final Job job, final Stop stop) {
+    private static int nextEntityStatus(final WorkflowStatusAuto.Entity entity, final byte kind, final Job job, final Stop stop) {
         for (Object o : entity.getStatuses()) {
             final WorkflowStatusAuto.Status status = (WorkflowStatusAuto.Status) o;
             if (checkStatusExpression(status, kind, job, stop)) {
@@ -52,11 +52,11 @@ public class JobWorkflowUtils {
         return Integer.MIN_VALUE;
     }
 
-    static boolean checkStatusExpression(final WorkflowStatusAuto.Status status, final byte kind, final Job job, final Stop stop) {
+    private static boolean checkStatusExpression(final WorkflowStatusAuto.Status status, final byte kind, final Job job, final Stop stop) {
         return checkExpression(status.getExpression(), kind, job, stop);
     }
 
-    static boolean checkExpression(final WorkflowStatusAuto.Expression expression, final byte kind, final Job job, final Stop stop) {
+    private static boolean checkExpression(final WorkflowStatusAuto.Expression expression, final byte kind, final Job job, final Stop stop) {
         if (expression.getGroup() > WorkflowStatusAuto.Expression.GROUP_NONE) {
             switch (expression.getGroup()) {
                 case WorkflowStatusAuto.Expression.GROUP_STOPS:
@@ -73,7 +73,7 @@ public class JobWorkflowUtils {
         return false;
     }
 
-    static boolean checkExpressionGroupStops(final int state, final Job job) {
+    private static boolean checkExpressionGroupStops(final int state, final Job job) {
         if (job == null) {
             return false;
         }
@@ -86,7 +86,6 @@ public class JobWorkflowUtils {
         return true;
     }
 
-
     public static void openNextActivity(Stop currentStop, Job currentJob, Context context) {
         if (currentStop.isCompleted()) return;
         String state = currentStop.getStateString();
@@ -97,7 +96,6 @@ public class JobWorkflowUtils {
                 ? new Intent(context, ServicesRegistry.getWorkflowService().getStartActivity())
                 : new Intent(context, ServicesRegistry.getWorkflowService().getArrivedActivity());
         intent.putExtra(IntentAttributes.JOB_ID, currentJob.getId()).putExtra(IntentAttributes.STOP_ID, currentStop.getReferenceId());
-
         if (!((MxSettings) Setup.get().getSettings()).isAllowToPassStopsInArbitraryOrder()) {
             boolean allPreviousStopsCompleted = true;
             List<Stop> stops = currentJob.getStops();

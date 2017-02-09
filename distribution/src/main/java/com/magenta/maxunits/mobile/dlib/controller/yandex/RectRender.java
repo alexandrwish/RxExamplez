@@ -10,7 +10,6 @@ import ru.yandex.yandexmapkit.utils.ScreenPoint;
 
 public class RectRender implements IRender {
 
-    @Override
     public void draw(Canvas canvas, OverlayItem item) {
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setStyle(Paint.Style.STROKE);

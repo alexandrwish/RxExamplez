@@ -6,9 +6,9 @@ import com.magenta.maxunits.mobile.dlib.DistributionApplication;
 import com.magenta.maxunits.mobile.dlib.db.dao.DistributionDAO;
 import com.magenta.maxunits.mobile.dlib.rpc.DistributionRPCOut;
 import com.magenta.maxunits.mobile.entity.AbstractJobStatus;
-import com.magenta.maxunits.mobile.entity.JobStatusEntity;
-import com.magenta.maxunits.mobile.handler.UpdateHandler;
-import com.magenta.maxunits.mobile.service.ServicesRegistry;
+import com.magenta.maxunits.mobile.dlib.entity.JobStatusEntity;
+import com.magenta.maxunits.mobile.dlib.handler.UpdateHandler;
+import com.magenta.maxunits.mobile.dlib.service.ServicesRegistry;
 import com.magenta.mc.client.setup.Setup;
 
 import java.sql.SQLException;

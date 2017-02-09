@@ -3,6 +3,7 @@ package com.magenta.maxunits.mobile.dlib.adapter;
 import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -12,7 +13,7 @@ import com.magenta.maxunits.distribution.R;
 import com.magenta.maxunits.mobile.dlib.activity.OrderItemActivity;
 import com.magenta.maxunits.mobile.dlib.entity.OrderItemEntity;
 import com.magenta.maxunits.mobile.dlib.entity.OrderItemStatus;
-import com.magenta.maxunits.mobile.utils.StringUtils;
+import com.magenta.maxunits.mobile.dlib.utils.StringUtils;
 
 import java.util.List;
 
@@ -25,7 +26,8 @@ public class ExpandableOrderItemAdapter extends DistributionArrayAdapter<OrderIt
         super(context, R.layout.item_expandable_order_item, entities);
     }
 
-    public View getView(int position, View convertView, ViewGroup parent) {
+    @NonNull
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         View view;
         ViewHolder viewHolder;
         if (convertView == null) {

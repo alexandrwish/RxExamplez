@@ -8,16 +8,12 @@ import android.widget.Button;
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.ui.view.NumberInput;
 
-/**
- * @autor Petr Popov
- * Created 08.06.12 17:00
- */
 public class NumberInputDialog extends WideDialog {
 
-    private Button okButton;
-    private NumberInput numberInput;
     private int iNumber;
     private double dNumber;
+    private Button okButton;
+    private NumberInput numberInput;
     private View.OnClickListener okButtonListener;
 
     public NumberInputDialog(Context context) {
@@ -28,7 +24,6 @@ public class NumberInputDialog extends WideDialog {
         super(R.layout.dialog_number_input, context, theme);
     }
 
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         okButton = (Button) findViewById(R.id.ok_button);
@@ -62,5 +57,4 @@ public class NumberInputDialog extends WideDialog {
     public long getIntegerNumber() {
         return numberInput.getIntegerNumber();
     }
-
 }

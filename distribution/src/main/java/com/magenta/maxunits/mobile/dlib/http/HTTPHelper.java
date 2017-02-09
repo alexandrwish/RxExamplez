@@ -19,7 +19,7 @@ public class HTTPHelper {
         return postJson(url, jsonString, headers);
     }
 
-    String postJson(String url, String json, Map<String, String> headers) {
+    private String postJson(String url, String json, Map<String, String> headers) {
         try {
             URL urlObject = new URL(url);
             HttpURLConnection urlConnection = (HttpURLConnection) urlObject.openConnection();
@@ -53,7 +53,7 @@ public class HTTPHelper {
         }
     }
 
-    String readResponse(HttpURLConnection urlConnection) throws IOException {
+    private String readResponse(HttpURLConnection urlConnection) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
         try {
             StringBuilder builder = new StringBuilder();

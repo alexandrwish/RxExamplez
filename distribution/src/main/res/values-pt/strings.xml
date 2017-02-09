@@ -1,144 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="new_information">Tem informação nova</string>
-    <string name="stop">Destino</string>
-    <string name="job">Tarefa</string>
-    <string name="job_activity_title">Tarefas</string>
-    <string name="status">Estado</string>
-    <string name="job_card_status">Estado:</string>
-    <string name="logout">Sair</string>
-    <string name="done">Completo</string>
-    <string name="pod">Assinatura</string>
-    <string name="start">Início</string>
-    <string name="abort">Cancelar</string>
-    <string name="resume">Reiniciar</string>
-    <string name="aborted">Cancelado</string>
-    <string name="arrive">Chegada</string>
-    <string name="give_over">Completo</string>
-    <string name="scan">Digitalizar</string>
-    <string name="abort_code">Selecionar um código</string>
-    <string name="comment">Comentário</string>
-    <string name="name">Nome</string>
-    <string name="reference_label">Número de referência</string>
-    <string name="accept">Aceitar</string>
-    <string name="reject">Rejeitar</string>
-    <string name="address_label">Morada</string>
-    <string name="contact_label">Nome do contato</string>
-    <string name="customer_label">Cliente</string>
-    <string name="phone_label">Telefone de contato</string>
-    <string name="notes_label">Notas:</string>
-    <string name="cost_label">Custo:</string>
-    <string name="cost">Custo</string>
-    <string name="no_data">Sem informação</string>
-    <string name="barcode_label">Código de barras</string>
-    <string name="complete">Completae</string>
-    <string name="fail_run">Cancelar tudo</string>
-    <string name="run_failed">Planificação falhada</string>
-    <string name="clear">Limpar</string>
-    <string name="run">Planificação</string>
-    <string name="runs">Planificações</string>
-    <string name="cancel">Cancelar</string>
-    <string name="market_not_installed">Android Market não está instalado. Impossivel instalat o leitor de código de barras.</string>
-    <string name="total_jobs">Total tarefas:</string>
-    <string name="loading">A carregar</string>
-    <string name="arrive_to_pickup">Chegada para recolha</string>
-    <string name="pickup_duration">Duração da recolha</string>
-    <string name="pickup_location">Localização da recolha</string>
-    <string name="route">Rota</string>
-    <string name="statistics">Estatisticas</string>
-    <string name="total_load">Carga/Volume total</string>
-    <string name="total_time">Tempo Total</string>
-    <string name="driving_time">Tempo de condução</string>
-    <string name="depart_from_pickup">Saída do local de entrega</string>
-    <string name="suspend_other_job">Quer suspender as outras tarefas?</string>
-    <string name="info">Detalhes</string>
-    <string name="arrival_time">Hora de chegada</string>
-    <string name="drop_duration">Duração da recolha</string>
-    <string name="departure_time">Hora de saída</string>
-    <string name="load">Carga</string>
-    <string name="volume">Volume</string>
-    <string name="window">Intervalo de tempo</string>
-    <string name="refresh_jobs">Refrescar tarefas</string>
-    <string name="late">Atrasado!</string>
-    <string name="stop_type_pu">PU</string>
-    <string name="stop_type_do">DO</string>
-    <string name="stop_type_su">SU</string>
-    <string name="collection">Recolha</string>
-    <string name="delivery">Entrega</string>
-    <string name="stop_type">Tarefa</string>
-    <string name="order">Pedido</string>
-    <string name="order_details">Detalhes do pedido</string>
-    <string name="show_route">Mostrar rota</string>
-    <string name="service">Hora planeada</string>
-    <string name="suspend">Suspender</string>
-    <string name="abort_short">Cancelar</string>
-    <string name="day">dia(s)</string>
-    <string name="launch_navi_app">Quer iniciar a navegação para a tarefa?</string>
-    <string name="clear_cache">Limpar a cache do mapa</string>
-    <string name="please_wait">Por favor espere</string>
-    <string name="customer_location">Localização do cliente</string>
-    <string-array name="abort_code_array">
-        <item>Cliente fechou</item>
-        <item>Cliente ausente</item>
-        <item>Entrega atrasada a pedido do cliente</item>
-        <item>Recusa em receber</item>
-        <item>Razões Técnicas</item>
-        <item>Morada não encontrada</item>
-        <item>Morada incorreta/errada</item>
-        <item>Condições meterológicas</item>
-        <item>Outro</item>
-    </string-array>
-    <string-array name="pickup_abort_code_array">
-        <item>Cliente fechou</item>
-        <item>Cliente ausente</item>
-        <item>Entrega atrasada a pedido do cliente</item>
-        <item>Recusa em receber</item>
-        <item>Razões Técnicas</item>
-        <item>Morada não encontrada</item>
-        <item>Morada incorreta/errada</item>
-        <item>Condições meterológicas</item>
-        <item>Outro</item>
-    </string-array>
-    <string name="fact_cost">Custo atual:</string>
-    <string name="abort_job_question">Está seguro que quer cancelar?</string>
-    <string name="mx_activity_preferences_map_cache">Parâmetros do mapa</string>
-    <string name="enable_map">Permitir o mapa:</string>
-    <string name="map_provider">Fornecedor do mapa:</string>
-    <string name="enable_cache">Habilitar cache</string>
-    <string name="max_cache_age">Idade máxima do cache</string>
-    <string name="used_cache_space">Espaço de cache utilizado</string>
-    <string name="add">Adcionar</string>
-    <string name="barcode_item">Código de barras</string>
-    <string name="barcode_name">Nome</string>
-    <string name="clear_cache_msg">Está seguro que quer limpar o cache?</string>
-    <string name="complete_barcode">%s de artigos não lidos. Esta certo que quer completar?</string>
-    <string name="complete_job_question">Está seguro que quer completar</string>
-    <string name="complete_previous">Devia completar o serviço anterior antes de iniciar este.</string>
-    <string name="date_label">Data:</string>
-    <string name="duplicate_barcode">Atenção! Este código está em duplicado.</string>
-    <string name="empty_field">Varores errados</string>
-    <string name="fill_all_attributes">Por favor, completar todos os atributos com*.</string>
-    <string name="km">km</string>
-    <string name="kg">kg</string>
-    <string name="mins">mins</string>
-    <string name="mx_ignore">Ignorar</string>
-    <string name="mx_show">Mostrar rota</string>
-    <string name="order_type_label">Requisito do veículo</string>
-    <string name="performer_alert">Tem uma atualização da planificação.</string>
-    <string name="statistics_done">Completo:</string>
-    <string name="statistics_fail">Erro:</string>
-    <string name="statistics_suspended">Suspenso:</string>
-    <string name="tarificator_not_found">TarificatorApp não foi encontrada.</string>
-    <string name="time_label">Tempo:</string>
-    <string name="wrong_barcode">Atenção! Este artigo não pertence a este trabalho.</string>
-    <string name="map_dialog">Que mapa pretende usar?</string>
-    <string name="do_not_ask">Não perguntar novamente</string>
-    <string name="msg_schedule_updated_title">Programação Atualizada</string>
-    <string name="msg_schedule_updated_message">A sua programação foi atualizada</string>
-    <string name="unloading">A descarregar</string>
-    <string name="drop_location">Localização final</string>
+    <string name="menu_switch_theme">Mudar tema</string>
+    <string name="mx_activity_abort_abort">Anular tarefa</string>
+    <string name="mx_activity_abort_cancel">Cancelar</string>
+    <string name="mx_activity_datetime_reset">Reiniciar</string>
+    <string name="mx_activity_login_account">Conta</string>
+    <string name="mx_activity_login_cancel">Cancelar</string>
+    <string name="mx_activity_login_exit">Sair</string>
+    <string name="mx_activity_login_gpsDisabled">O GPS está desativado. Quer ativar?</string>
+    <string name="mx_activity_login_gpsEnable">Ativar o GPS</string>
+    <string name="mx_activity_login_login">Início de sessão</string>
+    <string name="mx_activity_login_password">Senha</string>
+    <string name="mx_activity_login_settings">Parâmetros</string>
+    <string name="mx_activity_login_username">Nome do utilizador</string>
+    <string name="mx_activity_mapPosition_destination">Destino</string>
+    <string name="mx_activity_mapPosition_title">Rota</string>
+    <string name="mx_activity_preferences_barcode_scanner">Modo leitor código de barras</string>
+    <string name="mx_activity_preferences_communicationServer">Servidor de comunicações</string>
+    <string name="mx_activity_preferences_batchCover">Batch cover (s)</string>
+    <string name="mx_activity_preferences_componentName">Nome do componente</string>
+    <string name="mx_activity_preferences_enabled">Ativado</string>
+    <string name="mx_activity_preferences_host">Hist</string>
+    <string name="mx_activity_preferences_offlineMode">Modo Offline</string>
+    <string name="mx_activity_preferences_port">Porta</string>
+    <string name="mx_activity_preferences_retrieveInterval">Intervalo de recuperação (s)</string>
+    <string name="mx_activity_preferences_settings_lock">Bloquear parâmetros</string>
+    <string name="mx_activity_preferences_tracking">Seguimento</string>
+    <string name="mx_activity_preferences_tracking_summary">A enviar coordenadas GPS</string>
+    <string name="mx_activity_preferences_update">Atualizações automáticas</string>
+    <string name="mx_activity_preferences_update_serverPort">Porta</string>
+    <string name="mx_activity_unavailability_cancel">Cancelar</string>
+    <string name="mx_activity_unavailability_endDate">Data e hora finais</string>
+    <string name="mx_activity_unavailability_endDateRequired">Data final é necessária</string>
+    <string name="mx_activity_unavailability_incorrectDateFormat">Formato incorreto da data (%s)</string>
+    <string name="mx_activity_unavailability_nextAvailableAddress">Direção seguinte disponível</string>
+    <string name="mx_activity_unavailability_nextAvailablePostcode">Código Postal seguinte disponível</string>
+    <string name="mx_activity_unavailability_notValid">Nem todos os campos necessários estão preenchidos</string>
+    <string name="mx_activity_unavailability_ok">Aceitar</string>
+    <string name="mx_activity_unavailability_reason">Razão</string>
+    <string name="mx_activity_unavailability_reasonRequired">É necessário indicar razão</string>
+    <string name="mx_activity_unavailability_set">Set</string>
+    <string name="mx_activity_unavailability_startDate">Data e hora iniciais</string>
+    <string name="mx_activity_unavailability_startDateRequired">É necessário indicar a data de início</string>
+    <string name="mx_audio_alerts">Alertas sonoros</string>
+    <string name="mx_cancel">Cancelar</string>
+    <string name="mx_country_and_town">País e Cidade</string>
+    <string name="mx_empty" />
+    <string name="mx_enter_password">Senha</string>
+    <string name="mx_fast_login">Início de sessão rápida</string>
+    <string name="mx_incorrect_password">Senha imcorreta</string>
+    <string name="mx_language">Língua</string>
+    <string name="mx_loading">A carregar…</string>
+    <string name="mx_locked">Bloqueado</string>
+    <string name="mx_map_go_to_current_location">Ir para a localização atual</string>
+    <string name="mx_map_track_current_position">Seguir a posição atual</string>
+    <string name="mx_map_tracking_options">Opções de seguimento</string>
+    <string name="mx_min">min</string>
+    <string name="mx_msg_error_no_current_gps_location">Não foi possível estabelecer ligação ao serviço GPS. Por favor tentar mais tarde.</string>
+    <string name="mx_msg_verify_location_question">A localização exata do cliente não está guardade na base de dados Maxoptra. Deseja atualizar a localização, para a posição GPS atual?</string>
+    <string name="mx_no">Não</string>
+    <string name="mx_noData">Não há dados</string>
+    <string name="mx_notification_gpsDisabled">GPS está desligado</string>
+    <string name="mx_notification_gpsOpenSettings">Selecionar para abrir as definições de Localização</string>
+    <string name="mx_ok">OK</string>
+    <string name="mx_other">Outro</string>
+    <string name="mx_play_a_sound_alert_for_incoming_changes">Emitir um som de alerta para avisos de mudança</string>
+    <string name="mx_routes_loading">A carregar rotas…</string>
+    <string name="mx_settings_locked">Parametros bloqueados</string>
+    <string name="mx_time_short_days">d</string>
+    <string name="mx_time_short_hours">h</string>
+    <string name="mx_time_short_minutes">m</string>
+    <string name="mx_tomtom_route">A rota foi atualizada</string>
+    <string name="mx_msg_error_with_start_gps">Não é possível encontrar o software de navegação suportado</string>
+    <string name="mx_unlocked">Desbloqueado</string>
+    <string name="mx_yes">Sim</string>
+    <string name="settings_theme_day">Tema DIA</string>
+    <string name="settings_theme_night">Tema NOITE</string>
+    <string name="states_run_aborted">Abortado</string>
+    <string name="states_run_accepted">Aceite</string>
+    <string name="states_run_assigned">Atribuído</string>
+    <string name="states_run_cancelled">Cancelado</string>
+    <string name="states_run_completed">Completo</string>
+    <string name="states_run_finished">Finalizado</string>
+    <string name="states_run_in_progress">Em progresso</string>
+    <string name="states_run_late15">Atrasado 15 min</string>
+    <string name="states_run_late30">Atrasado 30 min</string>
+    <string name="states_run_late60">Atrasado 60 min</string>
+    <string name="states_run_location_reached">Localização alcançada</string>
+    <string name="states_run_received">Recebido</string>
+    <string name="states_run_rejected">Recusado</string>
+    <string name="states_run_sent">Enviado</string>
+    <string name="states_run_started">Iniciado</string>
+    <string name="states_run_unassigned">Não atribuído</string>
+    <string name="states_stop_aborted">Abortado</string>
+    <string name="states_stop_accepted">Aceite</string>
+    <string name="states_stop_arrive10">Chegada em 10 min</string>
+    <string name="states_stop_arrive5">Chegada em 5 min</string>
+    <string name="states_stop_completed">Completo</string>
+    <string name="states_stop_arrived">Chegou</string>
+    <string name="states_stop_drop10">Entrega em 10 min</string>
+    <string name="states_stop_drop5">Entrega em 5 min</string>
+    <string name="states_stop_fail">Falha</string>
+    <string name="states_stop_finished">Terminado</string>
+    <string name="states_stop_late15">Atrasado por 15 min</string>
+    <string name="states_stop_late30">Atrasado por 30 min</string>
+    <string name="states_stop_late60">Atrasado por 60 min</string>
+    <string name="states_stop_late_a_lot">Muito atrasado</string>
+    <string name="states_stop_not_started">Ocupado</string>
+    <string name="states_stop_on_route">Em rota</string>
+    <string name="states_stop_started">Iniciado</string>
+    <string name="states_stop_suspended">Suspender</string>
 
-    <string name="update_needed_text">Está disponível uma nova versão da aplicação. Deseja iniciar a atualização?</string>
-    <string name="update_needed_toast_text">A aplicação deve ser atualizada após o próximo início de sessão.</string>
-    <string name="update_needed_second_text">Está disponível uma nova versão da aplicação. Por favor instale as atualizações andes de prosseguir.</string>
+    <string name="mx_api_server_connection_error_title">A ligação falhou.</string>
+    <string name="mx_api_server_connection_error_message">A ligação falhou. Voltar a ligar?</string>
 </resources>

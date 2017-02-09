@@ -18,7 +18,6 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.magenta.maxunits.distribution.R;
-import com.magenta.maxunits.mobile.activity.WorkflowActivity;
 import com.magenta.maxunits.mobile.dlib.adapter.StopsAdapter;
 import com.magenta.maxunits.mobile.dlib.mc.HDSettings;
 import com.magenta.maxunits.mobile.dlib.service.events.EventType;
@@ -29,11 +28,11 @@ import com.magenta.maxunits.mobile.dlib.service.storage.entity.Stop;
 import com.magenta.maxunits.mobile.dlib.utils.IntentAttributes;
 import com.magenta.maxunits.mobile.dlib.utils.JobWorkflowUtils;
 import com.magenta.maxunits.mobile.entity.TaskState;
-import com.magenta.maxunits.mobile.mc.MxSettings;
-import com.magenta.maxunits.mobile.service.ServicesRegistry;
-import com.magenta.maxunits.mobile.service.listeners.BroadcastEvent;
-import com.magenta.maxunits.mobile.service.listeners.MxBroadcastEvents;
-import com.magenta.maxunits.mobile.utils.DateUtils;
+import com.magenta.maxunits.mobile.dlib.mc.MxSettings;
+import com.magenta.maxunits.mobile.dlib.service.ServicesRegistry;
+import com.magenta.maxunits.mobile.dlib.service.listeners.BroadcastEvent;
+import com.magenta.maxunits.mobile.dlib.service.listeners.MxBroadcastEvents;
+import com.magenta.maxunits.mobile.dlib.utils.DateUtils;
 import com.magenta.mc.client.android.ui.AndroidUI;
 import com.magenta.mc.client.setup.Setup;
 
@@ -100,7 +99,6 @@ public class JobActivity extends DistributionActivity implements WorkflowActivit
                 startActivity(new Intent(JobActivity.this, MapActivity.class).putExtra(IntentAttributes.JOB_ID, job.getId()));
             }
         });
-
         pickupLocation.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 startActivity(new Intent(JobActivity.this, MapActivity.class)
@@ -128,7 +126,7 @@ public class JobActivity extends DistributionActivity implements WorkflowActivit
                 }
             }
         });
-        mAdapter = new StopsAdapter(this, new ArrayList<Stop>(job.getStops()));
+        mAdapter = new StopsAdapter(this, new ArrayList<>(job.getStops()));
         listView.setAdapter(mAdapter);
         listView.setTextFilterEnabled(true);
         listView.setEmptyView(findViewById(android.R.id.empty));
@@ -200,7 +198,7 @@ public class JobActivity extends DistributionActivity implements WorkflowActivit
     }
 
     private List<Stop> getStops(boolean showCompletedJob) {
-        List<Stop> stops = new ArrayList<Stop>();
+        List<Stop> stops = new ArrayList<>();
         for (Stop stop : (List<Stop>) job.getStops()) {
             if (showCompletedJob) {
                 stops.add(stop);

@@ -11,13 +11,11 @@ import com.magenta.mc.client.log.MCLoggerFactory;
 import com.magenta.mc.client.setup.Setup;
 import com.magenta.mc.client.util.FutureRunnable;
 
-/**
- * @author Sergey Grachev
- */
 public class WaitIconDialog extends WaitIcon {
+
     private DialogCallback callback;
-    private FutureRunnable task;
     private ProgressDialog dialog;
+    private FutureRunnable task;
 
     public WaitIconDialog() {
     }
@@ -98,7 +96,7 @@ public class WaitIconDialog extends WaitIcon {
         });
     }
 
-    protected void processing(final Runnable hideRunnable) {
+    private void processing(final Runnable hideRunnable) {
         if (task != null) {
             task.run(hideRunnable);
         } else {

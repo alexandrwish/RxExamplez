@@ -2,8 +2,8 @@ package com.magenta.maxunits.mobile.dlib.service.storage.entity;
 
 import com.magenta.maxunits.mobile.entity.AbstractJob;
 import com.magenta.maxunits.mobile.entity.AbstractJobStatus;
-import com.magenta.maxunits.mobile.entity.JobEntity;
-import com.magenta.maxunits.mobile.service.ServicesRegistry;
+import com.magenta.maxunits.mobile.dlib.entity.JobEntity;
+import com.magenta.maxunits.mobile.dlib.service.ServicesRegistry;
 import com.magenta.mc.client.storage.StorableMetadata;
 
 import java.util.Map;
@@ -36,7 +36,6 @@ public class FullJobHistory extends AbstractJob implements JobEntity {
     }
 
     public FullJobHistory() {
-
     }
 
     public AbstractJobStatus processSetState(int state, boolean send, Map parameters) {

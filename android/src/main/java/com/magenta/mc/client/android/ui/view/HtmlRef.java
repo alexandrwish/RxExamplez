@@ -9,15 +9,11 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.widget.TextView;
 
-/**
- * @autor Petr Popov
- * Created 09.06.12 10:42
- */
 public class HtmlRef extends TextView {
 
-    private OnTouchListener onClickListener;
     private String text;
     private String initialText;
+    private OnTouchListener onClickListener;
 
     public HtmlRef(Context context) {
         super(context);
@@ -61,35 +57,28 @@ public class HtmlRef extends TextView {
         this.text = initialText;
         setRef(initialText);
         setMovementMethod(new MovementMethod() {
-            @Override
             public void initialize(TextView widget, Spannable text) {
             }
 
-            @Override
             public boolean onKeyDown(TextView widget, Spannable text, int keyCode, KeyEvent event) {
                 return false;
             }
 
-            @Override
             public boolean onKeyUp(TextView widget, Spannable text, int keyCode, KeyEvent event) {
                 return false;
             }
 
-            @Override
             public boolean onKeyOther(TextView view, Spannable text, KeyEvent event) {
                 return false;
             }
 
-            @Override
             public void onTakeFocus(TextView widget, Spannable text, int direction) {
             }
 
-            @Override
             public boolean onTrackballEvent(TextView widget, Spannable text, MotionEvent event) {
                 return false;
             }
 
-            @Override
             public boolean onTouchEvent(TextView widget, Spannable text, MotionEvent event) {
                 if (onClickListener != null) {
                     onClickListener.onTouch(HtmlRef.this, null);
@@ -98,10 +87,9 @@ public class HtmlRef extends TextView {
             }
 
             public boolean onGenericMotionEvent(TextView textView, Spannable spannable, MotionEvent motionEvent) {
-                return false;  //To change body of implemented methods use File | Settings | File Templates.
+                return false;
             }
 
-            @Override
             public boolean canSelectArbitrarily() {
                 return false;
             }
@@ -111,6 +99,4 @@ public class HtmlRef extends TextView {
     private void setRef(String text) {
         setText(Html.fromHtml(String.format("<a href=\"http://www.magenta-technology.com\">%s</a>", text)));
     }
-
-
 }

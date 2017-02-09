@@ -2,9 +2,6 @@ package com.magenta.mc.client.android.ui;
 
 import com.magenta.mc.client.android.R;
 
-/**
- * @author Sergey Grachev
- */
 public class CoreApplicationIcons implements ApplicationIcons {
 
     public int getApplication() {

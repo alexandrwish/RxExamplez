@@ -9,7 +9,7 @@ import org.acra.sender.ReportSenderException;
 
 import java.util.Map;
 
-public class AcraLoggerSender implements ReportSender {
+final class AcraLoggerSender implements ReportSender {
 
     public void send(CrashReportData report) throws ReportSenderException {
         StringBuilder sb = new StringBuilder();

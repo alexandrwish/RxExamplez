@@ -10,4 +10,7 @@
     <string name="mc_commons_notification_gpsDisabled">GPS is disabled</string>
     <string name="mc_commons_notification_gpsOpenSettings">Select to open Location settings</string>
     <string name="mc_commons_string_noData">No data</string>
+
+    <string name="login.user.hint">Login</string>
+    <string name="login.password.hint">Password</string>
 </resources>

@@ -36,7 +36,7 @@ public class SettingsCustomView extends LinearLayout {
         this.clearCache.setOnClickListener(new OnClickListener() {
             public void onClick(View view) {
                 try {
-                    TileCacheDAO.getInstance(context).removeCacheTiles(System.currentTimeMillis());
+                    TileCacheDAO.getInstance().removeCacheTiles(System.currentTimeMillis());
                     updateInfoField();
                 } catch (SQLException ignore) {
                 }

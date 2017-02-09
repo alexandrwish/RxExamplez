@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import com.google.gson.Gson;
 import com.magenta.maxunits.distribution.R;
-import com.magenta.maxunits.mobile.MxApplication;
+import com.magenta.maxunits.mobile.dlib.MxApplication;
 import com.magenta.maxunits.mobile.dlib.activity.DistributionActivity;
 import com.magenta.maxunits.mobile.dlib.db.dao.DistributionDAO;
 import com.magenta.maxunits.mobile.dlib.dialog.DialogFactory;
@@ -14,8 +14,7 @@ import com.magenta.maxunits.mobile.dlib.dialog.DistributionDialogFragment;
 import com.magenta.maxunits.mobile.dlib.entity.MapProviderType;
 import com.magenta.maxunits.mobile.dlib.entity.MapSettingsEntity;
 import com.magenta.maxunits.mobile.entity.Address;
-import com.magenta.maxunits.mobile.mc.MxSettings;
-import com.magenta.maxunits.mobile.rpc.RPCOut;
+import com.magenta.maxunits.mobile.dlib.mc.MxSettings;
 import com.magenta.mc.client.android.ui.AndroidUI;
 import com.magenta.mc.client.settings.Settings;
 import com.magenta.mc.client.setup.Setup;
@@ -37,9 +36,9 @@ public class DistributionRPCOut extends RPCOut {
     public static final String SAVE_STATE = "savePhoneState";
     public static final String UPDATE_ROUTE_ACTION = "update_route";
 
-    static DistributionRPCOut instance;
+    private static DistributionRPCOut instance;
 
-    protected DistributionRPCOut() {
+    private DistributionRPCOut() {
     }
 
     public static DistributionRPCOut getInstance() {
@@ -75,10 +74,10 @@ public class DistributionRPCOut extends RPCOut {
                 }
                 continue;
             } else if (child.getTagName().equalsIgnoreCase("map.property")) {
-                HashMap<String, HashMap<String, String>> mapSettings = new HashMap<String, HashMap<String, String>>();
+                HashMap<String, HashMap<String, String>> mapSettings = new HashMap<>();
                 for (Object o : child.getChildBlocks()) {
                     XMLDataBlock dataBlock = (XMLDataBlock) o;
-                    HashMap<String, String> providerSettings = new HashMap<String, String>();
+                    HashMap<String, String> providerSettings = new HashMap<>();
                     if (dataBlock.getChildBlocks() != null) {
                         for (Object o1 : dataBlock.getChildBlocks()) {
                             XMLDataBlock settings = (XMLDataBlock) o1;
@@ -128,23 +127,23 @@ public class DistributionRPCOut extends RPCOut {
         Settings.get().saveSettings();
     }
 
-    static HashMap<String, HashMap<String, String>> deleteUnUsedMaps(HashMap<String, HashMap<String, String>> mapSettings) {
+    private static HashMap<String, HashMap<String, String>> deleteUnUsedMaps(HashMap<String, HashMap<String, String>> mapSettings) {
         if (mapSettings == null) {
-            mapSettings = new HashMap<String, HashMap<String, String>>(1);
+            mapSettings = new HashMap<>(1);
         } else {
             for (String s : MxSettings.ignoredMapProviders) {
                 mapSettings.remove(s);
             }
         }
         if (mapSettings.isEmpty()) {
-            HashMap<String, String> osm = new HashMap<String, String>(1);
+            HashMap<String, String> osm = new HashMap<>(1);
             osm.put("use_map_provider", "true");
             mapSettings.put("openstreetmap", osm);
         }
         return mapSettings;
     }
 
-    static boolean updateSettings(Activity activity, MapSettingsEntity entity, HashMap<String, HashMap<String, String>> mapSettings) throws SQLException {
+    private static boolean updateSettings(Activity activity, MapSettingsEntity entity, HashMap<String, HashMap<String, String>> mapSettings) throws SQLException {
         if (mapSettings.size() == 1) {
             entity.setDriver(Setup.get().getSettings().getLogin());
             for (Map.Entry<String, HashMap<String, String>> entry : mapSettings.entrySet()) {

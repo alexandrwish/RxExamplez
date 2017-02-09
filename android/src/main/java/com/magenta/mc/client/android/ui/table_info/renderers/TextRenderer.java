@@ -2,10 +2,6 @@ package com.magenta.mc.client.android.ui.table_info.renderers;
 
 import android.widget.TextView;
 
-/**
- * @autor Petr Popov
- * Created 18.05.12 10:32
- */
 public abstract class TextRenderer<V extends TextView, S> extends DetailRenderer<V, S> {
 
     protected boolean rendered;
@@ -24,11 +20,9 @@ public abstract class TextRenderer<V extends TextView, S> extends DetailRenderer
         }
     }
 
-    @Override
     public boolean isRendered() {
         return rendered;
     }
 
     public abstract String extractText(S source);
-
 }

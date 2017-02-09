@@ -15,10 +15,8 @@ import android.widget.TextView;
 
 import com.magenta.mc.client.android.R;
 
-/**
- * @autor Petr Popov
- * Created 07.06.12 18:00
- */
+import java.util.Locale;
+
 public class NumberInput extends LinearLayout {
 
     protected final int MIN_DELAY_INTERVAL = 60;
@@ -54,11 +52,11 @@ public class NumberInput extends LinearLayout {
                 runnableFractionPart = new Runnable() {
                     public void run() {
                         if (plusDown) {
-                            incrementPartForListener(isFractionPart);
+                            incrementPartForListener(true);
                             handler.postDelayed(this, delayInterval);
                         }
                         if (minusDown) {
-                            decrementPartForListener(isFractionPart);
+                            decrementPartForListener(true);
                             handler.postDelayed(this, delayInterval);
                         }
                     }
@@ -70,11 +68,11 @@ public class NumberInput extends LinearLayout {
                 runnableIntegerPart = new Runnable() {
                     public void run() {
                         if (plusDown) {
-                            incrementPartForListener(isFractionPart);
+                            incrementPartForListener(false);
                             handler.postDelayed(this, delayInterval);
                         }
                         if (minusDown) {
-                            decrementPartForListener(isFractionPart);
+                            decrementPartForListener(false);
                             handler.postDelayed(this, delayInterval);
                         }
                     }
@@ -91,7 +89,6 @@ public class NumberInput extends LinearLayout {
         integerPartContainer = (FrameLayout) findViewById(R.id.integer_part);
         integerView = (TextView) integerPartContainer.findViewById(R.id.number_field);
         fractionView = (TextView) fractionPartContainer.findViewById(R.id.number_field);
-
         handler = new Handler();
         incrementSpeedHandler = new Handler();
         incrementSpeedRunnable = new IncrementalRunnable() {
@@ -104,7 +101,6 @@ public class NumberInput extends LinearLayout {
                 incrementSpeedHandler.postDelayed(this, 1000);
             }
         };
-
         setControlHandlers(integerPartContainer, false);
         setControlHandlers(fractionPartContainer, true);
     }
@@ -121,7 +117,7 @@ public class NumberInput extends LinearLayout {
         integerPart = (long) number;
         fractionPart = number - integerPart;
         integerView.setText("" + integerPart);
-        fractionView.setText(String.format("%1.2f", fractionPart).substring(1));
+        fractionView.setText(String.format(Locale.UK, "%1.2f", fractionPart).substring(1));
     }
 
     public double getDoubleNumber() {
@@ -145,7 +141,7 @@ public class NumberInput extends LinearLayout {
                 }
             }
             integerView.setText("" + integerPart);
-            fractionView.setText(String.format("%1.2f", fractionPart).substring(1));
+            fractionView.setText(String.format(Locale.UK, "%1.2f", fractionPart).substring(1));
         } else {
             if (integerPart < 999) {
                 integerView.setText("" + ++integerPart);
@@ -167,7 +163,7 @@ public class NumberInput extends LinearLayout {
                 }
             }
             integerView.setText("" + integerPart);
-            fractionView.setText(String.format("%1.2f", fractionPart).substring(1));
+            fractionView.setText(String.format(Locale.UK, "%1.2f", fractionPart).substring(1));
         } else if (integerPart > 0) {
             integerView.setText("" + --integerPart);
         }
@@ -260,6 +256,7 @@ public class NumberInput extends LinearLayout {
     }
 
     private abstract class IncrementalRunnable implements Runnable {
+
         protected Runnable runnable;
 
         public Runnable setInternalRunnable(Runnable runnable) {

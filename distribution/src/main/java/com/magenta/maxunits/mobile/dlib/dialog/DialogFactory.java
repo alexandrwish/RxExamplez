@@ -12,7 +12,7 @@ public class DialogFactory {
     public static final String ICON = "icon";
     public static final String TITLE = "title";
     public static final String VALUE = "value";
-    protected static final MCLogger LOG = MCLoggerFactory.getLogger(DialogFactory.class);
+    private static final MCLogger LOG = MCLoggerFactory.getLogger(DialogFactory.class);
 
     private DialogFactory() {
     }
@@ -29,9 +29,7 @@ public class DialogFactory {
                 default:
                     return null;
             }
-        } catch (IllegalAccessException e) {
-            LOG.error(e.getMessage(), e);
-        } catch (InstantiationException e) {
+        } catch (IllegalAccessException | InstantiationException e) {
             LOG.error(e.getMessage(), e);
         }
         return null;

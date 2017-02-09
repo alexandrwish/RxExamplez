@@ -4,7 +4,7 @@ import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import com.magenta.maxunits.mobile.dlib.record.OrderItemRecord;
-import com.magenta.maxunits.mobile.utils.StringUtils;
+import com.magenta.maxunits.mobile.dlib.utils.StringUtils;
 
 @DatabaseTable(tableName = "order_item")
 public class OrderItemEntity extends JobStopEntity<OrderItemRecord> {

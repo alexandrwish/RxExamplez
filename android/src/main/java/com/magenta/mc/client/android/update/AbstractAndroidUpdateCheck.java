@@ -29,10 +29,9 @@ import java.net.URL;
 abstract class AbstractAndroidUpdateCheck implements UpdateCheck {
 
     private static final String NOTIFICATION_TAG = AbstractAndroidUpdateCheck.class.getName();
-    private static final int NOTIFICATION_ID = 1;
-    private static final String PLATFORM = "ANDROID";
-
     private static final long MIN_REQUEST_PERIOD = 30 * 60 * 1000;
+    private static final String PLATFORM = "ANDROID";
+    private static final int NOTIFICATION_ID = 1;
     private static final String APK = ".apk";
     private static final String CRC = ".crc";
     private static long lastRequest = -1;
@@ -108,9 +107,7 @@ abstract class AbstractAndroidUpdateCheck implements UpdateCheck {
 
     protected synchronized boolean downloadUpdate() throws Throwable {
         boolean success = false;
-
         final String currentVersionUrl = getUpdateServiceUrl();
-
         final HttpURLConnection conn = (HttpURLConnection) new URL(currentVersionUrl).openConnection();
         try {
             final InputStream is = conn.getInputStream();
@@ -153,7 +150,7 @@ abstract class AbstractAndroidUpdateCheck implements UpdateCheck {
         org.apache.commons.io.FileUtils.writeStringToFile(getCrcFile(), crc32);
     }
 
-    String getCrc() throws IOException {
+    protected String getCrc() throws IOException {
         File crcFile = getCrcFile();
         if (crcFile != null && crcFile.exists()) {
             return org.apache.commons.io.FileUtils.readFileToString(crcFile);
@@ -161,7 +158,7 @@ abstract class AbstractAndroidUpdateCheck implements UpdateCheck {
         return "0";
     }
 
-    String getUpdateServiceUrl() {
+    protected String getUpdateServiceUrl() {
         final String applicationName = Setup.get().getSettings().getUpdateApplicationName();
         return getUpdateServerUrl()
                 + "/" + Setup.get().getSettings().getServerComponentName()
@@ -201,7 +198,7 @@ abstract class AbstractAndroidUpdateCheck implements UpdateCheck {
         notificationManager.notify(NOTIFICATION_TAG, NOTIFICATION_ID, notification);
     }
 
-    File getUpdatesFolder() {
+    protected File getUpdatesFolder() {
         return getContext().getFilesDir();
     }
 
@@ -209,7 +206,7 @@ abstract class AbstractAndroidUpdateCheck implements UpdateCheck {
         return new File(getUpdatesFolder(), getUpdateFileName() + APK);
     }
 
-    File getCrcFile() {
+    protected File getCrcFile() {
         return new File(getUpdatesFolder(), getUpdateFileName() + CRC);
     }
 
@@ -278,7 +275,6 @@ abstract class AbstractAndroidUpdateCheck implements UpdateCheck {
         if (!url.endsWith(myApiVersion)) {
             url = url.substring(0, url.length() - myApiVersion.length()) + myApiVersion;
         }
-
         return String.format(url, settings.getHost(), settings.getUpdateServerPort());
     }
 }

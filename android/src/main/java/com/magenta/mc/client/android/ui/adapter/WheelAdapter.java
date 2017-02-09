@@ -1,17 +1,7 @@
 package com.magenta.mc.client.android.ui.adapter;
 
-/**
- * Project: Santa-cruz
- * Author:  Alexandr Komarov
- * Created: 25.03.13 9:31
- * <p/>
- * Copyright (c) 1999-2013 Magenta Corporation Ltd. All Rights Reserved.
- * Magenta Technology proprietary and confidential.
- * Use is subject to license terms.
- * <p/>
- * $Id$
- */
 public interface WheelAdapter {
+
     /**
      * Gets items count
      *

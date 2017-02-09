@@ -16,17 +16,17 @@ import com.magenta.maxunits.mobile.dlib.controller.MapController;
 import com.magenta.maxunits.mobile.dlib.db.CacheDBHelper;
 import com.magenta.maxunits.mobile.dlib.db.dao.DistributionDAO;
 import com.magenta.maxunits.mobile.dlib.db.dao.TileCacheDAO;
+import com.magenta.maxunits.mobile.dlib.entity.LocationEntity;
 import com.magenta.maxunits.mobile.dlib.entity.MapSettingsEntity;
 import com.magenta.maxunits.mobile.dlib.entity.TileCacheEntity;
 import com.magenta.maxunits.mobile.dlib.handler.MapUpdateHandler;
+import com.magenta.maxunits.mobile.dlib.mc.MxAndroidUtil;
+import com.magenta.maxunits.mobile.dlib.mc.MxSettings;
+import com.magenta.maxunits.mobile.dlib.service.ServicesRegistry;
 import com.magenta.maxunits.mobile.dlib.service.storage.entity.Job;
 import com.magenta.maxunits.mobile.dlib.service.storage.entity.Stop;
 import com.magenta.maxunits.mobile.dlib.utils.CompressUtils;
 import com.magenta.maxunits.mobile.entity.Address;
-import com.magenta.maxunits.mobile.entity.LocationEntity;
-import com.magenta.maxunits.mobile.mc.MxAndroidUtil;
-import com.magenta.maxunits.mobile.mc.MxSettings;
-import com.magenta.maxunits.mobile.service.ServicesRegistry;
 import com.magenta.mc.client.setup.Setup;
 
 import java.io.File;
@@ -165,7 +165,6 @@ public class Maplet extends WebView {
         Maplet.this.loadUrl("javascript:showRunRoute(" + route + ")");
     }
 
-
     public void fitBounds(String bounds) {
         Maplet.this.loadUrl("javascript:fitBounds(" + bounds + ")");
     }
@@ -205,13 +204,11 @@ public class Maplet extends WebView {
 
         protected void updateMap(boolean firstRun) {
             LocationEntity loc = MxAndroidUtil.getGeoLocation();
-
             if (loc != null && maplet.mapController.mTrackCurrentPosition) {
                 maplet.loadUrl("javascript:panToCurrent(" + loc.getLat() + "," + loc.getLon() + ")");
             }
-
             if ((MxSettings.getInstance().isMapTrackingEnabled() || firstRun)) {
-                List<Address> addressList = new ArrayList<Address>();
+                List<Address> addressList = new ArrayList<>();
                 if (maplet.routeWithDriver) {
                     if (loc != null) {
                         if (maplet.location != null && !(firstRun) && maplet.location.getLat().equals(loc.getLat()) && maplet.location.getLon().equals(loc.getLon())) {
@@ -341,10 +338,10 @@ public class Maplet extends WebView {
             String blob = "";
             if (enableCache) {
                 try {
-                    List<TileCacheEntity> tiles = TileCacheDAO.getInstance(context).getTileFromCache(name != null ? name : "default", Integer.valueOf(x), Integer.valueOf(y), Integer.valueOf(z));
+                    List<TileCacheEntity> tiles = TileCacheDAO.getInstance().getTileFromCache(name != null ? name : "default", Integer.valueOf(x), Integer.valueOf(y), Integer.valueOf(z));
                     if (!tiles.isEmpty()) {
                         blob = new String(CompressUtils.decompress(tiles.get(0).getBlob()), Charset.forName("US-ASCII"));
-                        TileCacheDAO.getInstance(context).updateUsedDate(tiles.get(0));
+                        TileCacheDAO.getInstance().updateUsedDate(tiles.get(0));
                     }
                 } catch (Exception ignore) {
                 }
@@ -372,10 +369,10 @@ public class Maplet extends WebView {
                 entity.setY(Integer.valueOf(y));
                 entity.setZ(Integer.valueOf(z));
                 entity.setBlob(CompressUtils.compress(blob.getBytes(Charset.forName("US-ASCII"))));
-                TileCacheDAO.getInstance(context).saveTileToCache(entity);
+                TileCacheDAO.getInstance().saveTileToCache(entity);
                 if (new File(DistributionApplication.getInstance().getDBAdapter().getDB(CacheDBHelper.DATABASE_NAME).getPath()).length() >=
                         MxSettings.getInstance().getIntProperty(MxSettings.USED_CACHE_SPACE, "500") * 1024 * 1024) {
-                    TileCacheDAO.getInstance(context).removeCacheTiles(null);
+                    TileCacheDAO.getInstance().removeCacheTiles(null);
                 }
             } catch (Exception ignore) {
             }

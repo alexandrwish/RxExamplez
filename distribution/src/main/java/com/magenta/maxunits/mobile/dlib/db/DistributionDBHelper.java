@@ -13,7 +13,7 @@ import com.magenta.maxunits.mobile.dlib.entity.MapSettingsEntity;
 import com.magenta.maxunits.mobile.dlib.entity.OrderItemEntity;
 import com.magenta.maxunits.mobile.dlib.entity.PhoneStatisticEntity;
 import com.magenta.maxunits.mobile.dlib.entity.StatusSenderLock;
-import com.magenta.maxunits.mobile.entity.LocationEntity;
+import com.magenta.maxunits.mobile.dlib.entity.LocationEntity;
 import com.magenta.mc.client.log.MCLoggerFactory;
 
 public class DistributionDBHelper extends SQLiteOpenHelper {

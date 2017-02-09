@@ -1,20 +1,8 @@
 package com.magenta.mc.client.android.ui.adapter;
 
-/**
- * Project: Santa-cruz
- * Author:  Alexandr Komarov
- * Created: 25.03.13 9:33
- * <p/>
- * Copyright (c) 1999-2013 Magenta Corporation Ltd. All Rights Reserved.
- * Magenta Technology proprietary and confidential.
- * Use is subject to license terms.
- * <p/>
- * $Id$
- */
-
 public class NumericWheelAdapter implements WheelAdapter {
 
-    public static final int DEFAULT_MAX_VALUE = 9;
+    private static final int DEFAULT_MAX_VALUE = 9;
     private static final int DEFAULT_MIN_VALUE = 0;
 
     private int minValue;
@@ -37,7 +25,6 @@ public class NumericWheelAdapter implements WheelAdapter {
         this.minValue = minValue;
         this.maxValue = maxValue;
     }
-
 
     public String getItem(int index) {
         index = Math.abs(index);

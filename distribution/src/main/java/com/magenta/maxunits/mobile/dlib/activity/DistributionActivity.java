@@ -10,19 +10,18 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.magenta.maxunits.distribution.R;
-import com.magenta.maxunits.mobile.activity.GenericActivity;
 import com.magenta.maxunits.mobile.dlib.dialog.DialogFactory;
 import com.magenta.maxunits.mobile.dlib.dialog.DistributionDialogFragment;
+import com.magenta.maxunits.mobile.dlib.events.InstallUpdateEvent;
+import com.magenta.maxunits.mobile.dlib.mc.MxSettings;
+import com.magenta.maxunits.mobile.dlib.service.ServicesRegistry;
 import com.magenta.maxunits.mobile.dlib.service.events.AlertEvent;
 import com.magenta.maxunits.mobile.dlib.service.events.EventType;
+import com.magenta.maxunits.mobile.dlib.service.listeners.BroadcastEvent;
+import com.magenta.maxunits.mobile.dlib.service.listeners.MxBroadcastEvents;
 import com.magenta.maxunits.mobile.dlib.service.storage.entity.Job;
 import com.magenta.maxunits.mobile.dlib.service.storage.entity.Stop;
 import com.magenta.maxunits.mobile.dlib.utils.IntentAttributes;
-import com.magenta.maxunits.mobile.events.InstallUpdateEvent;
-import com.magenta.maxunits.mobile.mc.MxSettings;
-import com.magenta.maxunits.mobile.service.ServicesRegistry;
-import com.magenta.maxunits.mobile.service.listeners.BroadcastEvent;
-import com.magenta.maxunits.mobile.service.listeners.MxBroadcastEvents;
 import com.magenta.mc.client.client.Login;
 import com.magenta.mc.client.setup.Setup;
 
@@ -191,9 +190,7 @@ public abstract class DistributionActivity extends GenericActivity<HDActivityDec
     }
 
     private void saveDialogStateToPref() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        preferences
-                .edit()
+        PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit()
                 .putBoolean(IntentAttributes.UPDATE_DIALOG_SHOWED, isUpdateDialogShowed)
                 .putString(IntentAttributes.UPDATE_DIALOG_PATH, updateFilePathFromEvent)
                 .apply();

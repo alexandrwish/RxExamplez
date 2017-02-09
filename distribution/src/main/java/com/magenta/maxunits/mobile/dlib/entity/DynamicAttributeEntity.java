@@ -4,7 +4,7 @@ import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import com.magenta.maxunits.mobile.dlib.record.DynamicAttributeRecord;
-import com.magenta.maxunits.mobile.utils.StringUtils;
+import com.magenta.maxunits.mobile.dlib.utils.StringUtils;
 
 @DatabaseTable(tableName = "dynamic_attribute")
 public class DynamicAttributeEntity extends JobStopEntity<DynamicAttributeRecord> {
@@ -80,7 +80,6 @@ public class DynamicAttributeEntity extends JobStopEntity<DynamicAttributeRecord
         this.typeName = typeName;
     }
 
-    @Override
     public DynamicAttributeRecord toRecord() {
         return new DynamicAttributeRecord(Long.valueOf(getMxID()), getValue());
     }

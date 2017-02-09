@@ -1,12 +1,10 @@
 package com.magenta.maxunits.mobile.dlib.db.dao;
 
-import android.content.Context;
-
 import com.j256.ormlite.android.AndroidConnectionSource;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.stmt.DeleteBuilder;
-import com.magenta.maxunits.mobile.MxApplication;
+import com.magenta.maxunits.mobile.dlib.MxApplication;
 import com.magenta.maxunits.mobile.dlib.db.CacheDBHelper;
 import com.magenta.maxunits.mobile.dlib.db.DBAdapter;
 import com.magenta.maxunits.mobile.dlib.entity.TileCacheEntity;
@@ -16,24 +14,22 @@ import java.util.List;
 
 public class TileCacheDAO {
 
-    protected static TileCacheDAO instance;
-    protected final Context context;
-    protected final DBAdapter adapter;
-    protected Dao<TileCacheEntity, Integer> dao;
+    private static TileCacheDAO instance;
+    private final DBAdapter adapter;
+    private Dao<TileCacheEntity, Integer> dao;
 
-    private TileCacheDAO(Context context) {
-        this.context = context;
+    private TileCacheDAO() {
         this.adapter = (DBAdapter) MxApplication.getInstance().getDBAdapter();
     }
 
-    public static TileCacheDAO getInstance(Context context) {
+    public static TileCacheDAO getInstance() {
         if (instance == null) {
-            instance = new TileCacheDAO(context);
+            instance = new TileCacheDAO();
         }
         return instance;
     }
 
-    public Dao<TileCacheEntity, Integer> getDaoStore() throws SQLException {
+    private Dao<TileCacheEntity, Integer> getDaoStore() throws SQLException {
         if (dao == null) {
             dao = DaoManager.createDao(new AndroidConnectionSource(adapter.getDB(CacheDBHelper.DATABASE_NAME)), TileCacheEntity.class);
         }

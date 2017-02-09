@@ -1,10 +1,5 @@
 package com.magenta.maxunits.mobile.dlib.mc;
 
-import com.magenta.maxunits.mobile.mc.MxSettings;
-
-/**
- * @author Sergey Grachev
- */
 public final class HDSettings {
 
     public static final String UI_ENABLE_MAP = "ui.enable.map";

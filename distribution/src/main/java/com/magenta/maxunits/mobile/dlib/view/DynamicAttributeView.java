@@ -23,9 +23,9 @@ import com.magenta.maxunits.mobile.dlib.entity.DynamicAttributeType;
 import com.magenta.maxunits.mobile.dlib.utils.Attribute;
 import com.magenta.maxunits.mobile.dlib.utils.TextFilter;
 import com.magenta.maxunits.mobile.dlib.utils.TextWatcher;
-import com.magenta.maxunits.mobile.ui.dialogs.DateTimePickerDialog;
-import com.magenta.maxunits.mobile.utils.PhoneUtils;
-import com.magenta.maxunits.mobile.utils.StringUtils;
+import com.magenta.maxunits.mobile.dlib.ui.dialogs.DateTimePickerDialog;
+import com.magenta.maxunits.mobile.dlib.utils.PhoneUtils;
+import com.magenta.maxunits.mobile.dlib.utils.StringUtils;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

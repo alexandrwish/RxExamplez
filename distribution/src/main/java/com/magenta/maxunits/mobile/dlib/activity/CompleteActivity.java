@@ -20,7 +20,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.magenta.maxunits.distribution.R;
-import com.magenta.maxunits.mobile.db.dao.SignatureDAO;
+import com.magenta.maxunits.mobile.dlib.db.dao.SignatureDAO;
 import com.magenta.maxunits.mobile.dlib.adapter.ViewGridAdapter;
 import com.magenta.maxunits.mobile.dlib.db.dao.DistributionDAO;
 import com.magenta.maxunits.mobile.dlib.entity.DynamicAttributeEntity;
@@ -38,11 +38,11 @@ import com.magenta.maxunits.mobile.dlib.utils.TextFilter;
 import com.magenta.maxunits.mobile.dlib.view.DynamicAttributeView;
 import com.magenta.maxunits.mobile.dlib.view.TimeView;
 import com.magenta.maxunits.mobile.entity.TaskState;
-import com.magenta.maxunits.mobile.mc.MxAndroidUtil;
-import com.magenta.maxunits.mobile.mc.MxSettings;
-import com.magenta.maxunits.mobile.service.ServicesRegistry;
-import com.magenta.maxunits.mobile.ui.map.MapAddress;
-import com.magenta.maxunits.mobile.utils.StringUtils;
+import com.magenta.maxunits.mobile.dlib.mc.MxAndroidUtil;
+import com.magenta.maxunits.mobile.dlib.mc.MxSettings;
+import com.magenta.maxunits.mobile.dlib.service.ServicesRegistry;
+import com.magenta.maxunits.mobile.dlib.ui.map.MapAddress;
+import com.magenta.maxunits.mobile.dlib.utils.StringUtils;
 import com.magenta.mc.client.settings.Settings;
 
 import java.sql.SQLException;

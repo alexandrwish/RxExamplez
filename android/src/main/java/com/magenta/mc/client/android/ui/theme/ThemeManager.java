@@ -15,7 +15,7 @@ public abstract class ThemeManager {
     public static final Theme DEFAULT_THEME = Theme.night;
     private Theme currentTheme;
     private ThemeManagerListener listener;
-    private Map<String, Theme> activityThemeCache = new HashMap<String, Theme>();
+    private Map<String, Theme> activityThemeCache = new HashMap<>();
 
     public Theme getCurrentTheme() {
         if (currentTheme == null) {
@@ -40,7 +40,7 @@ public abstract class ThemeManager {
         }
     }
 
-    public void applyThemeOnResumedActivity(Activity activity) {
+    private void applyThemeOnResumedActivity(Activity activity) {
         activity.finish();
         activity.startActivity(new Intent(activity, activity.getClass()));
     }

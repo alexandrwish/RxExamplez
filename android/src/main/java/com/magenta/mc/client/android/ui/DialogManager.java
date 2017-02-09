@@ -16,11 +16,9 @@ import com.magenta.mc.client.util.FutureRunnable;
 import EDU.oswego.cs.dl.util.concurrent.Mutex;
 import EDU.oswego.cs.dl.util.concurrent.Sync;
 
-/**
- * @author Sergey Grachev
- */
 public class DialogManager implements IDialogManager {
-    protected static final int MESSAGES_ID = 1;
+
+    private static final int MESSAGES_ID = 1;
 
     private final Sync dialogSync = new Mutex();
     private final Context applicationContext;
@@ -76,25 +74,20 @@ public class DialogManager implements IDialogManager {
     public boolean confirmSafe(final String title, final String message, final DialogCallback callback) {
         final Object mutex = new Object();
         final Boolean[] result = {null};
-
         final SynchronousCallback confirmationCallback = new SynchronousCallback() {
-
             public void done(boolean ok) {
-                result[0] = Boolean.valueOf(ok);
+                result[0] = ok;
                 synchronized (mutex) {
                     mutex.notify();
                 }
             }
         };
-
         final Thread asyncConfirmation = new Thread(new Runnable() {
             public void run() {
                 asyncConfirmSafe(title, message, confirmationCallback);
             }
         }, "SyncDialogDaemon");
-
         asyncConfirmation.start();
-
         synchronized (mutex) {
             try {
                 if (result[0] == null)
@@ -103,7 +96,7 @@ public class DialogManager implements IDialogManager {
                 // ok
             }
         }
-        boolean res = result[0].booleanValue();
+        boolean res = result[0];
         DialogCallbackExecutor.execCallback(callback, res);
         return res;
     }
@@ -145,25 +138,21 @@ public class DialogManager implements IDialogManager {
     public void messageSafe(final String title, final String msg, DialogCallback callback) {
         final Object mutex = new Object();
         final Boolean[] result = {null};
-
         final SynchronousCallback confirmationCallback = new SynchronousCallback() {
 
             public void done(boolean ok) {
-                result[0] = Boolean.valueOf(ok);
+                result[0] = ok;
                 synchronized (mutex) {
                     mutex.notify();
                 }
             }
         };
-
         final Thread asyncConfirmation = new Thread(new Runnable() {
             public void run() {
                 asyncMessageSafe(title, msg, confirmationCallback);
             }
         }, "SyncDialogDaemon");
-
         asyncConfirmation.start();
-
         synchronized (mutex) {
             try {
                 if (result[0] == null)
@@ -172,7 +161,7 @@ public class DialogManager implements IDialogManager {
                 // ok
             }
         }
-        boolean res = result[0].booleanValue();
+        boolean res = result[0];
         DialogCallbackExecutor.execCallback(callback, res);
     }
 
@@ -271,5 +260,4 @@ public class DialogManager implements IDialogManager {
     protected boolean isUseTitle() {
         return true;
     }
-
 }

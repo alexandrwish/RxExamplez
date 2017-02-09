@@ -26,11 +26,11 @@ public class Notifications {
         return context;
     }
 
-    public boolean isLastNotificationIsAlert() {
+    private boolean isLastNotificationIsAlert() {
         return lastNotificationIsAlert;
     }
 
-    public void setLastNotificationIsAlert(boolean lastNotificationIsAlert) {
+    protected void setLastNotificationIsAlert(boolean lastNotificationIsAlert) {
         this.lastNotificationIsAlert = lastNotificationIsAlert;
     }
 
@@ -59,11 +59,11 @@ public class Notifications {
     public static final class NotificationBuilder {
 
         private final Context context;
-        private String title;
         private String message;
+        private String title;
+        private String tag;
         private int icon;
         private int id;
-        private String tag;
 
         public NotificationBuilder(final Context context) {
             this.context = context;

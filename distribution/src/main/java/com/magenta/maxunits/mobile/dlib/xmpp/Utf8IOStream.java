@@ -1,10 +1,10 @@
 package com.magenta.maxunits.mobile.dlib.xmpp;
 
-import com.magenta.maxunits.mobile.MxApplication;
+import com.magenta.maxunits.mobile.dlib.MxApplication;
 import com.magenta.maxunits.mobile.dlib.receiver.LoginCheckReceiver;
-import com.magenta.maxunits.mobile.mc.MxSettings;
-import com.magenta.maxunits.mobile.service.ServicesRegistry;
-import com.magenta.maxunits.mobile.utils.UserUtils;
+import com.magenta.maxunits.mobile.dlib.mc.MxSettings;
+import com.magenta.maxunits.mobile.dlib.service.ServicesRegistry;
+import com.magenta.maxunits.mobile.dlib.utils.UserUtils;
 import com.magenta.mc.client.client.Login;
 import com.magenta.mc.client.settings.Settings;
 import com.magenta.mc.client.setup.Setup;

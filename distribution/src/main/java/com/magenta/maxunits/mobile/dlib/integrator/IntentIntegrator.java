@@ -118,7 +118,7 @@ public final class IntentIntegrator {
             BS_PACKAGE, // Barcode Scanner
             "com.srowen.bs.android", // Barcode Scanner+
             "com.srowen.bs.android.simple" // Barcode Scanner+ Simple
-            // TODO add more -- what else supports this intent?
+            // TODO add more - what else supports this intent?
     );
 
     private final Activity activity;

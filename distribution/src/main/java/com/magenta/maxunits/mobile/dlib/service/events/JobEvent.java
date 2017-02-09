@@ -1,10 +1,7 @@
 package com.magenta.maxunits.mobile.dlib.service.events;
 
-import com.magenta.maxunits.mobile.service.listeners.BroadcastEvent;
+import com.magenta.maxunits.mobile.dlib.service.listeners.BroadcastEvent;
 
-/**
- * @author Sergey Grachev
- */
 public class JobEvent extends BroadcastEvent<String> {
 
     private final String referenceId;

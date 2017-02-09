@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 
 import com.magenta.maxunits.distribution.R;
-import com.magenta.maxunits.mobile.activity.WorkflowActivity;
 import com.magenta.maxunits.mobile.dlib.controller.EmptyMapController;
 import com.magenta.maxunits.mobile.dlib.controller.GoogleMapController;
 import com.magenta.maxunits.mobile.dlib.controller.MapController;
@@ -22,8 +21,8 @@ import com.magenta.maxunits.mobile.dlib.service.storage.entity.Stop;
 import com.magenta.maxunits.mobile.dlib.utils.IntentAttributes;
 import com.magenta.maxunits.mobile.dlib.view.Maplet;
 import com.magenta.maxunits.mobile.entity.Address;
-import com.magenta.maxunits.mobile.mc.MxSettings;
-import com.magenta.maxunits.mobile.service.ServicesRegistry;
+import com.magenta.maxunits.mobile.dlib.mc.MxSettings;
+import com.magenta.maxunits.mobile.dlib.service.ServicesRegistry;
 import com.magenta.mc.client.setup.Setup;
 
 import java.sql.SQLException;
@@ -58,7 +57,7 @@ public class MapActivity extends DistributionActivity implements WorkflowActivit
         Intent intent = getIntent();
         lat = intent.getDoubleExtra(IntentAttributes.LAT, 0d);
         lon = intent.getDoubleExtra(IntentAttributes.LON, 0d);
-        List<Stop> tmp = new ArrayList<Stop>(1);
+        List<Stop> tmp = new ArrayList<>(1);
         if (lat != 0 && lon != 0) {
             Stop s = (Stop) j.getStops().get(0);
             Address address = new Address();
@@ -74,7 +73,7 @@ public class MapActivity extends DistributionActivity implements WorkflowActivit
         try {
             entities = DistributionDAO.getInstance(this).getMapSettings(Setup.get().getSettings().getLogin());
         } catch (SQLException ignore) {
-            entities = new ArrayList<MapSettingsEntity>(0);
+            entities = new ArrayList<>(0);
         }
         if (!entities.isEmpty()) {
             switch (entities.get(0).getMapProviderType()) {
@@ -147,7 +146,6 @@ public class MapActivity extends DistributionActivity implements WorkflowActivit
         }
     }
 
-    @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:

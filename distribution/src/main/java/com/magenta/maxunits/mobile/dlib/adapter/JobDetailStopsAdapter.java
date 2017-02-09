@@ -1,6 +1,7 @@
 package com.magenta.maxunits.mobile.dlib.adapter;
 
 import android.app.Activity;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -12,16 +13,14 @@ import com.magenta.maxunits.mobile.dlib.utils.StopsComparator;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * @author Sergey Grachev
- */
 public class JobDetailStopsAdapter extends DistributionArrayAdapter<Stop> {
 
     public JobDetailStopsAdapter(Activity context, List<Stop> list) {
         super(context, R.layout.item_stop, list);
     }
 
-    public View getView(int position, View convertView, ViewGroup parent) {
+    @NonNull
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         View view;
         ViewHolder viewHolder;
         if (convertView == null) {

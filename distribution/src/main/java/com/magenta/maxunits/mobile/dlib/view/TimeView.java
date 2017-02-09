@@ -8,7 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.magenta.maxunits.distribution.R;
-import com.magenta.maxunits.mobile.utils.DisplayUtils;
+import com.magenta.maxunits.mobile.dlib.utils.DisplayUtils;
 
 public class TimeView extends LinearLayout {
 

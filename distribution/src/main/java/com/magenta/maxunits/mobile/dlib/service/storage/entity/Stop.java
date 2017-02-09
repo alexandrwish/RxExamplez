@@ -2,7 +2,7 @@ package com.magenta.maxunits.mobile.dlib.service.storage.entity;
 
 import android.content.Context;
 
-import com.magenta.maxunits.mobile.db.dao.StopsDAO;
+import com.magenta.maxunits.mobile.dlib.db.dao.StopsDAO;
 import com.magenta.maxunits.mobile.dlib.DistributionApplication;
 import com.magenta.maxunits.mobile.dlib.service.events.EventType;
 import com.magenta.maxunits.mobile.dlib.service.events.JobEvent;
@@ -13,13 +13,13 @@ import com.magenta.maxunits.mobile.entity.AbstractJob;
 import com.magenta.maxunits.mobile.entity.AbstractJobStatus;
 import com.magenta.maxunits.mobile.entity.AbstractStop;
 import com.magenta.maxunits.mobile.entity.Address;
-import com.magenta.maxunits.mobile.entity.LocationEntity;
+import com.magenta.maxunits.mobile.dlib.entity.LocationEntity;
 import com.magenta.maxunits.mobile.entity.TaskState;
-import com.magenta.maxunits.mobile.mc.MxAndroidUtil;
-import com.magenta.maxunits.mobile.service.ServicesRegistry;
-import com.magenta.maxunits.mobile.utils.DateUtils;
-import com.magenta.maxunits.mobile.utils.StatusUtils;
-import com.magenta.maxunits.mobile.utils.StringUtils;
+import com.magenta.maxunits.mobile.dlib.mc.MxAndroidUtil;
+import com.magenta.maxunits.mobile.dlib.service.ServicesRegistry;
+import com.magenta.maxunits.mobile.dlib.utils.DateUtils;
+import com.magenta.maxunits.mobile.dlib.utils.StatusUtils;
+import com.magenta.maxunits.mobile.dlib.utils.StringUtils;
 import com.magenta.mc.client.client.resend.Resender;
 import com.magenta.mc.client.log.MCLoggerFactory;
 import com.magenta.mc.client.setup.Setup;
@@ -33,11 +33,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-/**
- * User: stukov
- * Date: 18.02.2010
- * Time: 20:10:17
- */
 public class Stop extends AbstractStop {
 
     public static final String ATTR_CONTACT_PERSON = "contactPerson";
@@ -130,7 +125,6 @@ public class Stop extends AbstractStop {
         return jobStatus;
     }
 
-    @Override
     public void update(final AbstractStop update) {
         super.update(update);
         this.date = update.getDate();
@@ -156,7 +150,7 @@ public class Stop extends AbstractStop {
         return stopName;
     }
 
-    public void setStopName(String stopName) {
+    private void setStopName(String stopName) {
         this.stopName = stopName;
     }
 

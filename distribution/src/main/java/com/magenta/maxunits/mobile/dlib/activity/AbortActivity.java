@@ -12,20 +12,19 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.magenta.maxunits.distribution.R;
-import com.magenta.maxunits.mobile.MxApplication;
-import com.magenta.maxunits.mobile.activity.WorkflowActivity;
+import com.magenta.maxunits.mobile.dlib.MxApplication;
 import com.magenta.maxunits.mobile.dlib.db.dao.DistributionDAO;
 import com.magenta.maxunits.mobile.dlib.entity.DynamicAttributeEntity;
 import com.magenta.maxunits.mobile.dlib.record.DynamicAttributeRecord;
+import com.magenta.maxunits.mobile.dlib.service.listeners.BroadcastEvent;
+import com.magenta.maxunits.mobile.dlib.service.listeners.MxBroadcastEvents;
 import com.magenta.maxunits.mobile.dlib.service.storage.entity.Job;
 import com.magenta.maxunits.mobile.dlib.service.storage.entity.Stop;
 import com.magenta.maxunits.mobile.dlib.utils.IntentAttributes;
 import com.magenta.maxunits.mobile.entity.TaskState;
-import com.magenta.maxunits.mobile.mc.MxSettings;
-import com.magenta.maxunits.mobile.service.ServicesRegistry;
-import com.magenta.maxunits.mobile.service.listeners.BroadcastEvent;
-import com.magenta.maxunits.mobile.service.listeners.MxBroadcastEvents;
-import com.magenta.maxunits.mobile.utils.StringUtils;
+import com.magenta.maxunits.mobile.dlib.mc.MxSettings;
+import com.magenta.maxunits.mobile.dlib.service.ServicesRegistry;
+import com.magenta.maxunits.mobile.dlib.utils.StringUtils;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

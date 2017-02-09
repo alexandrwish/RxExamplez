@@ -16,8 +16,7 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.magenta.maxunits.distribution.R;
-import com.magenta.maxunits.mobile.activity.WorkflowActivity;
-import com.magenta.maxunits.mobile.db.dao.StopsDAO;
+import com.magenta.maxunits.mobile.dlib.db.dao.StopsDAO;
 import com.magenta.maxunits.mobile.dlib.controller.EmptyMapController;
 import com.magenta.maxunits.mobile.dlib.controller.GoogleMapController;
 import com.magenta.maxunits.mobile.dlib.controller.MapController;
@@ -35,11 +34,11 @@ import com.magenta.maxunits.mobile.dlib.view.DynamicAttributeView;
 import com.magenta.maxunits.mobile.dlib.view.Maplet;
 import com.magenta.maxunits.mobile.dlib.view.TimeView;
 import com.magenta.maxunits.mobile.entity.TaskState;
-import com.magenta.maxunits.mobile.mc.MxAndroidUtil;
-import com.magenta.maxunits.mobile.mc.MxSettings;
-import com.magenta.maxunits.mobile.service.ServicesRegistry;
-import com.magenta.maxunits.mobile.ui.map.MapAddress;
-import com.magenta.maxunits.mobile.utils.StringUtils;
+import com.magenta.maxunits.mobile.dlib.mc.MxAndroidUtil;
+import com.magenta.maxunits.mobile.dlib.mc.MxSettings;
+import com.magenta.maxunits.mobile.dlib.service.ServicesRegistry;
+import com.magenta.maxunits.mobile.dlib.ui.map.MapAddress;
+import com.magenta.maxunits.mobile.dlib.utils.StringUtils;
 import com.magenta.mc.client.setup.Setup;
 
 import java.sql.SQLException;

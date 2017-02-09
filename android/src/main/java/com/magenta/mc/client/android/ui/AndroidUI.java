@@ -8,15 +8,12 @@ import com.magenta.mc.client.components.waiting.WaitIcon;
 import com.magenta.mc.client.log.MCLoggerFactory;
 import com.magenta.mc.client.ui.UI;
 
-/**
- * @author Sergey Grachev
- */
 public class AndroidUI implements UI {
 
     protected final Context applicationContext;
-    protected DialogManager dialogManager;
-    protected Notifications notifications;
     protected ApplicationIcons applicationIcons;
+    protected Notifications notifications;
+    private DialogManager dialogManager;
     private Activity currentActivity;
 
     public AndroidUI(final Context applicationContext) {
@@ -27,7 +24,7 @@ public class AndroidUI implements UI {
         initNotificationIcons();
     }
 
-    protected void initDialogManager(Context context) {
+    private void initDialogManager(Context context) {
         dialogManager = new DialogManager(context);
     }
 
@@ -78,11 +75,9 @@ public class AndroidUI implements UI {
     }
 
     public void shutdown() {
-
     }
 
     public void toFront() {
-
     }
 
     public boolean beforeLoginActivity(Activity activity) {

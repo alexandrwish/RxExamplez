@@ -11,10 +11,6 @@ import com.magenta.mc.client.setup.Setup;
 
 import roboguice.RoboGuice;
 
-/**
- * @autor Petr Popov
- * Created 18.04.12 13:08
- */
 public abstract class McAndroidApplication extends Application {
 
     protected static boolean isFirstStart;
@@ -35,7 +31,6 @@ public abstract class McAndroidApplication extends Application {
         }
     }
 
-    @Override
     public void onCreate() {
         super.onCreate();
         MCLoggerFactory.getLogger(getClass()).trace("onCreate");
@@ -61,7 +56,6 @@ public abstract class McAndroidApplication extends Application {
 
     protected abstract Class<? extends McService> getServiceClass();
 
-    @Override
     public void onTerminate() {
         MCLoggerFactory.getLogger(getClass()).trace("onTerminate");
         AndroidApp.getInstance().exit();

@@ -9,15 +9,11 @@ import android.widget.EditText;
 
 import com.magenta.mc.client.android.R;
 
-/**
- * @autor Petr Popov
- * Created 09.06.12 15:18
- */
 public class TextInputDialog extends WideDialog {
 
-    protected Button okButton;
-    protected EditText textInput;
-    protected View.OnClickListener okButtonListener;
+    private Button okButton;
+    private EditText textInput;
+    private View.OnClickListener okButtonListener;
 
     private String text;
 
@@ -29,7 +25,6 @@ public class TextInputDialog extends WideDialog {
         super(R.layout.dialog_text_input, context, theme);
     }
 
-    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         okButton = (Button) findViewById(R.id.ok_button);
@@ -50,5 +45,4 @@ public class TextInputDialog extends WideDialog {
     public void setText(String text) {
         this.text = text;
     }
-
 }

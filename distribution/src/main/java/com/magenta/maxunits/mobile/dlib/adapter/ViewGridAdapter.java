@@ -8,7 +8,7 @@ import java.util.List;
 
 public class ViewGridAdapter<T extends View> extends BaseAdapter {
 
-    List<T> buttons;
+    private List<T> buttons;
 
     public ViewGridAdapter(List<T> buttons) {
         super();

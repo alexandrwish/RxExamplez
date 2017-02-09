@@ -6,12 +6,12 @@ import com.magenta.maxunits.mobile.dlib.handler.AlertHandler;
 import com.magenta.maxunits.mobile.entity.AbstractJob;
 import com.magenta.maxunits.mobile.entity.AbstractJobStatus;
 import com.magenta.maxunits.mobile.entity.AbstractStop;
-import com.magenta.maxunits.mobile.entity.JobEntity;
-import com.magenta.maxunits.mobile.entity.LocationEntity;
+import com.magenta.maxunits.mobile.dlib.entity.JobEntity;
+import com.magenta.maxunits.mobile.dlib.entity.LocationEntity;
 import com.magenta.maxunits.mobile.entity.TaskState;
-import com.magenta.maxunits.mobile.mc.MxAndroidUtil;
-import com.magenta.maxunits.mobile.service.ServicesRegistry;
-import com.magenta.maxunits.mobile.utils.StatusUtils;
+import com.magenta.maxunits.mobile.dlib.mc.MxAndroidUtil;
+import com.magenta.maxunits.mobile.dlib.service.ServicesRegistry;
+import com.magenta.maxunits.mobile.dlib.utils.StatusUtils;
 import com.magenta.mc.client.client.resend.Resender;
 import com.magenta.mc.client.setup.Setup;
 
@@ -92,7 +92,6 @@ public class Job extends AbstractJob implements JobEntity {
     }
 
     @SuppressWarnings("unchecked")
-    @Override
     public AbstractJobStatus processSetState(final int state, final boolean send, Map parameters) {
         setState(state);
         setLastValidState(getStateString(getState()));

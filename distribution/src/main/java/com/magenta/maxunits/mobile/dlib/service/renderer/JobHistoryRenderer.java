@@ -1,19 +1,14 @@
 package com.magenta.maxunits.mobile.dlib.service.renderer;
 
+import com.magenta.maxunits.mobile.dlib.renderer.ObjectRenderer;
 import com.magenta.maxunits.mobile.dlib.service.storage.entity.JobHistory;
 import com.magenta.maxunits.mobile.entity.TaskState;
-import com.magenta.maxunits.mobile.renderer.ObjectRenderer;
 import com.magenta.mc.client.util.Resources;
 import com.magenta.mc.client.xml.XMLDataBlock;
 
 import java.text.ParseException;
 import java.util.Date;
 
-/**
- * User: smirnitsky
- * Date: 07.02.11
- * Time: 14:55
- */
 public class JobHistoryRenderer implements ObjectRenderer {
 
     private static Date parseDate(String dateString) {

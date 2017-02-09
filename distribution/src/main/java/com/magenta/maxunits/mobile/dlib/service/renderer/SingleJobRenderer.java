@@ -1,23 +1,23 @@
 package com.magenta.maxunits.mobile.dlib.service.renderer;
 
 import com.google.gson.Gson;
-import com.magenta.maxunits.mobile.MxApplication;
+import com.magenta.maxunits.mobile.dlib.MxApplication;
 import com.magenta.maxunits.mobile.dlib.db.dao.DistributionDAO;
 import com.magenta.maxunits.mobile.dlib.entity.DynamicAttributeEntity;
 import com.magenta.maxunits.mobile.dlib.entity.OrderItemEntity;
 import com.magenta.maxunits.mobile.dlib.record.DynamicAttributeRecord;
 import com.magenta.maxunits.mobile.dlib.record.OrderItemRecord;
+import com.magenta.maxunits.mobile.dlib.renderer.ObjectRenderer;
 import com.magenta.maxunits.mobile.dlib.service.storage.entity.Job;
 import com.magenta.maxunits.mobile.dlib.service.storage.entity.Stop;
+import com.magenta.maxunits.mobile.dlib.utils.ParametersParser;
+import com.magenta.maxunits.mobile.dlib.utils.RpcParser;
+import com.magenta.maxunits.mobile.dlib.utils.StringUtils;
 import com.magenta.maxunits.mobile.entity.Address;
 import com.magenta.maxunits.mobile.entity.JobType;
 import com.magenta.maxunits.mobile.entity.Parcel;
 import com.magenta.maxunits.mobile.entity.Passenger;
 import com.magenta.maxunits.mobile.entity.TaskState;
-import com.magenta.maxunits.mobile.renderer.ObjectRenderer;
-import com.magenta.maxunits.mobile.utils.ParametersParser;
-import com.magenta.maxunits.mobile.utils.RpcParser;
-import com.magenta.maxunits.mobile.utils.StringUtils;
 import com.magenta.mc.client.util.Resources;
 import com.magenta.mc.client.xml.XMLDataBlock;
 
@@ -30,26 +30,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-/**
- * User: smirnitsky
- * Date: 07.02.11
- * Time: 14:55
- */
 public class SingleJobRenderer implements ObjectRenderer {
 
     private static void setParcelsAndPassengersToStop(Job job) {
         if (job.getParcels() != null && job.getParcels().length > 0) {
-            Map<Integer, List<Parcel>> idToParcels = new HashMap<Integer, List<Parcel>>();
+            Map<Integer, List<Parcel>> idToParcels = new HashMap<>();
             for (Parcel parcel : job.getParcels()) {
                 List<Parcel> stopParcels = idToParcels.get(parcel.getDrop());
                 if (stopParcels == null) {
-                    stopParcels = new ArrayList<Parcel>();
+                    stopParcels = new ArrayList<>();
                     idToParcels.put(parcel.getDrop(), stopParcels);
                 }
                 stopParcels.add(parcel);
                 stopParcels = idToParcels.get(parcel.getPickup());
                 if (stopParcels == null) {
-                    stopParcels = new ArrayList<Parcel>();
+                    stopParcels = new ArrayList<>();
                     idToParcels.put(parcel.getPickup(), stopParcels);
                 }
                 stopParcels.add(parcel);
@@ -60,17 +55,17 @@ public class SingleJobRenderer implements ObjectRenderer {
             }
         }
         if (job.getPassengers() != null && job.getPassengers().length > 0) {
-            Map<Integer, List<Passenger>> idToPassenger = new HashMap<Integer, List<Passenger>>();
+            Map<Integer, List<Passenger>> idToPassenger = new HashMap<>();
             for (Passenger passenger : job.getPassengers()) {
                 List<Passenger> passengers = idToPassenger.get(passenger.getDrop());
                 if (passengers == null) {
-                    passengers = new ArrayList<Passenger>();
+                    passengers = new ArrayList<>();
                     idToPassenger.put(passenger.getDrop(), passengers);
                 }
                 passengers.add(passenger);
                 passengers = idToPassenger.get(passenger.getPickup());
                 if (passengers == null) {
-                    passengers = new ArrayList<Passenger>();
+                    passengers = new ArrayList<>();
                     idToPassenger.put(passenger.getPickup(), passengers);
                 }
                 passengers.add(passenger);
@@ -208,11 +203,11 @@ public class SingleJobRenderer implements ObjectRenderer {
                 public int compare(Object o, Object o1) {
                     Stop stop1 = (Stop) o;
                     Stop stop2 = (Stop) o1;
-                    final int order1 = stop1.getIndex();
-                    final int order2 = stop2.getIndex();
+                    final Integer order1 = stop1.getIndex();
+                    final Integer order2 = stop2.getIndex();
                     if (order1 > -1 && order2 > -1) {
                         // both orders defined
-                        return new Integer(order1).compareTo(order2);
+                        return order1.compareTo(order2);
                     } else if (order1 < 0 && order2 < 0) {
                         // both undefined
                         return 0;

@@ -10,8 +10,7 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 
 import com.magenta.maxunits.distribution.R;
-import com.magenta.maxunits.mobile.activity.WorkflowActivity;
-import com.magenta.maxunits.mobile.ui.controls.SignatureView;
+import com.magenta.maxunits.mobile.dlib.ui.controls.SignatureView;
 
 public class SignatureActivity extends DistributionActivity implements WorkflowActivity {
 

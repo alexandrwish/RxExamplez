@@ -4,28 +4,27 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.PowerManager;
 
-import com.magenta.maxunits.mobile.MxApplication;
-import com.magenta.maxunits.mobile.db.MxDBOpenHelper;
 import com.magenta.maxunits.mobile.dlib.acra.AcraConfigurator;
 import com.magenta.maxunits.mobile.dlib.db.DBAdapter;
+import com.magenta.maxunits.mobile.dlib.db.MxDBOpenHelper;
 import com.magenta.maxunits.mobile.dlib.db.dao.DistributionDAO;
 import com.magenta.maxunits.mobile.dlib.db.dao.TileCacheDAO;
 import com.magenta.maxunits.mobile.dlib.mc.DistributionApp;
+import com.magenta.maxunits.mobile.dlib.mc.MxSettings;
 import com.magenta.maxunits.mobile.dlib.receiver.LoginCheckReceiver;
+import com.magenta.maxunits.mobile.dlib.renderer.Renderer;
 import com.magenta.maxunits.mobile.dlib.service.CoreServiceImpl;
+import com.magenta.maxunits.mobile.dlib.service.LocationService;
 import com.magenta.maxunits.mobile.dlib.service.PhoneStatisticService;
+import com.magenta.maxunits.mobile.dlib.service.ServicesRegistry;
 import com.magenta.maxunits.mobile.dlib.service.renderer.JobHistoryRenderer;
 import com.magenta.maxunits.mobile.dlib.service.renderer.SingleJobRenderer;
 import com.magenta.maxunits.mobile.dlib.service.storage.DataControllerImpl;
 import com.magenta.maxunits.mobile.dlib.utils.DSoundPool;
+import com.magenta.maxunits.mobile.dlib.utils.LocaleUtils;
+import com.magenta.maxunits.mobile.dlib.utils.StringUtils;
 import com.magenta.maxunits.mobile.dlib.utils.WorkflowServiceImpl;
 import com.magenta.maxunits.mobile.dlib.xmpp.XMPPStream2;
-import com.magenta.maxunits.mobile.mc.MxSettings;
-import com.magenta.maxunits.mobile.renderer.Renderer;
-import com.magenta.maxunits.mobile.service.LocationService;
-import com.magenta.maxunits.mobile.service.ServicesRegistry;
-import com.magenta.maxunits.mobile.utils.LocaleUtils;
-import com.magenta.maxunits.mobile.utils.StringUtils;
 import com.magenta.mc.client.log.MCLoggerFactory;
 
 import org.acra.annotation.ReportsCrashes;
@@ -35,8 +34,6 @@ import java.util.Date;
 import java.util.List;
 
 import okhttp3.OkHttpClient;
-
-//import org.apache.http.client.HttpClient;
 
 @ReportsCrashes(formKey = "")
 public abstract class DistributionApplication extends MxApplication {
@@ -58,7 +55,7 @@ public abstract class DistributionApplication extends MxApplication {
         LocaleUtils.changeLocale(this, MxSettings.getInstance().getLocale());
         DSoundPool.init(getContext());
         try {
-            TileCacheDAO.getInstance(this).removeCacheTiles(System.currentTimeMillis() - (MxSettings.getInstance().getIntProperty(MxSettings.CLEAN_CACHE_PERIOD, "0") * 24 * 60 * 60 * 1000));
+            TileCacheDAO.getInstance().removeCacheTiles(System.currentTimeMillis() - (MxSettings.getInstance().getIntProperty(MxSettings.CLEAN_CACHE_PERIOD, "0") * 24 * 60 * 60 * 1000));
         } catch (SQLException ignore) {
         }
         lock();

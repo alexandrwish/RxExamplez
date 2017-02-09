@@ -1,12 +1,12 @@
 package com.magenta.maxunits.mobile.dlib.service.storage;
 
+import com.magenta.maxunits.mobile.dlib.mc.MxSettings;
+import com.magenta.maxunits.mobile.dlib.service.ServicesRegistry;
 import com.magenta.maxunits.mobile.dlib.service.storage.entity.Job;
 import com.magenta.maxunits.mobile.dlib.service.storage.entity.Stop;
+import com.magenta.maxunits.mobile.dlib.utils.DemoDataUtils;
 import com.magenta.maxunits.mobile.entity.Address;
 import com.magenta.maxunits.mobile.entity.TaskState;
-import com.magenta.maxunits.mobile.mc.MxSettings;
-import com.magenta.maxunits.mobile.service.ServicesRegistry;
-import com.magenta.maxunits.mobile.utils.DemoDataUtils;
 import com.magenta.mc.client.demo.DemoStorageInitializer;
 import com.magenta.mc.client.settings.Settings;
 
@@ -17,14 +17,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @author Sergey Grachev
- */
 public class DemoStorageInitializerImpl implements DemoStorageInitializer {
+
     private DemoDataUtils.Country country;
     private DemoDataUtils.Town town;
 
-    @Override
     public boolean initStorage() {
         country = ((MxSettings) Settings.get()).getDemoCountry();
         town = ((MxSettings) Settings.get()).getDemoTown();
@@ -57,12 +54,12 @@ public class DemoStorageInitializerImpl implements DemoStorageInitializer {
         calendar.roll(Calendar.HOUR_OF_DAY, 1);
         createMockJob(refId++, calendar.getTime(), TaskState.RUN_RECEIVED);
         calendar.roll(Calendar.HOUR_OF_DAY, 2);
-        createMockJob(refId++, calendar.getTime(), TaskState.RUN_RECEIVED);
+        createMockJob(refId, calendar.getTime(), TaskState.RUN_RECEIVED);
     }
 
     private void createMockJob(final int id, final Date date, final int state) {
         final Job job = new Job();
-        final List<Stop> stops = new ArrayList<Stop>();
+        final List<Stop> stops = new ArrayList<>();
         final long loadingDuration = Math.max(5 * 60, DemoDataUtils.RAND.nextInt(30 * 60)); // 30 minutes
         job.setReferenceId(String.valueOf(id));
         job.setDate(date);
@@ -91,7 +88,7 @@ public class DemoStorageInitializerImpl implements DemoStorageInitializer {
 
     private Stop createMockStop(final Job job, final int id, final Date date, final int state, final String type) {
         final Address address = DemoDataUtils.randomAddressAndLocation(country, town);
-        final Map<String, String> parameters = new HashMap<String, String>();
+        final Map<String, String> parameters = new HashMap<>();
         final Stop stop = new Stop(
                 String.valueOf(DemoDataUtils.RAND.nextInt(999999)),
                 String.valueOf(id),

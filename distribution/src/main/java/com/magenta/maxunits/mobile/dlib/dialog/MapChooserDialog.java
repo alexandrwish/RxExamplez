@@ -15,8 +15,8 @@ import com.magenta.maxunits.distribution.R;
 import com.magenta.maxunits.mobile.dlib.db.dao.DistributionDAO;
 import com.magenta.maxunits.mobile.dlib.entity.MapProviderType;
 import com.magenta.maxunits.mobile.dlib.entity.MapSettingsEntity;
-import com.magenta.maxunits.mobile.mc.MxSettings;
-import com.magenta.maxunits.mobile.utils.StringUtils;
+import com.magenta.maxunits.mobile.dlib.mc.MxSettings;
+import com.magenta.maxunits.mobile.dlib.utils.StringUtils;
 import com.magenta.mc.client.setup.Setup;
 
 import java.sql.SQLException;
@@ -36,7 +36,7 @@ public class MapChooserDialog extends DistributionDialogFragment {
         Bundle bundle = getArguments();
         String driver = Setup.get().getSettings().getLogin();
         mapSettings = (Map) bundle.getSerializable("map.property");
-        final ArrayList<String> mapProviders = new ArrayList<String>(mapSettings.keySet());
+        final ArrayList<String> mapProviders = new ArrayList<>(mapSettings.keySet());
         try {
             List<MapSettingsEntity> settingsEntities = DistributionDAO.getInstance(getActivity()).getMapSettings(driver);
             if (settingsEntities.isEmpty()) {
@@ -54,7 +54,7 @@ public class MapChooserDialog extends DistributionDialogFragment {
             entity.setDriver(driver);
             LOG.info(String.format("Create default settings for driver: %s", driver));
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, mapProviders);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, mapProviders);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         Spinner mapSpinner = ((Spinner) mapChooser.findViewById(R.id.map_spinner));
         mapSpinner.setAdapter(adapter);
@@ -87,8 +87,7 @@ public class MapChooserDialog extends DistributionDialogFragment {
         return new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.map_dialog)
                 .setView(mapChooser)
-                .setPositiveButton(R.string.mx_ok,
-                        new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.mx_ok, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 try {
                                     DistributionDAO.getInstance(getActivity()).saveMapSettings(entity);
@@ -97,8 +96,7 @@ public class MapChooserDialog extends DistributionDialogFragment {
                             }
                         }
                 )
-                .setNegativeButton(R.string.mx_cancel,
-                        new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.mx_cancel, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 setDefaultMap();
                             }
@@ -130,7 +128,9 @@ public class MapChooserDialog extends DistributionDialogFragment {
     }
 
     private void setDefaultMap() {
-        if (!emptySettings) return;
+        if (!emptySettings) {
+            return;
+        }
         Object o = Setup.get().getSettings().get("default.map");
         if (o != null && !StringUtils.isBlank((String) o)) {
             String provider = ((String) o).toLowerCase();

@@ -8,9 +8,8 @@ import android.os.Vibrator;
 import android.util.SparseIntArray;
 
 import com.magenta.maxunits.distribution.R;
+import com.magenta.maxunits.mobile.dlib.mc.MxSettings;
 import com.magenta.maxunits.mobile.dlib.sound.DSound;
-import com.magenta.maxunits.mobile.mc.MxSettings;
-import com.magenta.maxunits.mobile.utils.StringUtils;
 import com.magenta.mc.client.MobileApp;
 import com.magenta.mc.client.log.MCLoggerFactory;
 
@@ -98,7 +97,6 @@ public class DSoundPool extends SoundPool {
         playSound(0, vibration);
         if (count > 0 && canContinueBip(bipName)) {
             MobileApp.getInstance().getTimer().schedule(new TimerTask() {
-                @Override
                 public void run() {
                     bip(count - 1, vibration, delay, bipName);
                 }

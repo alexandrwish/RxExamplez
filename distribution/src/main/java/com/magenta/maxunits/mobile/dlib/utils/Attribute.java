@@ -6,7 +6,7 @@ import android.graphics.drawable.Drawable;
 import com.magenta.maxunits.mobile.dlib.entity.DynamicAttributeEntity;
 import com.magenta.maxunits.mobile.dlib.entity.DynamicAttributeType;
 import com.magenta.maxunits.mobile.dlib.entity.LocalizeStringEntity;
-import com.magenta.maxunits.mobile.mc.MxSettings;
+import com.magenta.maxunits.mobile.dlib.mc.MxSettings;
 import com.magenta.mc.client.setup.Setup;
 
 import java.util.ArrayList;

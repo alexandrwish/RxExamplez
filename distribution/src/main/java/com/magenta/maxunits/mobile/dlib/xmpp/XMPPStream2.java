@@ -3,8 +3,8 @@ package com.magenta.maxunits.mobile.dlib.xmpp;
 import android.util.Log;
 
 import com.magenta.maxunits.mobile.dlib.receiver.LoginCheckReceiver;
-import com.magenta.maxunits.mobile.mc.MxSettings;
-import com.magenta.maxunits.mobile.utils.UserUtils;
+import com.magenta.maxunits.mobile.dlib.mc.MxSettings;
+import com.magenta.maxunits.mobile.dlib.utils.UserUtils;
 import com.magenta.mc.client.components.MCTimerTask;
 import com.magenta.mc.client.log.MCLoggerFactory;
 import com.magenta.mc.client.settings.Settings;

@@ -6,8 +6,8 @@ import android.os.Looper;
 import com.magenta.maxunits.mobile.dlib.service.events.AlertEvent;
 import com.magenta.maxunits.mobile.dlib.service.storage.entity.Job;
 import com.magenta.maxunits.mobile.dlib.service.storage.entity.Stop;
-import com.magenta.maxunits.mobile.mc.MxSettings;
-import com.magenta.maxunits.mobile.service.ServicesRegistry;
+import com.magenta.maxunits.mobile.dlib.mc.MxSettings;
+import com.magenta.maxunits.mobile.dlib.service.ServicesRegistry;
 import com.magenta.mc.client.setup.Setup;
 
 import java.util.ArrayList;
@@ -48,10 +48,9 @@ public class AlertHandler extends Handler {
 
     private class AlertRunnable implements Runnable {
 
-        @Override
         public void run() {
-            List<String> runs = new ArrayList<String>();
-            List<String> jobs = new ArrayList<String>();
+            List<String> runs = new ArrayList<>();
+            List<String> jobs = new ArrayList<>();
             boolean needToIncrement;
             for (Job job : (List<Job>) ServicesRegistry.getDataController().loadCurrentJobs()) {
                 needToIncrement = false;

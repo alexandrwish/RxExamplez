@@ -2,15 +2,11 @@ package com.magenta.mc.client.android.ui.table_info.renderers;
 
 import android.view.View;
 
-/**
- * @autor Petr Popov
- * Created 18.05.12 10:33
- */
 public abstract class DetailRenderer<V extends View, S> {
 
-    public boolean visibleOnlyInExpandedView;
-    protected int viewId;
     protected int[] hide;
+    private boolean visibleOnlyInExpandedView;
+    private int viewId;
 
     public DetailRenderer(int appropriateViewId, int[] hide) {
         this(appropriateViewId, hide, false);
@@ -47,5 +43,4 @@ public abstract class DetailRenderer<V extends View, S> {
      * @return true if source has non empty appropriate value
      */
     public abstract boolean isRendered();
-
 }

@@ -2,7 +2,7 @@ package com.magenta.maxunits.mobile.dlib.entity;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-import com.magenta.maxunits.mobile.utils.StringUtils;
+import com.magenta.maxunits.mobile.dlib.utils.StringUtils;
 
 import java.io.Serializable;
 

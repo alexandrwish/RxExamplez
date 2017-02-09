@@ -47,11 +47,11 @@
             android:enabled="true" />
 
         <service
-            android:name="com.magenta.maxunits.mobile.service.LocationService"
+            android:name="com.magenta.maxunits.mobile.dlib.service.LocationService"
             android:enabled="true" />
 
         <activity
-            android:name="com.magenta.maxunits.mobile.activity.common.LoginActivity"
+            android:name="com.magenta.maxunits.mobile.dlib.activity.common.LoginActivity"
             android:configChanges="locale|orientation"
             android:label="@string/mx_app_name"
             android:windowSoftInputMode="stateHidden">
@@ -61,7 +61,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.magenta.maxunits.mobile.dlib.activity.common.DistributionSettingsActivity"
+            android:name="com.magenta.maxunits.mobile.dlib.activity.common.SettingsActivity"
             android:configChanges="locale|orientation"
             android:theme="@android:style/Theme.Black" />
         <activity

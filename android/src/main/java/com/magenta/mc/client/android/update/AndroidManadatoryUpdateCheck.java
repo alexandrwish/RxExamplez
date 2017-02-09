@@ -4,13 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
-/**
- * Created with IntelliJ IDEA.
- * User: const
- * Date: 27.02.13
- * Time: 13:15
- * To change this template use File | Settings | File Templates.
- */
 public class AndroidManadatoryUpdateCheck extends AbstractAndroidUpdateCheck {
 
     public AndroidManadatoryUpdateCheck(final Context context) {

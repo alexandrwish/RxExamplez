@@ -30,8 +30,4 @@ public class DistributionUtils {
         icon.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
         return icon;
     }
-
-    public static boolean getBoolean(String s) {
-        return !(s == null || s.trim().isEmpty()) && Boolean.parseBoolean(s);
-    }
 }

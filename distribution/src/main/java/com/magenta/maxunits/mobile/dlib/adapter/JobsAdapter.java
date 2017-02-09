@@ -1,6 +1,7 @@
 package com.magenta.maxunits.mobile.dlib.adapter;
 
 import android.app.Activity;
+import android.support.annotation.NonNull;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +23,8 @@ public class JobsAdapter extends DistributionArrayAdapter<Job> {
         super(context, R.layout.item_job, list);
     }
 
-    public View getView(int position, View convertView, ViewGroup parent) {
+    @NonNull
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         View view;
         if (convertView == null) {
             view = context.getLayoutInflater().inflate(R.layout.item_job, null);

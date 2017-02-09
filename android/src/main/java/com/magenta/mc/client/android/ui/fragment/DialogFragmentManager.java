@@ -8,22 +8,12 @@ import android.support.v4.app.FragmentManager;
 import com.magenta.mc.client.android.util.StringUtilities;
 import com.magenta.mc.client.log.MCLoggerFactory;
 
-/**
- * Project: mobile
- * Author:  Alexey Osipov
- * Created: 13.01.14
- * <p/>
- * Copyright (c) 1999-2014 Magenta Corporation Ltd. All Rights Reserved.
- * Magenta Technology proprietary and confidential.
- * Use is subject to license terms.
- */
 public class DialogFragmentManager {
 
     private FragmentManagerProducer fragmentManagerProducer;
 
     public DialogFragmentManager(final FragmentActivity fragmentActivity) {
         this.fragmentManagerProducer = new FragmentManagerProducer() {
-            @Override
             public FragmentManager getFragmentManager() {
                 return fragmentActivity.getSupportFragmentManager();
             }
@@ -43,12 +33,10 @@ public class DialogFragmentManager {
     public static <T> T getParent(Class<T> parentType, DialogFragment dialogFragment) {
         Fragment parentFragment = dialogFragment.getParentFragment();
         Object candidate = parentFragment == null ? dialogFragment.getActivity() : parentFragment;
-
         if (candidate == null) {
             MCLoggerFactory.getLogger().warn("Can't find parent activity or fragment");
             return null;
         }
-
         if (parentType.isAssignableFrom(candidate.getClass())) {
             return (T) candidate;
         }
@@ -69,7 +57,6 @@ public class DialogFragmentManager {
 
     public void dismissDialog(Class<? extends DialogFragment> fragmentClass) {
         String tag = StringUtilities.tag(fragmentClass);
-
         DialogFragment dialogFragment = (DialogFragment) fragmentManagerProducer.getFragmentManager().findFragmentByTag(tag);
         if (dialogFragment != null) {
             dialogFragment.dismiss();
@@ -77,6 +64,7 @@ public class DialogFragmentManager {
     }
 
     private interface FragmentManagerProducer {
+
         FragmentManager getFragmentManager();
     }
 }

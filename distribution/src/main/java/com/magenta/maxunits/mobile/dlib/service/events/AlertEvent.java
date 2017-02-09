@@ -1,6 +1,6 @@
 package com.magenta.maxunits.mobile.dlib.service.events;
 
-import com.magenta.maxunits.mobile.service.listeners.BroadcastEvent;
+import com.magenta.maxunits.mobile.dlib.service.listeners.BroadcastEvent;
 
 import java.util.List;
 

@@ -9,20 +9,17 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AcraSentrySender implements ReportSender {
+final class AcraSentrySender implements ReportSender {
 
     public void send(CrashReportData report) throws ReportSenderException {
         String stackTrace = report.get(ReportField.STACK_TRACE);
         String[] stackTraceLines = stackTrace.split("\n");
-
         String message = stackTraceLines.length > 0 ? stackTraceLines[0] : stackTrace;
         String culprit = stackTraceLines.length > 1 ? stackTraceLines[1] : stackTrace;
-
-        Map<String, String> extra = new HashMap<String, String>();
+        Map<String, String> extra = new HashMap<>();
         for (Map.Entry<ReportField, String> reportField : report.entrySet()) {
             extra.put(reportField.getKey().name(), reportField.getValue());
         }
-
         SentryHelper sentryHelper = new SentryHelper();
         sentryHelper.captureEvent(new SentryHelper.SentryEventBuilder().
                 setLevel(SentryHelper.SentryEventBuilder.SentryEventLevel.ERROR).

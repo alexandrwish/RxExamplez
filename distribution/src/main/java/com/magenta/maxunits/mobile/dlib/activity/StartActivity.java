@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.TableLayout;
 
 import com.magenta.maxunits.distribution.R;
-import com.magenta.maxunits.mobile.activity.WorkflowActivity;
 import com.magenta.maxunits.mobile.dlib.db.dao.DistributionDAO;
 import com.magenta.maxunits.mobile.dlib.entity.DynamicAttributeType;
 import com.magenta.maxunits.mobile.dlib.mc.HDSettings;
@@ -23,10 +22,10 @@ import com.magenta.maxunits.mobile.dlib.utils.DistributionUtils;
 import com.magenta.maxunits.mobile.dlib.utils.IntentAttributes;
 import com.magenta.maxunits.mobile.dlib.view.DynamicAttributeView;
 import com.magenta.maxunits.mobile.entity.TaskState;
-import com.magenta.maxunits.mobile.mc.MxAndroidUtil;
-import com.magenta.maxunits.mobile.mc.MxSettings;
-import com.magenta.maxunits.mobile.service.ServicesRegistry;
-import com.magenta.maxunits.mobile.utils.StringUtils;
+import com.magenta.maxunits.mobile.dlib.mc.MxAndroidUtil;
+import com.magenta.maxunits.mobile.dlib.mc.MxSettings;
+import com.magenta.maxunits.mobile.dlib.service.ServicesRegistry;
+import com.magenta.maxunits.mobile.dlib.utils.StringUtils;
 import com.magenta.mc.client.setup.Setup;
 
 import java.sql.SQLException;
@@ -79,7 +78,6 @@ public class StartActivity extends DistributionActivity implements WorkflowActiv
                 .add(new Attribute(getString(R.string.customer_location), stop.getLocation()))
                 .add(new Attribute(getString(R.string.address_label), stop.getAddressAsString()).addListeners(
                         new View.OnLongClickListener() {
-                            @Override
                             public boolean onLongClick(View v) {
                                 return MxAndroidUtil.showTomTomOrDefaultNavigator(stop.getAddress(), StartActivity.this);
                             }
@@ -136,7 +134,6 @@ public class StartActivity extends DistributionActivity implements WorkflowActiv
 
     protected void setAbortBtnOnClickListener() {
         abortButton.setOnClickListener(new OnClickListener() {
-
             public void onClick(View v) {
                 startActivity(new Intent(StartActivity.this, AbortActivity.class)
                         .putExtra(IntentAttributes.JOB_ID, currentJobId)
@@ -148,10 +145,8 @@ public class StartActivity extends DistributionActivity implements WorkflowActiv
 
     protected void setResumeBtnOnClickListener(final Stop stop) {
         resumeButton.setOnClickListener(new OnClickListener() {
-            @Override
             public void onClick(View v) {
                 runOnUiThread(new Runnable() {
-                    @Override
                     public void run() {
                         final Stop startedStop = getStartedStop(stop);
                         if (startedStop == null) {
@@ -180,7 +175,6 @@ public class StartActivity extends DistributionActivity implements WorkflowActiv
     protected void setStartButtonOnClickListener(final Stop stop) {
         final Boolean disableBtn = getIntent().getExtras() != null && getIntent().getExtras().getBoolean(DISABLE_START_BUTTON, false);
         startButton.setOnClickListener(new OnClickListener() {
-
             public void onClick(View v) {
                 if (disableBtn) {
                     Setup.get().getUI().getDialogManager().asyncMessageSafe(getString(R.string.info), getString(R.string.complete_previous));

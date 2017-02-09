@@ -8,7 +8,7 @@ import java.util.HashSet;
 public class WorkflowStatusAuto {
 
     @SuppressLint("UseSparseArrays")
-    private final HashMap<Byte, Entity> entities = new HashMap<Byte, Entity>();
+    private final HashMap<Byte, Entity> entities = new HashMap<>();
 
     public void addEntityStatus(final byte kind, final Status status) {
         final Byte key = kind;

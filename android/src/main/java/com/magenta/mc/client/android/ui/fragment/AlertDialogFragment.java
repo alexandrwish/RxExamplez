@@ -6,19 +6,11 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 
 import java.util.ArrayList;
 
-/**
- * Project: mobile
- * Author:  Alexey Osipov
- * Created: 13.01.14
- * <p/>
- * Copyright (c) 1999-2014 Magenta Corporation Ltd. All Rights Reserved.
- * Magenta Technology proprietary and confidential.
- * Use is subject to license terms.
- */
 public class AlertDialogFragment extends DialogFragment {
 
     private static final String ARG_ID = "arg_id";
@@ -26,13 +18,12 @@ public class AlertDialogFragment extends DialogFragment {
     private static final String ARG_MSG = "arg_msg";
     private static final String ARG_BTN = "arg_btn";
 
-    @Override
+    @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
                 .setTitle(getArguments().getString(ARG_TITLE))
                 .setMessage(getArguments().getString(ARG_MSG))
                 .setCancelable(false);
-
         ArrayList<EDAlertDialogButton> buttons = getArguments().getParcelableArrayList(ARG_BTN);
         if (buttons != null) {
             for (EDAlertDialogButton btn : buttons) {
@@ -49,15 +40,15 @@ public class AlertDialogFragment extends DialogFragment {
                 }
             }
         }
-
         return builder.create();
     }
 
     public static class Builder {
+
         private String id;
         private String title;
         private String msg;
-        private ArrayList<EDAlertDialogButton> buttons = new ArrayList<EDAlertDialogButton>();
+        private ArrayList<EDAlertDialogButton> buttons = new ArrayList<>();
 
         public Builder setId(String id) {
             this.id = id;
@@ -95,7 +86,6 @@ public class AlertDialogFragment extends DialogFragment {
             args.putString(ARG_TITLE, title);
             args.putString(ARG_MSG, msg);
             args.putParcelableArrayList(ARG_BTN, buttons);
-
             AlertDialogFragment dialogFragment = new AlertDialogFragment();
             dialogFragment.setArguments(args);
             return dialogFragment;
@@ -103,12 +93,27 @@ public class AlertDialogFragment extends DialogFragment {
     }
 
     private static class EDAlertDialogButton implements Parcelable {
+
+        public static final Creator<EDAlertDialogButton> CREATOR = new Creator<EDAlertDialogButton>() {
+
+            public EDAlertDialogButton createFromParcel(Parcel in) {
+                return new EDAlertDialogButton(in);
+            }
+
+            public EDAlertDialogButton[] newArray(int size) {
+                return new EDAlertDialogButton[size];
+            }
+        };
         private DialogButtonType type;
         private String text;
 
         EDAlertDialogButton(DialogButtonType type, String text) {
             this.type = type;
             this.text = text;
+        }
+
+        EDAlertDialogButton(Parcel in) {
+            text = in.readString();
         }
 
         public DialogButtonType getType() {
@@ -123,12 +128,10 @@ public class AlertDialogFragment extends DialogFragment {
             this.text = text;
         }
 
-        @Override
         public int describeContents() {
             return 0;
         }
 
-        @Override
         public void writeToParcel(Parcel parcel, int i) {
             parcel.writeString(text);
             parcel.writeInt(type.ordinal());
@@ -145,7 +148,6 @@ public class AlertDialogFragment extends DialogFragment {
             this.type = type;
         }
 
-        @Override
         public void onClick(DialogInterface dialogInterface, int i) {
             DialogFragmentCallback callback = DialogFragmentManager.getParent(DialogFragmentCallback.class, fragment);
             if (callback != null) {

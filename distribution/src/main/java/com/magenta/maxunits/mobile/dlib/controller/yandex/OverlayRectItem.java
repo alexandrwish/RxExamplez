@@ -11,8 +11,8 @@ import ru.yandex.yandexmapkit.utils.ScreenPoint;
 
 public class OverlayRectItem extends OverlayItem {
 
-    private List<GeoPoint> geoPoints = new ArrayList<GeoPoint>();
-    private List<ScreenPoint> screenPoints = new ArrayList<ScreenPoint>();
+    private List<GeoPoint> geoPoints = new ArrayList<>();
+    private List<ScreenPoint> screenPoints = new ArrayList<>();
 
     public OverlayRectItem(GeoPoint geoPoint, Drawable drawable) {
         super(geoPoint, drawable);
@@ -34,7 +34,6 @@ public class OverlayRectItem extends OverlayItem {
         this.screenPoints = screenPoints;
     }
 
-    @Override
     public int compareTo(Object another) {
         return 0;
     }

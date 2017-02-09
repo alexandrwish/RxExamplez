@@ -1,8 +1,5 @@
 package com.magenta.maxunits.mobile.dlib.service.events;
 
-/**
- * @author Sergey Grachev
- */
 public class EventType {
 
     public static final String RELOAD_SCHEDULE = "RELOAD_SCHEDULE";

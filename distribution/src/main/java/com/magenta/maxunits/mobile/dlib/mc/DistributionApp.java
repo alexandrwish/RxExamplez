@@ -5,10 +5,8 @@ import com.magenta.maxunits.mobile.dlib.rpc.DistributionRPCOut;
 import com.magenta.maxunits.mobile.dlib.service.SaveLocationService;
 import com.magenta.maxunits.mobile.dlib.service.storage.DemoStorageInitializerImpl;
 import com.magenta.maxunits.mobile.dlib.xmpp.XMPPStream2;
-import com.magenta.maxunits.mobile.mc.MxMobile;
-import com.magenta.maxunits.mobile.mc.MxSettings;
-import com.magenta.maxunits.mobile.rpc.RPCTarget;
-import com.magenta.maxunits.mobile.service.ServicesRegistry;
+import com.magenta.maxunits.mobile.dlib.rpc.RPCTarget;
+import com.magenta.maxunits.mobile.dlib.service.ServicesRegistry;
 import com.magenta.mc.client.client.ConnectionListener;
 import com.magenta.mc.client.client.Login;
 import com.magenta.mc.client.client.TimeSynchronization;
@@ -33,9 +31,7 @@ public class DistributionApp extends MxMobile {
 
     protected void setupLoginListener() {
         final Login.Listener loginListener = Login.getInstance().getListener();
-
         Login.getInstance().setListener(new Login.Listener() {
-
             public void fail() {
                 if (loginListener != null) {
                     loginListener.fail();
@@ -59,7 +55,6 @@ public class DistributionApp extends MxMobile {
 
             public void afterLogout() {
                 Login.setUserLoggout();
-                afterLogoutApplication();
             }
         });
     }

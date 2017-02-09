@@ -22,20 +22,20 @@ import android.widget.TextView;
 import com.magenta.maxunits.distribution.R;
 import com.magenta.maxunits.mobile.dlib.activity.AbortActivity;
 import com.magenta.maxunits.mobile.dlib.handler.MapUpdateHandler;
+import com.magenta.maxunits.mobile.dlib.mc.MxAndroidUtil;
+import com.magenta.maxunits.mobile.dlib.mc.MxSettings;
 import com.magenta.maxunits.mobile.dlib.receiver.RouteUpdateReceiver;
 import com.magenta.maxunits.mobile.dlib.rpc.DistributionRPCOut;
+import com.magenta.maxunits.mobile.dlib.service.ServicesRegistry;
 import com.magenta.maxunits.mobile.dlib.service.storage.entity.Job;
 import com.magenta.maxunits.mobile.dlib.service.storage.entity.Stop;
+import com.magenta.maxunits.mobile.dlib.utils.DateUtils;
 import com.magenta.maxunits.mobile.dlib.utils.IntentAttributes;
 import com.magenta.maxunits.mobile.dlib.utils.JobWorkflowUtils;
+import com.magenta.maxunits.mobile.dlib.utils.PhoneUtils;
+import com.magenta.maxunits.mobile.dlib.utils.StringUtils;
 import com.magenta.maxunits.mobile.entity.Address;
 import com.magenta.maxunits.mobile.entity.TaskState;
-import com.magenta.maxunits.mobile.mc.MxAndroidUtil;
-import com.magenta.maxunits.mobile.mc.MxSettings;
-import com.magenta.maxunits.mobile.service.ServicesRegistry;
-import com.magenta.maxunits.mobile.utils.DateUtils;
-import com.magenta.maxunits.mobile.utils.PhoneUtils;
-import com.magenta.maxunits.mobile.utils.StringUtils;
 import com.magenta.mc.client.setup.Setup;
 
 import java.util.ArrayList;
@@ -71,7 +71,7 @@ public abstract class MapController implements View.OnClickListener {
         mStops = stops;
         this.routeWithDriver = routeWithDriver;
         this.routeUpdateReceiver = new RouteUpdateReceiver(this);
-        this.addresses = new ArrayList<Address>();
+        this.addresses = new ArrayList<>();
         mIsMapDisplayingEnabled = ((MxSettings) Setup.get().getSettings()).isMapDisplayingEnabled();
         mBtnZoomIn.setOnClickListener(this);
         mBtnZoomOut.setOnClickListener(this);
@@ -134,7 +134,7 @@ public abstract class MapController implements View.OnClickListener {
     public void updateRoute(String route) {
     }
 
-    public void showDialog(final Job job, boolean canBeStarted, boolean canBeCancelled, final Stop stop) {
+    private void showDialog(final Job job, boolean canBeStarted, boolean canBeCancelled, final Stop stop) {
         String typeName = stop.isPickup() ? mActivity.getString(R.string.collection) : mActivity.getString(R.string.delivery);
         LayoutInflater inflater = mActivity.getLayoutInflater();
         View view = inflater.inflate(R.layout.view_map_marker, null);
@@ -144,11 +144,10 @@ public abstract class MapController implements View.OnClickListener {
         TextView contactPhone = (TextView) view.findViewById(R.id.contact_phone);
         TextView order = (TextView) view.findViewById(R.id.order);
         TextView time = (TextView) view.findViewById(R.id.time);
-
         time.setText(DateUtils.toStringTime(stop.getDate()) + " (" + stop.getTimeWindowAsString() + ")");
         order.setText(Html.fromHtml("<u>" + stop.getStopName() + " " + typeName + "</u>"));
         order.setOnClickListener(new View.OnClickListener() {
-            @Override
+
             public void onClick(View v) {
                 if (mDialog != null) {
                     mDialog.hide();
@@ -156,7 +155,6 @@ public abstract class MapController implements View.OnClickListener {
                 JobWorkflowUtils.openNextActivity(stop, job, mActivity);
             }
         });
-
         if (StringUtils.isBlank(stop.getAddressAsString())) {
             address.setVisibility(View.GONE);
         } else {
@@ -168,28 +166,22 @@ public abstract class MapController implements View.OnClickListener {
             customer.setVisibility(View.VISIBLE);
             customer.setText(stop.getCustomerInfo());
         }
-
         if (StringUtils.isBlank(stop.getContactPerson())) {
             contactPerson.setVisibility(View.GONE);
         } else {
             contactPerson.setText(stop.getContactPerson());
         }
-
         if (StringUtils.isBlank(stop.getContactPhone())) {
             contactPhone.setVisibility(View.GONE);
         } else {
             PhoneUtils.assignPhone(contactPhone, stop.getContactPhone());
         }
-        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity)
-                .setView(view);
-
+        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity).setView(view);
         if (canBeStarted) {
             builder.setPositiveButton(mActivity.getString(R.string.start), new DialogInterface.OnClickListener() {
-                @Override
                 public void onClick(final DialogInterface dialog, final int which) {
                     stop.processSetState(TaskState.STOP_ON_ROUTE);
                     mActivity.runOnUiThread(new Runnable() {
-                        @Override
                         public void run() {
                             new AlertDialog.Builder(mActivity)
                                     .setMessage(R.string.launch_navi_app)
@@ -204,7 +196,6 @@ public abstract class MapController implements View.OnClickListener {
                                         }
                                     })
                                     .setOnCancelListener(new DialogInterface.OnCancelListener() {
-                                        @Override
                                         public void onCancel(DialogInterface dialogInterface) {
                                             goToArriveMapActivity(job.getReferenceId(), stop.getReferenceId());
                                         }
@@ -217,7 +208,6 @@ public abstract class MapController implements View.OnClickListener {
         }
         if (canBeCancelled) {
             builder.setNegativeButton(R.string.abort_short, new DialogInterface.OnClickListener() {
-                @Override
                 public void onClick(DialogInterface dialog, int which) {
                     mActivity.startActivity(new Intent(mActivity, AbortActivity.class)
                             .putExtra(IntentAttributes.JOB_ID, job.getReferenceId())
@@ -226,13 +216,12 @@ public abstract class MapController implements View.OnClickListener {
                 }
             });
         }
-        mDialog = builder
-                .create();
+        mDialog = builder.create();
         mDialog.setCanceledOnTouchOutside(true);
         mDialog.show();
     }
 
-    protected void goToArriveMapActivity(String jobRef, String stopRef) {
+    private void goToArriveMapActivity(String jobRef, String stopRef) {
         mActivity.startActivity(new Intent(mActivity, ServicesRegistry.getWorkflowService().getArrivedActivity())
                 .putExtra(IntentAttributes.JOB_ID, jobRef)
                 .putExtra(IntentAttributes.STOP_ID, stopRef));
@@ -268,7 +257,6 @@ public abstract class MapController implements View.OnClickListener {
             showArriveDialog(stop);
             return;
         }
-
         for (Object o : startedStop.getParentJob().getStops()) {
             Stop stp = (Stop) o;
             if (stp.equalsStops(stop) &&
@@ -278,7 +266,6 @@ public abstract class MapController implements View.OnClickListener {
                 return;
             }
         }
-
         new AlertDialog.Builder(mActivity)
                 .setMessage(R.string.suspend_other_job)
                 .setPositiveButton(R.string.mx_yes, new DialogInterface.OnClickListener() {
@@ -294,7 +281,7 @@ public abstract class MapController implements View.OnClickListener {
                 }).show();
     }
 
-    public boolean isSameAddress(List<Address> al1, List<Address> al2) {
+    private boolean isSameAddress(List<Address> al1, List<Address> al2) {
         for (Address a1 : al1) {
             boolean contain = false;
             for (Address a2 : al2) {
@@ -360,7 +347,6 @@ public abstract class MapController implements View.OnClickListener {
         }
     }
 
-    @Override
     public void onClick(View v) {
         if (v == mBtnZoomOut) {
             zoomOut();
@@ -372,11 +358,9 @@ public abstract class MapController implements View.OnClickListener {
     }
 
     protected void zoomIn() {
-
     }
 
     protected void zoomOut() {
-
     }
 
     public void onViewPress() {

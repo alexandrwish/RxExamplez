@@ -1,6 +1,7 @@
 package com.magenta.maxunits.mobile.dlib.adapter;
 
 import android.app.Activity;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -12,9 +13,9 @@ import com.magenta.maxunits.mobile.dlib.service.storage.entity.Stop;
 import com.magenta.maxunits.mobile.dlib.utils.DistributionUtils;
 import com.magenta.maxunits.mobile.dlib.utils.StopsComparator;
 import com.magenta.maxunits.mobile.dlib.view.TimeWindowView;
-import com.magenta.maxunits.mobile.ui.map.MapAddress;
-import com.magenta.maxunits.mobile.utils.PhoneUtils;
-import com.magenta.maxunits.mobile.utils.StringUtils;
+import com.magenta.maxunits.mobile.dlib.ui.map.MapAddress;
+import com.magenta.maxunits.mobile.dlib.utils.PhoneUtils;
+import com.magenta.maxunits.mobile.dlib.utils.StringUtils;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -22,7 +23,7 @@ import java.util.List;
 
 public class StopsAdapter extends DistributionArrayAdapter<Stop> {
 
-    List<Stop> jobStops;
+    private List<Stop> jobStops;
 
     public StopsAdapter(Activity context, List<Stop> list) {
         super(context, R.layout.item_inactive_stop, list);
@@ -37,7 +38,8 @@ public class StopsAdapter extends DistributionArrayAdapter<Stop> {
         notifyDataSetChanged();
     }
 
-    public View getView(int position, View convertView, ViewGroup parent) {
+    @NonNull
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         View view;
         if (convertView == null) {
             view = context.getLayoutInflater().inflate(R.layout.item_inactive_stop, null);

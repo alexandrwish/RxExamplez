@@ -14,7 +14,6 @@ public class RouteUpdateReceiver extends BroadcastReceiver {
         this.mapController = mapController;
     }
 
-    @Override
     public void onReceive(Context context, Intent intent) {
         if (mapController.getSynchronizeTimestamp().equals(intent.getLongExtra("synchronizeTimestamp", -1L))) {
             mapController.updateRoute(intent.getStringExtra("route"));

@@ -10,6 +10,7 @@ public class PhoneStatisticRecord {
     private static final String GPS = "gps";
     private static final String GPRS = "gprs";
     private static final String BATTERY = "battery";
+
     @SerializedName(DATE)
     protected Date date;
     @SerializedName(GPS)

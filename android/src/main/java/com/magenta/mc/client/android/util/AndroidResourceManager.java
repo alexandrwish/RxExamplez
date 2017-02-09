@@ -8,10 +8,6 @@ import com.magenta.mc.client.util.ResourceManager;
 
 import java.io.InputStream;
 
-/**
- * @autor Petr Popov
- * Created 17.04.12 17:05
- */
 public class AndroidResourceManager extends ResourceManager {
 
     private Context applicationContext;
@@ -20,7 +16,6 @@ public class AndroidResourceManager extends ResourceManager {
         this.applicationContext = context;
     }
 
-    @Override
     public InputStream getResourceAsStream(String name) {
         try {
             Resources resources = applicationContext.getResources();
@@ -28,10 +23,7 @@ public class AndroidResourceManager extends ResourceManager {
             nameForId = nameForId.replace(".zip", "");
             return resources.openRawResource(getIdForResource(nameForId, "raw"));
         } catch (Resources.NotFoundException e) {
-            MCLoggerFactory.getLogger(getClass()).debug(
-                    String.format(
-                            "Error while loading resource with name: %s, trying getClass().getClassLoader().getResourceAsStream(name)",
-                            name));
+            MCLoggerFactory.getLogger(getClass()).debug(String.format("Error while loading resource with name: %s, trying getClass().getClassLoader().getResourceAsStream(name)", name));
             return super.getResourceAsStream(name);
         }
     }
@@ -41,5 +33,4 @@ public class AndroidResourceManager extends ResourceManager {
         String packageName = applicationContext.getPackageName();
         return resources.getIdentifier(nameForId, type, packageName);
     }
-
 }

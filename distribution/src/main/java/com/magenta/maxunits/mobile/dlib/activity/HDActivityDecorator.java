@@ -7,18 +7,17 @@ import android.content.Intent;
 import android.view.MenuItem;
 
 import com.magenta.maxunits.distribution.R;
-import com.magenta.maxunits.mobile.activity.ActivityDecorator;
-import com.magenta.maxunits.mobile.activity.common.LoginActivity;
+import com.magenta.maxunits.mobile.dlib.activity.common.LoginActivity;
 import com.magenta.maxunits.mobile.dlib.service.events.AlertEvent;
 import com.magenta.maxunits.mobile.dlib.utils.IntentAttributes;
-import com.magenta.maxunits.mobile.rpc.operations.LogoutLock;
-import com.magenta.maxunits.mobile.service.ServicesRegistry;
+import com.magenta.maxunits.mobile.dlib.rpc.operations.LogoutLock;
+import com.magenta.maxunits.mobile.dlib.service.ServicesRegistry;
 
 import java.util.List;
 
 public class HDActivityDecorator extends ActivityDecorator {
 
-    AlertDialog alertDialog;
+    private AlertDialog alertDialog;
 
     public HDActivityDecorator(Context context) {
         super(context);

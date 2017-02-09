@@ -9,10 +9,6 @@ import android.widget.ImageView;
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.ui.table_info.renderers.DetailRenderer;
 
-/**
- * @autor Petr Popov
- * Created 18.05.12 10:24
- */
 public class DetailsViewGroupController<T> {
 
     private ViewGroup viewGroup;
@@ -21,22 +17,17 @@ public class DetailsViewGroupController<T> {
     private ImageView expandCollapseIcon;
     private boolean expanded;
 
-    public DetailsViewGroupController(ViewGroup viewGroup,
-                                      DetailRenderer[] renderers) {
+    public DetailsViewGroupController(ViewGroup viewGroup, DetailRenderer[] renderers) {
         this(viewGroup, renderers, null, null);
     }
 
-    public DetailsViewGroupController(ViewGroup viewGroup,
-                                      DetailRenderer[] renderers,
-                                      Button expandCollapseButton,
-                                      ImageView expandCollapseIcon) {
+    public DetailsViewGroupController(ViewGroup viewGroup, DetailRenderer[] renderers, Button expandCollapseButton, ImageView expandCollapseIcon) {
         this.viewGroup = viewGroup;
         this.renderers = renderers;
         if (expandCollapseButton != null) {
             this.expandCollapseButton = expandCollapseButton;
             this.expandCollapseIcon = expandCollapseIcon;
             View.OnClickListener expandCollapse = new View.OnClickListener() {
-                @Override
                 public void onClick(View v) {
                     setExpanded(!expanded);
                 }
@@ -44,7 +35,6 @@ public class DetailsViewGroupController<T> {
             this.expandCollapseButton.setOnClickListener(expandCollapse);
             viewGroup.setOnClickListener(expandCollapse);
         }
-
     }
 
     public void fill(T source, boolean expanded) {
@@ -85,10 +75,9 @@ public class DetailsViewGroupController<T> {
         }
     }
 
-    protected void changeView(View view, boolean expanded) {
+    private void changeView(View view, boolean expanded) {
         for (DetailRenderer renderer : renderers) {
             processVisibility(renderer, expanded);
         }
     }
 }
-

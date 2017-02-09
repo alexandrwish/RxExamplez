@@ -15,12 +15,9 @@ import com.magenta.mc.client.setup.Setup;
 
 public class SettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
-    @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         addPreferencesFromResource(R.xml.preferences);
-
         PreferenceGroup rootPreferenceGroup = getPreferenceScreen();
         for (int i = 0; i < rootPreferenceGroup.getPreferenceCount(); i++) {
             Preference preference = rootPreferenceGroup.getPreference(i);
@@ -64,20 +61,17 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         }
     }
 
-    @Override
     protected void onResume() {
         super.onResume();
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
     }
 
-    @Override
     protected void onPause() {
         super.onPause();
         getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
         Setup.get().getSettings().saveSettings();
     }
 
-    @Override
     public void onSharedPreferenceChanged(final SharedPreferences sharedPreferences, final String key) {
         Object value = sharedPreferences.getAll().get(key);
         if (value != null) {

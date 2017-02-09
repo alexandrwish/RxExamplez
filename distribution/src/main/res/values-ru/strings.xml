@@ -1,154 +1,134 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="new_information">Поступила новая информация</string>
-    <string name="stop">Остановка</string>
-    <string name="job">Работа</string>
-    <string name="job_activity_title">Заказы</string>
-    <string name="status">Статус</string>
-    <string name="job_card_status">Статус:</string>
-    <string name="done">Готово</string>
-    <string name="pod">Подпись</string>
-    <string name="start">Поехали!</string>
-    <string name="arrive">Прибыл</string>
-    <string name="give_over">Готово</string>
-    <string name="scan">Сканировать</string>
-    <string name="add">Добавить</string>
-    <string name="abort_code">Выбрать код</string>
-    <string name="abort">Отменить заказ</string>
-    <string name="resume">Продолжить</string>
-    <string name="aborted">Заказ отменён</string>
-    <string name="comment">Комментарий</string>
-    <string name="name">Имя</string>
-    <string name="reference_label">Номер заказа</string>
-    <string name="accept">Принять</string>
-    <string name="reject">Отказаться</string>
-    <string name="address_label">Адрес</string>
-    <string name="customer_label">Заказчик</string>
-    <string name="contact_label">Контактное лицо</string>
-    <string name="phone_label">Телефон контакта</string>
-    <string name="notes_label">Доп.указания:</string>
-    <string name="cost_label">Цена:</string>
-    <string name="order_type_label">Требование к ТС</string>
-    <string name="no_data">Нет данных</string>
-    <string name="barcode_label">Штрих-коды</string>
-    <string name="complete">Завершить</string>
-    <string name="fail_run">Отменить рейс</string>
-    <string name="run_failed">Рейс отменен</string>
-    <string name="clear">Очистить</string>
-    <string name="run">Рейс</string>
-    <string name="runs">Рейсы</string>
-    <string name="cancel">Отмена</string>
-    <string name="market_not_installed">Google play не установлен; не могу установить Barcode Scanner</string>
-    <string name="total_jobs">Всего работ:</string>
-    <string name="loading">Погрузка</string>
-    <string name="unloading">Разгрузка</string>
-    <string name="arrive_to_pickup">Время начала погрузки</string>
-    <string name="pickup_duration">Длительность погрузки</string>
-    <string name="pickup_location">Начало маршрута</string>
-    <string name="drop_location">Конец маршрута</string>
-    <string name="route">Маршрут</string>
-    <string name="statistics">Статистика</string>
-    <string name="statistics_done">Выполнено: </string>
-    <string name="statistics_fail">Провалено: </string>
-    <string name="statistics_suspended">Приостановлено: </string>
-    <string name="total_load">Общий вес/объем</string>
-    <string name="total_time">Общая длительность</string>
-    <string name="driving_time">Время вождения</string>
-    <string name="depart_from_pickup">Время выезда</string>
-    <string name="mins">мин</string>
-    <string name="kg">кг</string>
-    <string name="info">Детали</string>
-    <string name="arrival_time">Время прибытия</string>
-    <string name="drop_duration">Время работы</string>
-    <string name="departure_time">Время отбытия</string>
-    <string name="load">Вес</string>
-    <string name="volume">Объем</string>
-    <string name="window">Временное окно</string>
-    <string name="refresh_jobs">Обновить</string>
-    <string name="late">Опоздание!</string>
-    <string name="logout">Выход</string>
-    <string name="stop_type_pu">С</string>
-    <string name="stop_type_do">Д</string>
-    <string name="stop_type_su">П</string>
-    <string name="collection">Сбор</string>
-    <string name="delivery">Доставка</string>
-    <string name="stop_type">Тип заказа</string>
-    <string name="order">Заказ</string>
-    <string name="order_details">Детали заказа</string>
-    <string name="km">км</string>
-    <string name="show_route">План маршрута</string>
-    <string name="service">Обслуживание</string>
-    <string name="suspend">Пауза</string>
-    <string name="abort_short">Отменить</string>
-    <string name="day">д.</string>
-    <string name="launch_navi_app">Проложить маршрут до заказа?</string>
-    <string name="tarificator_not_found">Приложение для тарификации не найдено.</string>
-    <string name="suspend_other_job">Приостановить выполнение других работ?</string>
-    <string name="clear_cache">Очистить кэш карты</string>
-    <string name="enable_cache">Кэшировать карты</string>
-    <string name="mx_activity_preferences_map_cache">Настройки карты</string>
-    <string name="please_wait">Пожалуйста подождите</string>
-    <string name="clear_cache_msg">Вы действительно хотите очистить кэш?</string>
-    <string name="complete_previous">Вы должны завершить предыдущую работу, чтобы начать эту.</string>
-    <string name="mx_show">Показать</string>
-    <string name="mx_ignore">Отложить</string>
-    <string name="performer_alert">У вас есть изменения в расписании</string>
-    <string name="max_cache_age">Хранить кэш (дней)</string>
-    <string name="used_cache_space">Доступно для кэша (Мб)</string>
-    <string name="customer_location">Расположение клиента</string>
-    <string name="barcode_item">штрих-код</string>
-    <string name="barcode_name">название</string>
-    <string name="complete_barcode">Не сосканировано %s товаров - вы уверены, что хотите окончить?</string>
-    <string name="wrong_barcode">Внимание! Сосканированный товар не относится к этому заказу</string>
-    <string name="complete_job_question">Вы уверены, что хотите завершить заказ?</string>
-    <string name="abort_job_question">Вы уверены, что хотите отменить заказ?</string>
-    <string name="empty_field">Неверное значение</string>
-    <string name="fact_cost">Фактическая цена:</string>
-    <string name="cost">Цена</string>
-    <string name="time_label">Время:</string>
-    <string name="date_label">Дата:</string>
-    <string name="map_provider">Картпровайдер:</string>
-    <string name="enable_map">Использовать карту:</string>
-    <string-array name="abort_code_array">
-        <item>Адресат выбыл</item>
-        <item>Адресат отсутствует</item>
-        <item>Доставка перенесена по просьбе адресата</item>
-        <item>Отказ от получения</item>
-        <item>По техническим причинам</item>
-        <item>Не найден адрес</item>
-        <item>Неточный/неверный адрес</item>
-        <item>Погодные условия</item>
-        <item>Иная</item>
-    </string-array>
-    <string-array name="pickup_abort_code_array">
-        <item>Адресат выбыл</item>
-        <item>Адресат отсутствует</item>
-        <item>Доставка перенесена по просьбе адресата</item>
-        <item>Отказ от получения</item>
-        <item>По техническим причинам</item>
-        <item>Не найден адрес</item>
-        <item>Неточный/неверный адрес</item>
-        <item>Погодные условия</item>
-        <item>Иная</item>
-    </string-array>
-    <string name="fill_all_attributes">Заполните поля со звездочкой</string>
-    <string name="duplicate_barcode">Внимание! Данный товар уже отсканирован</string>
-    <string name="map_dialog">Выберите карт провайдера.</string>
-    <string name="do_not_ask">Запомнить выбор</string>
-    <string name="alert_map_title">Настройки карты были измененены</string>
-    <string name="alert_map_value">Для изменения настроек карты свяжитесь с диспетчером</string>
-    <string name="msg_schedule_updated_title">Обновление расписания</string>
-    <string name="msg_schedule_updated_message">Ваше расписание было обновлено</string>
-    <string name="mc_notification_status_online">В сети</string>
-    <string name="mc_notification_status_offline">Не в сети</string>
-    <string name="mc_update_notification_bar_title">Доступно обновление</string>
-    <string name="mc_update_notification_title">Новая версия</string>
-    <string name="mc_update_notification_msg">Нажмите для обновления</string>
-    <string name="mc_commons_notification_gpsDisabled">GPS выключен</string>
-    <string name="mc_commons_notification_gpsOpenSettings">Нажмите для перехода к настройкам</string>
-    <string name="mc_commons_string_noData">Нет данных</string>
+    <!--login-->
+    <string name="mx_activity_login_login">Вход</string>
+    <string name="mx_activity_login_account">Аккаунт</string>
+    <string name="mx_activity_login_username">Имя пользователя</string>
+    <string name="mx_activity_login_password">Пароль</string>
+    <string name="mx_activity_login_gpsDisabled">GPS сервис отключен! Хотите включить?</string>
+    <string name="mx_activity_login_gpsEnable">Включить GPS</string>
+    <string name="mx_activity_login_cancel">Отмена</string>
+    <string name="mx_activity_login_settings">Настройки</string>
 
-    <string name="update_needed_text">Доступна новая версия приложения. Начать установку?</string>
-    <string name="update_needed_toast_text">При следующем входе в приложение оно должно быть обновлено.</string>
-    <string name="update_needed_second_text">Доступна новая версия приложения. Чтобы продолжить работу, установите обновления.</string>
+    <!--job abort-->
+    <string name="mx_activity_abort_abort">Отменить работу</string>
+    <string name="mx_activity_abort_cancel">Отмена</string>
+
+    <!--map position-->
+    <string name="mx_activity_mapPosition_title">Маршрут</string>
+    <string name="mx_activity_mapPosition_destination">Точка назначения</string>
+
+    <!--unavailability-->
+    <string name="mx_activity_unavailability_ok">OK</string>
+    <string name="mx_activity_unavailability_cancel">Отмена</string>
+    <string name="mx_activity_unavailability_reason">Причина</string>
+    <string name="mx_activity_unavailability_set">Установить</string>
+    <string name="mx_activity_unavailability_nextAvailableAddress">Буду доступен по адресу</string>
+    <string name="mx_activity_unavailability_nextAvailablePostcode">Буду доступен по индексу</string>
+    <string name="mx_activity_unavailability_startDate">Дата и время начала</string>
+    <string name="mx_activity_unavailability_endDate">Дата и время окончания</string>
+    <string name="mx_activity_unavailability_notValid">Не все поля заполнены</string>
+    <string name="mx_activity_unavailability_reasonRequired">Причина не заполнена</string>
+    <string name="mx_activity_unavailability_startDateRequired">Время начала не заполнено</string>
+    <string name="mx_activity_unavailability_endDateRequired">Время окончания не заполнено</string>
+    <string name="mx_activity_unavailability_incorrectDateFormat">Некорректный формат даты (%s)</string>
+
+    <!--preferences-->
+    <string name="mx_activity_preferences_enabled">Включен</string>
+    <string name="mx_activity_preferences_tracking">Трекинг</string>
+    <string name="mx_activity_preferences_tracking_summary">Отправка координат GPS</string>
+    <string name="mx_activity_preferences_batchCover">Интервал отправки GPS (сек)</string>
+    <string name="mx_activity_preferences_retrieveInterval">Интервал опроса GPS (сек)</string>
+    <string name="mx_activity_preferences_communicationServer">PDA сервер</string>
+    <string name="mx_activity_preferences_host">Сервер</string>
+    <string name="mx_activity_preferences_port">Порт</string>
+    <string name="mx_activity_preferences_componentName">Имя компонента</string>
+    <string name="mx_activity_preferences_update">Автоматическое обновление</string>
+    <string name="mx_activity_preferences_update_serverPort">Порт</string>
+    <string name="mx_activity_preferences_offlineMode">Демо режим</string>
+    <string name="mx_activity_preferences_barcode_scanner">Лазерный сканер</string>
+    <string name="settings_theme_night">Ночной режим</string>
+    <string name="settings_theme_day">Дневной режим</string>
+    <string name="menu_switch_theme">Переключить режим</string>
+
+    <!--datetime picker-->
+    <string name="mx_activity_datetime_reset">Сброс</string>
+
+    <!--other-->
+    <string name="mx_noData">Нет данных</string>
+    <string name="mx_play_a_sound_alert_for_incoming_changes">Звуковые уведомления</string>
+    <string name="mx_other">Другое</string>
+    <string name="mx_audio_alerts">Звуковые предупреждения</string>
+    <string name="mx_activity_preferences_settings_lock">Ограничение доступа к настройкам</string>
+
+    <!--messages-->
+    <string name="mx_msg_error_with_start_gps">Не найдено ПО для навигации.</string>
+    <string name="mx_msg_error_no_current_gps_location">Нет соединения с GPS сервисом. Пожалуйста, попробуйте позже..</string>
+    <string name="mx_msg_verify_location_question">Местоположение данного клиента ранее не уточнялось. Уточнить местоположение клиента по Вашей текущей GPS-позиции?</string>
+
+    <string name="mx_api_server_connection_error_title">Ошибка соединения</string>
+    <string name="mx_api_server_connection_error_message">Невозможно подключиться к удаленному серверу, повторить?</string>
+
+    <!--minutes-->
+    <string name="mx_min">мин</string>
+
+    <string name="mx_time_short_days">д</string>
+    <string name="mx_time_short_hours">ч</string>
+    <string name="mx_time_short_minutes">мин</string>
+
+    <string name="mx_loading">Загрузка…</string>
+    <string name="mx_routes_loading">Загрузка маршрутов…</string>
+    <string name="mx_map_go_to_current_location">К текущей позиции</string>
+    <string name="mx_map_tracking_options">Опции трекинга</string>
+    <string name="mx_map_track_current_position">Следовать за текущей позицией</string>
+    <string name="mx_empty" />
+    <string name="mx_yes">Да</string>
+    <string name="mx_no">Нет</string>
+    <string name="mx_ok">OK</string>
+    <string name="mx_cancel">Отмена</string>
+    <string name="mx_enter_password">Ввести пароль</string>
+    <string name="mx_settings_locked">Настройки заблокированы</string>
+    <string name="mx_locked">Заблокировано</string>
+    <string name="mx_unlocked">Разблокировано</string>
+    <string name="mx_incorrect_password">Не верный пароль</string>
+    <string name="mx_language">Язык</string>
+    <string name="mx_country_and_town">Страна и город</string>
+    <string name="mx_fast_login">Быстрое соединение</string>
+
+    <!--states-->
+    <string name="states_run_unassigned">Не назначен</string>
+    <string name="states_run_assigned">Назначен</string>
+    <string name="states_run_sent">Отправлен</string>
+    <string name="states_run_received">Получен</string>
+    <string name="states_run_accepted">Принят</string>
+    <string name="states_run_rejected">Отклонен</string>
+    <string name="states_run_started">Начат</string>
+    <string name="states_run_in_progress">Выполняется</string>
+    <string name="states_run_finished">Закончен</string>
+    <string name="states_run_completed">Завершен</string>
+    <string name="states_run_cancelled">Отменен</string>
+    <string name="states_run_aborted">Прерван</string>
+    <string name="states_run_late15">Опоздание 15</string>
+    <string name="states_run_late30">Опоздание 30</string>
+    <string name="states_run_late60">Опоздание 60</string>
+    <string name="states_run_location_reached">На месте</string>
+    <string name="states_stop_not_started">Не начат</string>
+    <string name="states_stop_accepted">Принят</string>
+    <string name="states_stop_started">Начат</string>
+    <string name="states_stop_on_route">В пути</string>
+    <string name="states_stop_arrived">Прибыл</string>
+    <string name="states_stop_arrive5">Прибытие 5</string>
+    <string name="states_stop_arrive10">Прибытие 10</string>
+    <string name="states_stop_drop5">Вырузка 5</string>
+    <string name="states_stop_drop10">Вырузка 10</string>
+    <string name="states_stop_late15">Опоздание 15</string>
+    <string name="states_stop_late30">Опоздание 30</string>
+    <string name="states_stop_late60">Опоздание 60</string>
+    <string name="states_stop_late_a_lot">Опоздание</string>
+    <string name="states_stop_finished">Закончен</string>
+    <string name="states_stop_completed">Завершен</string>
+    <string name="states_stop_fail">Отменён</string>
+    <string name="states_stop_aborted">Прерван</string>
+    <string name="states_stop_suspended">Приостановлен</string>
+    <string name="mx_activity_login_exit">Выход</string>
+    <string name="mx_tomtom_route">Маршрут построен</string>
 </resources>
