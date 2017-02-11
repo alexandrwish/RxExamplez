@@ -35,23 +35,23 @@
             android:value="AIzaSyDpiW0qjaYg6rapr_WhRey2N8J-jFtdHY8" />
 
         <service
-            android:name="com.magenta.maxunits.mobile.dlib.service.CoreServiceImpl"
+            android:name="com.magenta.mc.client.android.service.CoreServiceImpl"
             android:enabled="true" />
 
         <service
-            android:name="com.magenta.maxunits.mobile.dlib.service.PhoneStatisticService"
+            android:name="com.magenta.mc.client.android.service.PhoneStatisticService"
             android:enabled="true" />
 
         <service
-            android:name="com.magenta.maxunits.mobile.dlib.service.SaveLocationService"
+            android:name="com.magenta.mc.client.android.service.SaveLocationService"
             android:enabled="true" />
 
         <service
-            android:name="com.magenta.maxunits.mobile.dlib.service.LocationService"
+            android:name="com.magenta.mc.client.android.service.LocationService"
             android:enabled="true" />
 
         <activity
-            android:name="com.magenta.maxunits.mobile.dlib.activity.common.LoginActivity"
+            android:name="com.magenta.mc.client.android.ui.activity.common.LoginActivity"
             android:configChanges="locale|orientation"
             android:label="@string/mx_app_name"
             android:windowSoftInputMode="stateHidden">
@@ -61,38 +61,38 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.magenta.maxunits.mobile.dlib.activity.common.SettingsActivity"
+            android:name="com.magenta.mc.client.android.ui.activity.common.SettingsActivity"
             android:configChanges="locale|orientation"
             android:theme="@android:style/Theme.Black" />
         <activity
-            android:name="com.magenta.maxunits.mobile.dlib.activity.JobsActivity"
+            android:name="com.magenta.mc.client.android.ui.activity.JobsActivity"
             android:configChanges="locale|orientation" />
         <activity
-            android:name="com.magenta.maxunits.mobile.dlib.activity.JobInfoActivity"
+            android:name="com.magenta.mc.client.android.ui.activity.JobInfoActivity"
             android:configChanges="locale|orientation" />
         <activity
-            android:name="com.magenta.maxunits.mobile.dlib.activity.JobActivity"
+            android:name="com.magenta.mc.client.android.ui.activity.JobActivity"
             android:configChanges="locale|orientation" />
         <activity
-            android:name="com.magenta.maxunits.mobile.dlib.activity.StartActivity"
+            android:name="com.magenta.mc.client.android.ui.activity.StartActivity"
             android:configChanges="locale|orientation" />
         <activity
-            android:name="com.magenta.maxunits.mobile.dlib.activity.AbortActivity"
+            android:name="com.magenta.mc.client.android.ui.activity.AbortActivity"
             android:configChanges="locale|orientation" />
         <activity
-            android:name="com.magenta.maxunits.mobile.dlib.activity.MapActivity"
+            android:name="com.magenta.mc.client.android.ui.activity.MapActivity"
             android:configChanges="locale|orientation" />
         <activity
-            android:name="com.magenta.maxunits.mobile.dlib.activity.SignatureActivity"
+            android:name="com.magenta.mc.client.android.ui.activity.SignatureActivity"
             android:configChanges="locale|orientation" />
         <activity
-            android:name="com.magenta.maxunits.mobile.dlib.activity.OrderItemActivity"
+            android:name="com.magenta.mc.client.android.ui.activity.OrderItemActivity"
             android:configChanges="locale|orientation" />
         <activity
-            android:name="com.magenta.maxunits.mobile.dlib.activity.ArriveMapActivity"
+            android:name="com.magenta.mc.client.android.ui.activity.ArriveMapActivity"
             android:configChanges="locale|orientation" />
         <activity
-            android:name="com.magenta.maxunits.mobile.dlib.activity.CompleteActivity"
+            android:name="com.magenta.mc.client.android.ui.activity.CompleteActivity"
             android:configChanges="locale|orientation" />
     </application>
 </manifest>

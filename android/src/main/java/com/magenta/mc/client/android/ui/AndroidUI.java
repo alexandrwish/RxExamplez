@@ -32,8 +32,8 @@ public class AndroidUI implements UI {
         notifications = new Notifications(context);
     }
 
-    protected void initNotificationIcons() {
-        applicationIcons = new CoreApplicationIcons();
+    private void initNotificationIcons() {
+        applicationIcons = new SmokeApplicationIcons();
     }
 
     public ApplicationIcons getApplicationIcons() {

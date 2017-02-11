@@ -1,6 +1,6 @@
 package com.magenta.maxunits.mobile.hd;
 
-import com.magenta.maxunits.mobile.dlib.DistributionApplication;
+import com.magenta.mc.client.android.DistributionApplication;
 
 public class HDDistributionApp extends DistributionApplication {
 

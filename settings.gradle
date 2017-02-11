@@ -1,1 +1,1 @@
-include ':android', ':entities', 'distribution', ':hd', ':vr', ':gd'
+include ':android', ':entities', ':hd', ':vr', ':gd'

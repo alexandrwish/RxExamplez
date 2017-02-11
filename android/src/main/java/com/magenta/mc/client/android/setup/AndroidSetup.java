@@ -5,6 +5,7 @@ import android.content.Context;
 import com.magenta.mc.client.android.settings.AndroidSettings;
 import com.magenta.mc.client.android.ui.AndroidUI;
 import com.magenta.mc.client.android.update.AndroidUpdateCheck;
+import com.magenta.mc.client.android.util.AndroidUtil;
 import com.magenta.mc.client.settings.Settings;
 import com.magenta.mc.client.setup.Setup;
 import com.magenta.mc.client.storage.Storage;

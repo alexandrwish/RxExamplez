@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto/com.magenta.maxunits.mobile.dlib"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/complete_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/mc_common_bg"
+        android:paddingBottom="2dp">
+
+        <TextView
+            android:id="@+id/date_value"
+            style="@style/mxMediumFont"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:textColor="#E8E8E8"
+            android:textColorHighlight="#E8E8E8" />
+
+        <com.magenta.mc.client.android.ui.view.TimeView
+            android:id="@+id/time_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/date_value"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            custom:hours_color="?attr/defaultListItemTextColor"
+            custom:hours_text_size="18sp"
+            custom:minutes_color="?attr/defaultListItemTextColor"
+            custom:minutes_text_size="12sp" />
+
+        <com.magenta.mc.client.android.ui.view.TimeWindowView
+            android:id="@+id/time_window"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@id/time_value"
+            custom:hours_color="?attr/defaultListItemTextColor"
+            custom:hours_text_size="18sp"
+            custom:minutes_color="?attr/defaultListItemTextColor"
+            custom:minutes_text_size="12sp" />
+
+        <TextView
+            android:id="@+id/timer"
+            style="@style/mxMediumFont"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/time_window"
+            android:textColor="#00FF00"
+            android:textColorHighlight="#00FF00" />
+
+        <TextView
+            android:id="@+id/arrive_map_customer_value"
+            style="@style/mxMediumFont"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/date_value"
+            android:textColor="#E8E8E8"
+            android:textColorHighlight="#E8E8E8" />
+
+        <TextView
+            android:id="@+id/arrive_map_address_value"
+            style="@style/mxMediumFont"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/arrive_map_customer_value"
+            android:textColor="#E8E8E8"
+            android:textColorHighlight="#E8E8E8" />
+    </RelativeLayout>
+
+    <GridView
+        android:id="@+id/button_grid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:horizontalSpacing="5dp"
+        android:verticalSpacing="5dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button_grid"
+        android:layout_below="@+id/complete_header">
+
+        <TableLayout
+            android:id="@+id/details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="1" />
+    </ScrollView>
+</RelativeLayout>

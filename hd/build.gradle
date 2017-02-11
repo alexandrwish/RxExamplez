@@ -133,5 +133,5 @@ tasks.whenTaskAdded { task ->
 }
 
 dependencies {
-    compile project(path: ':distribution')
+    compile project(path: ':android')
 }

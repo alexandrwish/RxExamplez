@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto/com.magenta.maxunits.mobile.dlib"
+    android:id="@+id/stop_list_item"
+    style="@style/mcListViewItem"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="top|center_vertical"
+        android:paddingLeft="4dp"
+        android:paddingTop="4dp">
+
+        <TextView
+            android:id="@+id/stop_number"
+            style="@style/mxJobCardSecondLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true" />
+
+        <ImageView
+            android:id="@+id/priority_img"
+            android:layout_width="23dp"
+            android:layout_height="32dp"
+            android:layout_toRightOf="@+id/stop_number" />
+
+        <TextView
+            android:id="@+id/name"
+            style="@style/mxJobCardFirstLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/priority_img"
+            android:paddingLeft="8dp" />
+
+        <ImageView
+            android:id="@+id/phone_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:paddingRight="8dp"
+            android:src="@android:drawable/ic_menu_call" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="top"
+            android:layout_weight=".2"
+            android:paddingBottom="4dp"
+            android:paddingLeft="4dp"
+            android:paddingRight="2dp"
+            android:paddingTop="8dp">
+
+            <com.magenta.mc.client.android.ui.view.TimeWindowView
+                android:id="@+id/time_window"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                custom:hours_color="?attr/defaultListItemTextColor"
+                custom:hours_text_size="12sp"
+                custom:minutes_color="?attr/defaultListItemTextColor"
+                custom:minutes_text_size="8sp" />
+
+            <TextView
+                android:id="@+id/time"
+                style="@style/mxJobCardFirstLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:singleLine="true" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="10dp"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/status_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:contentDescription="@string/mx_empty"
+                android:src="@drawable/mc_img_list_view_item_gray_divider" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".75"
+            android:orientation="vertical"
+            android:padding="4dp">
+
+            <TextView
+                android:id="@+id/address"
+                style="@style/mxJobCardSecondLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/customer_info"
+                style="@style/mxJobCardSecondLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/client"
+                    style="@style/mxJobCardThirdLine"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/status"
+                style="@style/mxJobCardThirdLine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

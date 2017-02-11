@@ -1,6 +1,6 @@
 package com.magenta.maxunits.mobile.gd;
 
-import com.magenta.maxunits.mobile.dlib.DistributionApplication;
+import com.magenta.mc.client.android.DistributionApplication;
 
 public class GDDistributionApp extends DistributionApplication {
 

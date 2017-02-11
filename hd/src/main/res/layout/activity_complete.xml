@@ -20,7 +20,8 @@
                   android:textColor="#E8E8E8"
                   style="@style/mxMediumFont"/>
 
-        <com.magenta.maxunits.mobile.dlib.view.TimeView android:id="@+id/time_value"
+        <com.magenta.mc.client.android.ui.view.TimeView
+            android:id="@+id/time_value"
                                                         android:layout_width="wrap_content"
                                                         android:layout_height="wrap_content"
                                                         custom:hours_text_size="18sp"
@@ -31,7 +32,8 @@
                                                         android:paddingLeft="2dp"
                                                         android:paddingRight="2dp"/>
 
-        <com.magenta.maxunits.mobile.dlib.view.TimeWindowView custom:hours_text_size="18sp"
+        <com.magenta.mc.client.android.ui.view.TimeWindowView
+            custom:hours_text_size="18sp"
                                                               custom:minutes_text_size="12sp"
                                                               custom:hours_color="?attr/defaultListItemTextColor"
                                                               custom:minutes_color="?attr/defaultListItemTextColor"
