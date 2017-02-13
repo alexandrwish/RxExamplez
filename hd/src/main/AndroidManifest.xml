@@ -34,6 +34,8 @@
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyDpiW0qjaYg6rapr_WhRey2N8J-jFtdHY8" />
 
+        <service android:name="com.magenta.mc.client.android.service.HttpService" />
+
         <service
             android:name="com.magenta.mc.client.android.service.CoreServiceImpl"
             android:enabled="true" />

@@ -2,10 +2,9 @@ package com.magenta.mc.client.android.ui.activity;
 
 import android.os.Bundle;
 
-import com.magenta.mc.client.android.ui.activity.ActivityDecorator;
-import com.magenta.mc.client.android.ui.activity.SmokeActivity;
+import com.magenta.mc.client.android.ui.delegate.HDDelegate;
 
-public abstract class MxGenericActivity<D extends ActivityDecorator> extends SmokeActivity {
+public abstract class MxGenericActivity<D extends ActivityDecorator> extends SmokeActivity<HDDelegate> {
 
     protected D decorator;
 

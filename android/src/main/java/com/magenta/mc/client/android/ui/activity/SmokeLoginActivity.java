@@ -9,12 +9,13 @@ import android.widget.TextView;
 
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.ui.AndroidUI;
+import com.magenta.mc.client.android.ui.delegate.SmokeActivityDelegate;
 import com.magenta.mc.client.client.Login;
 import com.magenta.mc.client.log.MCLoggerFactory;
 import com.magenta.mc.client.setup.Setup;
 import com.magenta.mc.client.update.UpdateCheck;
 
-public abstract class SmokeLoginActivity extends SmokeActivity {
+public abstract class SmokeLoginActivity<D extends SmokeActivityDelegate> extends SmokeActivity<D> {
 
     protected TextView version;
     Button settingsButton;

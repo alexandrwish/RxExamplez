@@ -12,7 +12,7 @@ import com.magenta.mc.client.android.ui.delegate.SmokeActivityDelegate;
 import com.magenta.mc.client.android.ui.theme.ThemeManageable;
 import com.magenta.mc.client.android.ui.theme.ThemeManager;
 
-public abstract class SmokeActivity extends GenericActivity<SmokeActivityDelegate> implements SmokeActivityInterface {
+public abstract class SmokeActivity<D extends SmokeActivityDelegate> extends GenericActivity<D> implements SmokeActivityInterface {
 
     protected void onCreate(Bundle savedInstanceState) {
         configureAppearance(false);
@@ -81,10 +81,6 @@ public abstract class SmokeActivity extends GenericActivity<SmokeActivityDelegat
 
     public String getCustomTitle() {
         return null;
-    }
-
-    public SmokeActivityDelegate getDelegate() {
-        return super.getDelegate();
     }
 
     public boolean isVisible() {

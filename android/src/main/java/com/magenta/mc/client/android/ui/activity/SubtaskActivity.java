@@ -6,6 +6,7 @@ import android.widget.TableLayout;
 
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.ui.TaskListObserver;
+import com.magenta.mc.client.android.ui.delegate.SmokeActivityDelegate;
 import com.magenta.mc.client.android.ui.table_info.DetailsViewGroupController;
 import com.magenta.mc.client.android.ui.table_info.renderers.DetailRenderer;
 import com.magenta.mc.client.android.workflow.WorkflowConfiguration;
@@ -18,7 +19,7 @@ import com.magenta.mc.client.android.workflow.WorkflowConfiguration;
  * @param <TASK>    Task class(Job in Echo, Run in Maxoptra)
  * @param <SUBTASK> Subtask class(Stop in Echo, Job in Maxoptra)
  */
-public abstract class SubtaskActivity<TASK, SUBTASK> extends SmokeActivity implements TaskListObserver<TASK> {
+public abstract class SubtaskActivity<TASK, SUBTASK> extends SmokeActivity<SmokeActivityDelegate> implements TaskListObserver<TASK> {
 
     protected WorkflowConfiguration<TASK, SUBTASK> workflowConfiguration;
     private TableLayout topDetailsTable;

@@ -27,26 +27,24 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.magenta.mc.client.android.DistributionApplication;
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.common.Constants;
-import com.magenta.mc.client.android.db.dao.DistributionDAO;
-import com.magenta.mc.client.android.entity.MapProviderType;
-import com.magenta.mc.client.android.entity.MapSettingsEntity;
 import com.magenta.mc.client.android.http.HttpClient;
-import com.magenta.mc.client.android.http.record.LoginResultRecord;
 import com.magenta.mc.client.android.mc.MxAndroidUtil;
 import com.magenta.mc.client.android.mc.MxMobile;
 import com.magenta.mc.client.android.mc.MxSettings;
 import com.magenta.mc.client.android.rpc.RPCOut;
+import com.magenta.mc.client.android.service.HttpService;
 import com.magenta.mc.client.android.service.ServicesRegistry;
 import com.magenta.mc.client.android.task.GetRemoteSettings;
 import com.magenta.mc.client.android.task.RemoteSettingsCallback;
 import com.magenta.mc.client.android.ui.AndroidUI;
 import com.magenta.mc.client.android.ui.activity.SmokeLoginActivity;
+import com.magenta.mc.client.android.ui.delegate.HDDelegate;
 import com.magenta.mc.client.android.ui.dialog.InputDialog;
 import com.magenta.mc.client.android.util.Checksum;
+import com.magenta.mc.client.android.util.IntentAttributes;
 import com.magenta.mc.client.android.util.StringUtils;
 import com.magenta.mc.client.android.util.UserUtils;
 import com.magenta.mc.client.client.Login;
@@ -59,16 +57,11 @@ import com.magenta.mc.client.setup.Setup;
 import com.magenta.mc.client.util.McDiagnosticAgent;
 
 import java.io.File;
-import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-public class LoginActivity extends SmokeLoginActivity implements RemoteSettingsCallback {
+public class LoginActivity extends SmokeLoginActivity<HDDelegate> implements RemoteSettingsCallback {
 
     private String oldLocale;
     private SharedPreferences preferences;
@@ -78,24 +71,6 @@ public class LoginActivity extends SmokeLoginActivity implements RemoteSettingsC
     private EditText mEditTextpassword;
     private ProgressDialog mUpdateSettingsProgress;
     private GetRemoteSettings mGetRemoteSettings;
-
-    private static boolean updateSettings(Activity activity, MapSettingsEntity entity, Map<String, Map<String, String>> mapSettings) throws SQLException {
-        if (mapSettings.size() == 1) {
-            entity.setDriver(Setup.get().getSettings().getLogin());
-            for (Map.Entry<String, Map<String, String>> entry : mapSettings.entrySet()) {
-                entity.setProvider(entry.getKey());
-                entity.setMapProviderType(MapProviderType.GOOGLE.name().equalsIgnoreCase(entry.getKey())
-                        ? MapProviderType.GOOGLE
-                        : (MapProviderType.YANDEX.name().equalsIgnoreCase(entry.getKey())
-                        ? MapProviderType.YANDEX
-                        : MapProviderType.LEAFLET));
-            }
-            entity.setSettings(new Gson().toJson(mapSettings));
-            DistributionDAO.getInstance(activity).saveMapSettings(entity);
-            return true;
-        }
-        return false;
-    }
 
     public void initActivity(Bundle savedInstanceState) {
         setContentView(R.layout.login_activity);
@@ -153,20 +128,6 @@ public class LoginActivity extends SmokeLoginActivity implements RemoteSettingsC
             public void onClick(View v) {
                 setCurrentActivity();
                 processLogin();
-                HttpClient.getInstance().login(mEditTextAccount.getText().toString(), mEditTextLogin.getText().toString(), mEditTextpassword.getText().toString())
-                        .enqueue(new Callback<LoginResultRecord>() {
-                            public void onResponse(Call<LoginResultRecord> call, Response<LoginResultRecord> response) {
-                                if (response != null && response.body() != null && !response.body().getError()) {
-                                    LoginResultRecord record = response.body();
-                                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                                    preferences.edit().putString(Constants.AUTH_TOKEN, record.getToken()).apply();
-                                }
-                            }
-
-                            public void onFailure(Call<LoginResultRecord> call, Throwable t) {
-                                MCLoggerFactory.getLogger(LoginActivity.class).error(t.getMessage(), t);
-                            }
-                        });
             }
         });
         findViewById(R.id.settings_button).setOnClickListener(new View.OnClickListener() {
@@ -330,8 +291,8 @@ public class LoginActivity extends SmokeLoginActivity implements RemoteSettingsC
     }
 
     private void login() {
-        String login = preferences.getString("user.login", "");
-        String account = preferences.getString("user.account", "");
+        final String login = preferences.getString("user.login", "");
+        final String account = preferences.getString("user.account", "");
         final String password = UserUtils.encodeLoginPassword(mEditTextpassword.getText().toString());
         final String userName = UserUtils.createUserId(login, account);
         Settings.get().setUserId(userName.trim());
@@ -352,80 +313,12 @@ public class LoginActivity extends SmokeLoginActivity implements RemoteSettingsC
                                             if (MxSettings.getInstance().hasFeature(MxSettings.Features.ACCOUNT_CONFIGURATION)) {
                                                 RPCOut.reloadJobs();
                                                 HttpClient.getInstance().init();
-                                                // TODO: 2/8/17 create presenter or something?
-                                                /*
-                                                HttpClient.getInstance().getSettings()
-                                                        .subscribeOn(Schedulers.newThread())
-                                                        .subscribe(new Subscriber<SettingsResultRecord>() {
-                                                            public void onCompleted() {
-
-                                                            }
-
-                                                            public void onError(Throwable e) {
-                                                                MCLoggerFactory.getLogger(LoginActivity.class).error(e.getMessage(), e);
-                                                            }
-
-                                                            public void onNext(SettingsResultRecord settingsResultRecord) {
-                                                                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(DistributionApplication.getContext()).edit();
-                                                                for (Map.Entry<String, String> entry : settingsResultRecord.getParameters().entrySet()) {
-                                                                    // TODO: 2/8/17 for what? for the Glory!
-                                                                    if (entry.getKey().equalsIgnoreCase("mobile.maxunites.allow.to.pass.in.arbitrary.order")) {
-                                                                        Settings.get().setProperty("allowToPassStopsInArbitraryOrder", entry.getValue());
-                                                                        editor.putString("allowToPassStopsInArbitraryOrder", entry.getValue());
-                                                                        continue;
-                                                                    } else if (entry.getKey().equalsIgnoreCase("mobile.maxunites.allow.to.pass.several.runs")) {
-                                                                        Settings.get().setProperty("allowToPassJobsInArbitraryOrder", entry.getValue());
-                                                                        editor.putString("allowToPassJobsInArbitraryOrder", entry.getValue());
-                                                                        continue;
-                                                                    }
-                                                                    editor.putString(entry.getKey(), entry.getValue());
-                                                                    Settings.get().setProperty(entry.getKey(), entry.getValue());
-                                                                }
-                                                                ArrayList<String> cr = new ArrayList<>(settingsResultRecord.getCancelationReasons().size());
-                                                                for (CancelationReason reason : settingsResultRecord.getCancelationReasons()) {
-                                                                    cr.add(reason.getTitle());
-                                                                }
-                                                                MxSettings.getInstance().setOrderCancelReasons(cr);
-                                                                Map<String, Map<String, String>> mapSettings = settingsResultRecord.getMapProperties();
-                                                                for (String s : MxSettings.ignoredMapProviders) {
-                                                                    settingsResultRecord.getMapProperties().remove(s);
-                                                                }
-                                                                if (settingsResultRecord.getMapProperties().isEmpty()) {
-                                                                    HashMap<String, String> osm = new HashMap<>(1);
-                                                                    osm.put("use_map_provider", "true");
-                                                                    settingsResultRecord.getMapProperties().put("openstreetmap", osm);
-                                                                }
-                                                                Settings.get().setProperty("map.property", new Gson().toJson(settingsResultRecord.getMapProperties()));
-                                                                try {
-                                                                    List<MapSettingsEntity> mapSettingsEntities = DistributionDAO.getInstance(LoginActivity.this).getMapSettings(Setup.get().getSettings().getLogin());
-                                                                    if (!mapSettingsEntities.isEmpty()) {
-                                                                        if (mapSettings.containsKey(mapSettingsEntities.get(0).getProvider())) {
-                                                                            if (mapSettingsEntities.get(0).isRemember()) {
-                                                                                System.out.println(); // TODO: 2/9/17 выход
-                                                                            }
-                                                                        } else {
-                                                                            if (updateSettings(LoginActivity.this, mapSettingsEntities.get(0), mapSettings)) {
-                                                                                Bundle bundle = new Bundle(3);
-                                                                                bundle.putInt(DialogFactory.ICON, android.R.drawable.ic_dialog_info);
-                                                                                bundle.putInt(DialogFactory.TITLE, R.string.alert_map_title);
-                                                                                bundle.putInt(DialogFactory.VALUE, R.string.alert_map_value);
-                                                                                DistributionDialogFragment fragment = DialogFactory.create(DialogFactory.ALERT_DIALOG, bundle);
-                                                                                if (fragment != null) {
-                                                                                    fragment.show(LoginActivity.this.getFragmentManager(), fragment.getName());
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    } else {
-                                                                        updateSettings(LoginActivity.this, new MapSettingsEntity(), mapSettings);
-                                                                    }
-                                                                } catch (SQLException e) {
-                                                                    MCLoggerFactory.getLogger(LoginActivity.class).error(e.getMessage(), e);
-                                                                }
-                                                                Settings.get().saveSettings();
-                                                                editor.apply();
-                                                            }
-                                                        });
-                                                */
+                                                startService(new Intent(LoginActivity.this, HttpService.class)
+                                                        .putExtra(IntentAttributes.HTTP_TYPE, Constants.LOGIN_TYPE)
+                                                        .putExtra(IntentAttributes.HTTP_ACCOUNT, account)
+                                                        .putExtra(IntentAttributes.HTTP_LOGIN, login)
+                                                        .putExtra(IntentAttributes.HTTP_PASS, password)
+                                                );
                                                 RPCOut.accountConfiguration();
                                                 RPCOut.sendImei(MxAndroidUtil.getImei());
                                                 DistributionApplication.getInstance().setLoginPress(false);
