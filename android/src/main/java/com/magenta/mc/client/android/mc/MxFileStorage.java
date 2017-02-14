@@ -1,10 +1,10 @@
 package com.magenta.mc.client.android.mc;
 
-import com.magenta.mc.client.exception.StorageException;
-import com.magenta.mc.client.setup.Setup;
-import com.magenta.mc.client.storage.Storable;
-import com.magenta.mc.client.storage.StorableMetadata;
-import com.magenta.mc.client.storage.file.FileStorage;
+import com.magenta.mc.client.android.mc.exception.StorageException;
+import com.magenta.mc.client.android.mc.setup.Setup;
+import com.magenta.mc.client.android.mc.storage.Storable;
+import com.magenta.mc.client.android.mc.storage.StorableMetadata;
+import com.magenta.mc.client.android.mc.storage.file.FileStorage;
 
 import java.io.File;
 import java.util.ArrayList;

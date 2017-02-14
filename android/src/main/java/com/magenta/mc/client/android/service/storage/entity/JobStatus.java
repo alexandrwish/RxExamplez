@@ -4,12 +4,12 @@ import android.os.Message;
 
 import com.magenta.mc.client.android.DistributionApplication;
 import com.magenta.mc.client.android.db.dao.DistributionDAO;
-import com.magenta.mc.client.android.rpc.DistributionRPCOut;
-import com.magenta.maxunits.mobile.entity.AbstractJobStatus;
+import com.magenta.mc.client.android.entity.AbstractJobStatus;
 import com.magenta.mc.client.android.entity.JobStatusEntity;
 import com.magenta.mc.client.android.handler.UpdateHandler;
+import com.magenta.mc.client.android.mc.setup.Setup;
+import com.magenta.mc.client.android.rpc.DistributionRPCOut;
 import com.magenta.mc.client.android.service.ServicesRegistry;
-import com.magenta.mc.client.setup.Setup;
 
 import java.sql.SQLException;
 

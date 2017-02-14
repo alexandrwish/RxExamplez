@@ -10,12 +10,12 @@ import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
 
+import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
+import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.service.listeners.BroadcastEvent;
 import com.magenta.mc.client.android.service.listeners.BroadcastEventsListener;
 import com.magenta.mc.client.android.ui.AndroidUI;
 import com.magenta.mc.client.android.ui.Notifications;
-import com.magenta.mc.client.log.MCLoggerFactory;
-import com.magenta.mc.client.setup.Setup;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

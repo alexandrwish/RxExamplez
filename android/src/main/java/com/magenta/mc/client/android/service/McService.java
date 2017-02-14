@@ -6,12 +6,12 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.os.PowerManager;
 
-import com.magenta.mc.client.MobileApp;
 import com.magenta.mc.client.android.AndroidApp;
+import com.magenta.mc.client.android.MobileApp;
+import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
+import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.ui.AndroidUI;
 import com.magenta.mc.client.android.ui.Notifications;
-import com.magenta.mc.client.log.MCLoggerFactory;
-import com.magenta.mc.client.setup.Setup;
 
 import roboguice.service.RoboService;
 

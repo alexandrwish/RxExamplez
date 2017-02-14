@@ -1,6 +1,6 @@
 package com.magenta.mc.client.android.acra;
 
-import com.magenta.mc.client.log.MCLoggerFactory;
+import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 
 import org.acra.ReportField;
 import org.acra.collector.CrashReportData;

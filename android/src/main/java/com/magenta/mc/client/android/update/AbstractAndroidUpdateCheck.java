@@ -8,15 +8,15 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.net.Uri;
 
-import com.magenta.mc.client.MobileApp;
+import com.magenta.mc.client.android.MobileApp;
 import com.magenta.mc.client.android.R;
+import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
+import com.magenta.mc.client.android.mc.setup.Setup;
+import com.magenta.mc.client.android.mc.update.UpdateCheck;
+import com.magenta.mc.client.android.mc.util.FileUtils;
+import com.magenta.mc.client.android.mc.xmpp.extensions.rpc.DefaultRpcResponseHandler;
 import com.magenta.mc.client.android.settings.AndroidSettings;
 import com.magenta.mc.client.android.ui.AndroidUI;
-import com.magenta.mc.client.log.MCLoggerFactory;
-import com.magenta.mc.client.setup.Setup;
-import com.magenta.mc.client.update.UpdateCheck;
-import com.magenta.mc.client.util.FileUtils;
-import com.magenta.mc.client.xmpp.extensions.rpc.DefaultRpcResponseHandler;
 
 import java.io.File;
 import java.io.FileOutputStream;

@@ -1,10 +1,10 @@
 package com.magenta.mc.client.android.service.renderer;
 
+import com.magenta.mc.client.android.mc.util.Resources;
+import com.magenta.mc.client.android.mc.xml.XMLDataBlock;
 import com.magenta.mc.client.android.renderer.ObjectRenderer;
 import com.magenta.mc.client.android.service.storage.entity.JobHistory;
-import com.magenta.maxunits.mobile.entity.TaskState;
-import com.magenta.mc.client.util.Resources;
-import com.magenta.mc.client.xml.XMLDataBlock;
+import com.magenta.mc.client.android.entity.TaskState;
 
 import java.text.ParseException;
 import java.util.Date;

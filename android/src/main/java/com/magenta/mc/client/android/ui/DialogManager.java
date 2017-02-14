@@ -5,13 +5,14 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 
-import com.magenta.mc.client.components.dialogs.DialogCallback;
-import com.magenta.mc.client.components.dialogs.DialogCallbackExecutor;
-import com.magenta.mc.client.components.dialogs.SynchronousCallback;
-import com.magenta.mc.client.components.dialogs.manager.IDialogManager;
-import com.magenta.mc.client.log.MCLoggerFactory;
-import com.magenta.mc.client.setup.Setup;
-import com.magenta.mc.client.util.FutureRunnable;
+import com.magenta.mc.client.android.MobileApp;
+import com.magenta.mc.client.android.mc.components.dialogs.DialogCallback;
+import com.magenta.mc.client.android.mc.components.dialogs.DialogCallbackExecutor;
+import com.magenta.mc.client.android.mc.components.dialogs.SynchronousCallback;
+import com.magenta.mc.client.android.mc.components.dialogs.manager.IDialogManager;
+import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
+import com.magenta.mc.client.android.mc.setup.Setup;
+import com.magenta.mc.client.android.mc.util.FutureRunnable;
 
 import EDU.oswego.cs.dl.util.concurrent.Mutex;
 import EDU.oswego.cs.dl.util.concurrent.Sync;
@@ -28,7 +29,7 @@ public class DialogManager implements IDialogManager {
     }
 
     public void runAsyncDialogTask(final Runnable task) {
-        com.magenta.mc.client.MobileApp.runConsecutiveTask(new Runnable() {
+        MobileApp.runConsecutiveTask(new Runnable() {
             public void run() {
                 runDialogTask(task);
             }

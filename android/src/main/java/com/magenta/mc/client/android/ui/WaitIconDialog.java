@@ -3,13 +3,13 @@ package com.magenta.mc.client.android.ui;
 import android.app.Activity;
 import android.app.ProgressDialog;
 
-import com.magenta.mc.client.MobileApp;
-import com.magenta.mc.client.components.dialogs.DialogCallback;
-import com.magenta.mc.client.components.dialogs.DialogCallbackExecutor;
-import com.magenta.mc.client.components.waiting.WaitIcon;
-import com.magenta.mc.client.log.MCLoggerFactory;
-import com.magenta.mc.client.setup.Setup;
-import com.magenta.mc.client.util.FutureRunnable;
+import com.magenta.mc.client.android.MobileApp;
+import com.magenta.mc.client.android.mc.components.dialogs.DialogCallback;
+import com.magenta.mc.client.android.mc.components.dialogs.DialogCallbackExecutor;
+import com.magenta.mc.client.android.mc.components.waiting.WaitIcon;
+import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
+import com.magenta.mc.client.android.mc.setup.Setup;
+import com.magenta.mc.client.android.mc.util.FutureRunnable;
 
 public class WaitIconDialog extends WaitIcon {
 

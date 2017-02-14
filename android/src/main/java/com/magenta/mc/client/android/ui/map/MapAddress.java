@@ -1,6 +1,6 @@
 package com.magenta.mc.client.android.ui.map;
 
-import com.magenta.maxunits.mobile.entity.Address;
+import com.magenta.mc.client.android.entity.Address;
 
 import java.io.Serializable;
 

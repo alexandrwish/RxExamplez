@@ -1,6 +1,6 @@
 package com.magenta.mc.client.android.service.storage.entity;
 
-import com.magenta.maxunits.mobile.entity.AbstractJobHistory;
+import com.magenta.mc.client.android.entity.AbstractJobHistory;
 
 import java.util.Date;
 

@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 
 import com.google.gson.Gson;
-import com.magenta.maxunits.mobile.entity.Address;
+import com.magenta.mc.client.android.entity.Address;
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.entity.LocationEntity;
 import com.magenta.mc.client.android.handler.MapUpdateHandler;

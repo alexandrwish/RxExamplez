@@ -1,8 +1,8 @@
 package com.magenta.mc.client.android.rpc.operations;
 
+import com.magenta.mc.client.android.mc.client.Login;
+import com.magenta.mc.client.android.mc.client.XMPPClient;
 import com.magenta.mc.client.android.service.ServicesRegistry;
-import com.magenta.mc.client.client.Login;
-import com.magenta.mc.client.client.XMPPClient;
 
 public class LogoutLock {
 

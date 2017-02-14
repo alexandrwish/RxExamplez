@@ -1,15 +1,17 @@
 package com.magenta.mc.client.android.service.renderer;
 
 import com.google.gson.Gson;
-import com.magenta.maxunits.mobile.entity.Address;
-import com.magenta.maxunits.mobile.entity.JobType;
-import com.magenta.maxunits.mobile.entity.Parcel;
-import com.magenta.maxunits.mobile.entity.Passenger;
-import com.magenta.maxunits.mobile.entity.TaskState;
 import com.magenta.mc.client.android.DistributionApplication;
 import com.magenta.mc.client.android.db.dao.DistributionDAO;
+import com.magenta.mc.client.android.entity.Address;
 import com.magenta.mc.client.android.entity.DynamicAttributeEntity;
+import com.magenta.mc.client.android.entity.JobType;
 import com.magenta.mc.client.android.entity.OrderItemEntity;
+import com.magenta.mc.client.android.entity.Parcel;
+import com.magenta.mc.client.android.entity.Passenger;
+import com.magenta.mc.client.android.entity.TaskState;
+import com.magenta.mc.client.android.mc.util.Resources;
+import com.magenta.mc.client.android.mc.xml.XMLDataBlock;
 import com.magenta.mc.client.android.record.DynamicAttributeRecord;
 import com.magenta.mc.client.android.record.OrderItemRecord;
 import com.magenta.mc.client.android.renderer.ObjectRenderer;
@@ -18,8 +20,6 @@ import com.magenta.mc.client.android.service.storage.entity.Stop;
 import com.magenta.mc.client.android.util.ParametersParser;
 import com.magenta.mc.client.android.util.RpcParser;
 import com.magenta.mc.client.android.util.StringUtils;
-import com.magenta.mc.client.util.Resources;
-import com.magenta.mc.client.xml.XMLDataBlock;
 
 import java.text.ParseException;
 import java.util.ArrayList;

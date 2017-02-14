@@ -1,19 +1,19 @@
 package com.magenta.mc.client.android.rpc;
 
+import com.magenta.mc.client.android.MobileApp;
+import com.magenta.mc.client.android.mc.client.resend.ResendableMetadata;
+import com.magenta.mc.client.android.mc.client.resend.Resender;
+import com.magenta.mc.client.android.mc.log.MCLogger;
+import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
+import com.magenta.mc.client.android.mc.settings.Settings;
+import com.magenta.mc.client.android.mc.setup.Setup;
+import com.magenta.mc.client.android.mc.xml.XMLDataBlock;
+import com.magenta.mc.client.android.mc.xmpp.extensions.rpc.DefaultRpcResponseHandler;
+import com.magenta.mc.client.android.mc.xmpp.extensions.rpc.JabberRPC;
 import com.magenta.mc.client.android.renderer.Renderer;
 import com.magenta.mc.client.android.rpc.operations.CreateUnavailability;
 import com.magenta.mc.client.android.rpc.operations.JobsRefreshing;
-import com.magenta.mc.client.MobileApp;
 import com.magenta.mc.client.android.service.ServicesRegistry;
-import com.magenta.mc.client.client.resend.ResendableMetadata;
-import com.magenta.mc.client.client.resend.Resender;
-import com.magenta.mc.client.log.MCLogger;
-import com.magenta.mc.client.log.MCLoggerFactory;
-import com.magenta.mc.client.settings.Settings;
-import com.magenta.mc.client.setup.Setup;
-import com.magenta.mc.client.xml.XMLDataBlock;
-import com.magenta.mc.client.xmpp.extensions.rpc.DefaultRpcResponseHandler;
-import com.magenta.mc.client.xmpp.extensions.rpc.JabberRPC;
 
 import java.util.Enumeration;
 import java.util.List;

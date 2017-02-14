@@ -7,13 +7,13 @@ import com.magenta.mc.client.android.service.ServicesRegistry;
 import com.magenta.mc.client.android.service.storage.DemoStorageInitializerImpl;
 import com.magenta.mc.client.android.rpc.xmpp.XMPPStream2;
 import com.magenta.mc.client.android.rpc.RPCTarget;
-import com.magenta.mc.client.client.ConnectionListener;
-import com.magenta.mc.client.client.Login;
-import com.magenta.mc.client.client.TimeSynchronization;
-import com.magenta.mc.client.client.resend.Resender;
-import com.magenta.mc.client.setup.Setup;
-import com.magenta.mc.client.xmpp.XMPPStream;
-import com.magenta.mc.client.xmpp.extensions.rpc.JabberRPC;
+import com.magenta.mc.client.android.mc.client.ConnectionListener;
+import com.magenta.mc.client.android.mc.client.Login;
+import com.magenta.mc.client.android.mc.client.TimeSynchronization;
+import com.magenta.mc.client.android.mc.client.resend.Resender;
+import com.magenta.mc.client.android.mc.setup.Setup;
+import com.magenta.mc.client.android.mc.xmpp.XMPPStream;
+import com.magenta.mc.client.android.mc.xmpp.extensions.rpc.JabberRPC;
 
 public class DistributionApp extends MxMobile {
 

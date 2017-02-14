@@ -1,7 +1,7 @@
 package com.magenta.mc.client.android.renderer;
 
 import com.magenta.mc.client.android.entity.JobEntity;
-import com.magenta.mc.client.xml.XMLDataBlock;
+import com.magenta.mc.client.android.mc.xml.XMLDataBlock;
 
 import java.util.ArrayList;
 import java.util.List;

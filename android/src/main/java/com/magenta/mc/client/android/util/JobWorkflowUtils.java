@@ -3,13 +3,13 @@ package com.magenta.mc.client.android.util;
 import android.content.Context;
 import android.content.Intent;
 
-import com.magenta.mc.client.android.ui.activity.StartActivity;
+import com.magenta.mc.client.android.entity.TaskState;
 import com.magenta.mc.client.android.mc.MxSettings;
+import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.service.ServicesRegistry;
 import com.magenta.mc.client.android.service.storage.entity.Job;
 import com.magenta.mc.client.android.service.storage.entity.Stop;
-import com.magenta.maxunits.mobile.entity.TaskState;
-import com.magenta.mc.client.setup.Setup;
+import com.magenta.mc.client.android.ui.activity.StartActivity;
 
 import java.util.HashMap;
 import java.util.List;

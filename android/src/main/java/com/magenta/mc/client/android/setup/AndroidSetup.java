@@ -2,17 +2,17 @@ package com.magenta.mc.client.android.setup;
 
 import android.content.Context;
 
+import com.magenta.mc.client.android.mc.settings.Settings;
+import com.magenta.mc.client.android.mc.setup.Setup;
+import com.magenta.mc.client.android.mc.storage.Storage;
+import com.magenta.mc.client.android.mc.storage.file.FileStorage;
+import com.magenta.mc.client.android.mc.ui.UI;
+import com.magenta.mc.client.android.mc.update.UpdateCheck;
+import com.magenta.mc.client.android.mc.util.PlatformUtil;
 import com.magenta.mc.client.android.settings.AndroidSettings;
 import com.magenta.mc.client.android.ui.AndroidUI;
 import com.magenta.mc.client.android.update.AndroidUpdateCheck;
 import com.magenta.mc.client.android.util.AndroidUtil;
-import com.magenta.mc.client.settings.Settings;
-import com.magenta.mc.client.setup.Setup;
-import com.magenta.mc.client.storage.Storage;
-import com.magenta.mc.client.storage.file.FileStorage;
-import com.magenta.mc.client.ui.UI;
-import com.magenta.mc.client.update.UpdateCheck;
-import com.magenta.mc.client.util.PlatformUtil;
 
 public class AndroidSetup extends Setup {
 

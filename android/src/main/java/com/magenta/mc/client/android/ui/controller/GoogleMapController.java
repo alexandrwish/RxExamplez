@@ -19,16 +19,16 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
-import com.magenta.maxunits.mobile.entity.Address;
 import com.magenta.mc.client.android.R;
+import com.magenta.mc.client.android.entity.Address;
 import com.magenta.mc.client.android.entity.LocationEntity;
 import com.magenta.mc.client.android.handler.MapUpdateHandler;
 import com.magenta.mc.client.android.mc.MxAndroidUtil;
+import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 import com.magenta.mc.client.android.service.ServicesRegistry;
 import com.magenta.mc.client.android.service.storage.entity.Job;
 import com.magenta.mc.client.android.service.storage.entity.Stop;
 import com.magenta.mc.client.android.util.StringUtils;
-import com.magenta.mc.client.log.MCLoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;

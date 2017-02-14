@@ -8,7 +8,7 @@ import com.magenta.mc.client.android.settings.AndroidSettings;
 import com.magenta.mc.client.android.util.Checksum;
 import com.magenta.mc.client.android.util.DemoDataUtils;
 import com.magenta.mc.client.android.util.StringUtils;
-import com.magenta.mc.client.settings.Settings;
+import com.magenta.mc.client.android.mc.settings.Settings;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -7,7 +7,7 @@ import android.util.Log;
 import android.view.ViewGroup;
 
 import com.magenta.mc.client.android.service.storage.entity.Stop;
-import com.magenta.maxunits.mobile.entity.Address;
+import com.magenta.mc.client.android.entity.Address;
 import com.magenta.mc.client.android.ui.view.Maplet;
 
 import java.util.ArrayList;

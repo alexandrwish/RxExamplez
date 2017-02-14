@@ -4,16 +4,15 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 
-import com.magenta.mc.client.MobileApp;
 import com.magenta.mc.client.android.service.McService;
 import com.magenta.mc.client.android.setup.AndroidSetup;
 import com.magenta.mc.client.android.ui.AndroidUI;
 import com.magenta.mc.client.android.util.AndroidResourceManager;
-import com.magenta.mc.client.client.ConnectionListener;
-import com.magenta.mc.client.client.Login;
-import com.magenta.mc.client.log.MCLoggerFactory;
-import com.magenta.mc.client.setup.Setup;
-import com.magenta.mc.client.util.ResourceManager;
+import com.magenta.mc.client.android.mc.client.ConnectionListener;
+import com.magenta.mc.client.android.mc.client.Login;
+import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
+import com.magenta.mc.client.android.mc.setup.Setup;
+import com.magenta.mc.client.android.mc.util.ResourceManager;
 
 public class AndroidApp extends MobileApp {
 

@@ -22,12 +22,12 @@ import com.magenta.mc.client.android.entity.OrderItemEntity;
 import com.magenta.mc.client.android.entity.OrderItemStatus;
 import com.magenta.mc.client.android.integrator.IntentIntegrator;
 import com.magenta.mc.client.android.integrator.IntentResult;
-import com.magenta.mc.client.android.sound.DSound;
 import com.magenta.mc.client.android.mc.MxSettings;
+import com.magenta.mc.client.android.mc.setup.Setup;
+import com.magenta.mc.client.android.sound.DSound;
 import com.magenta.mc.client.android.ui.adapter.ExpandableOrderItemAdapter;
 import com.magenta.mc.client.android.util.DSoundPool;
 import com.magenta.mc.client.android.util.StringUtils;
-import com.magenta.mc.client.setup.Setup;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

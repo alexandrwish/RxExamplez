@@ -11,23 +11,23 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.magenta.maxunits.mobile.entity.Address;
 import com.magenta.mc.client.android.DistributionApplication;
 import com.magenta.mc.client.android.db.CacheDBHelper;
 import com.magenta.mc.client.android.db.dao.DistributionDAO;
 import com.magenta.mc.client.android.db.dao.TileCacheDAO;
+import com.magenta.mc.client.android.entity.Address;
 import com.magenta.mc.client.android.entity.LocationEntity;
 import com.magenta.mc.client.android.entity.MapSettingsEntity;
 import com.magenta.mc.client.android.entity.TileCacheEntity;
 import com.magenta.mc.client.android.handler.MapUpdateHandler;
 import com.magenta.mc.client.android.mc.MxAndroidUtil;
 import com.magenta.mc.client.android.mc.MxSettings;
+import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.service.ServicesRegistry;
 import com.magenta.mc.client.android.service.storage.entity.Job;
 import com.magenta.mc.client.android.service.storage.entity.Stop;
 import com.magenta.mc.client.android.ui.controller.MapController;
 import com.magenta.mc.client.android.util.CompressUtils;
-import com.magenta.mc.client.setup.Setup;
 
 import java.io.File;
 import java.nio.charset.Charset;

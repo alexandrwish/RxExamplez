@@ -2,8 +2,8 @@ package com.magenta.mc.client.android.ui.delegate;
 
 import android.view.MenuItem;
 
+import com.magenta.mc.client.android.mc.client.DriverStatus;
 import com.magenta.mc.client.android.ui.OnMenuItemSelectedListener;
-import com.magenta.mc.client.client.DriverStatus;
 
 public interface ActivityDelegate {
 

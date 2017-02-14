@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.service.storage.entity.Job;
 import com.magenta.mc.client.android.service.storage.entity.Stop;
-import com.magenta.maxunits.mobile.entity.TaskState;
+import com.magenta.mc.client.android.entity.TaskState;
 import com.magenta.mc.client.android.ui.view.TimeView;
 
 import java.util.List;

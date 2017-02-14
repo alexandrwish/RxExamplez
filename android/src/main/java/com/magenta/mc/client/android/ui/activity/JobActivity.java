@@ -18,23 +18,23 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.magenta.mc.client.android.R;
+import com.magenta.mc.client.android.entity.TaskState;
 import com.magenta.mc.client.android.mc.HDSettings;
+import com.magenta.mc.client.android.mc.MxSettings;
+import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.service.ServicesRegistry;
 import com.magenta.mc.client.android.service.events.EventType;
 import com.magenta.mc.client.android.service.events.JobEvent;
+import com.magenta.mc.client.android.service.listeners.BroadcastEvent;
+import com.magenta.mc.client.android.service.listeners.MxBroadcastEvents;
 import com.magenta.mc.client.android.service.storage.DataControllerImpl;
 import com.magenta.mc.client.android.service.storage.entity.Job;
 import com.magenta.mc.client.android.service.storage.entity.Stop;
-import com.magenta.maxunits.mobile.entity.TaskState;
-import com.magenta.mc.client.android.mc.MxSettings;
-import com.magenta.mc.client.android.service.listeners.BroadcastEvent;
-import com.magenta.mc.client.android.service.listeners.MxBroadcastEvents;
 import com.magenta.mc.client.android.ui.AndroidUI;
 import com.magenta.mc.client.android.ui.adapter.StopsAdapter;
 import com.magenta.mc.client.android.util.DateUtils;
 import com.magenta.mc.client.android.util.IntentAttributes;
 import com.magenta.mc.client.android.util.JobWorkflowUtils;
-import com.magenta.mc.client.setup.Setup;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;

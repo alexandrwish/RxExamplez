@@ -26,7 +26,7 @@ import com.magenta.mc.client.android.util.DSoundPool;
 import com.magenta.mc.client.android.util.LocaleUtils;
 import com.magenta.mc.client.android.util.StringUtils;
 import com.magenta.mc.client.android.util.WorkflowServiceImpl;
-import com.magenta.mc.client.log.MCLoggerFactory;
+import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 
 import org.acra.annotation.ReportsCrashes;
 

@@ -2,12 +2,19 @@ package com.magenta.mc.client.android.service.storage;
 
 import android.util.Pair;
 
-import com.magenta.maxunits.mobile.entity.JobType;
-import com.magenta.maxunits.mobile.entity.TaskState;
-import com.magenta.mc.client.MobileApp;
 import com.magenta.mc.client.android.DistributionApplication;
+import com.magenta.mc.client.android.MobileApp;
 import com.magenta.mc.client.android.db.dao.CommonsDAO;
+import com.magenta.mc.client.android.entity.JobType;
+import com.magenta.mc.client.android.entity.TaskState;
 import com.magenta.mc.client.android.mc.MxSettings;
+import com.magenta.mc.client.android.mc.client.resend.Resender;
+import com.magenta.mc.client.android.mc.exception.UnknownJobStatusException;
+import com.magenta.mc.client.android.mc.log.MCLogger;
+import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
+import com.magenta.mc.client.android.mc.settings.Settings;
+import com.magenta.mc.client.android.mc.setup.Setup;
+import com.magenta.mc.client.android.mc.util.Resources;
 import com.magenta.mc.client.android.service.DataController;
 import com.magenta.mc.client.android.service.ServicesRegistry;
 import com.magenta.mc.client.android.service.events.EventType;
@@ -18,13 +25,6 @@ import com.magenta.mc.client.android.service.storage.entity.Job;
 import com.magenta.mc.client.android.service.storage.entity.JobStatus;
 import com.magenta.mc.client.android.service.storage.entity.Stop;
 import com.magenta.mc.client.android.util.DateUtils;
-import com.magenta.mc.client.client.resend.Resender;
-import com.magenta.mc.client.exception.UnknownJobStatusException;
-import com.magenta.mc.client.log.MCLogger;
-import com.magenta.mc.client.log.MCLoggerFactory;
-import com.magenta.mc.client.settings.Settings;
-import com.magenta.mc.client.setup.Setup;
-import com.magenta.mc.client.util.Resources;
 
 import java.util.ArrayList;
 import java.util.Collections;

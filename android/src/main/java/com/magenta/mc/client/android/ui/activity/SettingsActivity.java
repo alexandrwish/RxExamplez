@@ -10,8 +10,8 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceGroup;
 
 import com.magenta.mc.client.android.R;
-import com.magenta.mc.client.settings.Settings;
-import com.magenta.mc.client.setup.Setup;
+import com.magenta.mc.client.android.mc.settings.Settings;
+import com.magenta.mc.client.android.mc.setup.Setup;
 
 public class SettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 

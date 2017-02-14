@@ -11,7 +11,7 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.SelectArg;
 import com.j256.ormlite.stmt.UpdateBuilder;
 import com.j256.ormlite.support.ConnectionSource;
-import com.magenta.maxunits.mobile.entity.AbstractJobStatus;
+import com.magenta.mc.client.android.entity.AbstractJobStatus;
 import com.magenta.mc.client.android.DistributionApplication;
 import com.magenta.mc.client.android.db.DBAdapter;
 import com.magenta.mc.client.android.db.DistributionDBHelper;

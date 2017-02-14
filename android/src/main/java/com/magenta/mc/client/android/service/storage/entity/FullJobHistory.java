@@ -1,10 +1,10 @@
 package com.magenta.mc.client.android.service.storage.entity;
 
-import com.magenta.maxunits.mobile.entity.AbstractJob;
-import com.magenta.maxunits.mobile.entity.AbstractJobStatus;
+import com.magenta.mc.client.android.entity.AbstractJob;
+import com.magenta.mc.client.android.entity.AbstractJobStatus;
 import com.magenta.mc.client.android.entity.JobEntity;
+import com.magenta.mc.client.android.mc.storage.StorableMetadata;
 import com.magenta.mc.client.android.service.ServicesRegistry;
-import com.magenta.mc.client.storage.StorableMetadata;
 
 import java.util.Map;
 

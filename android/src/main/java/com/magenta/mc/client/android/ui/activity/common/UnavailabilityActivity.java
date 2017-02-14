@@ -5,16 +5,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.magenta.mc.client.MobileApp;
+import com.magenta.mc.client.android.MobileApp;
 import com.magenta.mc.client.android.R;
+import com.magenta.mc.client.android.mc.client.ConnectionListener;
+import com.magenta.mc.client.android.mc.settings.Settings;
+import com.magenta.mc.client.android.mc.setup.Setup;
+import com.magenta.mc.client.android.mc.util.Resources;
 import com.magenta.mc.client.android.rpc.operations.CreateUnavailability;
 import com.magenta.mc.client.android.ui.activity.ActivityDecorator;
 import com.magenta.mc.client.android.ui.activity.MxGenericActivity;
 import com.magenta.mc.client.android.ui.dialog.DateTimePickerDialog;
-import com.magenta.mc.client.client.ConnectionListener;
-import com.magenta.mc.client.settings.Settings;
-import com.magenta.mc.client.setup.Setup;
-import com.magenta.mc.client.util.Resources;
 
 import java.text.ParseException;
 import java.util.Date;

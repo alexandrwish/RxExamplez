@@ -3,9 +3,9 @@ package com.magenta.mc.client.android.util;
 import android.util.Pair;
 
 import com.magenta.mc.client.android.mc.MxSettings;
-import com.magenta.mc.client.crypto.MD5;
-import com.magenta.mc.client.settings.Settings;
-import com.magenta.mc.client.setup.Setup;
+import com.magenta.mc.client.android.mc.crypto.MD5;
+import com.magenta.mc.client.android.mc.settings.Settings;
+import com.magenta.mc.client.android.mc.setup.Setup;
 
 public class UserUtils {
 

@@ -1,14 +1,14 @@
 package com.magenta.mc.client.android.service.storage;
 
 import com.magenta.mc.client.android.mc.MxSettings;
+import com.magenta.mc.client.android.mc.demo.DemoStorageInitializer;
+import com.magenta.mc.client.android.mc.settings.Settings;
 import com.magenta.mc.client.android.service.ServicesRegistry;
 import com.magenta.mc.client.android.service.storage.entity.Job;
 import com.magenta.mc.client.android.service.storage.entity.Stop;
-import com.magenta.maxunits.mobile.entity.Address;
-import com.magenta.maxunits.mobile.entity.TaskState;
+import com.magenta.mc.client.android.entity.Address;
+import com.magenta.mc.client.android.entity.TaskState;
 import com.magenta.mc.client.android.util.DemoDataUtils;
-import com.magenta.mc.client.demo.DemoStorageInitializer;
-import com.magenta.mc.client.settings.Settings;
 
 import java.util.ArrayList;
 import java.util.Calendar;

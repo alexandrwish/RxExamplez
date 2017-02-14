@@ -7,9 +7,9 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.magenta.mc.client.android.R;
+import com.magenta.mc.client.android.mc.settings.Settings;
+import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.service.McService;
-import com.magenta.mc.client.settings.Settings;
-import com.magenta.mc.client.setup.Setup;
 
 public class Notifications {
 

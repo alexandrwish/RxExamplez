@@ -10,6 +10,8 @@ import android.net.Uri;
 
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.mc.MxSettings;
+import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
+import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.service.events.EventType;
 import com.magenta.mc.client.android.service.events.JobEvent;
 import com.magenta.mc.client.android.service.listeners.BroadcastEvent;
@@ -17,8 +19,6 @@ import com.magenta.mc.client.android.ui.AndroidUI;
 import com.magenta.mc.client.android.ui.Notifications;
 import com.magenta.mc.client.android.ui.activity.JobsActivity;
 import com.magenta.mc.client.android.ui.activity.WorkflowActivity;
-import com.magenta.mc.client.log.MCLoggerFactory;
-import com.magenta.mc.client.setup.Setup;
 
 import java.util.concurrent.locks.ReentrantLock;
 

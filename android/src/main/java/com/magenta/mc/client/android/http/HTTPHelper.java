@@ -1,6 +1,6 @@
 package com.magenta.mc.client.android.http;
 
-import com.magenta.mc.client.log.MCLoggerFactory;
+import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 
 import org.json.JSONObject;
 

@@ -2,8 +2,8 @@ package com.magenta.mc.client.android.ui.dialog;
 
 import android.os.Bundle;
 
-import com.magenta.mc.client.log.MCLogger;
-import com.magenta.mc.client.log.MCLoggerFactory;
+import com.magenta.mc.client.android.mc.log.MCLogger;
+import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 
 public class DialogFactory {
 
@@ -29,8 +29,10 @@ public class DialogFactory {
                 default:
                     return null;
             }
-        } catch (IllegalAccessException | InstantiationException e) {
+        } catch (IllegalAccessException e) {
             LOG.error(e.getMessage(), e);
+        } catch (InstantiationException t) {
+            LOG.error(t.getMessage(), t);
         }
         return null;
     }

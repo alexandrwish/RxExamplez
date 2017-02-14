@@ -14,14 +14,14 @@ import com.magenta.mc.client.android.DistributionApplication;
 import com.magenta.mc.client.android.McAndroidApplication;
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.mc.MxSettings;
+import com.magenta.mc.client.android.mc.settings.Settings;
+import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.settings.AndroidSettings;
 import com.magenta.mc.client.android.ui.theme.Theme;
 import com.magenta.mc.client.android.ui.theme.ThemeManager;
 import com.magenta.mc.client.android.ui.view.SettingsCustomView;
 import com.magenta.mc.client.android.util.LocaleUtils;
 import com.magenta.mc.client.android.util.StringUtils;
-import com.magenta.mc.client.settings.Settings;
-import com.magenta.mc.client.setup.Setup;
 
 public class SettingsActivity extends PreferenceActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 

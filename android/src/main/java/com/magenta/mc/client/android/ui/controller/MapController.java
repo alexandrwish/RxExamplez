@@ -19,8 +19,8 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.magenta.maxunits.mobile.entity.Address;
-import com.magenta.maxunits.mobile.entity.TaskState;
+import com.magenta.mc.client.android.entity.Address;
+import com.magenta.mc.client.android.entity.TaskState;
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.handler.MapUpdateHandler;
 import com.magenta.mc.client.android.mc.MxAndroidUtil;
@@ -36,7 +36,7 @@ import com.magenta.mc.client.android.util.IntentAttributes;
 import com.magenta.mc.client.android.util.JobWorkflowUtils;
 import com.magenta.mc.client.android.util.PhoneUtils;
 import com.magenta.mc.client.android.util.StringUtils;
-import com.magenta.mc.client.setup.Setup;
+import com.magenta.mc.client.android.mc.setup.Setup;
 
 import java.util.ArrayList;
 import java.util.Date;

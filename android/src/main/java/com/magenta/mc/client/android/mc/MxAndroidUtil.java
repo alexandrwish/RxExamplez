@@ -14,7 +14,7 @@ import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.widget.Toast;
 
-import com.magenta.maxunits.mobile.entity.Address;
+import com.magenta.mc.client.android.entity.Address;
 import com.magenta.mc.client.android.DistributionApplication;
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.entity.LocationEntity;
@@ -22,10 +22,10 @@ import com.magenta.mc.client.android.service.LocationService;
 import com.magenta.mc.client.android.service.ServicesRegistry;
 import com.magenta.mc.client.android.util.AndroidUtil2;
 import com.magenta.mc.client.android.util.ReflectionUtils;
-import com.magenta.mc.client.log.MCLoggerFactory;
-import com.magenta.mc.client.settings.Settings;
-import com.magenta.mc.client.setup.Setup;
-import com.magenta.mc.client.tracking.GeoLocation;
+import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
+import com.magenta.mc.client.android.mc.settings.Settings;
+import com.magenta.mc.client.android.mc.setup.Setup;
+import com.magenta.mc.client.android.mc.tracking.GeoLocation;
 import com.tomtom.navapp.Trip;
 
 import java.io.BufferedReader;

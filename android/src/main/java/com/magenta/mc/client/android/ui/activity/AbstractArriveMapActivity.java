@@ -15,15 +15,16 @@ import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
-import com.magenta.maxunits.mobile.entity.TaskState;
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.db.dao.DistributionDAO;
 import com.magenta.mc.client.android.db.dao.StopsDAO;
 import com.magenta.mc.client.android.entity.DynamicAttributeType;
 import com.magenta.mc.client.android.entity.MapSettingsEntity;
+import com.magenta.mc.client.android.entity.TaskState;
 import com.magenta.mc.client.android.mc.HDSettings;
 import com.magenta.mc.client.android.mc.MxAndroidUtil;
 import com.magenta.mc.client.android.mc.MxSettings;
+import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.service.ServicesRegistry;
 import com.magenta.mc.client.android.service.storage.entity.Job;
 import com.magenta.mc.client.android.service.storage.entity.Stop;
@@ -39,7 +40,6 @@ import com.magenta.mc.client.android.ui.view.TimeView;
 import com.magenta.mc.client.android.util.Attribute;
 import com.magenta.mc.client.android.util.IntentAttributes;
 import com.magenta.mc.client.android.util.StringUtils;
-import com.magenta.mc.client.setup.Setup;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

@@ -16,8 +16,8 @@ import com.magenta.mc.client.android.db.dao.DistributionDAO;
 import com.magenta.mc.client.android.entity.MapProviderType;
 import com.magenta.mc.client.android.entity.MapSettingsEntity;
 import com.magenta.mc.client.android.mc.MxSettings;
+import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.util.StringUtils;
-import com.magenta.mc.client.setup.Setup;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

@@ -4,10 +4,10 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Environment;
 
+import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
+import com.magenta.mc.client.android.mc.settings.PropertyEventListener;
+import com.magenta.mc.client.android.mc.settings.Settings;
 import com.magenta.mc.client.android.ui.theme.Theme;
-import com.magenta.mc.client.log.MCLoggerFactory;
-import com.magenta.mc.client.settings.PropertyEventListener;
-import com.magenta.mc.client.settings.Settings;
 
 import java.io.File;
 import java.io.IOException;

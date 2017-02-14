@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.view.ContextThemeWrapper;
 
+import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.settings.AndroidSettings;
-import com.magenta.mc.client.setup.Setup;
 
 import java.util.HashMap;
 import java.util.Map;

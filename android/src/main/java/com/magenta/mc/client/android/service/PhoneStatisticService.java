@@ -15,9 +15,9 @@ import com.google.gson.Gson;
 import com.magenta.mc.client.android.DistributionApplication;
 import com.magenta.mc.client.android.db.dao.DistributionDAO;
 import com.magenta.mc.client.android.entity.PhoneStatisticEntity;
+import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 import com.magenta.mc.client.android.record.PhoneStatisticRecord;
 import com.magenta.mc.client.android.rpc.DistributionRPCOut;
-import com.magenta.mc.client.log.MCLoggerFactory;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

@@ -5,8 +5,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 
+import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 import com.magenta.mc.client.android.util.StringUtilities;
-import com.magenta.mc.client.log.MCLoggerFactory;
 
 public class DialogFragmentManager {
 

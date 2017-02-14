@@ -12,8 +12,8 @@ import com.magenta.mc.client.android.service.McService;
 import com.magenta.mc.client.android.ui.AndroidUI;
 import com.magenta.mc.client.android.ui.ApplicationIcons;
 import com.magenta.mc.client.android.ui.Notifications;
-import com.magenta.mc.client.settings.Settings;
-import com.magenta.mc.client.setup.Setup;
+import com.magenta.mc.client.android.mc.settings.Settings;
+import com.magenta.mc.client.android.mc.setup.Setup;
 
 public class MxNotifications extends Notifications {
 

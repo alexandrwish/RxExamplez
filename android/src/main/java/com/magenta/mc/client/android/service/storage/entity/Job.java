@@ -3,17 +3,17 @@ package com.magenta.mc.client.android.service.storage.entity;
 import android.content.Context;
 
 import com.magenta.mc.client.android.handler.AlertHandler;
-import com.magenta.maxunits.mobile.entity.AbstractJob;
-import com.magenta.maxunits.mobile.entity.AbstractJobStatus;
-import com.magenta.maxunits.mobile.entity.AbstractStop;
+import com.magenta.mc.client.android.entity.AbstractJob;
+import com.magenta.mc.client.android.entity.AbstractJobStatus;
+import com.magenta.mc.client.android.entity.AbstractStop;
 import com.magenta.mc.client.android.entity.JobEntity;
 import com.magenta.mc.client.android.entity.LocationEntity;
-import com.magenta.maxunits.mobile.entity.TaskState;
+import com.magenta.mc.client.android.entity.TaskState;
 import com.magenta.mc.client.android.mc.MxAndroidUtil;
+import com.magenta.mc.client.android.mc.client.resend.Resender;
+import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.service.ServicesRegistry;
 import com.magenta.mc.client.android.util.StatusUtils;
-import com.magenta.mc.client.client.resend.Resender;
-import com.magenta.mc.client.setup.Setup;
 
 import java.util.HashMap;
 import java.util.Hashtable;

@@ -6,14 +6,14 @@ import android.app.NotificationManager;
 import android.location.LocationManager;
 import android.view.MenuItem;
 
+import com.magenta.mc.client.android.mc.client.DriverStatus;
+import com.magenta.mc.client.android.mc.client.XMPPClient;
+import com.magenta.mc.client.android.mc.log.MCLogger;
+import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
+import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.service.McService;
 import com.magenta.mc.client.android.ui.AndroidUI;
 import com.magenta.mc.client.android.ui.OnMenuItemSelectedListener;
-import com.magenta.mc.client.client.DriverStatus;
-import com.magenta.mc.client.client.XMPPClient;
-import com.magenta.mc.client.log.MCLogger;
-import com.magenta.mc.client.log.MCLoggerFactory;
-import com.magenta.mc.client.setup.Setup;
 
 import javax.inject.Inject;
 

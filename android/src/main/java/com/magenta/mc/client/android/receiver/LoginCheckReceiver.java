@@ -9,13 +9,13 @@ import com.magenta.mc.client.android.db.dao.DistributionDAO;
 import com.magenta.mc.client.android.entity.LocationEntity;
 import com.magenta.mc.client.android.mc.MxAndroidUtil;
 import com.magenta.mc.client.android.mc.MxSettings;
+import com.magenta.mc.client.android.mc.client.Login;
+import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
+import com.magenta.mc.client.android.mc.settings.Settings;
+import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.rpc.xmpp.XMPPStream2;
 import com.magenta.mc.client.android.service.ServicesRegistry;
 import com.magenta.mc.client.android.util.UserUtils;
-import com.magenta.mc.client.client.Login;
-import com.magenta.mc.client.log.MCLoggerFactory;
-import com.magenta.mc.client.settings.Settings;
-import com.magenta.mc.client.setup.Setup;
 
 import java.io.IOException;
 import java.sql.SQLException;

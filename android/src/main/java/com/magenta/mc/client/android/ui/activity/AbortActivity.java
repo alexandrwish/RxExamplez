@@ -11,7 +11,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.magenta.maxunits.mobile.entity.TaskState;
+import com.magenta.mc.client.android.entity.TaskState;
 import com.magenta.mc.client.android.DistributionApplication;
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.db.dao.DistributionDAO;

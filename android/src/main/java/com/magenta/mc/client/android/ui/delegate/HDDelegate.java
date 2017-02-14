@@ -6,11 +6,11 @@ import android.os.Bundle;
 
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.common.Constants;
+import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 import com.magenta.mc.client.android.receiver.HDReceiver;
 import com.magenta.mc.client.android.receiver.HttpResponseListener;
 import com.magenta.mc.client.android.ui.dialog.DialogFactory;
 import com.magenta.mc.client.android.ui.dialog.DistributionDialogFragment;
-import com.magenta.mc.client.log.MCLoggerFactory;
 
 public class HDDelegate extends SmokeActivityDelegate implements HttpResponseListener {
 

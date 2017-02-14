@@ -2,7 +2,7 @@ package com.magenta.mc.client.android.util;
 
 import android.util.Pair;
 
-import com.magenta.maxunits.mobile.entity.Address;
+import com.magenta.mc.client.android.entity.Address;
 
 import java.util.HashMap;
 import java.util.HashSet;

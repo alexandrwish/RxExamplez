@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.google.gson.Gson;
-import com.magenta.hdmate.mx.model.CancelationReason;
 import com.magenta.hdmate.mx.model.SettingsResultRecord;
 import com.magenta.mc.client.android.DistributionApplication;
 import com.magenta.mc.client.android.common.Constants;
@@ -17,14 +16,13 @@ import com.magenta.mc.client.android.entity.MapSettingsEntity;
 import com.magenta.mc.client.android.http.HttpClient;
 import com.magenta.mc.client.android.http.record.LoginResultRecord;
 import com.magenta.mc.client.android.mc.MxSettings;
+import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
+import com.magenta.mc.client.android.mc.settings.Settings;
+import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.ui.activity.common.LoginActivity;
 import com.magenta.mc.client.android.util.IntentAttributes;
-import com.magenta.mc.client.log.MCLoggerFactory;
-import com.magenta.mc.client.settings.Settings;
-import com.magenta.mc.client.setup.Setup;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -125,11 +123,11 @@ public class HttpService extends IntentService {
                             editor.putString(entry.getKey(), entry.getValue());
                             Settings.get().setProperty(entry.getKey(), entry.getValue());
                         }
-                        ArrayList<String> reasons = new ArrayList<>(settingsResultRecord.getCancelationReasons().size());
-                        for (CancelationReason reason : settingsResultRecord.getCancelationReasons()) {
-                            reasons.add(reason.getTitle());
-                        }
-                        MxSettings.getInstance().setOrderCancelReasons(reasons);
+//                        ArrayList<String> reasons = new ArrayList<>(settingsResultRecord.getCancelationReasons().size());
+//                        for (CancelationReason reason : settingsResultRecord.getCancelationReasons()) {
+//                            reasons.add(reason.getTitle());
+//                        }
+//                        MxSettings.getInstance().setOrderCancelReasons(reasons);
                         Map<String, Map<String, String>> mapSettings = settingsResultRecord.getMapProperties();
                         for (String s : MxSettings.ignoredMapProviders) {
                             settingsResultRecord.getMapProperties().remove(s);

@@ -1,7 +1,7 @@
 package com.magenta.mc.client.android.util;
 
-import com.magenta.maxunits.mobile.entity.Attribute;
-import com.magenta.mc.client.xml.XMLDataBlock;
+import com.magenta.mc.client.android.entity.Attribute;
+import com.magenta.mc.client.android.mc.xml.XMLDataBlock;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -29,7 +29,6 @@ public final class RpcParser {
                     attributeBlock.getChildBlockText("unit"));
             attributes.add(attribute);
         }
-
         return attributes;
     }
 }

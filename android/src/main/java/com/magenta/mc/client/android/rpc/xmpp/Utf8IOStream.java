@@ -2,19 +2,19 @@ package com.magenta.mc.client.android.rpc.xmpp;
 
 import com.magenta.mc.client.android.DistributionApplication;
 import com.magenta.mc.client.android.mc.MxSettings;
+import com.magenta.mc.client.android.mc.client.Login;
+import com.magenta.mc.client.android.mc.settings.Settings;
+import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.receiver.LoginCheckReceiver;
 import com.magenta.mc.client.android.service.ServicesRegistry;
 import com.magenta.mc.client.android.util.UserUtils;
-import com.magenta.mc.client.client.Login;
-import com.magenta.mc.client.settings.Settings;
-import com.magenta.mc.client.setup.Setup;
 
 import java.io.IOException;
 import java.net.Socket;
 
 import okhttp3.Request;
 
-public class Utf8IOStream extends com.magenta.mc.client.io.Utf8IOStream {
+public class Utf8IOStream extends com.magenta.mc.client.android.mc.io.Utf8IOStream {
 
     public Utf8IOStream(Socket socket) throws IOException {
         super(socket);

@@ -7,11 +7,11 @@ import android.os.Handler;
 import android.os.Vibrator;
 import android.util.SparseIntArray;
 
-import com.magenta.mc.client.MobileApp;
+import com.magenta.mc.client.android.MobileApp;
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.mc.MxSettings;
+import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 import com.magenta.mc.client.android.sound.DSound;
-import com.magenta.mc.client.log.MCLoggerFactory;
 
 import java.util.HashSet;
 import java.util.Set;

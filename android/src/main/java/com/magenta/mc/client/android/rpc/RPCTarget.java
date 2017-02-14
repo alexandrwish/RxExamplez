@@ -1,12 +1,12 @@
 package com.magenta.mc.client.android.rpc;
 
 import com.magenta.mc.client.android.mc.MxSettings;
+import com.magenta.mc.client.android.mc.setup.Setup;
+import com.magenta.mc.client.android.mc.xml.XMLDataBlock;
+import com.magenta.mc.client.android.mc.xmpp.extensions.rpc.DefaultRPCQueryListener;
 import com.magenta.mc.client.android.renderer.Renderer;
 import com.magenta.mc.client.android.service.ServicesRegistry;
 import com.magenta.mc.client.android.service.listeners.BroadcastEvent;
-import com.magenta.mc.client.setup.Setup;
-import com.magenta.mc.client.xml.XMLDataBlock;
-import com.magenta.mc.client.xmpp.extensions.rpc.DefaultRPCQueryListener;
 
 import java.util.ArrayList;
 import java.util.Vector;

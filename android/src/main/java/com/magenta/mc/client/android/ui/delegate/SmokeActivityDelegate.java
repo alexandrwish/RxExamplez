@@ -12,10 +12,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.magenta.mc.client.android.R;
+import com.magenta.mc.client.android.mc.client.DriverStatus;
+import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
+import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.ui.activity.SmokeActivityInterface;
-import com.magenta.mc.client.client.DriverStatus;
-import com.magenta.mc.client.log.MCLoggerFactory;
-import com.magenta.mc.client.setup.Setup;
 
 public class SmokeActivityDelegate extends McActivityDelegate {
 

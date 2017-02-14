@@ -9,9 +9,9 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
 
-import com.magenta.mc.client.log.MCLoggerFactory;
-import com.magenta.mc.client.settings.Settings;
-import com.magenta.mc.client.setup.Setup;
+import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
+import com.magenta.mc.client.android.mc.settings.Settings;
+import com.magenta.mc.client.android.mc.setup.Setup;
 
 import net.sf.microlog.core.Level;
 

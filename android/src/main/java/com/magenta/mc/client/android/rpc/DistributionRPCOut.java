@@ -5,21 +5,21 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.gson.Gson;
-import com.magenta.maxunits.mobile.entity.Address;
 import com.magenta.mc.client.android.DistributionApplication;
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.db.dao.DistributionDAO;
+import com.magenta.mc.client.android.entity.Address;
 import com.magenta.mc.client.android.entity.MapProviderType;
 import com.magenta.mc.client.android.entity.MapSettingsEntity;
 import com.magenta.mc.client.android.mc.MxSettings;
+import com.magenta.mc.client.android.mc.settings.Settings;
+import com.magenta.mc.client.android.mc.setup.Setup;
+import com.magenta.mc.client.android.mc.xml.XMLDataBlock;
+import com.magenta.mc.client.android.mc.xmpp.extensions.rpc.JabberRPC;
 import com.magenta.mc.client.android.ui.AndroidUI;
 import com.magenta.mc.client.android.ui.activity.DistributionActivity;
 import com.magenta.mc.client.android.ui.dialog.DialogFactory;
 import com.magenta.mc.client.android.ui.dialog.DistributionDialogFragment;
-import com.magenta.mc.client.settings.Settings;
-import com.magenta.mc.client.setup.Setup;
-import com.magenta.mc.client.xml.XMLDataBlock;
-import com.magenta.mc.client.xmpp.extensions.rpc.JabberRPC;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

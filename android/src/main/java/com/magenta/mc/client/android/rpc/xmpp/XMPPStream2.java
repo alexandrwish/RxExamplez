@@ -2,14 +2,14 @@ package com.magenta.mc.client.android.rpc.xmpp;
 
 import android.util.Log;
 
-import com.magenta.mc.client.android.receiver.LoginCheckReceiver;
 import com.magenta.mc.client.android.mc.MxSettings;
+import com.magenta.mc.client.android.mc.components.MCTimerTask;
+import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
+import com.magenta.mc.client.android.mc.settings.Settings;
+import com.magenta.mc.client.android.mc.setup.Setup;
+import com.magenta.mc.client.android.mc.xmpp.XMPPStream;
+import com.magenta.mc.client.android.receiver.LoginCheckReceiver;
 import com.magenta.mc.client.android.util.UserUtils;
-import com.magenta.mc.client.components.MCTimerTask;
-import com.magenta.mc.client.log.MCLoggerFactory;
-import com.magenta.mc.client.settings.Settings;
-import com.magenta.mc.client.setup.Setup;
-import com.magenta.mc.client.xmpp.XMPPStream;
 
 import java.io.IOException;
 import java.sql.SQLException;

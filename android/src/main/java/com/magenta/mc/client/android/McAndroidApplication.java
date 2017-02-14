@@ -16,9 +16,9 @@ import com.magenta.mc.client.android.ui.theme.Theme;
 import com.magenta.mc.client.android.ui.theme.ThemeManageable;
 import com.magenta.mc.client.android.ui.theme.ThemeManager;
 import com.magenta.mc.client.android.util.LocaleUtils;
-import com.magenta.mc.client.log.MCLoggerFactory;
-import com.magenta.mc.client.settings.Settings;
-import com.magenta.mc.client.setup.Setup;
+import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
+import com.magenta.mc.client.android.mc.settings.Settings;
+import com.magenta.mc.client.android.mc.setup.Setup;
 
 import java.util.Date;
 import java.util.HashSet;

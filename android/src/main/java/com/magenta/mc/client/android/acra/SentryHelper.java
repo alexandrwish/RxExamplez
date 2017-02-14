@@ -4,7 +4,7 @@ import android.net.Uri;
 
 import com.magenta.mc.client.android.http.HTTPHelper;
 import com.magenta.mc.client.android.mc.MxSettings;
-import com.magenta.mc.client.log.MCLoggerFactory;
+import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 
 import org.json.JSONObject;
 

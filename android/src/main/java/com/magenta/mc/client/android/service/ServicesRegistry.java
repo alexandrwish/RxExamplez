@@ -8,7 +8,7 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 
 import com.magenta.mc.client.android.DistributionApplication;
-import com.magenta.mc.client.log.MCLoggerFactory;
+import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 
 import net.sf.microlog.core.LoggerFactory;
 

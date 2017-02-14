@@ -8,12 +8,12 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.magenta.mc.client.android.R;
+import com.magenta.mc.client.android.mc.client.Login;
+import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
+import com.magenta.mc.client.android.mc.setup.Setup;
+import com.magenta.mc.client.android.mc.update.UpdateCheck;
 import com.magenta.mc.client.android.ui.AndroidUI;
 import com.magenta.mc.client.android.ui.delegate.SmokeActivityDelegate;
-import com.magenta.mc.client.client.Login;
-import com.magenta.mc.client.log.MCLoggerFactory;
-import com.magenta.mc.client.setup.Setup;
-import com.magenta.mc.client.update.UpdateCheck;
 
 public abstract class SmokeLoginActivity<D extends SmokeActivityDelegate> extends SmokeActivity<D> {
 
@@ -26,6 +26,7 @@ public abstract class SmokeLoginActivity<D extends SmokeActivityDelegate> extend
     }
 
     public void initActivity(Bundle savedInstanceState) {
+
         UpdateCheck updateCheck = Setup.get().getUpdateCheck();
         if (updateCheck.checkDownloadedUpdate()) {
             updateCheck.installDownloadedUpdate();

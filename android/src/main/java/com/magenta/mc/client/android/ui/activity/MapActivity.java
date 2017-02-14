@@ -7,11 +7,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
 
-import com.magenta.maxunits.mobile.entity.Address;
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.db.dao.DistributionDAO;
+import com.magenta.mc.client.android.entity.Address;
 import com.magenta.mc.client.android.entity.MapSettingsEntity;
 import com.magenta.mc.client.android.mc.MxSettings;
+import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.service.ServicesRegistry;
 import com.magenta.mc.client.android.service.storage.DataControllerImpl;
 import com.magenta.mc.client.android.service.storage.entity.Job;
@@ -23,7 +24,6 @@ import com.magenta.mc.client.android.ui.controller.MapletController;
 import com.magenta.mc.client.android.ui.controller.YandexMapController;
 import com.magenta.mc.client.android.ui.view.Maplet;
 import com.magenta.mc.client.android.util.IntentAttributes;
-import com.magenta.mc.client.setup.Setup;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

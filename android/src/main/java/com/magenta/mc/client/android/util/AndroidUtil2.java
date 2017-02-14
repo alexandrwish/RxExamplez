@@ -11,10 +11,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
 
-import com.magenta.mc.client.log.MCLoggerFactory;
-import com.magenta.mc.client.tracking.GeoLocation;
-import com.magenta.mc.client.tracking.GeoLocationService;
-import com.magenta.mc.client.tracking.GeoLocationSource;
+import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
+import com.magenta.mc.client.android.mc.tracking.GeoLocation;
+import com.magenta.mc.client.android.mc.tracking.GeoLocationService;
+import com.magenta.mc.client.android.mc.tracking.GeoLocationSource;
 
 import java.text.SimpleDateFormat;
 

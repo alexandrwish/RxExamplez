@@ -10,10 +10,10 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.telephony.TelephonyManager;
 
-import com.magenta.mc.client.setup.Setup;
-import com.magenta.mc.client.tracking.GeoLocation;
-import com.magenta.mc.client.tracking.GeoLocationSource;
-import com.magenta.mc.client.util.PlatformUtil;
+import com.magenta.mc.client.android.mc.setup.Setup;
+import com.magenta.mc.client.android.mc.tracking.GeoLocation;
+import com.magenta.mc.client.android.mc.tracking.GeoLocationSource;
+import com.magenta.mc.client.android.mc.util.PlatformUtil;
 
 public class AndroidUtil implements PlatformUtil {
 

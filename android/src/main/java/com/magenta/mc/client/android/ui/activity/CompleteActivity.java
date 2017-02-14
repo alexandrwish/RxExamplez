@@ -19,16 +19,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.magenta.maxunits.mobile.entity.TaskState;
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.db.dao.DistributionDAO;
 import com.magenta.mc.client.android.db.dao.SignatureDAO;
 import com.magenta.mc.client.android.entity.DynamicAttributeEntity;
 import com.magenta.mc.client.android.entity.DynamicAttributeType;
 import com.magenta.mc.client.android.entity.OrderItemEntity;
+import com.magenta.mc.client.android.entity.TaskState;
 import com.magenta.mc.client.android.mc.HDSettings;
 import com.magenta.mc.client.android.mc.MxAndroidUtil;
 import com.magenta.mc.client.android.mc.MxSettings;
+import com.magenta.mc.client.android.mc.settings.Settings;
 import com.magenta.mc.client.android.record.DynamicAttributeRecord;
 import com.magenta.mc.client.android.record.OrderItemRecord;
 import com.magenta.mc.client.android.service.ServicesRegistry;
@@ -43,7 +44,6 @@ import com.magenta.mc.client.android.util.DistributionUtils;
 import com.magenta.mc.client.android.util.IntentAttributes;
 import com.magenta.mc.client.android.util.StringUtils;
 import com.magenta.mc.client.android.util.TextFilter;
-import com.magenta.mc.client.settings.Settings;
 
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;

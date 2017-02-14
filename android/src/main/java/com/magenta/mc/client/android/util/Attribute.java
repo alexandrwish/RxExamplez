@@ -7,7 +7,7 @@ import com.magenta.mc.client.android.entity.DynamicAttributeEntity;
 import com.magenta.mc.client.android.entity.DynamicAttributeType;
 import com.magenta.mc.client.android.entity.LocalizeStringEntity;
 import com.magenta.mc.client.android.mc.MxSettings;
-import com.magenta.mc.client.setup.Setup;
+import com.magenta.mc.client.android.mc.setup.Setup;
 
 import java.util.ArrayList;
 import java.util.Collections;

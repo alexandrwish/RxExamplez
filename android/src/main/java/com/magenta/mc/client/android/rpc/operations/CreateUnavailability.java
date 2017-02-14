@@ -1,7 +1,7 @@
 package com.magenta.mc.client.android.rpc.operations;
 
+import com.magenta.mc.client.android.mc.components.waiting.LongOperationWithTimeout;
 import com.magenta.mc.client.android.rpc.RPCOut;
-import com.magenta.mc.client.components.waiting.LongOperationWithTimeout;
 
 public class CreateUnavailability extends LongOperationWithTimeout {
 

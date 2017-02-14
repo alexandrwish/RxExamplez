@@ -13,7 +13,7 @@ import com.magenta.mc.client.android.http.record.LoginRecord;
 import com.magenta.mc.client.android.http.record.LoginResultRecord;
 import com.magenta.mc.client.android.mc.MxAndroidUtil;
 import com.magenta.mc.client.android.mc.MxSettings;
-import com.magenta.mc.client.settings.Settings;
+import com.magenta.mc.client.android.mc.settings.Settings;
 
 import java.util.concurrent.TimeUnit;
 

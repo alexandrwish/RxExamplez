@@ -2,7 +2,7 @@ package com.magenta.mc.client.android.log;
 
 import android.util.Log;
 
-import com.magenta.mc.client.log.ServerTime;
+import com.magenta.mc.client.android.mc.log.ServerTime;
 
 import net.sf.microlog.core.Level;
 import net.sf.microlog.core.appender.ConsoleAppender;

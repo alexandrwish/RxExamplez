@@ -8,7 +8,7 @@ import com.magenta.mc.client.android.service.events.AlertEvent;
 import com.magenta.mc.client.android.service.storage.entity.Job;
 import com.magenta.mc.client.android.service.storage.entity.Stop;
 import com.magenta.mc.client.android.mc.MxSettings;
-import com.magenta.mc.client.setup.Setup;
+import com.magenta.mc.client.android.mc.setup.Setup;
 
 import java.util.ArrayList;
 import java.util.List;

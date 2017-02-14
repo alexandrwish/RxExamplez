@@ -18,9 +18,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-import com.magenta.maxunits.mobile.entity.TaskState;
 import com.magenta.mc.client.android.R;
+import com.magenta.mc.client.android.entity.TaskState;
 import com.magenta.mc.client.android.mc.MxSettings;
+import com.magenta.mc.client.android.mc.client.DriverStatus;
+import com.magenta.mc.client.android.mc.client.Login;
+import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.rpc.operations.JobsRefreshing;
 import com.magenta.mc.client.android.service.ServicesRegistry;
 import com.magenta.mc.client.android.service.events.EventType;
@@ -35,9 +38,6 @@ import com.magenta.mc.client.android.ui.activity.common.LoginActivity;
 import com.magenta.mc.client.android.ui.adapter.JobsAdapter;
 import com.magenta.mc.client.android.util.IntentAttributes;
 import com.magenta.mc.client.android.util.PhoneUtils;
-import com.magenta.mc.client.client.DriverStatus;
-import com.magenta.mc.client.client.Login;
-import com.magenta.mc.client.setup.Setup;
 
 import java.util.List;
 

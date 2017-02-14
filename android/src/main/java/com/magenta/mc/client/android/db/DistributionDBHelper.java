@@ -14,7 +14,7 @@ import com.magenta.mc.client.android.entity.OrderItemEntity;
 import com.magenta.mc.client.android.entity.PhoneStatisticEntity;
 import com.magenta.mc.client.android.entity.StatusSenderLock;
 import com.magenta.mc.client.android.entity.LocationEntity;
-import com.magenta.mc.client.log.MCLoggerFactory;
+import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 
 public class DistributionDBHelper extends SQLiteOpenHelper {
 

@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 
 import com.magenta.mc.client.android.ui.AndroidUI;
-import com.magenta.mc.client.log.MCLoggerFactory;
+import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 
 public class MxUI extends AndroidUI {
 
