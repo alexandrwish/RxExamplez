@@ -20,9 +20,7 @@ public class BarcodesDAO extends AbstractDAO {
 
     public static final String[] INDEX = new String[]{COLUMN_JOB_ID, COLUMN_STOP_ID};
 
-    public static final String SQL_CREATE_TABLE = format(
-            "CREATE TABLE %s (id INTEGER PRIMARY KEY, %s TEXT, %s TEXT, %s  TEXT)",
-            TABLE, COLUMN_JOB_ID, COLUMN_STOP_ID, COLUMN_BARCODE);
+    public static final String SQL_CREATE_TABLE = format("CREATE TABLE %s (id INTEGER PRIMARY KEY, %s TEXT, %s TEXT, %s  TEXT)", TABLE, COLUMN_JOB_ID, COLUMN_STOP_ID, COLUMN_BARCODE);
 
     public BarcodesDAO(final Context context) {
         super(context);

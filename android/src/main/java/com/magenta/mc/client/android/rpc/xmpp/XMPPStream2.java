@@ -7,8 +7,7 @@ import com.magenta.mc.client.android.mc.components.MCTimerTask;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 import com.magenta.mc.client.android.mc.settings.Settings;
 import com.magenta.mc.client.android.mc.setup.Setup;
-import com.magenta.mc.client.android.mc.xmpp.XMPPStream;
-import com.magenta.mc.client.android.receiver.LoginCheckReceiver;
+import com.magenta.mc.client.android.task.LoginCheckTask;
 import com.magenta.mc.client.android.util.UserUtils;
 
 import java.io.IOException;
@@ -18,7 +17,7 @@ import okhttp3.OkHttpClient;
 
 public class XMPPStream2 extends XMPPStream {
 
-    private final LoginCheckReceiver receiver = new LoginCheckReceiver();
+    private final LoginCheckTask receiver = new LoginCheckTask();
     private KeepAliveTask2 keepAlive;
 
     public XMPPStream2(String server, String host, int port, boolean ssl, long connectionId) throws IOException {

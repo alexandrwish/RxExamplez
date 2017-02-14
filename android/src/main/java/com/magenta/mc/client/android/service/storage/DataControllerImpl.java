@@ -5,8 +5,11 @@ import android.util.Pair;
 import com.magenta.mc.client.android.DistributionApplication;
 import com.magenta.mc.client.android.MobileApp;
 import com.magenta.mc.client.android.db.dao.CommonsDAO;
+import com.magenta.mc.client.android.entity.AbstractStop;
 import com.magenta.mc.client.android.entity.JobType;
 import com.magenta.mc.client.android.entity.TaskState;
+import com.magenta.mc.client.android.events.EventType;
+import com.magenta.mc.client.android.events.JobEvent;
 import com.magenta.mc.client.android.mc.MxSettings;
 import com.magenta.mc.client.android.mc.client.resend.Resender;
 import com.magenta.mc.client.android.mc.exception.UnknownJobStatusException;
@@ -17,8 +20,6 @@ import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.mc.util.Resources;
 import com.magenta.mc.client.android.service.DataController;
 import com.magenta.mc.client.android.service.ServicesRegistry;
-import com.magenta.mc.client.android.service.events.EventType;
-import com.magenta.mc.client.android.service.events.JobEvent;
 import com.magenta.mc.client.android.service.listeners.BroadcastEvent;
 import com.magenta.mc.client.android.service.storage.entity.FullJobHistory;
 import com.magenta.mc.client.android.service.storage.entity.Job;
@@ -163,7 +164,7 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
             if (job.getState() == TaskState.RUN_ASSIGNED || job.getState() == TaskState.RUN_SENT) {
                 jobStatusContainer.add(job.processSetState(TaskState.RUN_RECEIVED, false));
             }
-            for (Stop stop : (List<Stop>) job.getStops()) {
+            for (AbstractStop stop : job.getStops()) {
                 stop.setUpdateType(job.isCancelled() || job.isCompleted() ? Stop.CANCEL_STOP : Stop.NOT_CHANGED_STOP);
             }
             refToJob.put(jobRef, job);
@@ -459,9 +460,9 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
         boolean upd;
         Job j = refToJob.get(job.getReferenceId());
         if (j != null) {
-            for (Stop stop : (List<Stop>) job.getStops()) {
+            for (AbstractStop stop : job.getStops()) {
                 upd = false;
-                for (Stop s : (List<Stop>) j.getStops()) {
+                for (AbstractStop s : j.getStops()) {
                     if (s.getReferenceId().equalsIgnoreCase(stop.getReferenceId())) {
                         stop.setUpdateType(s.getUpdateType());
                         upd = true;

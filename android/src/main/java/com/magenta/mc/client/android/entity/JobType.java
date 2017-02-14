@@ -8,8 +8,8 @@ public class JobType {
     public static final int TRANSFER = 0;
     public static final int BREAK = 1;
 
-    public static final String STR_TRANSFER = "RUN";
-    public static final String STR_BREAK = "BREAK";
+    private static final String STR_TRANSFER = "RUN";
+    private static final String STR_BREAK = "BREAK";
 
     public static String stringValue(int type) throws UnknownJobStatusException {
         switch (type) {

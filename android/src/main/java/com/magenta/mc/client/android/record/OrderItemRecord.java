@@ -12,10 +12,6 @@ public class OrderItemRecord implements Serializable {
     private String name;
     private OrderItemStatus status;
 
-    public OrderItemRecord() {
-        super();
-    }
-
     public OrderItemRecord(Long id, String barcode, String name, OrderItemStatus status) {
         this.id = id;
         this.barcode = barcode;

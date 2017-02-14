@@ -90,7 +90,7 @@ public class StartActivity extends DistributionActivity implements WorkflowActiv
                 .add(new Attribute(getString(R.string.order_type_label), stop.getParameter(Stop.ATTR_ORDER_TYPE)))
                 .add(new Attribute(getString(R.string.notes_label), stop.getNotes()));
         try {
-            dynamicAttributeView.addAll(DistributionDAO.getInstance(getApplicationContext()).getDynamicAttributes(currentJobId, currentStopId));
+            dynamicAttributeView.addAll(DistributionDAO.getInstance().getDynamicAttributes(currentJobId, currentStopId));
         } catch (SQLException ignore) {
         } finally {
             dynamicAttributeView.clear().render();

@@ -8,7 +8,7 @@ import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.mc.storage.BinaryStorable;
 import com.magenta.mc.client.android.mc.storage.Storable;
 import com.magenta.mc.client.android.mc.storage.Storage;
-import com.magenta.mc.client.android.mc.xmpp.extensions.rpc.DefaultRpcResponseHandler;
+import com.magenta.mc.client.android.rpc.xmpp.extensions.rpc.DefaultRpcResponseHandler;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,6 +29,7 @@ import EDU.oswego.cs.dl.util.concurrent.ThreadFactory;
  * To change this template use File | Settings | File Templates.
  */
 public class BinaryTransmitter {
+
     private static final long BINARY_TRANSMISSION_EXPIRATION_7_DAYS = 7 * 24 * 60 * 60 * 1000;
     private static Mutex initLock = new Mutex();
     private static boolean initialized;

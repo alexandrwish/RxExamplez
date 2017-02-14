@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.magenta.mc.client.android.R;
+import com.magenta.mc.client.android.entity.AbstractStop;
 import com.magenta.mc.client.android.service.storage.entity.Stop;
 import com.magenta.mc.client.android.ui.map.MapAddress;
 import com.magenta.mc.client.android.ui.view.TimeWindowView;
@@ -21,19 +22,19 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class StopsAdapter extends DistributionArrayAdapter<Stop> {
+public class StopsAdapter extends DistributionArrayAdapter<AbstractStop> {
 
-    private List<Stop> jobStops;
+    private List<AbstractStop> jobStops;
 
-    public StopsAdapter(Activity context, List<Stop> list) {
+    public StopsAdapter(Activity context, List<AbstractStop> list) {
         super(context, R.layout.item_inactive_stop, list);
         this.jobStops = list.get(0).getParentJob().getStops();
         sort();
     }
 
-    public void update(final List<Stop> stops) {
+    public void update(final List<AbstractStop> stops) {
         super.changeList(stops);
-        this.jobStops = list.isEmpty() ? new LinkedList<Stop>() : list.get(0).getParentJob().getStops();
+        this.jobStops = list.isEmpty() ? new LinkedList<AbstractStop>() : list.get(0).getParentJob().getStops();
         sort();
         notifyDataSetChanged();
     }
@@ -61,7 +62,7 @@ public class StopsAdapter extends DistributionArrayAdapter<Stop> {
             view = convertView;
         }
         ViewHolder holder = (ViewHolder) view.getTag();
-        Stop stop = list.get(position);
+        AbstractStop stop = list.get(position);
         MapAddress destinationAddress = MapAddress.from(stop.getAddress());
         String customerInfo = stop.getCustomerInfo();
         if (StringUtils.isBlank(customerInfo)) {
@@ -88,12 +89,12 @@ public class StopsAdapter extends DistributionArrayAdapter<Stop> {
         return view;
     }
 
-    private void setTimeWindow(Stop stop, ViewHolder holder) {
+    private void setTimeWindow(AbstractStop stop, ViewHolder holder) {
         String[] times = stop.getTimeWindowAsString().replaceAll(" ", "").split("[-]");
         holder.time_window.setLeftBound(times[0]).setRightBound(times[1]).setVisibilityForDivider(View.GONE);
     }
 
-    private void setUpdateState(Stop stop, ViewHolder holder) {
+    private void setUpdateState(AbstractStop stop, ViewHolder holder) {
         switch (stop.getUpdateType()) {
             case Stop.CANCEL_STOP: {
                 holder.statusIndicator.setImageResource(R.drawable.mc_img_list_view_item_red_divider);

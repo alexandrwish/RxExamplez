@@ -7,10 +7,12 @@ import com.magenta.mc.client.android.mc.storage.StorableField;
 public class Parcel extends StorableField {
 
     private static final long serialVersionUID = 3;
+
     private static final String FIELD_DESCRIPTION = "description";
     private static final String FIELD_QUANTITY = "quantity";
     private static final String FIELD_PICKUP = "pickup";
     private static final String FIELD_DROP = "drop";
+
     private String description;
     private Integer quantity;
     private Integer pickup;

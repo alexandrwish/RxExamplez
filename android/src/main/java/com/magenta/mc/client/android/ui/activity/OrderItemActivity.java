@@ -77,7 +77,7 @@ public class OrderItemActivity extends DistributionActivity implements WorkflowA
     public void initActivity(Bundle savedInstanceState) {
         super.initActivity(savedInstanceState);
         setContentView(R.layout.activity_order_items);
-        dao = DistributionDAO.getInstance(OrderItemActivity.this);
+        dao = DistributionDAO.getInstance();
         try {
             orderItems.addAll(dao.getOrderItems(currentJobId, currentStopId));
         } catch (SQLException e) {

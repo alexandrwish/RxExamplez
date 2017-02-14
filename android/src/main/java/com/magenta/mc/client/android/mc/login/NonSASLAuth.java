@@ -34,9 +34,9 @@ import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.mc.util.Strconv;
 import com.magenta.mc.client.android.mc.xml.XMLBlockListener;
 import com.magenta.mc.client.android.mc.xml.XMLDataBlock;
-import com.magenta.mc.client.android.mc.xmpp.XMPPStream;
-import com.magenta.mc.client.android.mc.xmpp.XmppError;
-import com.magenta.mc.client.android.mc.xmpp.datablocks.Iq;
+import com.magenta.mc.client.android.rpc.xmpp.XMPPStream;
+import com.magenta.mc.client.android.rpc.xmpp.XmppError;
+import com.magenta.mc.client.android.rpc.xmpp.datablocks.Iq;
 
 /**
  * @author evgs

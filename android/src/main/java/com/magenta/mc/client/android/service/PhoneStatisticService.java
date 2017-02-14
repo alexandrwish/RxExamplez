@@ -34,7 +34,7 @@ public class PhoneStatisticService extends Service {
 
     public void onCreate() {
         super.onCreate();
-        dao = DistributionDAO.getInstance(getApplicationContext());
+        dao = DistributionDAO.getInstance();
         cdt = new CountDownTimer(FIFTEEN_MINUTES, MINUTE) {
             public void onTick(long millisUntilFinished) {
                 try {

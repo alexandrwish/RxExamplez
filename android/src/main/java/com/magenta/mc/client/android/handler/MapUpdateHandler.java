@@ -26,11 +26,6 @@ public abstract class MapUpdateHandler extends Handler {
         removeCallbacks(runnable);
     }
 
-    @Deprecated
-    public void setKillMePlease(boolean killMePlease) {
-        this.killMePlease = killMePlease;
-    }
-
     protected abstract void updateMap(boolean firstRun);
 
     private class MapletUpdateRunnable implements Runnable {

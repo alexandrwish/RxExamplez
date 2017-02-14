@@ -23,8 +23,8 @@ public class CommonsDAO extends AbstractDAO {
     public void updateJobReferens(final String oldReference, final String newReference) {
         final ContentValues values = new ContentValues();
         values.put(StopsDAO.COLUMN_JOB_ID, newReference);
-        execute(new SandboxNoResult<Object>() {
-            public void runNoResult(Object o, SQLiteDatabase db) {
+        execute(new SandboxNoResult<CommonsDAO>() {
+            public void runNoResult(CommonsDAO dao, SQLiteDatabase db) {
                 db.update(StopsDAO.TABLE, values, where(StopsDAO.COLUMN_JOB_ID), new String[]{oldReference});
                 db.update(SignatureDAO.TABLE, values, where(SignatureDAO.COLUMN_JOB_ID), new String[]{oldReference});
                 db.update(BarcodesDAO.TABLE, values, where(BarcodesDAO.COLUMN_JOB_ID), new String[]{oldReference});

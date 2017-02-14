@@ -5,7 +5,7 @@ import com.magenta.mc.client.android.mc.client.resend.ResendableMetadata;
 import com.magenta.mc.client.android.mc.storage.FieldGetter;
 import com.magenta.mc.client.android.mc.storage.FieldSetter;
 import com.magenta.mc.client.android.mc.storage.StorableMetadata;
-import com.magenta.mc.client.android.mc.xmpp.extensions.rpc.DefaultRpcResponseHandler;
+import com.magenta.mc.client.android.rpc.xmpp.extensions.rpc.DefaultRpcResponseHandler;
 
 import java.util.ArrayList;
 import java.util.List;

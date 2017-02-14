@@ -11,11 +11,11 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.magenta.mc.client.android.entity.TaskState;
-import com.magenta.mc.client.android.DistributionApplication;
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.db.dao.DistributionDAO;
+import com.magenta.mc.client.android.entity.AbstractStop;
 import com.magenta.mc.client.android.entity.DynamicAttributeEntity;
+import com.magenta.mc.client.android.entity.TaskState;
 import com.magenta.mc.client.android.mc.MxSettings;
 import com.magenta.mc.client.android.record.DynamicAttributeRecord;
 import com.magenta.mc.client.android.service.ServicesRegistry;
@@ -53,7 +53,7 @@ public class AbortActivity extends DistributionActivity implements WorkflowActiv
             mReasons.addAll(MxSettings.getInstance().getOrderCancelReasons());
         }
         if (mReasons.isEmpty()) {
-            mReasons.addAll(Arrays.asList(DistributionApplication.getContext().getResources().getStringArray(R.array.pickup_abort_code_array)));
+            mReasons.addAll(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pickup_abort_code_array)));
         }
         mReasonsAdapter.notifyDataSetChanged();
     }
@@ -90,14 +90,14 @@ public class AbortActivity extends DistributionActivity implements WorkflowActiv
                                         parameters.put("abort-stop-code", spinner.getSelectedItem().toString());
                                         parameters.put("comment", comment.getText().toString());
                                         Map<String, String> attrMap = new HashMap<>();
-                                        for (Stop stop : (List<Stop>) job.getStops()) {
+                                        for (AbstractStop stop : job.getStops()) {
                                             try {
                                                 List<DynamicAttributeRecord> records = new LinkedList<>();
-                                                for (DynamicAttributeEntity entity : DistributionDAO.getInstance(AbortActivity.this).getDynamicAttributes(currentJobId, currentStopId)) {
+                                                for (DynamicAttributeEntity entity : DistributionDAO.getInstance().getDynamicAttributes(currentJobId, currentStopId)) {
                                                     records.add(entity.toRecord());
                                                 }
                                                 String stopAttr = new Gson().toJson(records.toArray(new DynamicAttributeRecord[records.size()]));
-                                                DistributionDAO.getInstance(AbortActivity.this).clearDynamicAttribute(stop.getReferenceId());
+                                                DistributionDAO.getInstance().clearDynamicAttribute(stop.getReferenceId());
                                                 attrMap.put(stop.getReferenceId(), stopAttr);
                                             } catch (SQLException ignore) {
                                             }
@@ -109,11 +109,11 @@ public class AbortActivity extends DistributionActivity implements WorkflowActiv
                                         if (stop != null) {
                                             try {
                                                 List<DynamicAttributeRecord> records = new LinkedList<>();
-                                                for (DynamicAttributeEntity entity : DistributionDAO.getInstance(AbortActivity.this).getDynamicAttributes(currentJobId, currentStopId)) {
+                                                for (DynamicAttributeEntity entity : DistributionDAO.getInstance().getDynamicAttributes(currentJobId, currentStopId)) {
                                                     records.add(entity.toRecord());
                                                 }
                                                 stop.setDynamicAttributes(new Gson().toJson(records.toArray(new DynamicAttributeRecord[records.size()])));
-                                                DistributionDAO.getInstance(AbortActivity.this).clearDynamicAttribute(stop.getReferenceId());
+                                                DistributionDAO.getInstance().clearDynamicAttribute(stop.getReferenceId());
                                             } catch (SQLException ignore) {
                                             }
                                             stop.setValue("abort-stop-code", StringUtils.encodeURI(spinner.getSelectedItem().toString()));

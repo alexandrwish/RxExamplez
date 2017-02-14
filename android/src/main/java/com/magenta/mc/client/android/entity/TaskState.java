@@ -26,24 +26,6 @@ public class TaskState {
     public static final int RUN_LATE30 = 113;
     public static final int RUN_LATE60 = 114;
     public static final int RUN_LOCATION_REACHED = 115;
-
-    public static final String STR_RUN_UNASSIGNED = "RUN_UNASSIGNED";
-    public static final String STR_RUN_ASSIGNED = "RUN_ASSIGNED";
-    public static final String STR_RUN_SENT = "RUN_SENT";
-    public static final String STR_RUN_RECEIVED = "RUN_RECEIVED";
-    public static final String STR_RUN_ACCEPTED = "RUN_ACCEPTED";
-    public static final String STR_RUN_REJECTED = "RUN_REJECTED";
-    public static final String STR_RUN_STARTED = "RUN_STARTED";
-    public static final String STR_RUN_IN_PROGRESS = "RUN_IN_PROGRESS";
-    public static final String STR_RUN_FINISHED = "RUN_FINISHED";
-    public static final String STR_RUN_COMPLETED = "RUN_COMPLETED";
-    public static final String STR_RUN_CANCELLED = "RUN_CANCELLED";
-    public static final String STR_RUN_ABORTED = "RUN_ABORTED";
-    public static final String STR_RUN_LATE15 = "RUN_LATE15";
-    public static final String STR_RUN_LATE30 = "RUN_LATE30";
-    public static final String STR_RUN_LATE60 = "RUN_LATE60";
-    public static final String STR_RUN_LOCATION_REACHED = "RUN_LOCATION_REACHED";
-
     // stop states
     public static final int STOP_IDLE = 200;
     public static final int STOP_RUN_ACCEPTED = 201;
@@ -63,7 +45,6 @@ public class TaskState {
     public static final int STOP_FAIL = 215;
     public static final int STOP_ABORTED = 216;
     public static final int STOP_SUSPENDED = 217;
-
     public static final String STR_STOP_IDLE = "STOP_IDLE";
     public static final String STR_STOP_RUN_ACCEPTED = "STOP_RUN_ACCEPTED";
     public static final String STR_STOP_RUN_STARTED = "STOP_RUN_STARTED";
@@ -82,6 +63,23 @@ public class TaskState {
     public static final String STR_STOP_FAIL = "STOP_FAIL";
     public static final String STR_STOP_ABORTED = "STOP_ABORTED";
     public static final String STR_STOP_SUSPENDED = "STOP_SUSPENDED";
+
+    private static final String STR_RUN_UNASSIGNED = "RUN_UNASSIGNED";
+    private static final String STR_RUN_ASSIGNED = "RUN_ASSIGNED";
+    private static final String STR_RUN_SENT = "RUN_SENT";
+    private static final String STR_RUN_RECEIVED = "RUN_RECEIVED";
+    private static final String STR_RUN_ACCEPTED = "RUN_ACCEPTED";
+    private static final String STR_RUN_REJECTED = "RUN_REJECTED";
+    private static final String STR_RUN_STARTED = "RUN_STARTED";
+    private static final String STR_RUN_IN_PROGRESS = "RUN_IN_PROGRESS";
+    private static final String STR_RUN_FINISHED = "RUN_FINISHED";
+    private static final String STR_RUN_COMPLETED = "RUN_COMPLETED";
+    private static final String STR_RUN_CANCELLED = "RUN_CANCELLED";
+    private static final String STR_RUN_ABORTED = "RUN_ABORTED";
+    private static final String STR_RUN_LATE15 = "RUN_LATE15";
+    private static final String STR_RUN_LATE30 = "RUN_LATE30";
+    private static final String STR_RUN_LATE60 = "RUN_LATE60";
+    private static final String STR_RUN_LOCATION_REACHED = "RUN_LOCATION_REACHED";
 
     TaskState() {
     }

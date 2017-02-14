@@ -7,11 +7,13 @@ import com.magenta.mc.client.android.mc.storage.StorableField;
 public class Passenger extends StorableField {
 
     private static final long serialVersionUID = 4;
+
     private static final String FIELD_PICKUP = "pickup";
     private static final String FIELD_DROP = "drop";
     private static final String FIELD_NAME = "name";
     private static final String FIELD_PHONE_1 = "phone1";
     private static final String FIELD_PHONE_2 = "phone2";
+
     private String name;
     private String phone1;
     private String phone2;

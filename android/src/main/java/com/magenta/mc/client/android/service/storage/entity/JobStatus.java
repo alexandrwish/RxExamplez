@@ -31,7 +31,7 @@ public class JobStatus extends AbstractJobStatus implements JobStatusEntity {
 
     public boolean canSent() {
         try {
-            return DistributionDAO.getInstance(DistributionApplication.getContext()).hasLock(this);
+            return DistributionDAO.getInstance().hasLock(this);
         } catch (SQLException e) {
             return true;
         }

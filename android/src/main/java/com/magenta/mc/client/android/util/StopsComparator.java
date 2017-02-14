@@ -1,10 +1,10 @@
 package com.magenta.mc.client.android.util;
 
-import com.magenta.mc.client.android.service.storage.entity.Stop;
+import com.magenta.mc.client.android.entity.AbstractStop;
 
 import java.util.Comparator;
 
-public class StopsComparator implements Comparator<Stop> {
+public class StopsComparator implements Comparator<AbstractStop> {
 
     private static final StopsComparator INSTANCE = new StopsComparator();
 
@@ -12,7 +12,7 @@ public class StopsComparator implements Comparator<Stop> {
         return INSTANCE;
     }
 
-    public int compare(Stop stop, Stop stop2) {
-        return stop.getDate() != null ? stop.getDate().compareTo(stop2.getDate()) : (stop2.getDate() == null ? 0 : -1);
+    public int compare(AbstractStop stop1, AbstractStop stop2) {
+        return stop1.getDate() != null ? stop1.getDate().compareTo(stop2.getDate()) : (stop2.getDate() == null ? 0 : -1);
     }
 }

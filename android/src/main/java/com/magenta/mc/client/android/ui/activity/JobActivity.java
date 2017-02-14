@@ -18,13 +18,14 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.magenta.mc.client.android.R;
+import com.magenta.mc.client.android.entity.AbstractStop;
 import com.magenta.mc.client.android.entity.TaskState;
+import com.magenta.mc.client.android.events.EventType;
+import com.magenta.mc.client.android.events.JobEvent;
 import com.magenta.mc.client.android.mc.HDSettings;
 import com.magenta.mc.client.android.mc.MxSettings;
 import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.service.ServicesRegistry;
-import com.magenta.mc.client.android.service.events.EventType;
-import com.magenta.mc.client.android.service.events.JobEvent;
 import com.magenta.mc.client.android.service.listeners.BroadcastEvent;
 import com.magenta.mc.client.android.service.listeners.MxBroadcastEvents;
 import com.magenta.mc.client.android.service.storage.DataControllerImpl;
@@ -150,7 +151,7 @@ public class JobActivity extends DistributionActivity implements WorkflowActivit
         });
         allReadBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                for (Stop stop : (List<Stop>) job.getStops()) {
+                for (AbstractStop stop : job.getStops()) {
                     stop.setUpdateType(Stop.NOT_CHANGED_STOP);
                 }
                 mAdapter.notifyDataSetChanged();
@@ -176,7 +177,7 @@ public class JobActivity extends DistributionActivity implements WorkflowActivit
         int complete = 0;
         int total = 0;
         int suspend = 0;
-        for (Stop stop : (List<Stop>) job.getStops()) {
+        for (AbstractStop stop : job.getStops()) {
             total++;
             if (stop.isCancelled()) {
                 failed++;
@@ -197,9 +198,9 @@ public class JobActivity extends DistributionActivity implements WorkflowActivit
         mAdapter.update(getStops(showCompletedJob));
     }
 
-    private List<Stop> getStops(boolean showCompletedJob) {
-        List<Stop> stops = new ArrayList<>();
-        for (Stop stop : (List<Stop>) job.getStops()) {
+    private List<AbstractStop> getStops(boolean showCompletedJob) {
+        List<AbstractStop> stops = new ArrayList<>();
+        for (AbstractStop stop : job.getStops()) {
             if (showCompletedJob) {
                 stops.add(stop);
             } else if (!stop.isCompleted() && (!(job.isCompleted() || job.isCancelled()))) {

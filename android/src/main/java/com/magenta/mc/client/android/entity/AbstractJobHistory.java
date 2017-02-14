@@ -18,6 +18,7 @@ public abstract class AbstractJobHistory extends Storable {
     private static final String FIELD_SHORT_DESCRIPTION = "shortDescription";
     private static final String FIELD_WAIT_RETURN = "waitReturn";
     private static final String FIELD_STATUS = "status";
+
     private String referenceId;
     private Date startDate;
     private String service;
@@ -28,17 +29,18 @@ public abstract class AbstractJobHistory extends Storable {
     public AbstractJobHistory() {
     }
 
-    public AbstractJobHistory(String referenceId, Date startDate, String service, String shortDescription, String waitReturn, int state) {
+    public AbstractJobHistory(String referenceId,
+                              Date startDate,
+                              String service,
+                              String shortDescription,
+                              String waitReturn,
+                              int state) {
         this.referenceId = referenceId;
         this.startDate = startDate;
         this.service = service;
         this.shortDescription = shortDescription;
         this.waitReturn = waitReturn;
         this.status = AbstractJob.getStateString(state);
-    }
-
-    public AbstractJobHistory(AbstractJob job) {
-        this(job.getReferenceId(), job.getDate(), job.getParameter("service"), job.getNotes(), Boolean.valueOf(job.getParameter("waitReturn")).booleanValue() ? "YES" : "NO", job.getState());
     }
 
     public StorableMetadata getMetadata() {

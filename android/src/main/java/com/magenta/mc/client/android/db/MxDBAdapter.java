@@ -9,8 +9,8 @@ import java.util.Map;
 
 public class MxDBAdapter {
 
-    protected final Map<String, SQLiteOpenHelper> databaseManagers = new HashMap<String, SQLiteOpenHelper>();
-    protected final Map<String, SQLiteDatabase> databases = new HashMap<String, SQLiteDatabase>();
+    protected final Map<String, SQLiteOpenHelper> databaseManagers = new HashMap<>();
+    protected final Map<String, SQLiteDatabase> databases = new HashMap<>();
 
     public MxDBAdapter(final Context context) {
         initHelper(context);
@@ -21,7 +21,7 @@ public class MxDBAdapter {
         databaseManagers.put(MxDBOpenHelper.DATABASE_NAME, new MxDBOpenHelper(context));
     }
 
-    protected void initDB() {
+    private void initDB() {
         for (Map.Entry<String, SQLiteOpenHelper> entry : databaseManagers.entrySet()) {
             databases.put(entry.getKey(), entry.getValue().getWritableDatabase());
         }

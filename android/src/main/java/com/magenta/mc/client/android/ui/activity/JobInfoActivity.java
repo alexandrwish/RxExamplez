@@ -8,17 +8,17 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.magenta.mc.client.android.R;
+import com.magenta.mc.client.android.entity.AbstractStop;
 import com.magenta.mc.client.android.entity.TaskState;
+import com.magenta.mc.client.android.events.EventType;
+import com.magenta.mc.client.android.events.JobEvent;
 import com.magenta.mc.client.android.mc.HDSettings;
 import com.magenta.mc.client.android.mc.MxSettings;
 import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.service.ServicesRegistry;
-import com.magenta.mc.client.android.service.events.EventType;
-import com.magenta.mc.client.android.service.events.JobEvent;
 import com.magenta.mc.client.android.service.listeners.BroadcastEvent;
 import com.magenta.mc.client.android.service.listeners.MxBroadcastEvents;
 import com.magenta.mc.client.android.service.storage.entity.Job;
-import com.magenta.mc.client.android.service.storage.entity.Stop;
 import com.magenta.mc.client.android.ui.AndroidUI;
 import com.magenta.mc.client.android.ui.adapter.JobDetailStopsAdapter;
 import com.magenta.mc.client.android.util.DateUtils;
@@ -70,7 +70,7 @@ public class JobInfoActivity extends DistributionActivity implements WorkflowAct
             finish();
             return;
         }
-        stopsAdapter = new JobDetailStopsAdapter(this, new ArrayList<Stop>());
+        stopsAdapter = new JobDetailStopsAdapter(this, new ArrayList<AbstractStop>());
         ((ListView) findViewById(R.id.stop_list)).setAdapter(stopsAdapter);
         refreshInfo(true);
         findViewById(R.id.accept_button).setOnClickListener(new View.OnClickListener() {

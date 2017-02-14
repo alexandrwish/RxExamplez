@@ -21,6 +21,7 @@ public class DistributionDBHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "distribution_db";
 
     private static final int DATABASE_VERSION = 3;
+
     private static final Class[] TABLES = new Class[]{
             StatusSenderLock.class,
             MapSettingsEntity.class,

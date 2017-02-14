@@ -6,7 +6,6 @@ import com.magenta.mc.client.android.mc.storage.FieldGetter;
 import com.magenta.mc.client.android.mc.storage.FieldSetter;
 import com.magenta.mc.client.android.mc.storage.StorableMetadata;
 
-import java.util.Iterator;
 import java.util.Map;
 
 public abstract class AbstractJobStatus extends Resendable {
@@ -14,10 +13,12 @@ public abstract class AbstractJobStatus extends Resendable {
     public static final ResendableMetadata RESENDABLE_METADATA = new ResendableMetadata("status");
 
     private static final long serialVersionUID = 8;
+
     private final String FIELD_ID = "id";
     private final String FIELD_JOB_REF = "jobReferenceId";
     private final String FIELD_JOB_STATUS = "jobStatus";
     private final String FIELD_VALUES = "values";
+
     private String id;
     private String jobReferenceId;
     private String jobStatus;
@@ -62,14 +63,10 @@ public abstract class AbstractJobStatus extends Resendable {
     public abstract boolean send();
 
     protected String valuesToString() {
-        StringBuffer result = new StringBuffer();
+        StringBuilder result = new StringBuilder();
         if (values != null) {
-            for (Iterator iterator = values.keySet().iterator(); iterator.hasNext(); ) {
-                final Object o = iterator.next();
-                result.append((String) o)
-                        .append("=")
-                        .append(values.get(o))
-                        .append(";");
+            for (final Object o : values.keySet()) {
+                result.append((String) o).append("=").append(values.get(o)).append(";");
             }
         }
         return result.toString();

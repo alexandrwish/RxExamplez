@@ -95,8 +95,7 @@ public abstract class AbstractDAO {
         dbOpenHelper.close();
     }
 
-    @SuppressWarnings("unchecked")
-    public <DAO, R> R execute(final Sandbox<DAO, R> sandbox, final boolean writable) {
+    public <DAO extends AbstractDAO, R> R execute(final Sandbox<DAO, R> sandbox, final boolean writable) {
         open(writable);
         final boolean isInTransaction = sandbox.isInTransaction();
         try {
@@ -116,12 +115,11 @@ public abstract class AbstractDAO {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    public <DAO, R> R execute(final Sandbox<DAO, R> sandbox) {
+    public <DAO extends AbstractDAO, R> R execute(final Sandbox<DAO, R> sandbox) {
         return execute(sandbox, false);
     }
 
-    public static abstract class Sandbox<DAO, R> {
+    public static abstract class Sandbox<DAO extends AbstractDAO, R> {
 
         protected boolean inTransaction;
 
@@ -137,7 +135,7 @@ public abstract class AbstractDAO {
         }
     }
 
-    public static abstract class SandboxNoResult<DAO> extends Sandbox<DAO, Void> {
+    public static abstract class SandboxNoResult<DAO extends AbstractDAO> extends Sandbox<DAO, Void> {
 
         public Void run(final DAO dao, final SQLiteDatabase db) {
             runNoResult(dao, db);

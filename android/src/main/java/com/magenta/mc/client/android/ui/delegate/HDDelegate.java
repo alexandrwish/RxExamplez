@@ -8,7 +8,7 @@ import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.common.Constants;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 import com.magenta.mc.client.android.receiver.HDReceiver;
-import com.magenta.mc.client.android.receiver.HttpResponseListener;
+import com.magenta.mc.client.android.listener.HttpResponseListener;
 import com.magenta.mc.client.android.ui.dialog.DialogFactory;
 import com.magenta.mc.client.android.ui.dialog.DistributionDialogFragment;
 

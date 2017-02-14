@@ -19,6 +19,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.magenta.mc.client.android.entity.AbstractStop;
 import com.magenta.mc.client.android.entity.Address;
 import com.magenta.mc.client.android.entity.TaskState;
 import com.magenta.mc.client.android.R;
@@ -48,7 +49,7 @@ public abstract class MapController implements View.OnClickListener {
     protected Activity mActivity;
     protected LinearLayout mHolder;
     protected MapUpdateHandler mHandler;
-    protected List<Stop> mStops;
+    protected List<AbstractStop> mStops;
     protected boolean routeWithDriver;
     protected RouteUpdateReceiver routeUpdateReceiver;
     protected Long synchronizeTimestamp;
@@ -58,7 +59,7 @@ public abstract class MapController implements View.OnClickListener {
     protected View mBaseMapView;
     protected ImageButton mBtnZoomIn, mBtnZoomOut, mBtnMyLocation;
 
-    public MapController(Activity activity, List<Stop> stops, boolean routeWithDriver) {
+    public MapController(Activity activity, List<AbstractStop> stops, boolean routeWithDriver) {
         mActivity = activity;
         mBaseMapView = activity.getLayoutInflater().inflate(R.layout.view_map, null);
         LinearLayout parentHolder = (LinearLayout) activity.findViewById(R.id.map_controller);
@@ -80,7 +81,7 @@ public abstract class MapController implements View.OnClickListener {
 
     public void onMapReady() {
         List<Address> addresses = new ArrayList<>();
-        for (Stop stop : mStops) {
+        for (AbstractStop stop : mStops) {
             addresses.add(stop.getAddress());
         }
         fitBounds(addresses);
@@ -134,7 +135,7 @@ public abstract class MapController implements View.OnClickListener {
     public void updateRoute(String route) {
     }
 
-    private void showDialog(final Job job, boolean canBeStarted, boolean canBeCancelled, final Stop stop) {
+    private void showDialog(final Job job, boolean canBeStarted, boolean canBeCancelled, final AbstractStop stop) {
         String typeName = stop.isPickup() ? mActivity.getString(R.string.collection) : mActivity.getString(R.string.delivery);
         LayoutInflater inflater = mActivity.getLayoutInflater();
         View view = inflater.inflate(R.layout.view_map_marker, null);
@@ -251,15 +252,14 @@ public abstract class MapController implements View.OnClickListener {
         }
     }
 
-    public void onJobTap(final Stop stop) {
+    public void onJobTap(final AbstractStop stop) {
         final Stop startedStop = getStartedStop(stop);
         if (startedStop == null) {
             showArriveDialog(stop);
             return;
         }
-        for (Object o : startedStop.getParentJob().getStops()) {
-            Stop stp = (Stop) o;
-            if (stp.equalsStops(stop) &&
+        for (AbstractStop o : startedStop.getParentJob().getStops()) {
+            if (o.equals(stop) &&
                     stop.isProcessing() &&
                     !stop.isCompleted()) {
                 showArriveDialog(stop);
@@ -373,7 +373,7 @@ public abstract class MapController implements View.OnClickListener {
         Log.d("----", "mTrackCurrentPosition = true");
     }
 
-    private Stop getStartedStop(Stop stop) {
+    private Stop getStartedStop(AbstractStop stop) {
         for (Object o : stop.getParentJob().getStops()) {
             Stop s = (Stop) o;
             if (s.isProcessing() && !s.isCompleted()) {
@@ -383,7 +383,7 @@ public abstract class MapController implements View.OnClickListener {
         return null;
     }
 
-    private void processStop(final Stop stop) {
+    private void processStop(final AbstractStop stop) {
         stop.processSetState(TaskState.STOP_ON_ROUTE);
         new AlertDialog.Builder(mActivity)
                 .setMessage(R.string.launch_navi_app)
@@ -402,7 +402,7 @@ public abstract class MapController implements View.OnClickListener {
                 }).show();
     }
 
-    private void showArriveDialog(final Stop stop) {
+    private void showArriveDialog(final AbstractStop stop) {
         int state = stop.getState();
         showDialog((Job) stop.getParentJob(),
                 !(TaskState.STOP_IDLE != state && TaskState.STOP_RUN_ACCEPTED != state && TaskState.STOP_RUN_STARTED != state),

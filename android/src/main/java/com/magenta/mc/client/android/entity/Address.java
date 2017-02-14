@@ -7,10 +7,12 @@ import com.magenta.mc.client.android.mc.storage.StorableField;
 public class Address extends StorableField {
 
     private static final long serialVersionUID = 3;
+
     private static final String FIELD_FULLADDRESS = "fulladdress";
     private static final String FIELD_POSTAL = "postal";
     private static final String FIELD_LATITUDE = "latitude";
     private static final String FIELD_LONGITUDE = "longitude";
+
     private String fullAddress;
     private String postal;
     private Double latitude;

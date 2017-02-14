@@ -11,7 +11,7 @@ import com.magenta.mc.client.android.db.dao.DistributionDAO;
 import com.magenta.mc.client.android.db.dao.TileCacheDAO;
 import com.magenta.mc.client.android.mc.DistributionApp;
 import com.magenta.mc.client.android.mc.MxSettings;
-import com.magenta.mc.client.android.receiver.LoginCheckReceiver;
+import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 import com.magenta.mc.client.android.renderer.Renderer;
 import com.magenta.mc.client.android.rpc.xmpp.XMPPStream2;
 import com.magenta.mc.client.android.service.CoreServiceImpl;
@@ -19,14 +19,13 @@ import com.magenta.mc.client.android.service.LocationService;
 import com.magenta.mc.client.android.service.McService;
 import com.magenta.mc.client.android.service.PhoneStatisticService;
 import com.magenta.mc.client.android.service.ServicesRegistry;
-import com.magenta.mc.client.android.service.renderer.JobHistoryRenderer;
 import com.magenta.mc.client.android.service.renderer.SingleJobRenderer;
 import com.magenta.mc.client.android.service.storage.DataControllerImpl;
+import com.magenta.mc.client.android.task.LoginCheckTask;
 import com.magenta.mc.client.android.util.DSoundPool;
 import com.magenta.mc.client.android.util.LocaleUtils;
 import com.magenta.mc.client.android.util.StringUtils;
 import com.magenta.mc.client.android.util.WorkflowServiceImpl;
-import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 
 import org.acra.annotation.ReportsCrashes;
 
@@ -46,7 +45,7 @@ public abstract class DistributionApplication extends McAndroidApplication {
         MxDBOpenHelper.setDatabase("maxunits_distribution");
         super.onCreate();
         initAcra();
-        Renderer.registerRenderers(SingleJobRenderer.class, JobHistoryRenderer.class);
+        Renderer.registerRenderers(SingleJobRenderer.class);
         ServicesRegistry.registerDataController(new DataControllerImpl());
         ServicesRegistry.registerWorkflowService(WorkflowServiceImpl.class);
         ServicesRegistry.startCoreService(this, CoreServiceImpl.class);
@@ -106,7 +105,7 @@ public abstract class DistributionApplication extends McAndroidApplication {
 
     public void completeStatisticSending(Date date) {
         try {
-            DistributionDAO.getInstance(getContext()).clearStatistics(date);
+            DistributionDAO.getInstance().clearStatistics(date);
         } catch (SQLException e) {
             MCLoggerFactory.getLogger(getClass()).error(e.getMessage(), e);
         }
@@ -116,8 +115,8 @@ public abstract class DistributionApplication extends McAndroidApplication {
         DistributionApp.runConsecutiveTask(new Runnable() {
             public void run() {
                 OkHttpClient client = XMPPStream2.getThreadSafeClient();
-                List<String> drivers = DistributionDAO.getInstance(DistributionApplication.getContext()).getDrivers();
-                final LoginCheckReceiver receiver = new LoginCheckReceiver();
+                List<String> drivers = DistributionDAO.getInstance().getDrivers();
+                final LoginCheckTask receiver = new LoginCheckTask();
                 for (String driver : drivers) {
                     receiver.checkDriverAndSentLocations(client, driver, false);
                 }

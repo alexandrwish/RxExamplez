@@ -150,7 +150,7 @@ public class DynamicAttributeView {
 
     private void updateDynamicAttribute(Attribute attribute) {
         try {
-            DistributionDAO.getInstance(activity.getApplicationContext()).updateDynamicAttribute(attribute.getId(), attribute.getValue());
+            DistributionDAO.getInstance().updateDynamicAttribute(attribute.getId(), attribute.getValue());
         } catch (SQLException ignore) {
         }
     }

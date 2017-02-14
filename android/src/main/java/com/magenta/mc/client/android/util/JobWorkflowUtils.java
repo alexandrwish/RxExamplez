@@ -3,6 +3,7 @@ package com.magenta.mc.client.android.util;
 import android.content.Context;
 import android.content.Intent;
 
+import com.magenta.mc.client.android.entity.AbstractStop;
 import com.magenta.mc.client.android.entity.TaskState;
 import com.magenta.mc.client.android.mc.MxSettings;
 import com.magenta.mc.client.android.mc.setup.Setup;
@@ -86,7 +87,7 @@ public class JobWorkflowUtils {
         return true;
     }
 
-    public static void openNextActivity(Stop currentStop, Job currentJob, Context context) {
+    public static void openNextActivity(AbstractStop currentStop, Job currentJob, Context context) {
         if (currentStop.isCompleted()) return;
         String state = currentStop.getStateString();
         Intent intent = (TaskState.STR_STOP_IDLE.equalsIgnoreCase(state)
@@ -98,8 +99,8 @@ public class JobWorkflowUtils {
         intent.putExtra(IntentAttributes.JOB_ID, currentJob.getId()).putExtra(IntentAttributes.STOP_ID, currentStop.getReferenceId());
         if (!((MxSettings) Setup.get().getSettings()).isAllowToPassStopsInArbitraryOrder()) {
             boolean allPreviousStopsCompleted = true;
-            List<Stop> stops = currentJob.getStops();
-            for (Stop stop : stops) {
+            List<AbstractStop> stops = currentJob.getStops();
+            for (AbstractStop stop : stops) {
                 if (stop.getStopName().equals(currentStop.getStopName())) {
                     break;
                 }

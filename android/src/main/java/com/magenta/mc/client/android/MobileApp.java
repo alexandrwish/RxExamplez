@@ -21,10 +21,10 @@ import com.magenta.mc.client.android.mc.tracking.GeoLocationBatch;
 import com.magenta.mc.client.android.mc.tracking.GeoLocationService;
 import com.magenta.mc.client.android.mc.tracking.GeoLocationServiceConfig;
 import com.magenta.mc.client.android.mc.util.ResourceManager;
-import com.magenta.mc.client.android.mc.xmpp.XMPPStream;
-import com.magenta.mc.client.android.mc.xmpp.extensions.rpc.DefaultRPCQueryListener;
-import com.magenta.mc.client.android.mc.xmpp.extensions.rpc.DefaultRpcResponseHandler;
-import com.magenta.mc.client.android.mc.xmpp.extensions.rpc.JabberRPC;
+import com.magenta.mc.client.android.rpc.xmpp.XMPPStream;
+import com.magenta.mc.client.android.rpc.xmpp.extensions.rpc.DefaultRPCQueryListener;
+import com.magenta.mc.client.android.rpc.xmpp.extensions.rpc.DefaultRpcResponseHandler;
+import com.magenta.mc.client.android.rpc.xmpp.extensions.rpc.JabberRPC;
 
 import java.io.IOException;
 import java.io.InputStream;

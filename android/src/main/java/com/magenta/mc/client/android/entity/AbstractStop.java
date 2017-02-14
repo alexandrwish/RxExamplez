@@ -1,5 +1,8 @@
 package com.magenta.mc.client.android.entity;
 
+import android.app.Activity;
+import android.content.Context;
+
 import com.magenta.mc.client.android.mc.storage.FieldGetter;
 import com.magenta.mc.client.android.mc.storage.FieldSetter;
 import com.magenta.mc.client.android.mc.storage.StorableField;
@@ -13,6 +16,7 @@ import java.util.Set;
 public abstract class AbstractStop extends StorableField {
 
     protected static final long serialVersionUID = 6;
+
     protected static final String FIELD_REFERENCEID = "referenceId";
     protected static final String FIELD_GROUPID = "groupId";
     protected static final String FIELD_TYPE = "type";
@@ -30,6 +34,7 @@ public abstract class AbstractStop extends StorableField {
     protected static final String FIELD_PARAMETERS = "parameters";
     protected static final String FIELD_ATTRIBUTES = "attributes";
     protected static final String FIELD_ARRIVE_RADIUS = "arriveRadius";
+
     protected String referenceId;
     protected String groupId;
     protected String type;
@@ -40,7 +45,7 @@ public abstract class AbstractStop extends StorableField {
     protected AbstractJob parentJob;
     protected boolean completed;
     protected Date arriveDate;
-    protected Map stopValues;
+    protected Map<String, String> stopValues;
     protected Date date;
     protected Map parameters;
     protected Set attributes;
@@ -51,14 +56,19 @@ public abstract class AbstractStop extends StorableField {
     public AbstractStop() {
     }
 
-    public AbstractStop(String referenceId, String type, Address address, String notes, int index, String state) {
+    public AbstractStop(String referenceId,
+                        String type,
+                        Address address,
+                        String notes,
+                        int index,
+                        String state) {
         this.referenceId = referenceId;
         this.type = format(type);
         this.address = address;
         this.notes = notes;
         this.index = index;
         this.state = TaskState.intValue(state);
-        stopValues = new HashMap();
+        stopValues = new HashMap<>();
         stopValues.put("stop-ref", referenceId);
         stopValues.put("stop-order", "" + index);
     }
@@ -71,7 +81,7 @@ public abstract class AbstractStop extends StorableField {
         this.arriveDate = arriveDate;
     }
 
-    public Map getStopValues() {
+    public Map<String, String> getStopValues() {
         return stopValues;
     }
 
@@ -190,16 +200,27 @@ public abstract class AbstractStop extends StorableField {
     public abstract AbstractJobStatus processSetState(int state, boolean send);
 
     public boolean isProcessing() {
-        return state == TaskState.STOP_ON_ROUTE || state == TaskState.STOP_DROP10 || state == TaskState.STOP_DROP5 ||
-                state == TaskState.STOP_ARRIVE10 || state == TaskState.STOP_ARRIVE5 || state == TaskState.STOP_ARRIVED ||
-                state == TaskState.STOP_LATE15 || state == TaskState.STOP_LATE30 || state == TaskState.STOP_LATE60 ||
-                state == TaskState.STOP_LATE_A_LOT || state == TaskState.STOP_RUN_STARTED || state == TaskState.STOP_COMPLETED ||
-                (state == TaskState.UNKNOWN && parentJob.isProcessing());
+        return state == TaskState.STOP_ON_ROUTE
+                || state == TaskState.STOP_DROP10
+                || state == TaskState.STOP_DROP5
+                || state == TaskState.STOP_ARRIVE10
+                || state == TaskState.STOP_ARRIVE5
+                || state == TaskState.STOP_ARRIVED
+                || state == TaskState.STOP_LATE15
+                || state == TaskState.STOP_LATE30
+                || state == TaskState.STOP_LATE60
+                || state == TaskState.STOP_LATE_A_LOT
+                || state == TaskState.STOP_RUN_STARTED
+                || state == TaskState.STOP_COMPLETED
+                || (state == TaskState.UNKNOWN && parentJob.isProcessing());
     }
 
     public boolean isCompleted() {
-        return completed || state == TaskState.STOP_COMPLETED || state == TaskState.STOP_ABORTED
-                || state == TaskState.STOP_FAIL || state == TaskState.STOP_RUN_FINISHED;
+        return completed
+                || state == TaskState.STOP_COMPLETED
+                || state == TaskState.STOP_ABORTED
+                || state == TaskState.STOP_FAIL
+                || state == TaskState.STOP_RUN_FINISHED;
     }
 
     public boolean complete(boolean send) {
@@ -221,11 +242,11 @@ public abstract class AbstractStop extends StorableField {
         }
     }
 
-    public void fillStatusMap(HashMap map) {
+    public void fillStatusMap(HashMap<String, String> map) {
         map.putAll(stopValues);
     }
 
-    public void setValue(String name, Object value) {
+    public void setValue(String name, String value) {
         stopValues.put(name, value);
     }
 
@@ -255,7 +276,7 @@ public abstract class AbstractStop extends StorableField {
 
     public boolean isFirst() {
         for (int i = 0; i < parentJob.getStops().size(); i++) {
-            AbstractStop _stop = (AbstractStop) parentJob.getStops().get(i);
+            AbstractStop _stop = parentJob.getStops().get(i);
             if (_stop == this) continue;
             if (_stop.isCompleted()) return false;
         }
@@ -264,7 +285,7 @@ public abstract class AbstractStop extends StorableField {
 
     public boolean isLast() {
         for (int i = 0; i < parentJob.getStops().size(); i++) {
-            AbstractStop _stop = (AbstractStop) parentJob.getStops().get(i);
+            AbstractStop _stop = parentJob.getStops().get(i);
             if (_stop == this) continue;
             if (!_stop.isCompleted()) return false;
         }
@@ -300,12 +321,12 @@ public abstract class AbstractStop extends StorableField {
                 },
                 new FieldSetter(FIELD_INDEX) {
                     public void setValue(Object value) {
-                        index = ((Integer) value).intValue();
+                        index = (Integer) value;
                     }
                 },
                 new FieldSetter(FIELD_STATE) {
                     public void setValue(Object value) {
-                        state = ((Integer) value).intValue();
+                        state = (Integer) value;
                     }
                 },
                 new FieldSetter(FIELD_PARENTJOB) {
@@ -315,7 +336,7 @@ public abstract class AbstractStop extends StorableField {
                 },
                 new FieldSetter(FIELD_COMPLETED) {
                     public void setValue(Object value) {
-                        completed = ((Boolean) value).booleanValue();
+                        completed = (Boolean) value;
                     }
                 },
                 new FieldSetter(FIELD_ARRIVEDATE) {
@@ -340,7 +361,7 @@ public abstract class AbstractStop extends StorableField {
                 },
                 new FieldSetter(FIELD_STOPVALUES) {
                     public void setValue(Object value) {
-                        stopValues = (Map) value;
+                        stopValues = (Map<String, String>) value;
                     }
                 },
                 new FieldSetter(FIELD_PARAMETERS) {
@@ -392,12 +413,12 @@ public abstract class AbstractStop extends StorableField {
                 },
                 new FieldGetter(FIELD_INDEX) {
                     public Object getValue() {
-                        return Integer.valueOf(index);
+                        return index;
                     }
                 },
                 new FieldGetter(FIELD_STATE) {
                     public Object getValue() {
-                        return Integer.valueOf(state);
+                        return state;
                     }
                 },
                 new FieldGetter(FIELD_PARENTJOB) {
@@ -407,7 +428,7 @@ public abstract class AbstractStop extends StorableField {
                 },
                 new FieldGetter(FIELD_COMPLETED) {
                     public Object getValue() {
-                        return Boolean.valueOf(completed);
+                        return completed;
                     }
                 },
                 new FieldGetter(FIELD_ARRIVEDATE) {
@@ -477,11 +498,6 @@ public abstract class AbstractStop extends StorableField {
         this.parameters = parameters;
     }
 
-    public String getParameterSafe(String name) {
-        final String value = parameters != null ? (String) parameters.get(name) : null;
-        return value == null ? "" : value;
-    }
-
     public String getParameter(String name) {
         return parameters != null ? (String) parameters.get(name) : null;
     }
@@ -505,4 +521,30 @@ public abstract class AbstractStop extends StorableField {
     public void setArriveRadius(Integer arriveRadius) {
         this.arriveRadius = arriveRadius;
     }
+
+    public abstract int getUpdateType();
+
+    public abstract void setUpdateType(int stop);
+
+    public abstract String getStopName();
+
+    public abstract String getTimeWindowAsString();
+
+    public abstract String getCustomerInfo();
+
+    public abstract String getContactPerson();
+
+    public abstract String getContactPhone();
+
+    public abstract int getPriority();
+
+    public abstract String getTimeAsString();
+
+    public abstract String getStatusString(Context context);
+
+    public abstract boolean isCancelled();
+
+    public abstract String getCustomer();
+
+    public abstract String getLocation();
 }

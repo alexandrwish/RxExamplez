@@ -10,7 +10,7 @@ import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.mc.tracking.GeoLocationService;
 import com.magenta.mc.client.android.mc.util.FutureRunnable;
 import com.magenta.mc.client.android.mc.util.McDiagnosticAgent;
-import com.magenta.mc.client.android.mc.xmpp.XmppError;
+import com.magenta.mc.client.android.rpc.xmpp.XmppError;
 
 public class Login implements LoginListener {
 

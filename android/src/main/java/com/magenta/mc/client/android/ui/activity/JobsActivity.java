@@ -19,14 +19,15 @@ import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.magenta.mc.client.android.R;
+import com.magenta.mc.client.android.entity.AbstractStop;
 import com.magenta.mc.client.android.entity.TaskState;
+import com.magenta.mc.client.android.events.EventType;
 import com.magenta.mc.client.android.mc.MxSettings;
 import com.magenta.mc.client.android.mc.client.DriverStatus;
 import com.magenta.mc.client.android.mc.client.Login;
 import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.rpc.operations.JobsRefreshing;
 import com.magenta.mc.client.android.service.ServicesRegistry;
-import com.magenta.mc.client.android.service.events.EventType;
 import com.magenta.mc.client.android.service.listeners.BroadcastEvent;
 import com.magenta.mc.client.android.service.listeners.MxBroadcastEvents;
 import com.magenta.mc.client.android.service.storage.DataControllerImpl;
@@ -130,7 +131,7 @@ public class JobsActivity extends DistributionActivity implements WorkflowActivi
         findViewById(R.id.run_allread_btn).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 for (Job job : getJobs(true)) {
-                    for (Stop stop : (List<Stop>) job.getStops()) {
+                    for (AbstractStop stop : job.getStops()) {
                         stop.setUpdateType(Stop.NOT_CHANGED_STOP);
                     }
                 }

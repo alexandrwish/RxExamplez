@@ -15,7 +15,7 @@ import com.magenta.mc.client.android.mc.MxSettings;
 import com.magenta.mc.client.android.mc.settings.Settings;
 import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.mc.xml.XMLDataBlock;
-import com.magenta.mc.client.android.mc.xmpp.extensions.rpc.JabberRPC;
+import com.magenta.mc.client.android.rpc.xmpp.extensions.rpc.JabberRPC;
 import com.magenta.mc.client.android.ui.AndroidUI;
 import com.magenta.mc.client.android.ui.activity.DistributionActivity;
 import com.magenta.mc.client.android.ui.dialog.DialogFactory;
@@ -32,8 +32,8 @@ import java.util.Vector;
 
 public class DistributionRPCOut extends RPCOut {
 
-    public static final String UPDATE_ROUTE = "updateRoute";
-    public static final String SAVE_STATE = "savePhoneState";
+    private static final String UPDATE_ROUTE = "updateRoute";
+    private static final String SAVE_STATE = "savePhoneState";
     public static final String UPDATE_ROUTE_ACTION = "update_route";
 
     private static DistributionRPCOut instance;
@@ -63,7 +63,7 @@ public class DistributionRPCOut extends RPCOut {
             } else if (child.getTagName().equalsIgnoreCase("orderCancelReasons")) {
                 Vector childBlocks = child.getChildBlocks();
                 if (childBlocks != null && childBlocks.size() > 0) {
-                    ArrayList<String> cancelReasons = new ArrayList<String>();
+                    ArrayList<String> cancelReasons = new ArrayList<>();
                     for (Object o : childBlocks) {
                         XMLDataBlock dataBlock = (XMLDataBlock) o;
                         if (dataBlock.getChildBlocks() != null) {
@@ -93,14 +93,14 @@ public class DistributionRPCOut extends RPCOut {
                 Activity activity = ((AndroidUI) Setup.get().getUI()).getCurrentActivity();
                 if (activity != null && activity instanceof DistributionActivity) {
                     try {
-                        List<MapSettingsEntity> mapSettingsEntities = DistributionDAO.getInstance(activity).getMapSettings(Setup.get().getSettings().getLogin());
+                        List<MapSettingsEntity> mapSettingsEntities = DistributionDAO.getInstance().getMapSettings(Setup.get().getSettings().getLogin());
                         if (!mapSettingsEntities.isEmpty()) {
                             if (mapSettings.containsKey(mapSettingsEntities.get(0).getProvider())) {
                                 if (mapSettingsEntities.get(0).isRemember()) {
                                     continue;
                                 }
                             } else {
-                                if (updateSettings(activity, mapSettingsEntities.get(0), mapSettings)) {
+                                if (updateSettings(mapSettingsEntities.get(0), mapSettings)) {
                                     Bundle bundle = new Bundle(3);
                                     bundle.putInt(DialogFactory.ICON, android.R.drawable.ic_dialog_info);
                                     bundle.putInt(DialogFactory.TITLE, R.string.alert_map_title);
@@ -113,7 +113,7 @@ public class DistributionRPCOut extends RPCOut {
                                 }
                             }
                         } else {
-                            updateSettings(activity, new MapSettingsEntity(), mapSettings);
+                            updateSettings(new MapSettingsEntity(), mapSettings);
                         }
                     } catch (SQLException exception) {
                         LOG.error(exception.getMessage(), exception);
@@ -143,7 +143,7 @@ public class DistributionRPCOut extends RPCOut {
         return mapSettings;
     }
 
-    private static boolean updateSettings(Activity activity, MapSettingsEntity entity, HashMap<String, HashMap<String, String>> mapSettings) throws SQLException {
+    private static boolean updateSettings(MapSettingsEntity entity, HashMap<String, HashMap<String, String>> mapSettings) throws SQLException {
         if (mapSettings.size() == 1) {
             entity.setDriver(Setup.get().getSettings().getLogin());
             for (Map.Entry<String, HashMap<String, String>> entry : mapSettings.entrySet()) {
@@ -155,7 +155,7 @@ public class DistributionRPCOut extends RPCOut {
                         : MapProviderType.LEAFLET));
             }
             entity.setSettings(new Gson().toJson(mapSettings));
-            DistributionDAO.getInstance(activity).saveMapSettings(entity);
+            DistributionDAO.getInstance().saveMapSettings(entity);
             return true;
         }
         return false;

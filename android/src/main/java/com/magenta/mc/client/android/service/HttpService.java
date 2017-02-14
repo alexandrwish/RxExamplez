@@ -1,7 +1,6 @@
 package com.magenta.mc.client.android.service;
 
 import android.app.IntentService;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -14,11 +13,11 @@ import com.magenta.mc.client.android.db.dao.DistributionDAO;
 import com.magenta.mc.client.android.entity.MapProviderType;
 import com.magenta.mc.client.android.entity.MapSettingsEntity;
 import com.magenta.mc.client.android.http.HttpClient;
-import com.magenta.mc.client.android.http.record.LoginResultRecord;
 import com.magenta.mc.client.android.mc.MxSettings;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 import com.magenta.mc.client.android.mc.settings.Settings;
 import com.magenta.mc.client.android.mc.setup.Setup;
+import com.magenta.mc.client.android.record.LoginResultRecord;
 import com.magenta.mc.client.android.ui.activity.common.LoginActivity;
 import com.magenta.mc.client.android.util.IntentAttributes;
 
@@ -39,7 +38,7 @@ public class HttpService extends IntentService {
         super(Constants.HTTP_SERVICE_NAME);
     }
 
-    private static boolean updateSettings(Context context, MapSettingsEntity entity, Map<String, Map<String, String>> mapSettings) throws SQLException {
+    private static boolean updateSettings(MapSettingsEntity entity, Map<String, Map<String, String>> mapSettings) throws SQLException {
         if (mapSettings.size() == 1) {
             entity.setDriver(Setup.get().getSettings().getLogin());
             for (Map.Entry<String, Map<String, String>> entry : mapSettings.entrySet()) {
@@ -51,7 +50,7 @@ public class HttpService extends IntentService {
                         : MapProviderType.LEAFLET));
             }
             entity.setSettings(new Gson().toJson(mapSettings));
-            DistributionDAO.getInstance(context).saveMapSettings(entity);
+            DistributionDAO.getInstance().saveMapSettings(entity);
             return true;
         }
         return false;
@@ -66,7 +65,7 @@ public class HttpService extends IntentService {
                     break;
                 }
                 case (Constants.SETTINGS_TYPE): {
-                    getSettings(this);
+                    getSettings();
                     break;
                 }
             }
@@ -95,7 +94,7 @@ public class HttpService extends IntentService {
                 });
     }
 
-    private void getSettings(final Context context) {
+    private void getSettings() {
         HttpClient.getInstance().getSettings()
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(new Subscriber<SettingsResultRecord>() {
@@ -139,19 +138,19 @@ public class HttpService extends IntentService {
                         }
                         Settings.get().setProperty("map.property", new Gson().toJson(settingsResultRecord.getMapProperties()));
                         try {
-                            List<MapSettingsEntity> mapSettingsEntities = DistributionDAO.getInstance(context).getMapSettings(Setup.get().getSettings().getLogin());
+                            List<MapSettingsEntity> mapSettingsEntities = DistributionDAO.getInstance().getMapSettings(Setup.get().getSettings().getLogin());
                             if (!mapSettingsEntities.isEmpty()) {
                                 if (mapSettings.containsKey(mapSettingsEntities.get(0).getProvider())) {
                                     if (mapSettingsEntities.get(0).isRemember()) {
                                         sendBroadcast(new Intent(Constants.HTTP_SERVICE_NAME).putExtra(IntentAttributes.HTTP_SETTINGS_RESPONSE_TYPE, Constants.OK));
                                     }
                                 } else {
-                                    if (updateSettings(context, mapSettingsEntities.get(0), mapSettings)) {
+                                    if (updateSettings(mapSettingsEntities.get(0), mapSettings)) {
                                         sendBroadcast(new Intent(Constants.HTTP_SERVICE_NAME).putExtra(IntentAttributes.HTTP_SETTINGS_RESPONSE_TYPE, Constants.WARN));
                                     }
                                 }
                             } else {
-                                updateSettings(context, new MapSettingsEntity(), mapSettings);
+                                updateSettings(new MapSettingsEntity(), mapSettings);
                             }
                         } catch (SQLException e) {
                             MCLoggerFactory.getLogger(LoginActivity.class).error(e.getMessage(), e);

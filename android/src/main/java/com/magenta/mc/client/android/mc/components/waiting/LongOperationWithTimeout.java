@@ -10,6 +10,7 @@ import com.magenta.mc.client.android.mc.util.FutureRunnable;
 import java.util.TimerTask;
 
 public class LongOperationWithTimeout implements Runnable {
+
     private final Object sync = new Object();
     private Runnable hideWaitIconFuture;
     private TimerTask wakeUpTimeout;

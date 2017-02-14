@@ -93,7 +93,7 @@ public class Maplet extends WebView {
 
     public void updateSettings() {
         try {
-            List<MapSettingsEntity> entities = DistributionDAO.getInstance(context).getMapSettings(Setup.get().getSettings().getLogin());
+            List<MapSettingsEntity> entities = DistributionDAO.getInstance().getMapSettings(Setup.get().getSettings().getLogin());
             if (!entities.isEmpty()) {
                 loadUrl("javascript:initConfig(" + entities.get(0).getSettings() + ")");
             }

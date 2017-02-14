@@ -2,7 +2,7 @@ package com.magenta.mc.client.android.mc.login;
 
 import com.magenta.mc.client.android.mc.client.XMPPClient;
 import com.magenta.mc.client.android.mc.xml.XMLBlockListener;
-import com.magenta.mc.client.android.mc.xmpp.XMPPStream;
+import com.magenta.mc.client.android.rpc.xmpp.XMPPStream;
 
 import java.util.ArrayList;
 import java.util.Iterator;

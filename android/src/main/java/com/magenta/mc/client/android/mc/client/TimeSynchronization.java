@@ -2,8 +2,8 @@ package com.magenta.mc.client.android.mc.client;
 
 import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.mc.util.Time;
-import com.magenta.mc.client.android.mc.xmpp.datablocks.Iq;
-import com.magenta.mc.client.android.mc.xmpp.extensions.XMPPTimeResponse;
+import com.magenta.mc.client.android.rpc.xmpp.datablocks.Iq;
+import com.magenta.mc.client.android.rpc.xmpp.extensions.XMPPTimeResponse;
 
 public class TimeSynchronization implements XMPPTimeResponse.TimeListener {
     private static long timeRequestSent;

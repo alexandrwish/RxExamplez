@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.magenta.mc.client.android.DistributionApplication;
-import com.magenta.mc.client.android.handler.HDUpdateHandler;
 import com.magenta.mc.client.android.handler.UpdateHandler;
 import com.magenta.mc.client.android.service.WorkflowService;
 import com.magenta.mc.client.android.ui.activity.ActivityDecorator;
@@ -21,7 +20,7 @@ import com.magenta.mc.client.android.ui.activity.common.SettingsActivity;
 
 public class WorkflowServiceImpl implements WorkflowService {
 
-    private static final UpdateHandler updateHandler = new HDUpdateHandler();
+    private static final UpdateHandler updateHandler = new UpdateHandler();
     private final Context context;
 
     public WorkflowServiceImpl(Context context) {

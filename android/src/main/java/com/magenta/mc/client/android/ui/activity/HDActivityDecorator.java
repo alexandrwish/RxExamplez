@@ -9,7 +9,7 @@ import android.view.MenuItem;
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.rpc.operations.LogoutLock;
 import com.magenta.mc.client.android.service.ServicesRegistry;
-import com.magenta.mc.client.android.service.events.AlertEvent;
+import com.magenta.mc.client.android.events.AlertEvent;
 import com.magenta.mc.client.android.ui.activity.common.LoginActivity;
 import com.magenta.mc.client.android.util.IntentAttributes;
 

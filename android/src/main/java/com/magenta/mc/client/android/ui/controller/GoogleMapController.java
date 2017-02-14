@@ -20,6 +20,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
 import com.magenta.mc.client.android.R;
+import com.magenta.mc.client.android.entity.AbstractStop;
 import com.magenta.mc.client.android.entity.Address;
 import com.magenta.mc.client.android.entity.LocationEntity;
 import com.magenta.mc.client.android.handler.MapUpdateHandler;
@@ -27,7 +28,6 @@ import com.magenta.mc.client.android.mc.MxAndroidUtil;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 import com.magenta.mc.client.android.service.ServicesRegistry;
 import com.magenta.mc.client.android.service.storage.entity.Job;
-import com.magenta.mc.client.android.service.storage.entity.Stop;
 import com.magenta.mc.client.android.util.StringUtils;
 
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public class GoogleMapController extends MapController implements OnMapReadyCall
     private boolean traffic;
     private Job job;
 
-    public GoogleMapController(Activity activity, final List<Stop> stops, final boolean routeWithDriver) {
+    public GoogleMapController(Activity activity, final List<AbstractStop> stops, final boolean routeWithDriver) {
         super(activity, stops, routeWithDriver);
         final View view = activity.getLayoutInflater().inflate(R.layout.view_google_map, null);
         mHolder.addView(view);
@@ -63,10 +63,10 @@ public class GoogleMapController extends MapController implements OnMapReadyCall
         });
     }
 
-    protected Job paintMap(List<Stop> stops) {
+    protected Job paintMap(List<AbstractStop> stops) {
         map.clear();
         Job job = null;
-        for (Stop stop : stops) {
+        for (AbstractStop stop : stops) {
             if (job == null) {
                 job = (Job) stop.getParentJob();
             }
@@ -152,8 +152,8 @@ public class GoogleMapController extends MapController implements OnMapReadyCall
                     } else if (marker.getSnippet().equalsIgnoreCase("Start")) {
                         onStartTap(job);
                     } else {
-                        Stop stop = null;
-                        for (Stop s : mStops) {
+                        AbstractStop stop = null;
+                        for (AbstractStop s : mStops) {
                             if (s.getReferenceId().equalsIgnoreCase(marker.getSnippet())) {
                                 stop = s;
                             }
@@ -237,12 +237,12 @@ public class GoogleMapController extends MapController implements OnMapReadyCall
                     address.setLongitude(location.getLon());
                     addressList.add(address);
                 }
-                for (Stop stop : controller.mStops) {
+                for (AbstractStop stop : controller.mStops) {
                     addressList.add(stop.getAddress());
                 }
             } else if (firstRun) {
                 addressList.add(controller.job.getStartAddress() != null ? controller.job.getStartAddress() : controller.job.getAddress());
-                for (Stop stop : controller.mStops) {
+                for (AbstractStop stop : controller.mStops) {
                     addressList.add(stop.getAddress());
                 }
                 addressList.add(controller.job.getEndAddress() != null ? controller.job.getEndAddress() : controller.job.getAddress());

@@ -168,7 +168,7 @@ public class SingleJobRenderer implements ObjectRenderer {
                 OrderItemRecord[] orderItemRecords = new Gson().fromJson(StringUtils.decodeURI(oirStr), OrderItemRecord[].class);
                 DynamicAttributeRecord[] dynamicAttributeRecords = new Gson().fromJson(StringUtils.decodeURI(darStr), DynamicAttributeRecord[].class);
                 try {
-                    DistributionDAO dao = DistributionDAO.getInstance(DistributionApplication.getContext());
+                    DistributionDAO dao = DistributionDAO.getInstance();
                     dao.clearOrderItems(stop.getReferenceId());
                     dao.clearDynamicAttribute(stop.getReferenceId());
                     if (orderItemRecords != null && orderItemRecords.length > 0) {

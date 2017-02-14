@@ -28,7 +28,12 @@ public class CreateUnavailability extends LongOperationWithTimeout {
         return instance;
     }
 
-    public static void create(final String startDate, final String endDate, final String endAddress, final String endPostcode, final String reason, final Callback callback) {
+    public static void create(final String startDate,
+                              final String endDate,
+                              final String endAddress,
+                              final String endPostcode,
+                              final String reason,
+                              final Callback callback) {
         CreateUnavailability.startDate = startDate;
         CreateUnavailability.endDate = endDate;
         CreateUnavailability.endAddress = endAddress;
@@ -36,9 +41,6 @@ public class CreateUnavailability extends LongOperationWithTimeout {
         CreateUnavailability.reason = reason;
         CreateUnavailability.callback = callback;
         getInstance().run();
-    }
-
-    public static void createDone() {
     }
 
     public static void createDone(final String errorMessage) {
@@ -49,6 +51,7 @@ public class CreateUnavailability extends LongOperationWithTimeout {
     }
 
     public interface Callback {
+
         void done(String errorMessage);
     }
 }

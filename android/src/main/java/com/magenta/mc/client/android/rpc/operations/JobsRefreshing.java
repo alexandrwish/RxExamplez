@@ -7,7 +7,7 @@ public class JobsRefreshing extends LongOperationWithTimeout {
 
     private static JobsRefreshing instance;
 
-    public JobsRefreshing(Runnable operation, long timeout) {
+    private JobsRefreshing(Runnable operation, long timeout) {
         super(operation, timeout);
     }
 

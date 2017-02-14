@@ -18,9 +18,7 @@ public class StopsDAO extends AbstractDAO {
 
     public static final String[] INDEX = new String[]{COLUMN_JOB_ID, COLUMN_STOP_ID};
 
-    public static final String SQL_CREATE_TABLE = format(
-            "CREATE TABLE %s (id INTEGER PRIMARY KEY, %s INTEGER, %s TEXT, %s  TEXT, %s INTEGER)",
-            TABLE, COLUMN_DATE, COLUMN_JOB_ID, COLUMN_STOP_ID, COLUMN_STATE);
+    public static final String SQL_CREATE_TABLE = format("CREATE TABLE %s (id INTEGER PRIMARY KEY, %s INTEGER, %s TEXT, %s  TEXT, %s INTEGER)", TABLE, COLUMN_DATE, COLUMN_JOB_ID, COLUMN_STOP_ID, COLUMN_STATE);
 
     public StopsDAO(final Context context) {
         super(context);

@@ -5,14 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
-import com.magenta.mc.client.android.service.ServicesRegistry;
-import com.magenta.mc.client.android.ui.activity.MxGenericActivity;
-import com.magenta.mc.client.android.ui.activity.common.LoginActivity;
-import com.magenta.mc.client.android.rpc.RPCOut;
-import com.magenta.mc.client.android.rpc.RPCTarget;
-import com.magenta.mc.client.android.entity.AbstractJobStatus;
 import com.magenta.mc.client.android.AndroidApp;
-import com.magenta.mc.client.android.ui.AndroidUI;
+import com.magenta.mc.client.android.entity.AbstractJobStatus;
 import com.magenta.mc.client.android.mc.client.ConnectionListener;
 import com.magenta.mc.client.android.mc.client.DriverStatus;
 import com.magenta.mc.client.android.mc.client.Login;
@@ -23,7 +17,13 @@ import com.magenta.mc.client.android.mc.client.resend.Resender;
 import com.magenta.mc.client.android.mc.demo.DemoStorageInitializer;
 import com.magenta.mc.client.android.mc.settings.Settings;
 import com.magenta.mc.client.android.mc.setup.Setup;
-import com.magenta.mc.client.android.mc.xmpp.extensions.rpc.JabberRPC;
+import com.magenta.mc.client.android.rpc.RPCOut;
+import com.magenta.mc.client.android.rpc.RPCTarget;
+import com.magenta.mc.client.android.rpc.xmpp.extensions.rpc.JabberRPC;
+import com.magenta.mc.client.android.service.ServicesRegistry;
+import com.magenta.mc.client.android.ui.AndroidUI;
+import com.magenta.mc.client.android.ui.activity.MxGenericActivity;
+import com.magenta.mc.client.android.ui.activity.common.LoginActivity;
 
 public class MxMobile extends AndroidApp {
 

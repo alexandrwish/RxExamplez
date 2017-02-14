@@ -10,6 +10,8 @@ import com.magenta.mc.client.android.entity.AbstractStop;
 import com.magenta.mc.client.android.entity.Address;
 import com.magenta.mc.client.android.entity.LocationEntity;
 import com.magenta.mc.client.android.entity.TaskState;
+import com.magenta.mc.client.android.events.EventType;
+import com.magenta.mc.client.android.events.JobEvent;
 import com.magenta.mc.client.android.mc.MxAndroidUtil;
 import com.magenta.mc.client.android.mc.client.resend.Resender;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
@@ -18,8 +20,6 @@ import com.magenta.mc.client.android.mc.storage.FieldGetter;
 import com.magenta.mc.client.android.mc.storage.FieldSetter;
 import com.magenta.mc.client.android.mc.util.Resources;
 import com.magenta.mc.client.android.service.ServicesRegistry;
-import com.magenta.mc.client.android.service.events.EventType;
-import com.magenta.mc.client.android.service.events.JobEvent;
 import com.magenta.mc.client.android.service.storage.DataControllerImpl;
 import com.magenta.mc.client.android.util.DateUtils;
 import com.magenta.mc.client.android.util.JobWorkflowUtils;
@@ -95,8 +95,8 @@ public class Stop extends AbstractStop {
         }
         LocationEntity location = MxAndroidUtil.getGeoLocation();
         if (location != null) {
-            getStopValues().put("lat", location.getLat());
-            getStopValues().put("lon", location.getLon());
+            getStopValues().put("lat", String.valueOf(location.getLat()));
+            getStopValues().put("lon", String.valueOf(location.getLon()));
         }
         getStopValues().put("performer", Setup.get().getSettings().getUserId());
         parentJob.setLastValidState(getStateString());
@@ -184,11 +184,11 @@ public class Stop extends AbstractStop {
         return DateUtils.toStringTime(getDate());
     }
 
-    public Integer getUpdateType() {
+    public int getUpdateType() {
         return updateType;
     }
 
-    public void setUpdateType(Integer updateType) {
+    public void setUpdateType(int updateType) {
         this.updateType = updateType;
         save();
     }

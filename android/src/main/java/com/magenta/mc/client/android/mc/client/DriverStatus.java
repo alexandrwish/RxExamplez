@@ -2,7 +2,7 @@ package com.magenta.mc.client.android.mc.client;
 
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 import com.magenta.mc.client.android.mc.setup.Setup;
-import com.magenta.mc.client.android.mc.xmpp.datablocks.Presence;
+import com.magenta.mc.client.android.rpc.xmpp.datablocks.Presence;
 
 import java.util.HashMap;
 import java.util.Map;

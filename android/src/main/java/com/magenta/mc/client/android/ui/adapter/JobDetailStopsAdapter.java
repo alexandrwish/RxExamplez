@@ -7,15 +7,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.magenta.mc.client.android.R;
+import com.magenta.mc.client.android.entity.AbstractStop;
 import com.magenta.mc.client.android.service.storage.entity.Stop;
 import com.magenta.mc.client.android.util.StopsComparator;
 
 import java.util.Collections;
 import java.util.List;
 
-public class JobDetailStopsAdapter extends DistributionArrayAdapter<Stop> {
+public class JobDetailStopsAdapter extends DistributionArrayAdapter<AbstractStop> {
 
-    public JobDetailStopsAdapter(Activity context, List<Stop> list) {
+    public JobDetailStopsAdapter(Activity context, List<AbstractStop> list) {
         super(context, R.layout.item_stop, list);
     }
 
@@ -35,7 +36,7 @@ public class JobDetailStopsAdapter extends DistributionArrayAdapter<Stop> {
             view = convertView;
             viewHolder = (ViewHolder) view.getTag();
         }
-        Stop item = list.get(position);
+        AbstractStop item = list.get(position);
         viewHolder.address.setText(item.getAddressAsString());
         viewHolder.time.setText(TIME_FORMAT.format(item.getDate()));
         viewHolder.date.setText(DATE_FORMAT.format(item.getDate()));
@@ -43,7 +44,7 @@ public class JobDetailStopsAdapter extends DistributionArrayAdapter<Stop> {
         return view;
     }
 
-    public void update(List<Stop> stops) {
+    public void update(List<AbstractStop> stops) {
         this.list.clear();
         this.list.addAll(stops);
         Collections.sort(this.list, StopsComparator.getInstance());

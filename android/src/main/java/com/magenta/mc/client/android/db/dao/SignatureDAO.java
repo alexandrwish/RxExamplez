@@ -19,9 +19,7 @@ public class SignatureDAO extends AbstractDAO {
 
     public static final String[] INDEX = new String[]{COLUMN_JOB_ID, COLUMN_STOP_ID};
 
-    public static final String SQL_CREATE_TABLE = format(
-            "CREATE TABLE %s (id INTEGER PRIMARY KEY,%s TEXT, %s  TEXT,  %s  TEXT, %s  TEXT, %s INTEGER)",
-            TABLE, COLUMN_JOB_ID, COLUMN_STOP_ID, COLUMN_SIGNATURE, COLUMN_CONTACT_NAME, COLUMN_SIGNATURE_TIME);
+    public static final String SQL_CREATE_TABLE = format("CREATE TABLE %s (id INTEGER PRIMARY KEY,%s TEXT, %s  TEXT,  %s  TEXT, %s  TEXT, %s INTEGER)", TABLE, COLUMN_JOB_ID, COLUMN_STOP_ID, COLUMN_SIGNATURE, COLUMN_CONTACT_NAME, COLUMN_SIGNATURE_TIME);
 
     public SignatureDAO(final Context context) {
         super(context);
@@ -39,12 +37,12 @@ public class SignatureDAO extends AbstractDAO {
         }
     }
 
-    public Object[] get(final String jobId, final String stopId) {
-        return execute(new Sandbox<SignatureDAO, Object[]>() {
-            public Object[] run(final SignatureDAO dao, final SQLiteDatabase db) {
+    public String[] get(final String jobId, final String stopId) {
+        return execute(new Sandbox<SignatureDAO, String[]>() {
+            public String[] run(final SignatureDAO dao, final SQLiteDatabase db) {
                 final Cursor cursor = query(db, TABLE, new String[]{COLUMN_CONTACT_NAME, COLUMN_SIGNATURE, COLUMN_SIGNATURE_TIME},
                         where(COLUMN_JOB_ID, COLUMN_STOP_ID), new String[]{jobId, stopId});
-                return cursor != null && cursor.moveToFirst() ? new Object[]{cursor.getString(0), cursor.getString(1), cursor.getLong(2)} : null;
+                return cursor != null && cursor.moveToFirst() ? new String[]{cursor.getString(0), cursor.getString(1), cursor.getLong(2) + ""} : null;
             }
         });
     }

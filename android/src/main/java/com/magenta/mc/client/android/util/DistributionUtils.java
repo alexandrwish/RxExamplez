@@ -6,11 +6,11 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 
 import com.magenta.mc.client.android.R;
-import com.magenta.mc.client.android.service.storage.entity.Stop;
+import com.magenta.mc.client.android.entity.AbstractStop;
 
 public class DistributionUtils {
 
-    public static Drawable getStopPriorityIcon(Context context, Stop stop) {
+    public static Drawable getStopPriorityIcon(Context context, AbstractStop stop) {
         Drawable icon = context.getResources().getDrawable(stop.isDrop() ? R.drawable.img_minor : R.drawable.img_normal).mutate();
         int color = Color.WHITE;
         switch (stop.getPriority()) {

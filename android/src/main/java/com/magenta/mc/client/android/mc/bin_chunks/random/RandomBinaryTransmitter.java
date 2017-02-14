@@ -13,7 +13,7 @@ import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.mc.storage.BinaryStorable;
 import com.magenta.mc.client.android.mc.storage.Storable;
 import com.magenta.mc.client.android.mc.storage.Storage;
-import com.magenta.mc.client.android.mc.xmpp.extensions.rpc.DefaultRpcResponseHandler;
+import com.magenta.mc.client.android.rpc.xmpp.extensions.rpc.DefaultRpcResponseHandler;
 
 import net.sf.microlog.core.LoggerFactory;
 

@@ -1,28 +1,14 @@
 package com.magenta.mc.client.android.record;
 
-import com.google.gson.annotations.SerializedName;
-
+import java.io.Serializable;
 import java.util.Date;
 
-public class PhoneStatisticRecord {
+public class PhoneStatisticRecord implements Serializable {
 
-    private static final String DATE = "date";
-    private static final String GPS = "gps";
-    private static final String GPRS = "gprs";
-    private static final String BATTERY = "battery";
-
-    @SerializedName(DATE)
-    protected Date date;
-    @SerializedName(GPS)
-    protected Boolean gps;
-    @SerializedName(GPRS)
-    protected Boolean gprs;
-    @SerializedName(BATTERY)
-    protected Float battery;
-
-    public PhoneStatisticRecord() {
-        super();
-    }
+    private Date date;
+    private Boolean gps;
+    private Boolean gprs;
+    private Float battery;
 
     public PhoneStatisticRecord(Date date, boolean gps, boolean gprs, float battery) {
         this.date = date;

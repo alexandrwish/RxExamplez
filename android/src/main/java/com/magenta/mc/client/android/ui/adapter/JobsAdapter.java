@@ -10,9 +10,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.magenta.mc.client.android.R;
+import com.magenta.mc.client.android.entity.AbstractStop;
+import com.magenta.mc.client.android.entity.TaskState;
 import com.magenta.mc.client.android.service.storage.entity.Job;
 import com.magenta.mc.client.android.service.storage.entity.Stop;
-import com.magenta.mc.client.android.entity.TaskState;
 import com.magenta.mc.client.android.ui.view.TimeView;
 
 import java.util.List;
@@ -67,7 +68,7 @@ public class JobsAdapter extends DistributionArrayAdapter<Job> {
         int complete = 0;
         int total = 0;
         int suspend = 0;
-        for (Stop stop : (List<Stop>) job.getStops()) {
+        for (AbstractStop stop : job.getStops()) {
             total++;
             if (stop.isCancelled()) {
                 failed++;
@@ -84,7 +85,7 @@ public class JobsAdapter extends DistributionArrayAdapter<Job> {
     }
 
     private int getImageResource(Job job) {
-        for (Stop stop : (List<Stop>) job.getStops()) {
+        for (AbstractStop stop : job.getStops()) {
             if (stop.getUpdateType() != Stop.NOT_CHANGED_STOP) {
                 return R.drawable.mc_img_list_view_item_green_divider;
             }

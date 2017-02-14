@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.db.dao.DistributionDAO;
 import com.magenta.mc.client.android.db.dao.StopsDAO;
+import com.magenta.mc.client.android.entity.AbstractStop;
 import com.magenta.mc.client.android.entity.DynamicAttributeType;
 import com.magenta.mc.client.android.entity.MapSettingsEntity;
 import com.magenta.mc.client.android.entity.TaskState;
@@ -58,7 +59,7 @@ public abstract class AbstractArriveMapActivity extends DistributionActivity imp
     protected boolean trackingEnabled;
     protected boolean trackingEnabledNewValue;
     protected boolean isPickup;
-    protected Stop stop;
+    protected AbstractStop stop;
     protected Job job;
     protected MapController mapController;
 
@@ -79,7 +80,7 @@ public abstract class AbstractArriveMapActivity extends DistributionActivity imp
 
         List<MapSettingsEntity> entities;
         try {
-            entities = DistributionDAO.getInstance(this).getMapSettings(Setup.get().getSettings().getLogin());
+            entities = DistributionDAO.getInstance().getMapSettings(Setup.get().getSettings().getLogin());
         } catch (SQLException ignore) {
             entities = new ArrayList<>(0);
         }
@@ -126,7 +127,7 @@ public abstract class AbstractArriveMapActivity extends DistributionActivity imp
                 .add(new Attribute(getString(R.string.order_type_label), stop.getParameter(Stop.ATTR_ORDER_TYPE)))
                 .add(new Attribute(getString(R.string.notes_label), stop.getNotes()));
         try {
-            dynamicAttributeView.addAll(DistributionDAO.getInstance(getApplicationContext()).getDynamicAttributes(currentJobId, currentStopId));
+            dynamicAttributeView.addAll(DistributionDAO.getInstance().getDynamicAttributes(currentJobId, currentStopId));
         } catch (SQLException ignore) {
         } finally {
             dynamicAttributeView.clear().render();
@@ -212,7 +213,7 @@ public abstract class AbstractArriveMapActivity extends DistributionActivity imp
         doneButton = (Button) findViewById(R.id.complete_button);
     }
 
-    private void setTimeWindow(Stop stop) {
+    private void setTimeWindow(AbstractStop stop) {
         String[] times = stop.getTimeWindowAsString().replaceAll(" ", "").split("[-,:]");
         ((TimeView) findViewById(R.id.left_bound)).setHours(times[0]).setMinutes(times[1]);
         ((TimeView) findViewById(R.id.right_bound)).setHours(times[2]).setMinutes(times[3]);
@@ -255,7 +256,7 @@ public abstract class AbstractArriveMapActivity extends DistributionActivity imp
         }
     }
 
-    private void startLateTimer(Stop stop) {
+    private void startLateTimer(AbstractStop stop) {
         Date current = new Date();
         long millisFinished = stop.getDate().getTime() + 1000 * 60 * 30 - current.getTime();
         new CountDownTimer(millisFinished, 1000 * 60) {

@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.ViewGroup;
 
+import com.magenta.mc.client.android.entity.AbstractStop;
 import com.magenta.mc.client.android.service.storage.entity.Stop;
 import com.magenta.mc.client.android.entity.Address;
 import com.magenta.mc.client.android.ui.view.Maplet;
@@ -18,7 +19,7 @@ public class MapletController extends MapController {
     private final static String TAG = "----MapletController";
     private Maplet maplet;
 
-    public MapletController(Activity activity, List<Stop> stops, boolean routeWithDriver) {
+    public MapletController(Activity activity, List<AbstractStop> stops, boolean routeWithDriver) {
         super(activity, stops, routeWithDriver);
         maplet = new Maplet(activity, this);
         maplet.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));

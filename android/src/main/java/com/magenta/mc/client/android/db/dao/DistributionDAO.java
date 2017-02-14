@@ -1,6 +1,5 @@
 package com.magenta.mc.client.android.db.dao;
 
-import android.content.Context;
 import android.database.Cursor;
 
 import com.j256.ormlite.android.AndroidConnectionSource;
@@ -11,10 +10,10 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.SelectArg;
 import com.j256.ormlite.stmt.UpdateBuilder;
 import com.j256.ormlite.support.ConnectionSource;
-import com.magenta.mc.client.android.entity.AbstractJobStatus;
 import com.magenta.mc.client.android.DistributionApplication;
 import com.magenta.mc.client.android.db.DBAdapter;
 import com.magenta.mc.client.android.db.DistributionDBHelper;
+import com.magenta.mc.client.android.entity.AbstractJobStatus;
 import com.magenta.mc.client.android.entity.DynamicAttributeEntity;
 import com.magenta.mc.client.android.entity.LocalizeStringEntity;
 import com.magenta.mc.client.android.entity.LocationEntity;
@@ -35,16 +34,14 @@ public class DistributionDAO {
 
     private static DistributionDAO instance;
     private DBAdapter adapter;
-    private Context context;
 
-    private DistributionDAO(Context context) {
-        this.context = context;
+    private DistributionDAO() {
         this.adapter = (DBAdapter) DistributionApplication.getInstance().getDBAdapter();
     }
 
-    public static DistributionDAO getInstance(Context context) {
+    public static DistributionDAO getInstance() {
         if (instance == null) {
-            instance = new DistributionDAO(context);
+            instance = new DistributionDAO();
         }
         return instance;
     }

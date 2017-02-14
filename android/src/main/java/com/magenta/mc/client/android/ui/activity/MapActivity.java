@@ -9,6 +9,7 @@ import android.view.MotionEvent;
 
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.db.dao.DistributionDAO;
+import com.magenta.mc.client.android.entity.AbstractStop;
 import com.magenta.mc.client.android.entity.Address;
 import com.magenta.mc.client.android.entity.MapSettingsEntity;
 import com.magenta.mc.client.android.mc.MxSettings;
@@ -57,7 +58,7 @@ public class MapActivity extends DistributionActivity implements WorkflowActivit
         Intent intent = getIntent();
         lat = intent.getDoubleExtra(IntentAttributes.LAT, 0d);
         lon = intent.getDoubleExtra(IntentAttributes.LON, 0d);
-        List<Stop> tmp = new ArrayList<>(1);
+        List<AbstractStop> tmp = new ArrayList<>(1);
         if (lat != 0 && lon != 0) {
             Stop s = (Stop) j.getStops().get(0);
             Address address = new Address();
@@ -71,7 +72,7 @@ public class MapActivity extends DistributionActivity implements WorkflowActivit
         }
         List<MapSettingsEntity> entities;
         try {
-            entities = DistributionDAO.getInstance(this).getMapSettings(Setup.get().getSettings().getLogin());
+            entities = DistributionDAO.getInstance().getMapSettings(Setup.get().getSettings().getLogin());
         } catch (SQLException ignore) {
             entities = new ArrayList<>(0);
         }

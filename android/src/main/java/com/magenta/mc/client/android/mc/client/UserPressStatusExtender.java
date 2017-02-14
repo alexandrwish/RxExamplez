@@ -1,6 +1,6 @@
 package com.magenta.mc.client.android.mc.client;
 
-import com.magenta.mc.client.android.mc.xmpp.datablocks.Presence;
+import com.magenta.mc.client.android.rpc.xmpp.datablocks.Presence;
 
 /**
  * Created with IntelliJ IDEA.

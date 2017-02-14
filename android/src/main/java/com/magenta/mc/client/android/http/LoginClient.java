@@ -1,7 +1,7 @@
 package com.magenta.mc.client.android.http;
 
-import com.magenta.mc.client.android.http.record.LoginRecord;
-import com.magenta.mc.client.android.http.record.LoginResultRecord;
+import com.magenta.mc.client.android.record.LoginRecord;
+import com.magenta.mc.client.android.record.LoginResultRecord;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

@@ -7,13 +7,13 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 
 import com.google.gson.Gson;
-import com.magenta.mc.client.android.entity.Address;
 import com.magenta.mc.client.android.R;
+import com.magenta.mc.client.android.entity.AbstractStop;
+import com.magenta.mc.client.android.entity.Address;
 import com.magenta.mc.client.android.entity.LocationEntity;
 import com.magenta.mc.client.android.handler.MapUpdateHandler;
 import com.magenta.mc.client.android.mc.MxAndroidUtil;
 import com.magenta.mc.client.android.service.storage.entity.Job;
-import com.magenta.mc.client.android.service.storage.entity.Stop;
 import com.magenta.mc.client.android.ui.controller.yandex.BalloonClickListener;
 import com.magenta.mc.client.android.ui.controller.yandex.RouteOverLay;
 import com.magenta.mc.client.android.util.StringUtils;
@@ -36,7 +36,7 @@ public class YandexMapController extends MapController {
     private Overlay overlay;
     private Job job;
 
-    public YandexMapController(final Activity activity, final List<Stop> stops, final boolean routeWithDriver) {
+    public YandexMapController(final Activity activity, final List<AbstractStop> stops, final boolean routeWithDriver) {
         super(activity, stops, routeWithDriver);
         final View view = activity.getLayoutInflater().inflate(R.layout.view_yandex_map, null);
         MapView mapView = (MapView) view.findViewById(R.id.map);
@@ -80,13 +80,13 @@ public class YandexMapController extends MapController {
         overlayManager.addOverlay(routeOverLay);
     }
 
-    private Job paintMap(List<Stop> stops) {
+    private Job paintMap(List<AbstractStop> stops) {
         if (overlay != null) {
             overlayManager.removeOverlay(overlay);
         }
         overlay = new Overlay(controller);
         Job job = null;
-        for (final Stop stop : stops) {
+        for (final AbstractStop stop : stops) {
             if (job == null) {
                 job = (Job) stop.getParentJob();
             }
@@ -218,12 +218,12 @@ public class YandexMapController extends MapController {
                     address.setLongitude(location.getLon());
                     addressList.add(address);
                 }
-                for (Stop stop : controller.mStops) {
+                for (AbstractStop stop : controller.mStops) {
                     addressList.add(stop.getAddress());
                 }
             } else if (firstRun) {
                 addressList.add(controller.job.getStartAddress() != null ? controller.job.getStartAddress() : controller.job.getAddress());
-                for (Stop stop : controller.mStops) {
+                for (AbstractStop stop : controller.mStops) {
                     addressList.add(stop.getAddress());
                 }
                 addressList.add(controller.job.getEndAddress() != null ? controller.job.getEndAddress() : controller.job.getAddress());

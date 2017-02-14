@@ -7,11 +7,11 @@ import com.j256.ormlite.table.DatabaseTable;
 public class StatusSenderLock extends AbstractEntity {
 
     @DatabaseField(columnName = "job_id", index = true)
-    String jobId;
+    private String jobId;
     @DatabaseField(columnName = "job_ref", index = true)
-    String jobReferenceId;
+    private String jobReferenceId;
     @DatabaseField(columnName = "job_status", index = true)
-    String jobStatus;
+    private String jobStatus;
 
     public String getJobId() {
         return jobId;

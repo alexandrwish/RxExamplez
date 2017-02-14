@@ -3,8 +3,9 @@ package com.magenta.mc.client.android.handler;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.magenta.mc.client.android.entity.AbstractStop;
 import com.magenta.mc.client.android.service.ServicesRegistry;
-import com.magenta.mc.client.android.service.events.AlertEvent;
+import com.magenta.mc.client.android.events.AlertEvent;
 import com.magenta.mc.client.android.service.storage.entity.Job;
 import com.magenta.mc.client.android.service.storage.entity.Stop;
 import com.magenta.mc.client.android.mc.MxSettings;
@@ -54,7 +55,7 @@ public class AlertHandler extends Handler {
             boolean needToIncrement;
             for (Job job : (List<Job>) ServicesRegistry.getDataController().loadCurrentJobs()) {
                 needToIncrement = false;
-                for (Stop stop : (List<Stop>) job.getStops()) {
+                for (AbstractStop stop : job.getStops()) {
                     if (stop.getUpdateType() == Stop.UPDATE_STOP) {
                         needToIncrement = true;
                         jobs.add(stop.getReferenceId());

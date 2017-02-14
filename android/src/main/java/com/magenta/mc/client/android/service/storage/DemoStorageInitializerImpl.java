@@ -1,5 +1,6 @@
 package com.magenta.mc.client.android.service.storage;
 
+import com.magenta.mc.client.android.entity.AbstractStop;
 import com.magenta.mc.client.android.mc.MxSettings;
 import com.magenta.mc.client.android.mc.demo.DemoStorageInitializer;
 import com.magenta.mc.client.android.mc.settings.Settings;
@@ -59,7 +60,7 @@ public class DemoStorageInitializerImpl implements DemoStorageInitializer {
 
     private void createMockJob(final int id, final Date date, final int state) {
         final Job job = new Job();
-        final List<Stop> stops = new ArrayList<>();
+        final List<AbstractStop> stops = new ArrayList<>();
         final long loadingDuration = Math.max(5 * 60, DemoDataUtils.RAND.nextInt(30 * 60)); // 30 minutes
         job.setReferenceId(String.valueOf(id));
         job.setDate(date);

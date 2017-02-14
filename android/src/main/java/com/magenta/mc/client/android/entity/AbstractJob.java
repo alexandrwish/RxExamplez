@@ -1,12 +1,10 @@
 package com.magenta.mc.client.android.entity;
 
-import com.magenta.mc.client.android.mc.exception.UnknownJobStatusException;
 import com.magenta.mc.client.android.mc.storage.FieldGetter;
 import com.magenta.mc.client.android.mc.storage.FieldSetter;
 import com.magenta.mc.client.android.mc.storage.Storable;
 import com.magenta.mc.client.android.mc.storage.StorableMetadata;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -23,24 +21,26 @@ public abstract class AbstractJob extends Storable {
     public static final StorableMetadata STORABLE_METADATA = new StorableMetadata("job");
 
     protected static final long serialVersionUID = 1;
-    protected static final String FIELD_REFERENCEID = "referenceId";
-    protected static final String FIELD_NOTES = "notes";
-    protected static final String FIELD_DATE = "date";
-    protected static final String FIELD_CONTACTNAME = "contactName";
-    protected static final String FIELD_CONTACTPHONE = "contactPhone";
-    protected static final String FIELD_ADDRESS = "address";
-    protected static final String FIELD_END_ADDRESS = "endAddress";
-    protected static final String FIELD_START_ADDRESS = "startAddress";
-    protected static final String FIELD_STOPS = "stops";
-    protected static final String FIELD_PASSENGERS = "passengers";
-    protected static final String FIELD_PARCELS = "parcels";
-    protected static final String FIELD_STATE = "state";
-    protected static final String FIELD_LASTSTOP = "lastStop";
-    protected static final String FIELD_CURRENT_STOP = "currentStop";
-    protected static final String FIELD_LAST_VALID_STATE = "lastValidState";
-    protected static final String FIELD_TYPE = "type";
-    protected static final String FIELD_PARAMETERS = "parameters";
-    protected static final String FIELD_ATTRIBUTES = "attributes";
+
+    private static final String FIELD_REFERENCEID = "referenceId";
+    private static final String FIELD_NOTES = "notes";
+    private static final String FIELD_DATE = "date";
+    private static final String FIELD_CONTACTNAME = "contactName";
+    private static final String FIELD_CONTACTPHONE = "contactPhone";
+    private static final String FIELD_ADDRESS = "address";
+    private static final String FIELD_END_ADDRESS = "endAddress";
+    private static final String FIELD_START_ADDRESS = "startAddress";
+    private static final String FIELD_STOPS = "stops";
+    private static final String FIELD_PASSENGERS = "passengers";
+    private static final String FIELD_PARCELS = "parcels";
+    private static final String FIELD_STATE = "state";
+    private static final String FIELD_LASTSTOP = "lastStop";
+    private static final String FIELD_CURRENT_STOP = "currentStop";
+    private static final String FIELD_LAST_VALID_STATE = "lastValidState";
+    private static final String FIELD_TYPE = "type";
+    private static final String FIELD_PARAMETERS = "parameters";
+    private static final String FIELD_ATTRIBUTES = "attributes";
+
     protected String referenceId;
     protected String notes;
     protected Date date;
@@ -49,7 +49,7 @@ public abstract class AbstractJob extends Storable {
     protected Address address;
     protected Address endAddress;
     protected Address startAddress;
-    protected List stops;
+    protected List<AbstractStop> stops;
     protected Passenger[] passengers;
     protected Parcel[] parcels;
     protected int state = -1;
@@ -58,7 +58,7 @@ public abstract class AbstractJob extends Storable {
     protected String lastValidState;
     protected int type;
     protected boolean acknowledged = true;
-    protected Map parameters;
+    protected Map<String, String> parameters;
     protected Set attributes;
 
     public static String getStateString(int state) {
@@ -159,32 +159,21 @@ public abstract class AbstractJob extends Storable {
         return address != null ? address.getFullAddress() : "";
     }
 
-    public List getStops() {
+    public List<AbstractStop> getStops() {
         return stops;
     }
 
-    public void setStops(final List stops) {
+    public void setStops(final List<AbstractStop> stops) {
         for (int i = 0; i < stops.size(); i++) {
-            ((AbstractStop) stops.get(i)).setParentJob(this);
+            stops.get(i).setParentJob(this);
         }
         this.stops = stops;
     }
 
     public AbstractStop getStop(String stopRef) {
         for (int i = 0; i < stops.size(); i++) {
-            AbstractStop stop = (AbstractStop) stops.get(i);
+            AbstractStop stop = stops.get(i);
             if (stopRef.equalsIgnoreCase(stop.getReferenceId())) {
-                return stop;
-            }
-        }
-        return null;
-    }
-
-    public AbstractStop removeStop(String stopRef) {
-        for (ListIterator iterator = stops.listIterator(); iterator.hasNext(); ) {
-            AbstractStop stop = (AbstractStop) iterator.next();
-            if (stopRef.equalsIgnoreCase(stop.getReferenceId())) {
-                iterator.remove();
                 return stop;
             }
         }
@@ -209,7 +198,7 @@ public abstract class AbstractJob extends Storable {
 
     public boolean stopsDone() {
         for (int i = 0; i < stops.size(); i++) {
-            AbstractStop stop = (AbstractStop) stops.get(i);
+            AbstractStop stop = stops.get(i);
             if (!stop.isCompleted()) {
                 return false;
             }
@@ -219,7 +208,7 @@ public abstract class AbstractJob extends Storable {
 
     public boolean stopsInProgress() {
         for (int i = 0; i < stops.size(); i++) {
-            AbstractStop stop = (AbstractStop) stops.get(i);
+            AbstractStop stop = stops.get(i);
             if (stop.isProcessing() || stop.isCompleted()) {
                 return true;
             }
@@ -227,28 +216,26 @@ public abstract class AbstractJob extends Storable {
         return false;
     }
 
-    public boolean stopsOnlyInProgress() {
-        for (int i = 0; i < stops.size(); i++) {
-            AbstractStop stop = (AbstractStop) stops.get(i);
-            if (stop.getState() >= TaskState.STOP_RUN_STARTED) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public boolean isCompleted() {
-        return state == TaskState.COA || state == TaskState.RUN_CANCELLED || state == TaskState.RUN_COMPLETED
-                || state == TaskState.RUN_UNASSIGNED || state == TaskState.RUN_FINISHED;
+        return state == TaskState.COA
+                || state == TaskState.RUN_CANCELLED
+                || state == TaskState.RUN_COMPLETED
+                || state == TaskState.RUN_UNASSIGNED
+                || state == TaskState.RUN_FINISHED;
     }
 
     public boolean isCancelled() {
-        return state == TaskState.COA || state == TaskState.PRE_COA || state == TaskState.RUN_CANCELLED
-                || state == TaskState.PRE_CANCELLED || state == TaskState.RUN_ABORTED;
+        return state == TaskState.COA
+                || state == TaskState.PRE_COA
+                || state == TaskState.RUN_CANCELLED
+                || state == TaskState.PRE_CANCELLED
+                || state == TaskState.RUN_ABORTED;
     }
 
     public boolean isLate() {
-        return state == TaskState.RUN_LATE15 || state == TaskState.RUN_LATE30 || state == TaskState.RUN_LATE60;
+        return state == TaskState.RUN_LATE15
+                || state == TaskState.RUN_LATE30
+                || state == TaskState.RUN_LATE60;
     }
 
     public AbstractStop getCurrentStop() {
@@ -283,17 +270,17 @@ public abstract class AbstractJob extends Storable {
         this.type = type;
     }
 
-    public Map getParameters() {
+    public Map<String, String> getParameters() {
         return parameters;
     }
 
-    public void setParameters(Map parameters) {
+    public void setParameters(Map<String, String> parameters) {
         this.parameters = parameters;
     }
 
     public void setParameter(final String name, final String value) {
         if (parameters == null) {
-            parameters = new HashMap();
+            parameters = new HashMap<>();
         }
         parameters.put(name, value);
     }
@@ -307,7 +294,7 @@ public abstract class AbstractJob extends Storable {
     }
 
     public String getParameter(final String name) {
-        return parameters == null ? null : (String) parameters.get(name);
+        return parameters == null ? null : parameters.get(name);
     }
 
     public long getParameterAsLong(final String name, final long defaultValue) {
@@ -334,48 +321,10 @@ public abstract class AbstractJob extends Storable {
         }
     }
 
-    public boolean getParameterAsBoolean(String name, boolean defaultValue) {
-        try {
-            return Boolean.parseBoolean(getParameter(name));
-        } catch (Exception e) {
-            return defaultValue;
-        }
-    }
-
-    public boolean acknowledge() {
-        return acknowledged || !(acknowledged = true);
-    }
-
-    public String getStatusToString() {
-        if (state == TaskState.PRE_CANCELLED || isCancelled()) {
-            return TaskState.stringValue(TaskState.RUN_CANCELLED);
-        } else if (state == TaskState.PRE_COA) {
-            return TaskState.stringValue(TaskState.COA);
-        } else if (isCompleted()) {
-            return TaskState.stringValue(state);
-        } else if (stopsInProgress()) {
-            return TaskState.stringValue(TaskState.RUN_IN_PROGRESS);
-        } else if (state > TaskState.UNKNOWN) {
-            return TaskState.stringValue(state);
-        } else if (lastValidState != null) {
-            return lastValidState;
-        }
-        return "";
-    }
-
-    public String getTypeToString() {
-        try {
-            return JobType.stringValue(type);
-        } catch (UnknownJobStatusException e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
-
     public int findFirstProgressedStopIndex() {
         int firstIncomplete = -1;
         for (int i = 0; i < stops.size(); i++) {
-            AbstractStop stop = (AbstractStop) stops.get(i);
+            AbstractStop stop = stops.get(i);
             if (stop.isProcessing()) {
                 return i;
             } else if (firstIncomplete < 0 && !stop.isCompleted()) {
@@ -384,9 +333,7 @@ public abstract class AbstractJob extends Storable {
         }
         // no stops being processing
         return firstIncomplete < 0 // no incomplete stops found
-                ? lastStop != null ? stops.indexOf(lastStop) : 0
-                : firstIncomplete;
-
+                ? lastStop != null ? stops.indexOf(lastStop) : 0 : firstIncomplete;
     }
 
     public void update(AbstractJob job) {
@@ -404,7 +351,7 @@ public abstract class AbstractJob extends Storable {
         setLastValidState(job.getLastValidState());
         if (stops != null) {
             if (state != TaskState.RUN_ASSIGNED && state != TaskState.RUN_SENT && state != TaskState.RUN_RECEIVED) {
-                Set intersection = new HashSet();
+                Set<AbstractStop> intersection = new HashSet<>();
                 for (ListIterator iterator = stops.listIterator(); iterator.hasNext(); ) {
                     AbstractStop oldStop = (AbstractStop) iterator.next();
                     AbstractStop newStop = job.getStop(oldStop.getReferenceId());
@@ -421,7 +368,7 @@ public abstract class AbstractJob extends Storable {
                     }
                 }
                 for (int i = 0; i < job.getStops().size(); i++) {
-                    AbstractStop newStop = (AbstractStop) job.getStops().get(i);
+                    AbstractStop newStop = job.getStops().get(i);
                     if (!intersection.contains(newStop)) {
                         addNewStop(newStop);
                     }
@@ -451,7 +398,7 @@ public abstract class AbstractJob extends Storable {
         moveToNextStopIfCurrent(stop);
     }
 
-    protected void setNewStops(List stops) {
+    protected void setNewStops(List<AbstractStop> stops) {
         setStops(stops);
     }
 
@@ -461,10 +408,8 @@ public abstract class AbstractJob extends Storable {
     }
 
     private void sortStops() {
-        Collections.sort(stops, new Comparator() {
-            public int compare(Object o, Object o1) {
-                AbstractStop stop1 = (AbstractStop) o;
-                AbstractStop stop2 = (AbstractStop) o1;
+        Collections.sort(stops, new Comparator<AbstractStop>() {
+            public int compare(AbstractStop stop1, AbstractStop stop2) {
                 return stop1.getIndex() - stop2.getIndex();
             }
         });
@@ -480,27 +425,8 @@ public abstract class AbstractJob extends Storable {
     private void moveToNextStop() {
         final int nextStopIndex = findFirstProgressedStopIndex();
         if (!(nextStopIndex > stops.size() - 1)) {
-            currentStop = (AbstractStop) stops.get(nextStopIndex);
+            currentStop = stops.get(nextStopIndex);
         }
-    }
-
-    public String[] createAddressArray() {
-        List result = new ArrayList();
-        if (!isAllStopsCompleted()) { //for last stop will return empty array
-            if (lastStop != null) {
-                result.add(lastStop.getAddress().getRoutingAddress());
-            }
-            if (currentStop != null) {
-                result.add(currentStop.getAddress().getRoutingAddress());
-            }
-            for (int i = 0; i < stops.size(); i++) {
-                AbstractStop stop = (AbstractStop) stops.get(i);
-                if (stop.isCompleted() || stop == lastStop || stop == currentStop)
-                    continue;
-                result.add(stop.getAddress().getRoutingAddress());
-            }
-        }
-        return (String[]) result.toArray(new String[result.size()]);
     }
 
     public boolean isAllStopsCompleted() {
@@ -514,49 +440,19 @@ public abstract class AbstractJob extends Storable {
 
     public abstract void save();
 
-    public void forEachStops(final StopVisitor v) {
-        for (int i = 0; i < stops.size(); i++) {
-            if (!v.visit((AbstractStop) stops.get(i))) {
-                break;
-            }
-        }
-    }
-
-    public void updateStopsState(int state) {
-        for (int i = 0; i < stops.size(); i++) {
-            AbstractStop stop = (AbstractStop) stops.get(i);
-            stop.setState(state);
-        }
-    }
-
     public void abortStopsInGroup(String groupId) {
         for (int i = 0, count = stops.size(); i < count; i++) {
-            final AbstractStop stop = (AbstractStop) stops.get(i);
+            final AbstractStop stop = stops.get(i);
             if (groupId.equals(stop.getGroupId())) {
                 stop.setState(TaskState.STOP_ABORTED);
             }
         }
     }
 
-    public void acceptJobs() {
-        for (int i = 0, count = stops.size(); i < count; i++) {
-            final AbstractStop stop = (AbstractStop) stops.get(i);
-            stop.setState(TaskState.STOP_RUN_ACCEPTED);
-        }
-    }
-
-    public boolean isAllStopsAborted() {
-        for (int i = 0, count = stops.size(); i < count; i++) {
-            final AbstractStop stop = (AbstractStop) stops.get(i);
-            if (TaskState.STOP_ABORTED != stop.getState()) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     public boolean isProcessing() {
-        return TaskState.RUN_IN_PROGRESS == state || TaskState.PRE_CANCELLED == state || TaskState.RUN_STARTED == state;
+        return TaskState.RUN_IN_PROGRESS == state
+                || TaskState.PRE_CANCELLED == state
+                || TaskState.RUN_STARTED == state;
     }
 
     public boolean isAccepted() {
@@ -615,7 +511,7 @@ public abstract class AbstractJob extends Storable {
                 },
                 new FieldSetter(FIELD_STOPS) {
                     public void setValue(Object value) {
-                        stops = (List) value;
+                        stops = (List<AbstractStop>) value;
                     }
                 },
                 new FieldSetter(FIELD_PASSENGERS) {
@@ -630,7 +526,7 @@ public abstract class AbstractJob extends Storable {
                 },
                 new FieldSetter(FIELD_STATE) {
                     public void setValue(Object value) {
-                        state = ((Integer) value).intValue();
+                        state = (Integer) value;
                     }
                 },
                 new FieldSetter(FIELD_LASTSTOP) {
@@ -650,12 +546,12 @@ public abstract class AbstractJob extends Storable {
                 },
                 new FieldSetter(FIELD_TYPE) {
                     public void setValue(Object value) {
-                        type = ((Integer) value).intValue();
+                        type = (Integer) value;
                     }
                 },
                 new FieldSetter(FIELD_PARAMETERS) {
                     public void setValue(Object value) {
-                        parameters = (Map) value;
+                        parameters = (Map<String, String>) value;
                     }
                 },
                 new FieldSetter(FIELD_ATTRIBUTES) {
@@ -725,7 +621,7 @@ public abstract class AbstractJob extends Storable {
                 },
                 new FieldGetter(FIELD_STATE) {
                     public Object getValue() {
-                        return new Integer(state);
+                        return state;
                     }
                 },
                 new FieldGetter(FIELD_LASTSTOP) {
@@ -745,7 +641,7 @@ public abstract class AbstractJob extends Storable {
                 },
                 new FieldGetter(FIELD_TYPE) {
                     public Object getValue() {
-                        return new Integer(type);
+                        return type;
                     }
                 },
                 new FieldGetter(FIELD_PARAMETERS) {
@@ -759,20 +655,5 @@ public abstract class AbstractJob extends Storable {
                     }
                 }
         };
-    }
-
-    public List getActivePickupsOfGroup(final String groupId) {
-        final List result = new ArrayList();
-        for (int i = 0; i < stops.size(); i++) {
-            final AbstractStop stop = (AbstractStop) stops.get(i);
-            if (stop.isPickup() && !stop.isCompleted() && groupId.equals(stop.getGroupId())) {
-                result.add(stop);
-            }
-        }
-        return result;
-    }
-
-    public interface StopVisitor {
-        boolean visit(AbstractStop stop);
     }
 }

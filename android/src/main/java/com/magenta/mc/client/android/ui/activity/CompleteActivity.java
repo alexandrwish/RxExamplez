@@ -99,7 +99,7 @@ public class CompleteActivity extends DistributionActivity {
                 .add(new Attribute(getString(R.string.order_type_label), stop.getParameter(Stop.ATTR_ORDER_TYPE)))
                 .add(new Attribute(getString(R.string.notes_label), stop.getNotes()));
         try {
-            dynamicAttributeView.addAll(DistributionDAO.getInstance(getApplicationContext()).getDynamicAttributes(currentJobId, currentStopId));
+            dynamicAttributeView.addAll(DistributionDAO.getInstance().getDynamicAttributes(currentJobId, currentStopId));
         } catch (SQLException ignore) {
         } finally {
             dynamicAttributeView.clear().render();
@@ -239,7 +239,7 @@ public class CompleteActivity extends DistributionActivity {
     private void completeJob(Job job, Stop stop) {
         try {
             List<DynamicAttributeRecord> records = new LinkedList<>();
-            for (DynamicAttributeEntity entity : DistributionDAO.getInstance(CompleteActivity.this).getDynamicAttributes(currentJobId, currentStopId)) {
+            for (DynamicAttributeEntity entity : DistributionDAO.getInstance().getDynamicAttributes(currentJobId, currentStopId)) {
                 if (entity.isPdaEditable() && entity.isPdaRequired() && StringUtils.isBlank(entity.getValue()) && !entity.getTypeName().equals(DynamicAttributeType.BOOLEAN)) {
                     Toast.makeText(this, R.string.fill_all_attributes, Toast.LENGTH_LONG).show();
                     return;
@@ -247,19 +247,19 @@ public class CompleteActivity extends DistributionActivity {
                 records.add(entity.toRecord());
             }
             stop.setDynamicAttributes(new Gson().toJson(records.toArray(new DynamicAttributeRecord[records.size()])));
-            DistributionDAO.getInstance(CompleteActivity.this).clearDynamicAttribute(stop.getReferenceId());
+            DistributionDAO.getInstance().clearDynamicAttribute(stop.getReferenceId());
         } catch (SQLException ignore) {
         }
         try {
             List<OrderItemRecord> records = new LinkedList<>();
-            for (OrderItemEntity entity : DistributionDAO.getInstance(CompleteActivity.this).getOrderItems(currentJobId, currentStopId)) {
+            for (OrderItemEntity entity : DistributionDAO.getInstance().getOrderItems(currentJobId, currentStopId)) {
                 records.add(entity.toRecord());
             }
             stop.setOrderItems(new Gson().toJson(records.toArray(new OrderItemRecord[records.size()])));
-            DistributionDAO.getInstance(CompleteActivity.this).clearOrderItems(stop.getReferenceId());
+            DistributionDAO.getInstance().clearOrderItems(stop.getReferenceId());
         } catch (SQLException ignore) {
         }
-        Object[] signature = new SignatureDAO(CompleteActivity.this).get(currentJobId, currentStopId);
+        String[] signature = new SignatureDAO(CompleteActivity.this).get(currentJobId, currentStopId);
         if (signature != null) {
             stop.setValue("name", signature[0]);
             stop.setValue("signature", signature[1]);

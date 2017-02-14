@@ -25,10 +25,6 @@ public class DynamicAttributeRecord implements Serializable {
 
     private DynamicAttributeType typeName;
 
-    public DynamicAttributeRecord() {
-        super();
-    }
-
     public DynamicAttributeRecord(long mxId, String value) {
         this.mxId = mxId;
         this.value = value;

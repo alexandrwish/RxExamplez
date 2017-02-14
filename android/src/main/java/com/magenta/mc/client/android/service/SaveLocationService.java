@@ -41,7 +41,7 @@ public class SaveLocationService extends SaveLocationsService {
                             entity.setDate(loc.getTime());
                             entity.setSpeed(loc.getSpeed());
                             try {
-                                DistributionDAO.getInstance(DistributionApplication.getContext()).saveLocation(entity);
+                                DistributionDAO.getInstance().saveLocation(entity);
                             } catch (SQLException e) {
                                 MCLoggerFactory.getLogger(getClass()).error(e.getMessage(), e);
                             }

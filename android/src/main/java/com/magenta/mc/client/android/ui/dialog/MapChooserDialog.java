@@ -38,7 +38,7 @@ public class MapChooserDialog extends DistributionDialogFragment {
         mapSettings = (Map) bundle.getSerializable("map.property");
         final ArrayList<String> mapProviders = new ArrayList<>(mapSettings.keySet());
         try {
-            List<MapSettingsEntity> settingsEntities = DistributionDAO.getInstance(getActivity()).getMapSettings(driver);
+            List<MapSettingsEntity> settingsEntities = DistributionDAO.getInstance().getMapSettings(driver);
             if (settingsEntities.isEmpty()) {
                 entity = new MapSettingsEntity();
                 entity.setDriver(driver);
@@ -90,7 +90,7 @@ public class MapChooserDialog extends DistributionDialogFragment {
                 .setPositiveButton(R.string.mx_ok, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 try {
-                                    DistributionDAO.getInstance(getActivity()).saveMapSettings(entity);
+                                    DistributionDAO.getInstance().saveMapSettings(entity);
                                 } catch (SQLException ignore) {
                                 }
                             }
@@ -120,7 +120,7 @@ public class MapChooserDialog extends DistributionDialogFragment {
             entity.setMapProviderType(MapProviderType.YANDEX);
         } else {
             entity.setMapProviderType(MapProviderType.LEAFLET);
-            Map<String, Map<String, String>> setting = new HashMap<String, Map<String, String>>();
+            Map<String, Map<String, String>> setting = new HashMap<>();
             setting.put(provider, (Map) mapSettings.get(provider));
             entity.setSettings(new Gson().toJson(setting));
         }
@@ -142,7 +142,7 @@ public class MapChooserDialog extends DistributionDialogFragment {
             }
             fillEntity(provider);
             try {
-                DistributionDAO.getInstance(getActivity()).saveMapSettings(entity);
+                DistributionDAO.getInstance().saveMapSettings(entity);
             } catch (SQLException ignore) {
             }
         }

@@ -5,7 +5,7 @@ import com.magenta.mc.client.android.mc.MxSettings;
 import com.magenta.mc.client.android.mc.client.Login;
 import com.magenta.mc.client.android.mc.settings.Settings;
 import com.magenta.mc.client.android.mc.setup.Setup;
-import com.magenta.mc.client.android.receiver.LoginCheckReceiver;
+import com.magenta.mc.client.android.task.LoginCheckTask;
 import com.magenta.mc.client.android.service.ServicesRegistry;
 import com.magenta.mc.client.android.util.UserUtils;
 
@@ -27,7 +27,7 @@ public class Utf8IOStream extends com.magenta.mc.client.android.mc.io.Utf8IOStre
         }
         if (Boolean.valueOf((String) Setup.get().getSettings().get(MxSettings.ENABLE_API)) && !DistributionApplication.getInstance().isLoginPress()) {
             String driver = UserUtils.cutComponentName(Settings.get().getUserId());
-            String result = XMPPStream2.getThreadSafeClient().newCall(new Request.Builder().url(LoginCheckReceiver.generateLoginURL(driver)).get().build()).execute().body().string();
+            String result = XMPPStream2.getThreadSafeClient().newCall(new Request.Builder().url(LoginCheckTask.generateLoginURL(driver)).get().build()).execute().body().string();
             if (result.isEmpty()) {
                 super.send(data);
             } else {
