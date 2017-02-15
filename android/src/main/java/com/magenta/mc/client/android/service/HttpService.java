@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.google.gson.Gson;
+import com.magenta.hdmate.mx.model.CancelationReason;
+import com.magenta.hdmate.mx.model.JobRecord;
 import com.magenta.hdmate.mx.model.SettingsResultRecord;
 import com.magenta.mc.client.android.DistributionApplication;
 import com.magenta.mc.client.android.common.Constants;
@@ -22,6 +24,7 @@ import com.magenta.mc.client.android.ui.activity.common.LoginActivity;
 import com.magenta.mc.client.android.util.IntentAttributes;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,6 +71,10 @@ public class HttpService extends IntentService {
                     getSettings();
                     break;
                 }
+                case (Constants.JOBS_TYPE): {
+                    getJobs();
+                    break;
+                }
             }
         }
     }
@@ -108,6 +115,7 @@ public class HttpService extends IntentService {
                     }
 
                     public void onNext(SettingsResultRecord settingsResultRecord) {
+                        if (settingsResultRecord == null) return;
                         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(DistributionApplication.getContext()).edit();
                         for (Map.Entry<String, String> entry : settingsResultRecord.getParameters().entrySet()) {
                             if (entry.getKey().equalsIgnoreCase("mobile.maxunites.allow.to.pass.in.arbitrary.order")) {
@@ -122,11 +130,11 @@ public class HttpService extends IntentService {
                             editor.putString(entry.getKey(), entry.getValue());
                             Settings.get().setProperty(entry.getKey(), entry.getValue());
                         }
-//                        ArrayList<String> reasons = new ArrayList<>(settingsResultRecord.getCancelationReasons().size());
-//                        for (CancelationReason reason : settingsResultRecord.getCancelationReasons()) {
-//                            reasons.add(reason.getTitle());
-//                        }
-//                        MxSettings.getInstance().setOrderCancelReasons(reasons);
+                        List<String> reasons = new ArrayList<>(settingsResultRecord.getOrderCancelReasons().size());
+                        for (CancelationReason reason : settingsResultRecord.getOrderCancelReasons()) {
+                            reasons.add(reason.getTitle());
+                        }
+                        MxSettings.getInstance().setOrderCancelReasons(reasons);
                         Map<String, Map<String, String>> mapSettings = settingsResultRecord.getMapProperties();
                         for (String s : MxSettings.ignoredMapProviders) {
                             settingsResultRecord.getMapProperties().remove(s);
@@ -157,6 +165,24 @@ public class HttpService extends IntentService {
                         }
                         Settings.get().saveSettings();
                         editor.apply();
+                    }
+                });
+    }
+
+    private void getJobs() {
+        HttpClient.getInstance().getJobs()
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<List<JobRecord>>() {
+                    public void onCompleted() {
+                        System.out.println();
+                    }
+
+                    public void onError(Throwable e) {
+                        MCLoggerFactory.getLogger(LoginActivity.class).error(e.getMessage(), e);
+                    }
+
+                    public void onNext(List<JobRecord> jobRecords) {
+                        System.out.println();
                     }
                 });
     }

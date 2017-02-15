@@ -4,11 +4,11 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.magenta.mc.client.android.mc.settings.Settings;
 import com.magenta.mc.client.android.settings.AndroidSettings;
 import com.magenta.mc.client.android.util.Checksum;
 import com.magenta.mc.client.android.util.DemoDataUtils;
 import com.magenta.mc.client.android.util.StringUtils;
-import com.magenta.mc.client.android.mc.settings.Settings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -177,7 +177,7 @@ public class MxSettings extends AndroidSettings {
         return getList(ORDER_CANCEL_REASONS);
     }
 
-    public void setOrderCancelReasons(ArrayList<String> reasons) {
+    public void setOrderCancelReasons(List<String> reasons) {
         setList(ORDER_CANCEL_REASONS, reasons);
     }
 
