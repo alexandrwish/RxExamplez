@@ -242,7 +242,7 @@ public abstract class AbstractStop extends StorableField {
         }
     }
 
-    public void fillStatusMap(HashMap<String, String> map) {
+    public void fillStatusMap(Map<String, String> map) {
         map.putAll(stopValues);
     }
 

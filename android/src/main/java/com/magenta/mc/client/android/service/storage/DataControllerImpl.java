@@ -2,9 +2,11 @@ package com.magenta.mc.client.android.service.storage;
 
 import android.util.Pair;
 
+import com.magenta.hdmate.mx.model.JobRecord;
 import com.magenta.mc.client.android.DistributionApplication;
 import com.magenta.mc.client.android.MobileApp;
 import com.magenta.mc.client.android.db.dao.CommonsDAO;
+import com.magenta.mc.client.android.entity.AbstractJobStatus;
 import com.magenta.mc.client.android.entity.AbstractStop;
 import com.magenta.mc.client.android.entity.JobType;
 import com.magenta.mc.client.android.entity.TaskState;
@@ -135,6 +137,10 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
         }
     }
 
+    public void reloadNewJobs(List<JobRecord> records) {
+
+    }
+
     public Job findJob(String refId) {
         return refToJob.get(refId);
     }
@@ -160,7 +166,7 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
         final Job oldJob = findJob(jobRef);
         if (oldJob == null || (oldJob.getState() == TaskState.RUN_CANCELLED || ((MxSettings) Setup.get().getSettings()).isIgnoreNewRunDuplicates())) {
             job.updated(); // mark for acknowledgement
-            final List jobStatusContainer = new ArrayList();
+            final List<AbstractJobStatus> jobStatusContainer = new ArrayList<>();
             if (job.getState() == TaskState.RUN_ASSIGNED || job.getState() == TaskState.RUN_SENT) {
                 jobStatusContainer.add(job.processSetState(TaskState.RUN_RECEIVED, false));
             }
@@ -201,7 +207,7 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
                 LOG.debug("Warning: update job #" + job.getReferenceId() + " was not found, job is already " + jobStatus + ", ignored.");
             }
         } else {
-            final List jobStatus = new ArrayList();
+            final List<AbstractJobStatus> jobStatus = new ArrayList<>();
             final int currentState = currentJob.getState();
             final boolean currentDone = currentJob.isCompleted() || currentJob.stopsDone();
             final boolean jobDone = job.isCompleted() || job.stopsDone();
@@ -222,7 +228,7 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
                 public void run() {
                     LOG.debug("update job notification started");
                     if (jobStatus.size() > 0) {
-                        ((JobStatus) jobStatus.get(0)).send();
+                        jobStatus.get(0).send();
                     }
                     LOG.debug("update status sending requested, scheduling cumulative action");
                     ServicesRegistry.getCoreService().notifyListeners(new JobEvent(EventType.JOB_UPDATED, job.getReferenceId(), showAlert));
@@ -298,7 +304,7 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
         ServicesRegistry.getCoreService().notifyListeners(new JobEvent(EventType.JOB_CANCELLED, referenceId, true));
     }
 
-    public JobStatus saveJobStatus(final Job job, final Map parameters) {
+    public JobStatus saveJobStatus(final Job job, final Map<String, String> parameters) {
         final JobStatus jobStatus = saveStatus(job, null, parameters);
         if (job.isCompleted() && job.isAcknowledged()) {
             moveToHistory(job);
@@ -322,12 +328,12 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
         }
     }
 
-    public JobStatus saveStatus(final Job job, final Stop stop, final Map parameters) {
+    public JobStatus saveStatus(final Job job, final Stop stop, final Map<String, String> parameters) {
         String jobStatusString = Job.getStateString(job.getState());
         if (stop != null) {
             jobStatusString = stop.getStateString();
         }
-        final HashMap map = new HashMap();
+        final Map<String, String> map = new HashMap<>();
         if (parameters != null) {
             map.putAll(parameters);
         }
@@ -348,7 +354,7 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
         return jobStatus;
     }
 
-    private JobStatus createJobStatusVO(String jobReferenceId, String jobStatusString, Map additionalParams) {
+    private JobStatus createJobStatusVO(String jobReferenceId, String jobStatusString, Map<String, String> additionalParams) {
         final JobStatus jobStatus = new JobStatus();
         jobStatus.setId("" + System.currentTimeMillis());
         jobStatus.setJobReferenceId(jobReferenceId);
@@ -409,11 +415,11 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
     /*
         clear all jobs and unsent statuses and reload jobs
      */
-    public void reloadJobs(List jobs) {
+    public void reloadJobs(List<Job> jobs) {
         LOG.debug("Reload jobs has been called. Number of jobs: " + jobs.size());
         clearCurrentJobsStorageAndCache();
         for (int i = 0; i < jobs.size(); i++) {
-            Job job = (Job) jobs.get(i);
+            Job job = jobs.get(i);
             if (isOldDate(job.getDate(), "reloadJobs skip job Id:" + job.getId())) {
                 refToJob.remove(job.getReferenceId());
                 continue;
@@ -453,7 +459,7 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
                 }
             }
         }
-        ServicesRegistry.getCoreService().notifyListeners(new BroadcastEvent<String>(EventType.RELOAD_SCHEDULE));
+        ServicesRegistry.getCoreService().notifyListeners(new BroadcastEvent<>(EventType.RELOAD_SCHEDULE));
     }
 
     private void updateStopFlags(Job job) {
@@ -476,7 +482,6 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
         }
     }
 
-    @SuppressWarnings("unchecked")
     public void addMockJob(final Job job) {
         refToJob.put(job.getReferenceId(), job);
     }
@@ -489,11 +494,11 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
         Resender.getInstance().clearCache(JobStatus.RESENDABLE_METADATA);
     }
 
-    private boolean isOldDate(Date date, String logprefix) {
+    private boolean isOldDate(Date date, String logPrefix) {
         Date deleteJobsOlder = DateUtils.getDateFromCurrent(MxSettings.getInstance().getDeleteJobsOlder() * -1);
         boolean isOld = DateUtils.getStartOfDay(date).before(deleteJobsOlder);
         if (isOld) {
-            MCLoggerFactory.getLogger(this.getClass()).info(logprefix + ", " + date);
+            MCLoggerFactory.getLogger(this.getClass()).info(logPrefix + ", " + date);
         }
         return isOld;
     }

@@ -77,4 +77,19 @@ public class HDDelegate extends SmokeActivityDelegate implements HttpResponseLis
             }
         }
     }
+
+    public void jobsResult(int result) {
+        MCLoggerFactory.getLogger(HDDelegate.class).debug("Jobs result = " + result);
+        switch (result) {
+            case Constants.START: {
+                break;
+            }
+            case Constants.ERROR: {
+                break;
+            }
+            case Constants.STOP: {
+                break;
+            }
+        }
+    }
 }

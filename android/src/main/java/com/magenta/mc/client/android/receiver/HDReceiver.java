@@ -22,6 +22,8 @@ public class HDReceiver extends BroadcastReceiver {
             listener.loginResult(intent.getIntExtra(IntentAttributes.HTTP_LOGIN_RESPONSE_TYPE, 0));
         } else if (intent.getExtras().containsKey(IntentAttributes.HTTP_SETTINGS_RESPONSE_TYPE)) {
             listener.settingsResult(intent.getIntExtra(IntentAttributes.HTTP_SETTINGS_RESPONSE_TYPE, 0));
+        } else if(intent.getExtras().containsKey(IntentAttributes.HTTP_JOBS_RESPONSE_TYPE)) {
+            listener.jobsResult(intent.getIntExtra(IntentAttributes.HTTP_JOBS_RESPONSE_TYPE, 0));
         }
     }
 }

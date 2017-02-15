@@ -13,6 +13,7 @@ public interface IntentAttributes {
 
     String HTTP_SETTINGS_RESPONSE_TYPE = "HTTP_SETTINGS_RESPONSE_TYPE";
     String HTTP_LOGIN_RESPONSE_TYPE = "HTTP_LOGIN_RESPONSE_TYPE";
+    String HTTP_JOBS_RESPONSE_TYPE = "HTTP_JOBS_RESPONSE_TYPE";
     String HTTP_TYPE = "HTTP_TYPE";
     String HTTP_ACCOUNT = "account";
     String HTTP_LOGIN = "login";

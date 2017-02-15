@@ -174,15 +174,17 @@ public class HttpService extends IntentService {
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Subscriber<List<JobRecord>>() {
                     public void onCompleted() {
-                        System.out.println();
+                        sendBroadcast(new Intent(Constants.HTTP_SERVICE_NAME).putExtra(IntentAttributes.HTTP_JOBS_RESPONSE_TYPE, Constants.STOP));
                     }
 
                     public void onError(Throwable e) {
                         MCLoggerFactory.getLogger(LoginActivity.class).error(e.getMessage(), e);
+                        sendBroadcast(new Intent(Constants.HTTP_SERVICE_NAME).putExtra(IntentAttributes.HTTP_JOBS_RESPONSE_TYPE, Constants.ERROR));
                     }
 
                     public void onNext(List<JobRecord> jobRecords) {
-                        System.out.println();
+                        sendBroadcast(new Intent(Constants.HTTP_SERVICE_NAME).putExtra(IntentAttributes.HTTP_JOBS_RESPONSE_TYPE, Constants.START));
+                        ServicesRegistry.getDataController().reloadNewJobs(jobRecords);
                     }
                 });
     }

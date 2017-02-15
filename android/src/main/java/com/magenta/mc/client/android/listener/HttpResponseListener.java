@@ -5,4 +5,6 @@ public interface HttpResponseListener {
     void loginResult(int result);
 
     void settingsResult(int result);
+
+    void jobsResult(int result);
 }
