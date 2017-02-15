@@ -3,13 +3,8 @@ package com.magenta.mc.client.android.mc.client;
 import com.magenta.mc.client.android.mc.client.resend.Resender;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 
-/**
- * Created 30.04.2010
- *
- * @author Konstantin Pestrikov
- */
 public class ConnectionListener {
-    private static boolean connecting;
+
     private static ConnectionListener instance;
     private boolean connected;
     private Listener listener = new Listener() {
@@ -34,16 +29,10 @@ public class ConnectionListener {
     }
 
     public static void startConnecting() {
-        connecting = true;
     }
 
     public static void stopConnecting() {
-        connecting = false;
         Login.wake();
-    }
-
-    public static boolean isConnecting() {
-        return connecting;
     }
 
     public Listener getListener() {
@@ -55,7 +44,6 @@ public class ConnectionListener {
     }
 
     public void connected() {
-        connecting = false;
         connected = true;
         DriverStatus.resend();
         Resender.getInstance().start();
@@ -90,6 +78,7 @@ public class ConnectionListener {
     }
 
     public interface Listener {
+
         void connected();
 
         void disconnected();

@@ -20,14 +20,11 @@ public class Resender {
     private static Resender instance;
     private int INTERVAL = 30000; // 30 seconds
     private MCTimerTask resendResendables;
-    private Map resendableMap;
+    private Map<ResendableMetadata, List<Resendable>> resendableMap;
     private ReentrantWriterPreferenceReadWriteLock cacheLock = new ReentrantWriterPreferenceReadWriteLock();
     private ResendableMetadata[] resendablesMetadata;
-    private Map retransmissionTime = new HashMap(); // millisecond (java.lang.Long) of last retransmission mapped by StorableMetadata
+    private Map<ResendableMetadata, Long> retransmissionTime = new HashMap<>();
     private Mutex retransmissionLock = new Mutex();
-    /**
-     * Load cache from storage
-     */
     private boolean cacheLoaded;
 
     private Resender() {
@@ -44,10 +41,9 @@ public class Resender {
         this.resendablesMetadata = resendablesMetadata;
         try {
             cacheLock.writeLock().acquire();
-
-            resendableMap = new HashMap();
-            for (int i = 0; i < resendablesMetadata.length; i++) {
-                resendableMap.put(resendablesMetadata[i], new ArrayList());
+            resendableMap = new HashMap<>();
+            for (ResendableMetadata aResendablesMetadata : resendablesMetadata) {
+                resendableMap.put(aResendablesMetadata, new ArrayList<Resendable>());
             }
         } catch (InterruptedException e) {
             // ok
@@ -59,7 +55,7 @@ public class Resender {
     private List getResendables(ResendableMetadata meta) {
         try {
             cacheLock.readLock().acquire();
-            return (List) resendableMap.get(meta);
+            return resendableMap.get(meta);
         } catch (InterruptedException e) {
             // ok
         } finally {
@@ -69,8 +65,7 @@ public class Resender {
     }
 
     private void send(boolean all) {
-        for (int i = 0; i < resendablesMetadata.length; i++) {
-            ResendableMetadata meta = resendablesMetadata[i];
+        for (ResendableMetadata meta : resendablesMetadata) {
             if (meta.consecutive) {
                 if (all) {
                     retransmitConsecutive(meta);
@@ -82,21 +77,15 @@ public class Resender {
     }
 
     public void start() {
-
         stop();
-
         resendResendables = new MCTimerTask() {
 
             public void runTask() {
                 send(false);
             }
-
         };
-
         loadCacheIfNecessary();
-
         send(true);
-
         // seems like retransmission interval is not needed
         INTERVAL = Setup.get().getSettings().getIntProperty("resender.interval", "30000");
         MCLoggerFactory.getLogger(getClass()).debug("Resender started with interval: " + INTERVAL);
@@ -107,11 +96,9 @@ public class Resender {
             retransmitConsecutive(meta);
         } else {
             List resendables = getResendables(meta);
-
             if (resendables.size() > 0) {
                 try {
                     meta.lock.readLock().acquire();
-
                     for (int k = 0; k < resendables.size(); k++) {
                         Resendable resendable = (Resendable) resendables.get(k);
                         MCLoggerFactory.getLogger(Resender.class).trace("sending " + k + " " + resendable);
@@ -157,11 +144,9 @@ public class Resender {
         try {
             retransmissionLock.acquire();
             Object timeObj = retransmissionTime.get(meta);
-            if (timeObj != null && (System.currentTimeMillis() - ((Long) timeObj).longValue()) < INTERVAL) {
-                // resendable was sent recently, keep waiting for response
-            } else {
+            if (timeObj != null && (System.currentTimeMillis() - (Long) timeObj) >= INTERVAL) {
                 retransmit = true;
-                retransmissionTime.put(meta, new Long(System.currentTimeMillis()));
+                retransmissionTime.put(meta, System.currentTimeMillis());
             }
         } catch (InterruptedException e) {
             // thread has been interrupted - seem to be closing application or session
@@ -206,11 +191,9 @@ public class Resender {
 
     public void clearCache(ResendableMetadata metadata) {
         List resendableList = getResendables(metadata);
-
         if (resendableList != null) {
             try {
                 metadata.lock.writeLock().acquire();
-
                 for (int i = 0; i < resendableList.size(); i++) {
                     Setup.get().getStorage().delete((Resendable) resendableList.get(i));
                 }
@@ -228,10 +211,10 @@ public class Resender {
             try {
                 cacheLock.writeLock().acquire();
                 if (!cacheLoaded) {
-                    for (int i = 0; i < resendablesMetadata.length; i++) {
-                        List resendables = Setup.get().getStorage().load(resendablesMetadata[i]);
+                    for (ResendableMetadata aResendablesMetadata : resendablesMetadata) {
+                        List<Resendable> resendables = Setup.get().getStorage().load(aResendablesMetadata);
                         if (resendables.size() > 0) {
-                            resendableMap.put(((Resendable) resendables.get(0)).getMetadata(), resendables);
+                            resendableMap.put((ResendableMetadata) resendables.get(0).getMetadata(), resendables);
                         }
                     }
                     cacheLoaded = true;
@@ -254,7 +237,6 @@ public class Resender {
         saveResendable(resendable);
         sendSavedResendable(resendable);
     }
-
 
     /**
      * Enable resending and try to send resendable
@@ -282,11 +264,10 @@ public class Resender {
         if (!((ResendableMetadata) resendable.getMetadata()).consecutive) {
             try {
                 cacheLock.writeLock().acquire();
-
-                List resendableList = (List) resendableMap.get(resendable.getMetadata());
+                List<Resendable> resendableList = resendableMap.get(resendable.getMetadata());
                 if (resendableList == null) {
-                    resendableList = new ArrayList();
-                    resendableMap.put(resendable.getMetadata(), resendableList);
+                    resendableList = new ArrayList<>();
+                    resendableMap.put((ResendableMetadata) resendable.getMetadata(), resendableList);
                 }
                 resendableList.add(resendable);
             } catch (InterruptedException e) {
@@ -337,7 +318,7 @@ public class Resender {
                     ListIterator iterator = resendableList.listIterator();
                     while (iterator.hasNext()) {
                         Resendable next = (Resendable) iterator.next();
-                        if (Long.parseLong(next.getId()) == id.longValue()) {
+                        if (Long.parseLong(next.getId()) == id) {
                             iterator.remove();
                             Setup.get().getStorage().delete(next);
                             break;
@@ -353,11 +334,9 @@ public class Resender {
     }
 
     private void cancelErrorTimeouts() {
-        for (int i = 0; i < resendablesMetadata.length; i++) {
-            ResendableMetadata metadata = resendablesMetadata[i];
+        for (ResendableMetadata metadata : resendablesMetadata) {
             try {
                 metadata.lock.readLock().acquire();
-
                 if (metadata.errorTimeout != null) {
                     metadata.errorTimeout.cancel();
                     metadata.errorTimeout = null;
@@ -373,7 +352,6 @@ public class Resender {
     private void scheduleNextErrorTimeout(final ResendableMetadata metadata, final Runnable task) {
         try {
             metadata.lock.readLock().acquire();
-
             if (metadata.errorTimeout != null) {
                 metadata.errorTimeout.cancel();
             }
@@ -409,11 +387,9 @@ public class Resender {
             if (resendableList != null) {
                 try {
                     metadata.lock.readLock().acquire();
-
-                    ListIterator iterator = resendableList.listIterator();
-                    while (iterator.hasNext()) {
-                        final Resendable next = (Resendable) iterator.next();
-                        if (Long.parseLong(next.getId()) == id.longValue()) {
+                    for (Object aResendableList : resendableList) {
+                        final Resendable next = (Resendable) aResendableList;
+                        if (Long.parseLong(next.getId()) == id) {
                             scheduleNextErrorTimeout(metadata, new Runnable() {
                                 public void run() {
                                     resetRetransmissionTimeout(metadata);
@@ -431,5 +407,4 @@ public class Resender {
             }
         }
     }
-
 }

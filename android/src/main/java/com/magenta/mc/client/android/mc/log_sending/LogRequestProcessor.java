@@ -1,12 +1,12 @@
 package com.magenta.mc.client.android.mc.log_sending;
 
-import com.magenta.mc.client.android.mc.bin_chunks.random.RandomBinaryTransmitter;
 import com.magenta.mc.client.android.mc.client.resend.Resender;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.mc.storage.BinaryStorable;
 import com.magenta.mc.client.android.mc.storage.StorableMetadata;
 import com.magenta.mc.client.android.mc.storage.Storage;
+import com.magenta.mc.client.android.rpc.bin_chunks.random.RandomBinaryTransmitter;
 
 import net.sf.microproperties.Properties;
 

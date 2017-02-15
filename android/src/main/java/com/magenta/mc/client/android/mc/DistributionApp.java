@@ -13,7 +13,7 @@ import com.magenta.mc.client.android.mc.client.TimeSynchronization;
 import com.magenta.mc.client.android.mc.client.resend.Resender;
 import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.rpc.xmpp.XMPPStream;
-import com.magenta.mc.client.android.rpc.xmpp.extensions.rpc.JabberRPC;
+import com.magenta.mc.client.android.rpc.JabberRPC;
 
 public class DistributionApp extends MxMobile {
 

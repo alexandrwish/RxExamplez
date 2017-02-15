@@ -15,7 +15,6 @@ import com.magenta.mc.client.android.mc.MxSettings;
 import com.magenta.mc.client.android.mc.settings.Settings;
 import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.mc.xml.XMLDataBlock;
-import com.magenta.mc.client.android.rpc.xmpp.extensions.rpc.JabberRPC;
 import com.magenta.mc.client.android.ui.AndroidUI;
 import com.magenta.mc.client.android.ui.activity.DistributionActivity;
 import com.magenta.mc.client.android.ui.dialog.DialogFactory;

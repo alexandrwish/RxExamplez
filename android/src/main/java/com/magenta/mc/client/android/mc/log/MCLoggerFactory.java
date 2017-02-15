@@ -1,5 +1,7 @@
 package com.magenta.mc.client.android.mc.log;
 
+import android.support.annotation.NonNull;
+
 import com.magenta.mc.client.android.mc.settings.PropertyEventListener;
 import com.magenta.mc.client.android.mc.settings.Settings;
 import com.magenta.mc.client.android.mc.setup.Setup;
@@ -14,29 +16,21 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 
-/**
- * Author: Petr Popov
- * Created: 27.01.2011 11:47:16
- * <p/>
- * Copyright (c) 1999-2010 Magenta Corporation Ltd. All Rights Reserved.
- * Magenta Technology proprietary and confidential.
- * Use is subject to license terms.
- * <p/>
- */
 public class MCLoggerFactory {
+
     private static final Object instanceMutex = new Object();
     private static final Object initMutex = new Object();
+    private static final String PROPERTIES_FILENAME = "microlog.properties";
+    private static final String stdOutLoggerName = "STD OUT";
+    private static final String stdErrLoggerName = "STD ERR";
     protected static MCLoggerFactory instance;
-    private final String PROPERTIES_FILENAME = "microlog.properties";
-    protected String stdOutLoggerName = "STD OUT";
-    protected String stdErrLoggerName = "STD ERR";
-    protected PrintStream systemOut = System.out;
-    protected PrintStream systemErr = System.err;
-    protected PrintStream loggerOutStream;
-    protected PrintStream loggerErrStream;
     protected MCLoggerDelegate delegate = new MCLoggerDelegate();
-    protected MCMemoryLogger beforeInitLogger = new MCMemoryLogger();
-    protected boolean isInitialized;
+    private PrintStream systemOut = System.out;
+    private PrintStream systemErr = System.err;
+    private PrintStream loggerOutStream;
+    private PrintStream loggerErrStream;
+    private MCMemoryLogger beforeInitLogger = new MCMemoryLogger();
+    private boolean isInitialized;
     private Properties properties;
 
     protected MCLoggerFactory() {
@@ -65,11 +59,7 @@ public class MCLoggerFactory {
         return getInstance().getLogger1(clazz);
     }
 
-    public boolean isLoggingInitialized() {
-        return isInitialized;
-    }
-
-    protected MCLogger getLogger1() {
+    private MCLogger getLogger1() {
         if (isInitialized) {
             return delegate.get(LoggerFactory.getLogger());
         } else {
@@ -77,7 +67,7 @@ public class MCLoggerFactory {
         }
     }
 
-    protected MCLogger getLogger1(String name) {
+    private MCLogger getLogger1(String name) {
         if (isInitialized) {
             if (Setup.get().getSettings().getBooleanProperty(Settings.LOG_USING_ONE_LOGGER_PROPERTY, "false")) {
                 name = "MCLogger";
@@ -88,7 +78,7 @@ public class MCLoggerFactory {
         }
     }
 
-    protected MCLogger getLogger1(Class clazz) {
+    private MCLogger getLogger1(Class clazz) {
         if (isInitialized) {
             if (Setup.get().getSettings().getBooleanProperty(Settings.LOG_USING_ONE_LOGGER_PROPERTY, "false")) {
                 clazz = MCLogger.class;
@@ -103,7 +93,7 @@ public class MCLoggerFactory {
         initLogging(null);
     }
 
-    public void initLogging(Properties micrologProperties) {
+    private void initLogging(Properties micrologProperties) {
         if (!isInitialized) {
             synchronized (initMutex) {
                 if (!isInitialized) {
@@ -137,7 +127,7 @@ public class MCLoggerFactory {
         }
     }
 
-    protected void pipeStdToLogger() {
+    private void pipeStdToLogger() {
         if (Setup.get().getSettings().getLoggingEnabled()) {
             if (loggerOutStream == null) {
                 loggerOutStream = redirectStreamToLogger(systemOut, stdOutLoggerName, Level.DEBUG);
@@ -153,7 +143,7 @@ public class MCLoggerFactory {
         }
     }
 
-    protected PrintStream redirectStreamToLogger(PrintStream stream, final String loggerName, final Level level) {
+    private PrintStream redirectStreamToLogger(PrintStream stream, final String loggerName, final Level level) {
         return new PrintStream(stream) {
             private RecursionCheck recursionCheck = new RecursionCheck();
             private boolean issuedWarning;
@@ -172,17 +162,8 @@ public class MCLoggerFactory {
                 write(bytes, 0, bytes.length);
             }
 
-            public void write(byte b) {
-                byte[] bytes = {b};
-                write(bytes, 0, 1);
-            }
-
-            public void write(byte[] b, int off, int len) {
+            public void write(@NonNull byte[] b, int off, int len) {
                 if (recursionCheck.isRecursion()) {
-                    /* There is a configuration error that is causing looping. Most
-                       likely there are two console appenders so just return to prevent
-                       spinning.
-                    */
                     if (!issuedWarning) {
                         String msg = "ERROR: invalid console appender config detected, console systemOut is looping";
                         try {
@@ -192,10 +173,9 @@ public class MCLoggerFactory {
                         issuedWarning = true;
                     }
                 } else {
-                    // Remove the end of line chars
-                    while (len > 0 && (b[len - 1] == '\n' || b[len - 1] == '\r') && len > off)
+                    while (len > 0 && (b[len - 1] == '\n' || b[len - 1] == '\r') && len > off) {
                         len--;
-
+                    }
                     if (len != 0) {
                         final String msg = new String(b, off, len);
                         recursionCheck.execute(new Runnable() {
@@ -215,14 +195,6 @@ public class MCLoggerFactory {
                 }
             }
         };
-    }
-
-    public PrintStream getSystemOut() {
-        return systemOut;
-    }
-
-    public PrintStream getSystemErr() {
-        return systemErr;
     }
 
     public Properties getProperties() {

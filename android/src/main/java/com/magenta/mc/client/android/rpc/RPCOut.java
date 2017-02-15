@@ -8,8 +8,6 @@ import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 import com.magenta.mc.client.android.mc.settings.Settings;
 import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.mc.xml.XMLDataBlock;
-import com.magenta.mc.client.android.rpc.xmpp.extensions.rpc.DefaultRpcResponseHandler;
-import com.magenta.mc.client.android.rpc.xmpp.extensions.rpc.JabberRPC;
 import com.magenta.mc.client.android.renderer.Renderer;
 import com.magenta.mc.client.android.rpc.operations.CreateUnavailability;
 import com.magenta.mc.client.android.rpc.operations.JobsRefreshing;

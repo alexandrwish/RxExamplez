@@ -60,7 +60,7 @@ public class HttpClient {
         record.setAccountTechName(account);
         record.setUsername(login);
         record.setPassword(password);
-        record.setMd5Password(false);
+        record.setMd5Password(true);
         return loginClient.login(address, record);
     }
 

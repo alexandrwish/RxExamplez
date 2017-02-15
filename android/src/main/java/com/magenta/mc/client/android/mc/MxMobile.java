@@ -19,7 +19,7 @@ import com.magenta.mc.client.android.mc.settings.Settings;
 import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.rpc.RPCOut;
 import com.magenta.mc.client.android.rpc.RPCTarget;
-import com.magenta.mc.client.android.rpc.xmpp.extensions.rpc.JabberRPC;
+import com.magenta.mc.client.android.rpc.JabberRPC;
 import com.magenta.mc.client.android.service.ServicesRegistry;
 import com.magenta.mc.client.android.ui.AndroidUI;
 import com.magenta.mc.client.android.ui.activity.MxGenericActivity;

@@ -1,41 +1,33 @@
 package com.magenta.mc.client.android.mc.login;
 
-/**
- * Created 03.03.2010
- *
- * @author Konstantin Pestrikov
- */
 public class LoginListenerWrapper implements LoginListener {
-    LoginListener[] listeners;
+
+    private LoginListener[] listeners;
 
     public LoginListenerWrapper(LoginListener[] listeners) {
         this.listeners = listeners;
     }
 
     public void loginFailed(String error) {
-        for (int i = 0; i < listeners.length; i++) {
-            LoginListener listener = listeners[i];
+        for (LoginListener listener : listeners) {
             listener.loginFailed(error);
         }
     }
 
     public void loginSuccess(boolean initiatedByUser) {
-        for (int i = 0; i < listeners.length; i++) {
-            LoginListener listener = listeners[i];
+        for (LoginListener listener : listeners) {
             listener.loginSuccess(initiatedByUser);
         }
     }
 
     public void loginMessage(String msg) {
-        for (int i = 0; i < listeners.length; i++) {
-            LoginListener listener = listeners[i];
+        for (LoginListener listener : listeners) {
             listener.loginMessage(msg);
         }
     }
 
     public void bindResource(String myJid) {
-        for (int i = 0; i < listeners.length; i++) {
-            LoginListener listener = listeners[i];
+        for (LoginListener listener : listeners) {
             listener.bindResource(myJid);
         }
     }

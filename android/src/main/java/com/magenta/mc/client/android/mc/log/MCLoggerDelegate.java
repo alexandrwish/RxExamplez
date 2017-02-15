@@ -3,15 +3,6 @@ package com.magenta.mc.client.android.mc.log;
 import net.sf.microlog.core.Level;
 import net.sf.microlog.core.Logger;
 
-/**
- * Author: Petr Popov
- * Created: 07.02.2011 15:32:43
- * <p/>
- * Copyright (c) 1999-2010 Magenta Corporation Ltd. All Rights Reserved.
- * Magenta Technology proprietary and confidential.
- * Use is subject to license terms.
- * <p/>
- */
 public class MCLoggerDelegate implements MCLogger {
 
     private ThreadLocal logger = new ThreadLocal();
@@ -68,5 +59,4 @@ public class MCLoggerDelegate implements MCLogger {
     public void error(Object message, Throwable t) {
         ((Logger) logger.get()).error(message, t);
     }
-
 }

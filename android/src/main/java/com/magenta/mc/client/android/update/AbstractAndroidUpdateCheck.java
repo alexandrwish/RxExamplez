@@ -14,7 +14,7 @@ import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.mc.update.UpdateCheck;
 import com.magenta.mc.client.android.mc.util.FileUtils;
-import com.magenta.mc.client.android.rpc.xmpp.extensions.rpc.DefaultRpcResponseHandler;
+import com.magenta.mc.client.android.rpc.DefaultRpcResponseHandler;
 import com.magenta.mc.client.android.settings.AndroidSettings;
 import com.magenta.mc.client.android.ui.AndroidUI;
 

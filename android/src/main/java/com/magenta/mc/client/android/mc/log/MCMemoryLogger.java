@@ -3,23 +3,15 @@ package com.magenta.mc.client.android.mc.log;
 import net.sf.microlog.core.Level;
 
 import java.util.ArrayList;
+import java.util.List;
 
-/**
- * Author: Petr Popov
- * Created: 07.02.2011 15:16:41
- * <p/>
- * Copyright (c) 1999-2010 Magenta Corporation Ltd. All Rights Reserved.
- * Magenta Technology proprietary and confidential.
- * Use is subject to license terms.
- * <p/>
- */
 public class MCMemoryLogger implements MCLogger {
 
-    private ThreadLocal loggerName = new ThreadLocal();
-    private ArrayList messages = new ArrayList();
-    private ArrayList names = new ArrayList();
-    private ArrayList levels = new ArrayList();
-    private ArrayList throwables = new ArrayList();
+    private final ThreadLocal loggerName = new ThreadLocal();
+    private final List messages = new ArrayList();
+    private final List names = new ArrayList();
+    private final List levels = new ArrayList();
+    private final List throwables = new ArrayList();
 
     public MCMemoryLogger get(Class clazz) {
         loggerName.set(clazz);
@@ -98,18 +90,17 @@ public class MCMemoryLogger implements MCLogger {
             for (int i = 0; i < Math.max(messages.size(), levels.size()); i++) {
                 Level level = (Level) levels.get(i);
                 String message = (String) messages.get(i);
-                MCLogger logger = null;
+                MCLogger logger;
                 if (names.get(i) == null) {
-                    logger = MCLoggerFactory.getInstance().getLogger();
+                    logger = MCLoggerFactory.getLogger();
                 } else if (names.get(i) instanceof String) {
-                    logger = MCLoggerFactory.getInstance().getLogger((String) names.get(i));
+                    logger = MCLoggerFactory.getLogger((String) names.get(i));
                 } else if (names.get(i) instanceof Class) {
-                    logger = MCLoggerFactory.getInstance().getLogger((Class) names.get(i));
+                    logger = MCLoggerFactory.getLogger((Class) names.get(i));
                 } else {
-                    logger = MCLoggerFactory.getInstance().getLogger(getClass());
+                    logger = MCLoggerFactory.getLogger(getClass());
                     logger.warn("Wrong logger name: " + names.get(i).toString());
                 }
-
                 logger.log(level, message, (Throwable) throwables.get(i));
             }
             clear();

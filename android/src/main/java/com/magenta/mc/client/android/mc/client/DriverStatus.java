@@ -7,28 +7,23 @@ import com.magenta.mc.client.android.rpc.xmpp.datablocks.Presence;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created 01.03.2010
- *
- * @author Konstantin Pestrikov
- */
 public class DriverStatus {
+
     public static final DriverStatus ONLINE = new DriverStatus("status.online", Presence.PRESENCE_ONLINE);
-    public static final DriverStatus BREAK = new DriverStatus("status.break", Presence.PRESENCE_ONLINE);
-    public static final DriverStatus GOING_HOME = new DriverStatus("status.going_home", Presence.PRESENCE_ONLINE);
-    public static final DriverStatus UNAVAILABLE = new DriverStatus("status.unavailable", Presence.PRESENCE_ONLINE);
     public static final DriverStatus OFFLINE = new DriverStatus("status.offline", Presence.PRESENCE_OFFLINE);
+
+    private static final DriverStatus BREAK = new DriverStatus("status.break", Presence.PRESENCE_ONLINE);
+    private static final DriverStatus GOING_HOME = new DriverStatus("status.going_home", Presence.PRESENCE_ONLINE);
+    private static final DriverStatus UNAVAILABLE = new DriverStatus("status.unavailable", Presence.PRESENCE_ONLINE);
+
     private static final String DRIVER_STATUS_PROPERTY = "driver.status";
-    private static final Map statesByName = new HashMap();
-    private static final DriverStatus[] states = new DriverStatus[]{
-            ONLINE, BREAK, GOING_HOME, UNAVAILABLE, OFFLINE
-    };
+    private static final Map<String, DriverStatus> statesByName = new HashMap<>();
+    private static final DriverStatus[] states = {ONLINE, BREAK, GOING_HOME, UNAVAILABLE, OFFLINE};
     private static DriverStatus current;
     private static DriverStatus lastOnline;
 
     static {
-        for (int i = 0; i < states.length; i++) {
-            DriverStatus state = states[i];
+        for (DriverStatus state : states) {
             statesByName.put(state.getName(), state);
         }
         initState();
@@ -42,9 +37,6 @@ public class DriverStatus {
         this.xmppPresence = xmppPresence;
     }
 
-    /*
-            load current status from settings
-         */
     private static void initState() {
         String currentName;
         if (Setup.isInitialized()) {
@@ -56,8 +48,8 @@ public class DriverStatus {
         DriverStatus.setCurrent(DriverStatus.byName(currentName));
     }
 
-    public static DriverStatus byName(String name) {
-        return (DriverStatus) statesByName.get(name);
+    private static DriverStatus byName(String name) {
+        return statesByName.get(name);
     }
 
     public static DriverStatus getCurrent() {
@@ -71,17 +63,14 @@ public class DriverStatus {
         }
     }
 
-    public static DriverStatus getLastOnline() {
+    private static DriverStatus getLastOnline() {
         return lastOnline;
     }
 
-    public static void setLastOnline(DriverStatus lastOnline) {
+    private static void setLastOnline(DriverStatus lastOnline) {
         DriverStatus.lastOnline = lastOnline;
     }
 
-    /*
-        save current status to settings
-     */
     private static void saveState() {
         Setup.get().getSettings().setProperty(DRIVER_STATUS_PROPERTY, getLastOnline().getName());
         Setup.get().getSettings().saveSettings();
@@ -92,7 +81,7 @@ public class DriverStatus {
         getCurrent().send(null);
     }
 
-    protected Presence generatePresence(StatusExtender extender) {
+    private Presence generatePresence(StatusExtender extender) {
         final int priority = 0; // not dealing with priority
         final String message = null; // no text status
         Presence presence = new Presence(getXmppPresence(), priority, message, null);
@@ -106,8 +95,7 @@ public class DriverStatus {
     }
 
     public boolean equals(Object o) {
-        return o instanceof DriverStatus
-                && getName().equalsIgnoreCase(((DriverStatus) o).getName());
+        return o instanceof DriverStatus && getName().equalsIgnoreCase(((DriverStatus) o).getName());
     }
 
     public void set() {
@@ -118,7 +106,7 @@ public class DriverStatus {
         set(true, extender);
     }
 
-    public void saveCurrentState() {
+    private void saveCurrentState() {
         MCLoggerFactory.getLogger(getClass()).debug("Set " + getName());
         DriverStatus.setCurrent(this);
         DriverStatus.saveState();
@@ -145,7 +133,7 @@ public class DriverStatus {
         return name;
     }
 
-    public int getXmppPresence() {
+    private int getXmppPresence() {
         return xmppPresence;
     }
 

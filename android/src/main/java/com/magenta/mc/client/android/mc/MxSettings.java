@@ -13,6 +13,8 @@ import com.magenta.mc.client.android.mc.settings.Settings;
 import java.util.ArrayList;
 import java.util.List;
 
+@Deprecated
+// TODO: 2/15/17 use shared preferences
 public class MxSettings extends AndroidSettings {
 
     public static final String SETTING_PASSWORD = "settings.password";

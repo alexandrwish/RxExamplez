@@ -1,7 +1,5 @@
 package com.magenta.mc.client.android;
 
-import com.magenta.mc.client.android.mc.bin_chunks.BinaryChunkResendable;
-import com.magenta.mc.client.android.mc.bin_chunks.random.RandomBinTransTask;
 import com.magenta.mc.client.android.mc.client.ConnectionListener;
 import com.magenta.mc.client.android.mc.client.Login;
 import com.magenta.mc.client.android.mc.client.Msg;
@@ -21,10 +19,12 @@ import com.magenta.mc.client.android.mc.tracking.GeoLocationBatch;
 import com.magenta.mc.client.android.mc.tracking.GeoLocationService;
 import com.magenta.mc.client.android.mc.tracking.GeoLocationServiceConfig;
 import com.magenta.mc.client.android.mc.util.ResourceManager;
+import com.magenta.mc.client.android.rpc.DefaultRPCQueryListener;
+import com.magenta.mc.client.android.rpc.DefaultRpcResponseHandler;
+import com.magenta.mc.client.android.rpc.JabberRPC;
+import com.magenta.mc.client.android.rpc.bin_chunks.BinaryChunkResendable;
+import com.magenta.mc.client.android.rpc.bin_chunks.random.RandomBinTransTask;
 import com.magenta.mc.client.android.rpc.xmpp.XMPPStream;
-import com.magenta.mc.client.android.rpc.xmpp.extensions.rpc.DefaultRPCQueryListener;
-import com.magenta.mc.client.android.rpc.xmpp.extensions.rpc.DefaultRpcResponseHandler;
-import com.magenta.mc.client.android.rpc.xmpp.extensions.rpc.JabberRPC;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -11,17 +11,16 @@ import com.magenta.mc.client.android.mc.xml.XMLDataBlock;
 import java.text.ParseException;
 import java.util.Date;
 
-/**
- * @author Petr Popov
- *         Created: 23.01.12 16:33
- */
 public class LogRequest extends Storable {
 
     public static final StorableMetadata STORABLE_METADATA = new StorableMetadata("log_request", true);
+
     public static final int STATE_RECEIVED = 0;
     public static final int STATE_DONE = 1;
     public static final int STATE_SIGNALLED = 2;
+
     private static final long serialVersionUID = -9188692752895743643L;
+
     private static final String FIELD_START_DATE = "FIELD_START_DATE";
     private static final String FIELD_END_DATE = "FIELD_END_DATE";
     private static final String FIELD_DATE_RECEIVED = "FIELD_DATE_RECEIVED";
@@ -30,6 +29,7 @@ public class LogRequest extends Storable {
     private static final String FIELD_LOG_TYPE = "FIELD_LOG_TYPE";
     private static final String FIELD_STATE = "FIELD_STATE";
     private static final String FIELD_COUNT = "FIELD_COUNT";
+
     private Date startDate;
     private Date endDate;
     private Date dateReceived;
@@ -55,7 +55,6 @@ public class LogRequest extends Storable {
     public static LogRequest parse(XMLDataBlock block) throws ParseException {
         XMLDataBlock strBlock = block.getChildBlock("string");
         XMLDataBlock requestBlock = strBlock.getChildBlock("log_request");
-
         LogRequest result = new LogRequest();
         result.startDate = DateFormatter.parseFromUTC(requestBlock.getChildBlockText(LogRequest.FIELD_START_DATE));
         result.endDate = DateFormatter.parseFromUTC(requestBlock.getChildBlockText(LogRequest.FIELD_END_DATE));
@@ -145,7 +144,7 @@ public class LogRequest extends Storable {
                 },
                 new FieldSetter(FIELD_REQUEST_ID) {
                     public void setValue(Object value) {
-                        requestId = ((Long) value).longValue();
+                        requestId = (Long) value;
                     }
                 },
                 new FieldSetter(FIELD_LOG_TYPE) {
@@ -160,12 +159,12 @@ public class LogRequest extends Storable {
                 },
                 new FieldSetter(FIELD_COUNT) {
                     public void setValue(Object value) {
-                        count = ((Integer) value).intValue();
+                        count = (Integer) value;
                     }
                 },
                 new FieldSetter(FIELD_STATE) {
                     public void setValue(Object value) {
-                        state = ((Integer) value).intValue();
+                        state = (Integer) value;
                     }
                 }
         };
@@ -195,7 +194,7 @@ public class LogRequest extends Storable {
                 },
                 new FieldGetter(FIELD_REQUEST_ID) {
                     public Object getValue() {
-                        return new Long(requestId);
+                        return requestId;
                     }
                 },
                 new FieldGetter(FIELD_LOG_TYPE) {
@@ -205,12 +204,12 @@ public class LogRequest extends Storable {
                 },
                 new FieldGetter(FIELD_COUNT) {
                     public Object getValue() {
-                        return new Integer(count);
+                        return count;
                     }
                 },
                 new FieldGetter(FIELD_STATE) {
                     public Object getValue() {
-                        return new Integer(state);
+                        return state;
                     }
                 }
         };

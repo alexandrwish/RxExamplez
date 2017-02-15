@@ -2,15 +2,6 @@ package com.magenta.mc.client.android.mc.log;
 
 import net.sf.microlog.core.Level;
 
-/**
- * Author: Petr Popov
- * Created: 07.02.2011 15:07:43
- * <p/>
- * Copyright (c) 1999-2010 Magenta Corporation Ltd. All Rights Reserved.
- * Magenta Technology proprietary and confidential.
- * Use is subject to license terms.
- * <p/>
- */
 public interface MCLogger {
 
     void log(Level level, String msg);

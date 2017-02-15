@@ -13,6 +13,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+@Deprecated
+// TODO: 2/15/17 use shared preferences
 public class AndroidSettings extends Settings {
 
     public static final String PROPERTY_UI_THEME = "ui.theme";

@@ -3,7 +3,6 @@ package com.magenta.mc.client.android.rpc;
 import com.magenta.mc.client.android.mc.MxSettings;
 import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.mc.xml.XMLDataBlock;
-import com.magenta.mc.client.android.rpc.xmpp.extensions.rpc.DefaultRPCQueryListener;
 import com.magenta.mc.client.android.renderer.Renderer;
 import com.magenta.mc.client.android.service.ServicesRegistry;
 import com.magenta.mc.client.android.service.listeners.BroadcastEvent;

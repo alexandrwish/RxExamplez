@@ -11,7 +11,7 @@ import com.magenta.mc.client.android.update.AndroidUpdateCheck;
 import com.magenta.mc.client.android.mc.demo.DemoStorageInitializer;
 import com.magenta.mc.client.android.mc.settings.Settings;
 import com.magenta.mc.client.android.mc.setup.Setup;
-import com.magenta.mc.client.android.rpc.xmpp.extensions.rpc.DefaultRpcResponseHandler;
+import com.magenta.mc.client.android.rpc.DefaultRpcResponseHandler;
 
 public class MxSetup extends AndroidSetup {
 

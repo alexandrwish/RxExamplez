@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
+@Deprecated
+// TODO: 2/15/17 use shared preferences
 public class Settings extends Properties {
 
     public static final String HOST = "server.address";
