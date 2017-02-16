@@ -24,7 +24,7 @@ import com.magenta.mc.client.android.ui.controller.MapController;
 import com.magenta.mc.client.android.ui.controller.MapletController;
 import com.magenta.mc.client.android.ui.controller.YandexMapController;
 import com.magenta.mc.client.android.ui.view.Maplet;
-import com.magenta.mc.client.android.util.IntentAttributes;
+import com.magenta.mc.client.android.common.IntentAttributes;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

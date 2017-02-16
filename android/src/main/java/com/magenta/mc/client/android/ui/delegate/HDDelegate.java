@@ -13,7 +13,7 @@ import com.magenta.mc.client.android.receiver.HDReceiver;
 import com.magenta.mc.client.android.service.HttpService;
 import com.magenta.mc.client.android.ui.dialog.DialogFactory;
 import com.magenta.mc.client.android.ui.dialog.DistributionDialogFragment;
-import com.magenta.mc.client.android.util.IntentAttributes;
+import com.magenta.mc.client.android.common.IntentAttributes;
 
 public class HDDelegate extends SmokeActivityDelegate implements HttpResponseListener {
 

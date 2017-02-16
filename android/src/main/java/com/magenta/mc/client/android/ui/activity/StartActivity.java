@@ -25,7 +25,7 @@ import com.magenta.mc.client.android.service.storage.entity.Stop;
 import com.magenta.mc.client.android.ui.view.DynamicAttributeView;
 import com.magenta.mc.client.android.util.Attribute;
 import com.magenta.mc.client.android.util.DistributionUtils;
-import com.magenta.mc.client.android.util.IntentAttributes;
+import com.magenta.mc.client.android.common.IntentAttributes;
 import com.magenta.mc.client.android.util.StringUtils;
 
 import java.sql.SQLException;

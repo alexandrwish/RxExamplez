@@ -3,6 +3,7 @@ package com.magenta.mc.client.android.util;
 import android.content.Context;
 import android.content.Intent;
 
+import com.magenta.mc.client.android.common.IntentAttributes;
 import com.magenta.mc.client.android.entity.AbstractStop;
 import com.magenta.mc.client.android.entity.TaskState;
 import com.magenta.mc.client.android.mc.MxSettings;

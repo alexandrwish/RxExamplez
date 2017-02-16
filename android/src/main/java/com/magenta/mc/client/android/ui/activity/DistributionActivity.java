@@ -23,7 +23,7 @@ import com.magenta.mc.client.android.service.storage.entity.Job;
 import com.magenta.mc.client.android.service.storage.entity.Stop;
 import com.magenta.mc.client.android.ui.dialog.DialogFactory;
 import com.magenta.mc.client.android.ui.dialog.DistributionDialogFragment;
-import com.magenta.mc.client.android.util.IntentAttributes;
+import com.magenta.mc.client.android.common.IntentAttributes;
 
 import java.util.HashMap;
 

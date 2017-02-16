@@ -6,7 +6,7 @@ import android.content.Intent;
 
 import com.magenta.mc.client.android.listener.HttpResponseListener;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
-import com.magenta.mc.client.android.util.IntentAttributes;
+import com.magenta.mc.client.android.common.IntentAttributes;
 
 public class HDReceiver extends BroadcastReceiver {
 

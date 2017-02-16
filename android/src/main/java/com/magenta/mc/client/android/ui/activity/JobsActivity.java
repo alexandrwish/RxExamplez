@@ -37,7 +37,7 @@ import com.magenta.mc.client.android.service.storage.entity.Stop;
 import com.magenta.mc.client.android.ui.AndroidUI;
 import com.magenta.mc.client.android.ui.activity.common.LoginActivity;
 import com.magenta.mc.client.android.ui.adapter.JobsAdapter;
-import com.magenta.mc.client.android.util.IntentAttributes;
+import com.magenta.mc.client.android.common.IntentAttributes;
 import com.magenta.mc.client.android.util.PhoneUtils;
 
 import java.util.List;

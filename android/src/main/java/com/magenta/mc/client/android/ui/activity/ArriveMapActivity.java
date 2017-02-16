@@ -5,7 +5,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.magenta.mc.client.android.R;
-import com.magenta.mc.client.android.util.IntentAttributes;
+import com.magenta.mc.client.android.common.IntentAttributes;
 
 public class ArriveMapActivity extends AbstractArriveMapActivity {
 

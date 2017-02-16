@@ -22,7 +22,7 @@ import com.magenta.mc.client.android.service.storage.entity.Job;
 import com.magenta.mc.client.android.ui.AndroidUI;
 import com.magenta.mc.client.android.ui.adapter.JobDetailStopsAdapter;
 import com.magenta.mc.client.android.util.DateUtils;
-import com.magenta.mc.client.android.util.IntentAttributes;
+import com.magenta.mc.client.android.common.IntentAttributes;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;

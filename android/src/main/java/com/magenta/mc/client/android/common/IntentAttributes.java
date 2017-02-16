@@ -1,4 +1,4 @@
-package com.magenta.mc.client.android.util;
+package com.magenta.mc.client.android.common;
 
 public interface IntentAttributes {
 

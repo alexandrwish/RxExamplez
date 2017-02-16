@@ -41,7 +41,7 @@ import com.magenta.mc.client.android.ui.view.DynamicAttributeView;
 import com.magenta.mc.client.android.ui.view.TimeView;
 import com.magenta.mc.client.android.util.Attribute;
 import com.magenta.mc.client.android.util.DistributionUtils;
-import com.magenta.mc.client.android.util.IntentAttributes;
+import com.magenta.mc.client.android.common.IntentAttributes;
 import com.magenta.mc.client.android.util.StringUtils;
 import com.magenta.mc.client.android.util.TextFilter;
 

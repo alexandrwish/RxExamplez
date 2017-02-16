@@ -52,7 +52,7 @@ import com.magenta.mc.client.android.ui.activity.SmokeLoginActivity;
 import com.magenta.mc.client.android.ui.delegate.HDDelegate;
 import com.magenta.mc.client.android.ui.dialog.InputDialog;
 import com.magenta.mc.client.android.util.Checksum;
-import com.magenta.mc.client.android.util.IntentAttributes;
+import com.magenta.mc.client.android.common.IntentAttributes;
 import com.magenta.mc.client.android.util.StringUtils;
 import com.magenta.mc.client.android.util.UserUtils;
 

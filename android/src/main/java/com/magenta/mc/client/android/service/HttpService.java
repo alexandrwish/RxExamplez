@@ -2,26 +2,23 @@ package com.magenta.mc.client.android.service;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.google.gson.Gson;
 import com.magenta.hdmate.mx.model.CancelationReason;
 import com.magenta.hdmate.mx.model.JobRecord;
 import com.magenta.hdmate.mx.model.SettingsResultRecord;
-import com.magenta.mc.client.android.DistributionApplication;
 import com.magenta.mc.client.android.common.Constants;
+import com.magenta.mc.client.android.common.IntentAttributes;
 import com.magenta.mc.client.android.db.dao.DistributionDAO;
 import com.magenta.mc.client.android.entity.MapProviderType;
 import com.magenta.mc.client.android.entity.MapSettingsEntity;
 import com.magenta.mc.client.android.http.HttpClient;
 import com.magenta.mc.client.android.mc.MxSettings;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
-import com.magenta.mc.client.android.mc.settings.Settings;
 import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.record.LoginResultRecord;
 import com.magenta.mc.client.android.ui.activity.common.LoginActivity;
-import com.magenta.mc.client.android.util.IntentAttributes;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -114,45 +111,42 @@ public class HttpService extends IntentService {
                         sendBroadcast(new Intent(Constants.HTTP_SERVICE_NAME).putExtra(IntentAttributes.HTTP_SETTINGS_RESPONSE_TYPE, Constants.ERROR));
                     }
 
-                    public void onNext(SettingsResultRecord settingsResultRecord) {
-                        if (settingsResultRecord == null) return;
-                        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(DistributionApplication.getContext()).edit();
-                        for (Map.Entry<String, String> entry : settingsResultRecord.getParameters().entrySet()) {
-                            if (entry.getKey().equalsIgnoreCase("mobile.maxunites.allow.to.pass.in.arbitrary.order")) {
-                                Settings.get().setProperty("allowToPassStopsInArbitraryOrder", entry.getValue());
-                                editor.putString("allowToPassStopsInArbitraryOrder", entry.getValue());
-                                continue;
-                            } else if (entry.getKey().equalsIgnoreCase("mobile.maxunites.allow.to.pass.several.runs")) {
-                                Settings.get().setProperty("allowToPassJobsInArbitraryOrder", entry.getValue());
-                                editor.putString("allowToPassJobsInArbitraryOrder", entry.getValue());
-                                continue;
-                            }
-                            editor.putString(entry.getKey(), entry.getValue());
-                            Settings.get().setProperty(entry.getKey(), entry.getValue());
-                        }
-                        List<String> reasons = new ArrayList<>(settingsResultRecord.getOrderCancelReasons().size());
-                        for (CancelationReason reason : settingsResultRecord.getOrderCancelReasons()) {
+                    public void onNext(SettingsResultRecord result) {
+                        if (result == null) return;
+                        com.magenta.mc.client.android.common.Settings.SettingsBuilder.get().start()
+                                .setFactCost(result.getAllowFactCost())
+                                .setBarcodeScreen(result.getEnableBarcodeScreen())
+                                .setSignatureScreen(result.getEnableSignatureScreen())
+                                .setRandomOrders(result.getAllowToPassInArbitraryOrder())
+                                .setSeveralRuns(result.getAllowToPassSeveralRuns())
+                                .setNonCompleted(result.getNonCompletedTimePeriod())
+                                .setDisplayMap(result.getEnableMapDisplaying())
+                                .setDispatcherPhone(result.getDispatcherPhone())
+                                .setShowAlert(result.getAlertEnable())
+                                .setAlertDelay(result.getAlertDelay())
+                                .setCapacityUnit(result.getCapacityUnits())
+                                .setVolumeUnit(result.getVolumeUnits())
+                                .setDefaultMap(result.getDefaultMap())
+                                .apply();
+                        List<String> reasons = new ArrayList<>(result.getOrderCancelReasons().size());
+                        for (CancelationReason reason : result.getOrderCancelReasons()) {
                             reasons.add(reason.getTitle());
                         }
                         MxSettings.getInstance().setOrderCancelReasons(reasons);
-                        Map<String, Map<String, String>> mapSettings = settingsResultRecord.getMapProperties();
+                        MxSettings.getInstance().saveSettings();
+                        Map<String, Map<String, String>> mapSettings = result.getMapProperties();
                         for (String s : MxSettings.ignoredMapProviders) {
-                            settingsResultRecord.getMapProperties().remove(s);
+                            mapSettings.remove(s);
                         }
-                        if (settingsResultRecord.getMapProperties().isEmpty()) {
+                        if (result.getMapProperties().isEmpty()) {
                             HashMap<String, String> osm = new HashMap<>(1);
                             osm.put("use_map_provider", "true");
-                            settingsResultRecord.getMapProperties().put("openstreetmap", osm);
+                            result.getMapProperties().put("openstreetmap", osm);
                         }
-                        Settings.get().setProperty("map.property", new Gson().toJson(settingsResultRecord.getMapProperties()));
                         try {
                             List<MapSettingsEntity> mapSettingsEntities = DistributionDAO.getInstance().getMapSettings(Setup.get().getSettings().getLogin());
                             if (!mapSettingsEntities.isEmpty()) {
-                                if (mapSettings.containsKey(mapSettingsEntities.get(0).getProvider())) {
-                                    if (mapSettingsEntities.get(0).isRemember()) {
-                                        sendBroadcast(new Intent(Constants.HTTP_SERVICE_NAME).putExtra(IntentAttributes.HTTP_SETTINGS_RESPONSE_TYPE, Constants.OK));
-                                    }
-                                } else {
+                                if (!mapSettings.containsKey(mapSettingsEntities.get(0).getProvider()) || !mapSettingsEntities.get(0).isRemember()) {
                                     if (updateSettings(mapSettingsEntities.get(0), mapSettings)) {
                                         sendBroadcast(new Intent(Constants.HTTP_SERVICE_NAME).putExtra(IntentAttributes.HTTP_SETTINGS_RESPONSE_TYPE, Constants.WARN));
                                     }
@@ -163,8 +157,6 @@ public class HttpService extends IntentService {
                         } catch (SQLException e) {
                             MCLoggerFactory.getLogger(LoginActivity.class).error(e.getMessage(), e);
                         }
-                        Settings.get().saveSettings();
-                        editor.apply();
                     }
                 });
     }

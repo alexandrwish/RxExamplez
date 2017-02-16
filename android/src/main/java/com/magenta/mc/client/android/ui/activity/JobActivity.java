@@ -34,7 +34,7 @@ import com.magenta.mc.client.android.service.storage.entity.Stop;
 import com.magenta.mc.client.android.ui.AndroidUI;
 import com.magenta.mc.client.android.ui.adapter.StopsAdapter;
 import com.magenta.mc.client.android.util.DateUtils;
-import com.magenta.mc.client.android.util.IntentAttributes;
+import com.magenta.mc.client.android.common.IntentAttributes;
 import com.magenta.mc.client.android.util.JobWorkflowUtils;
 
 import java.text.DecimalFormat;
