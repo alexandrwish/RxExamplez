@@ -1,6 +1,8 @@
 package com.magenta.mc.client.android.rpc;
 
+import com.magenta.hdmate.mx.model.OrderActionResult;
 import com.magenta.mc.client.android.MobileApp;
+import com.magenta.mc.client.android.http.HttpClient;
 import com.magenta.mc.client.android.mc.client.resend.ResendableMetadata;
 import com.magenta.mc.client.android.mc.client.resend.Resender;
 import com.magenta.mc.client.android.mc.log.MCLogger;
@@ -15,7 +17,11 @@ import com.magenta.mc.client.android.service.ServicesRegistry;
 
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
+
+import rx.Subscriber;
+import rx.schedulers.Schedulers;
 
 public class RPCOut extends DefaultRpcResponseHandler {
 
@@ -49,8 +55,23 @@ public class RPCOut extends DefaultRpcResponseHandler {
         JabberRPC.getInstance().call(CREATE_UNAVAILABILITY, new Object[]{startDate, endDate, endAddress, endPostcode, reason}, null);
     }
 
-    public static void jobStates(long id, String userId, String jobRef, String states, String values) {
-        JabberRPC.getInstance().call(JOB_STATES_METHOD, new Object[]{jobRef, states, values, id}, id);
+    public static void jobStates(final long id, String userId, String jobRef, String states, Map values) {
+//        JabberRPC.getInstance().call(JOB_STATES_METHOD, new Object[]{jobRef, states, values, id}, id);
+        HttpClient.getInstance().sendState(userId, jobRef, states, values)
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<List<OrderActionResult>>() {
+                    public void onCompleted() {
+
+                    }
+
+                    public void onError(Throwable e) {
+                        MCLoggerFactory.getLogger(RPCOut.class).error(e.getMessage(), e);
+                    }
+
+                    public void onNext(List<OrderActionResult> orderActionResults) {
+                        Resender.getInstance().sent(STATUS_RESENDABLE_METADATA, id);
+                    }
+                });
     }
 
     public static void checkImei(String userId, String imei) {

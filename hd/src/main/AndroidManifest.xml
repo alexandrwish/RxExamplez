@@ -36,6 +36,8 @@
 
         <service android:name="com.magenta.mc.client.android.service.HttpService" />
 
+        <service android:name="com.magenta.mc.client.android.service.SenderService" />
+
         <service
             android:name="com.magenta.mc.client.android.service.CoreServiceImpl"
             android:enabled="true" />

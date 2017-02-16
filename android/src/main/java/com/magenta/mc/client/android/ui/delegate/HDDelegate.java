@@ -1,27 +1,34 @@
 package com.magenta.mc.client.android.ui.delegate;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 
+import com.magenta.mc.client.android.DistributionApplication;
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.common.Constants;
+import com.magenta.mc.client.android.common.IntentAttributes;
 import com.magenta.mc.client.android.listener.HttpResponseListener;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 import com.magenta.mc.client.android.receiver.HDReceiver;
 import com.magenta.mc.client.android.service.HttpService;
+import com.magenta.mc.client.android.service.SenderService;
 import com.magenta.mc.client.android.ui.dialog.DialogFactory;
 import com.magenta.mc.client.android.ui.dialog.DistributionDialogFragment;
-import com.magenta.mc.client.android.common.IntentAttributes;
 
 public class HDDelegate extends SmokeActivityDelegate implements HttpResponseListener {
 
     private BroadcastReceiver hdReceiver;
     private IntentFilter intentFilter;
+    private PendingIntent intent;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        intent = PendingIntent.getService(DistributionApplication.getInstance(), 16022017, new Intent(DistributionApplication.getInstance(), SenderService.class), 0);
         intentFilter = new IntentFilter(Constants.HTTP_SERVICE_NAME);
         hdReceiver = new HDReceiver(this);
     }
@@ -59,6 +66,8 @@ public class HDDelegate extends SmokeActivityDelegate implements HttpResponseLis
         MCLoggerFactory.getLogger(HDDelegate.class).debug("Login result = " + result);
         switch (result) {
             case Constants.OK: {
+                ((AlarmManager) DistributionApplication.getInstance().getSystemService(Context.ALARM_SERVICE))
+                        .setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, Constants.SEND_DELTA, Constants.SEND_DELTA, intent);
                 break;
             }
             case Constants.WARN: {

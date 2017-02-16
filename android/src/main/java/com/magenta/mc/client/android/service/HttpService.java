@@ -2,7 +2,6 @@ package com.magenta.mc.client.android.service;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.preference.PreferenceManager;
 
 import com.google.gson.Gson;
 import com.magenta.hdmate.mx.model.CancelationReason;
@@ -10,6 +9,7 @@ import com.magenta.hdmate.mx.model.JobRecord;
 import com.magenta.hdmate.mx.model.SettingsResultRecord;
 import com.magenta.mc.client.android.common.Constants;
 import com.magenta.mc.client.android.common.IntentAttributes;
+import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.db.dao.DistributionDAO;
 import com.magenta.mc.client.android.entity.MapProviderType;
 import com.magenta.mc.client.android.entity.MapSettingsEntity;
@@ -84,7 +84,7 @@ public class HttpService extends IntentService {
                     public void onResponse(Call<LoginResultRecord> call, Response<LoginResultRecord> response) {
                         if (response != null && response.body() != null) {
                             LoginResultRecord result = response.body();
-                            PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit().putString(Constants.AUTH_TOKEN, result.getToken()).apply();
+                            Settings.SettingsBuilder.get().start().setAuthToken(result.getToken()).apply();
                             sendBroadcast(new Intent(Constants.HTTP_SERVICE_NAME).putExtra(IntentAttributes.HTTP_LOGIN_RESPONSE_TYPE, Constants.OK)); //все хорошо
                         } else {
                             sendBroadcast(new Intent(Constants.HTTP_SERVICE_NAME).putExtra(IntentAttributes.HTTP_LOGIN_RESPONSE_TYPE, Constants.WARN)); //что-то пошло не так

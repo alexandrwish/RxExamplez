@@ -24,6 +24,7 @@ public class Settings {
     private static final String CAPACITY_UNIT = "capacity.unit";
     private static final String VOLUME_UNIT = "volume.unit";
     private static final String DEFAULT_MAP = "default.map";
+    private static final String AUTH_TOKEN = "api.key";
 
     private final SharedPreferences preferences;
 
@@ -86,6 +87,10 @@ public class Settings {
 
     public String getDefaultMap() {
         return preferences.getString(DEFAULT_MAP, "");
+    }
+
+    public String getAuthToken() {
+        return preferences.getString(AUTH_TOKEN, "");
     }
 
     public static class SettingsBuilder {
@@ -194,6 +199,13 @@ public class Settings {
         public SettingsBuilder setDefaultMap(String defaultMap) {
             if (defaultMap != null) {
                 editor.putString(DEFAULT_MAP, defaultMap);
+            }
+            return this;
+        }
+
+        public SettingsBuilder setAuthToken(String token) {
+            if (token != null) {
+                editor.putString(AUTH_TOKEN, token);
             }
             return this;
         }

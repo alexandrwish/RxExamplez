@@ -2,16 +2,12 @@ package com.magenta.mc.client.android.service.storage.entity;
 
 import android.os.Message;
 
-import com.magenta.mc.client.android.DistributionApplication;
-import com.magenta.mc.client.android.db.dao.DistributionDAO;
 import com.magenta.mc.client.android.entity.AbstractJobStatus;
 import com.magenta.mc.client.android.entity.JobStatusEntity;
 import com.magenta.mc.client.android.handler.UpdateHandler;
 import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.rpc.DistributionRPCOut;
 import com.magenta.mc.client.android.service.ServicesRegistry;
-
-import java.sql.SQLException;
 
 public class JobStatus extends AbstractJobStatus implements JobStatusEntity {
 
@@ -26,14 +22,6 @@ public class JobStatus extends AbstractJobStatus implements JobStatusEntity {
     }
 
     public void sent() {
-        DistributionRPCOut.jobStates(Long.parseLong(getId()), Setup.get().getSettings().getUserId(), getJobReferenceId(), getJobStatus(), valuesToString());
-    }
-
-    public boolean canSent() {
-        try {
-            return DistributionDAO.getInstance().hasLock(this);
-        } catch (SQLException e) {
-            return true;
-        }
+        DistributionRPCOut.jobStates(Long.parseLong(getId()), Setup.get().getSettings().getUserId(), getJobReferenceId(), getJobStatus(), getValues());
     }
 }

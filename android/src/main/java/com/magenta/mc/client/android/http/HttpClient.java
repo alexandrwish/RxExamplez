@@ -1,14 +1,13 @@
 package com.magenta.mc.client.android.http;
 
-import android.preference.PreferenceManager;
-
 import com.google.gson.GsonBuilder;
 import com.magenta.hdmate.mx.ApiClient;
 import com.magenta.hdmate.mx.api.MateApi;
 import com.magenta.hdmate.mx.auth.ApiKeyAuth;
 import com.magenta.hdmate.mx.model.JobRecord;
+import com.magenta.hdmate.mx.model.OrderAction;
+import com.magenta.hdmate.mx.model.OrderActionResult;
 import com.magenta.hdmate.mx.model.SettingsResultRecord;
-import com.magenta.mc.client.android.DistributionApplication;
 import com.magenta.mc.client.android.common.Constants;
 import com.magenta.mc.client.android.mc.MxAndroidUtil;
 import com.magenta.mc.client.android.mc.MxSettings;
@@ -16,7 +15,9 @@ import com.magenta.mc.client.android.mc.settings.Settings;
 import com.magenta.mc.client.android.record.LoginRecord;
 import com.magenta.mc.client.android.record.LoginResultRecord;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -51,7 +52,7 @@ public class HttpClient {
         String port = "80";
         ApiClient client = new ApiClient().defaultAdapter(("443".equals(port) ? "https://" : "http://") + MxSettings.get().getProperty(Settings.HOST) + ":" + port + Constants.MX_MATE_POSTFIX);
         client.addAuthorization("api_key", new ApiKeyAuth("header", "sessionId"));
-        client.setApiKey(PreferenceManager.getDefaultSharedPreferences(DistributionApplication.getInstance()).getString(Constants.AUTH_TOKEN, ""));
+        client.setApiKey(com.magenta.mc.client.android.common.Settings.get().getAuthToken());
         apiClient = client.createService(MateApi.class);
     }
 
@@ -72,5 +73,16 @@ public class HttpClient {
 
     public Observable<List<JobRecord>> getJobs() {
         return apiClient.allscheduleGet().observeOn(Schedulers.io());
+    }
+
+    public Observable<List<OrderActionResult>> sendState(String userId, String jobRef, String states, Map values) {
+        List<OrderAction> results = new ArrayList<>(1);
+        OrderAction result = new OrderAction();
+        result.action(states);
+        result.setOrderId(Long.valueOf(jobRef));
+        result.setPerformer(userId);
+        result.setParameters(values);
+        results.add(result);
+        return apiClient.actionPost(results);
     }
 }
