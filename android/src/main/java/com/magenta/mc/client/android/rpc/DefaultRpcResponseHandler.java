@@ -1,9 +1,9 @@
 package com.magenta.mc.client.android.rpc;
 
+import com.magenta.mc.client.android.http.HttpClient;
 import com.magenta.mc.client.android.mc.client.resend.Resender;
 import com.magenta.mc.client.android.mc.log_sending.LogRequestError;
 import com.magenta.mc.client.android.mc.setup.Setup;
-import com.magenta.mc.client.android.mc.tracking.GeoLocation;
 import com.magenta.mc.client.android.mc.tracking.GeoLocationBatch;
 import com.magenta.mc.client.android.mc.util.Strconv;
 import com.magenta.mc.client.android.rpc.bin_chunks.BinaryChunkResendable;
@@ -36,32 +36,33 @@ public class DefaultRpcResponseHandler implements RPCResponseHandler {
     }
 
     public static void locations(String id, List locations) {
-        if (locations == null || locations.isEmpty()) {
-            return;
-        }
-        Object[][] locationsArray = new Object[locations.size()][8];
-        for (int i = 0; i < locationsArray.length; i++) {
-            Object[] locationArray = new Object[10];
-            GeoLocation location = (GeoLocation) locations.get(i);
-            locationArray[0] = Setup.get().getPlatformUtil().getImei();
-            locationArray[1] = location.getUserId();
-            locationArray[2] = location.getState();
-            locationArray[3] = location.getLat();
-            locationArray[4] = location.getLon();
-            locationArray[5] = new Date(location.getRetrieveTimestamp().longValue());
-            locationArray[6] = location.getSpeed();
-            locationArray[7] = location.getHeading();
-            locationArray[8] = location.getSatelliteCount();
-            locationArray[9] = location.getSource();
-            locationsArray[i] = locationArray;
-        }
-        String trackerComponentName = Setup.get().getSettings().getProperty("tracker.component");
-        if (trackerComponentName != null) {
-            String trackerJid = trackerComponentName + "." + Setup.get().getSettings().getServerName();
-            JabberRPC.getInstance().call(trackerJid, LOCATIONS_METHOD, new Object[]{locationsArray}, new Long(Long.parseLong(id)));
-        } else {
-            JabberRPC.getInstance().call(LOCATIONS_METHOD, new Object[]{locationsArray}, new Long(Long.parseLong(id)));
-        }
+//        if (locations == null || locations.isEmpty()) {
+//            return;
+//        }
+//        Object[][] locationsArray = new Object[locations.size()][8];
+//        for (int i = 0; i < locationsArray.length; i++) {
+//            Object[] locationArray = new Object[10];
+//            GeoLocation location = (GeoLocation) locations.get(i);
+//            locationArray[0] = Setup.get().getPlatformUtil().getImei();
+//            locationArray[1] = location.getUserId();
+//            locationArray[2] = location.getState();
+//            locationArray[3] = location.getLat();
+//            locationArray[4] = location.getLon();
+//            locationArray[5] = new Date(location.getRetrieveTimestamp().longValue());
+//            locationArray[6] = location.getSpeed();
+//            locationArray[7] = location.getHeading();
+//            locationArray[8] = location.getSatelliteCount();
+//            locationArray[9] = location.getSource();
+//            locationsArray[i] = locationArray;
+//        }
+//        String trackerComponentName = Setup.get().getSettings().getProperty("tracker.component");
+//        if (trackerComponentName != null) {
+//            String trackerJid = trackerComponentName + "." + Setup.get().getSettings().getServerName();
+//            JabberRPC.getInstance().call(trackerJid, LOCATIONS_METHOD, new Object[]{locationsArray}, new Long(Long.parseLong(id)));
+//        } else {
+//            JabberRPC.getInstance().call(LOCATIONS_METHOD, new Object[]{locationsArray}, new Long(Long.parseLong(id)));
+//        }
+        HttpClient.getInstance().sendLocations(Long.valueOf(id), locations);
     }
 
     public static void locationsResponse(Long id) {

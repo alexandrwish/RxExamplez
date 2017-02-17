@@ -1,5 +1,13 @@
 package com.magenta.mc.client.android.http;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.BatteryManager;
+
 import com.google.gson.GsonBuilder;
 import com.magenta.hdmate.mx.ApiClient;
 import com.magenta.hdmate.mx.api.MateApi;
@@ -8,18 +16,24 @@ import com.magenta.hdmate.mx.model.JobRecord;
 import com.magenta.hdmate.mx.model.OrderAction;
 import com.magenta.hdmate.mx.model.OrderActionResult;
 import com.magenta.hdmate.mx.model.SettingsResultRecord;
+import com.magenta.hdmate.mx.model.TelemetryRecord;
+import com.magenta.mc.client.android.DistributionApplication;
 import com.magenta.mc.client.android.common.Constants;
 import com.magenta.mc.client.android.mc.MxAndroidUtil;
 import com.magenta.mc.client.android.mc.MxSettings;
+import com.magenta.mc.client.android.mc.client.resend.Resender;
+import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 import com.magenta.mc.client.android.mc.settings.Settings;
+import com.magenta.mc.client.android.mc.tracking.GeoLocation;
+import com.magenta.mc.client.android.mc.tracking.GeoLocationBatch;
 import com.magenta.mc.client.android.record.LoginRecord;
 import com.magenta.mc.client.android.record.LoginResultRecord;
-import com.magenta.mc.client.android.service.storage.entity.Stop;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -31,6 +45,7 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
+import rx.Subscriber;
 import rx.schedulers.Schedulers;
 
 public class HttpClient {
@@ -98,5 +113,62 @@ public class HttpClient {
         }
         results.add(result);
         return apiClient.actionPost(results);
+    }
+
+    @Deprecated
+    // TODO: 2/17/17 fix me
+    public void sendLocations(final Long id, List locations) {
+        List<TelemetryRecord> records = new LinkedList<>();
+        for (GeoLocation o : (List<GeoLocation>) locations) {
+            TelemetryRecord record = new TelemetryRecord();
+            record.setDate(System.currentTimeMillis());
+            record.setHeading(o.getHeading().doubleValue());
+            record.setSpeed(o.getSpeed().doubleValue());
+            record.setLatitude(o.getLat());
+            record.setLongitude(o.getLon());
+            record.setTimestamp(o.getRetrieveTimestamp());
+            record.setBattery(getBatteryLevel());
+            record.setGprs(getNetworkInfo());
+            record.setGps(isGPSEnable());
+        }
+        apiClient.telemetryPost(records)
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<Boolean>() {
+                    public void onCompleted() {
+
+                    }
+
+                    public void onError(Throwable e) {
+                        MCLoggerFactory.getLogger(HttpClient.class).error(e.getMessage(), e);
+                    }
+
+                    public void onNext(Boolean aBoolean) {
+                        Resender.getInstance().sent(GeoLocationBatch.METADATA, id);
+                    }
+                });
+    }
+
+    private Double getBatteryLevel() {
+        Intent batteryIntent = DistributionApplication.getInstance().registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+        if (batteryIntent == null) {
+            return -1d;
+        }
+        int level = batteryIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+        int scale = batteryIntent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+        if (level == -1 || scale == -1) {
+            return -1d;
+        }
+        return ((float) level / (float) scale) * 100.0d;
+    }
+
+    private boolean isGPSEnable() {
+        LocationManager manager = (LocationManager) DistributionApplication.getInstance().getSystemService(Context.LOCATION_SERVICE);
+        return manager != null && manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+    }
+
+    private String getNetworkInfo() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) DistributionApplication.getInstance().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null ? activeNetworkInfo.toString() : "[]";
     }
 }
