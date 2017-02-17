@@ -14,10 +14,16 @@ import com.magenta.mc.client.android.mc.MxSettings;
 import com.magenta.mc.client.android.mc.settings.Settings;
 import com.magenta.mc.client.android.record.LoginRecord;
 import com.magenta.mc.client.android.record.LoginResultRecord;
+import com.magenta.mc.client.android.service.storage.entity.Stop;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -75,13 +81,21 @@ public class HttpClient {
         return apiClient.allscheduleGet().observeOn(Schedulers.io());
     }
 
+    @Deprecated
+    // TODO: 2/17/17 fix me
     public Observable<List<OrderActionResult>> sendState(String userId, String jobRef, String states, Map values) {
         List<OrderAction> results = new ArrayList<>(1);
         OrderAction result = new OrderAction();
-        result.action(states);
-        result.setOrderId(Long.valueOf(jobRef));
+        result.setOrderId(Long.valueOf((String) values.get("stop-ref"), Character.MAX_RADIX));
         result.setPerformer(userId);
+        result.setAction(states);
         result.setParameters(values);
+        result.setUid(UUID.randomUUID().toString());
+        try {
+            result.setActionTime(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.UK).parse((String) values.get("date")));
+        } catch (ParseException e) {
+            result.setActionTime(new Date());
+        }
         results.add(result);
         return apiClient.actionPost(results);
     }
