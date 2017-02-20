@@ -10,23 +10,22 @@ import com.magenta.mc.client.android.rpc.DefaultRpcResponseHandler;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @author Petr Popov
- *         Created: 06.12.11 19:37
- */
 public class GeoLocationBatch extends Resendable {
 
     public static final ResendableMetadata METADATA = new ResendableMetadata("locations", true, true, false, true);
+
     private static final long serialVersionUID = 1L;
+
     private final String FIELD_ID = "id";
     private final String FIELD_LOCATIONS = "locations";
+
     private String id;
-    private List locations = new ArrayList(); //list of GeoLocation
+    private List<GeoLocation> locations = new ArrayList<>(); //list of GeoLocation
 
     public GeoLocationBatch() {
     }
 
-    public GeoLocationBatch(List locations) {
+    public GeoLocationBatch(List<GeoLocation> locations) {
         this.locations = locations;
     }
 
@@ -60,7 +59,7 @@ public class GeoLocationBatch extends Resendable {
                 },
                 new FieldSetter(FIELD_LOCATIONS) {
                     public void setValue(Object value) {
-                        locations = (List) value;
+                        locations = (List<GeoLocation>) value;
                     }
                 }
         };

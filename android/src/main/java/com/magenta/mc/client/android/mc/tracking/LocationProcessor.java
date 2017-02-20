@@ -7,25 +7,21 @@ import com.magenta.mc.client.android.mc.setup.Setup;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * @autor Petr Popov
- * Created 12.04.12 12:12
- */
 public class LocationProcessor {
 
     private GeoLocationServiceConfig config;
 
-    private List coordinates;
+    private List<GeoLocation> coordinates;
     private int addedLocationsInStoppedState;
     private boolean isStartDetecting;    // is now "detecting" start event
     private long lastDetectingTimestamp; // when was recieved last location
     private long detectingTime;
     private GeoLocationState currentState = GeoLocationState.UNKNOWN;
-    private List detectLocations = new ArrayList(100);
+    private List<GeoLocation> detectLocations = new ArrayList<>(100);
 
     public LocationProcessor(GeoLocationServiceConfig config) {
         this.config = config;
-        coordinates = new ArrayList(config.getBatchCover() / config.getRetrieveInterval() + 1);
+        coordinates = new ArrayList<>(config.getBatchCover() / config.getRetrieveInterval() + 1);
     }
 
     public void processLocationAndSendBatchIfNecessary(GeoLocation location) {
@@ -54,13 +50,13 @@ public class LocationProcessor {
         if (coordinates.size() > 100) {
             coordinates.remove(0);
         }
-        long firstDate = ((GeoLocation) coordinates.get(0)).getRetrieveTimestamp().longValue();
-        long currDate = location.getRetrieveTimestamp().longValue();
+        long firstDate = coordinates.get(0).getRetrieveTimestamp();
+        long currDate = location.getRetrieveTimestamp();
         if (currDate - firstDate >= config.getBatchCover()
                 || firstDate > currDate  //if there some time singularity fix all
                 || config.getBatchCover() == config.getRetrieveInterval()) {
-            List coordinatesToPersist = coordinates;
-            coordinates = new ArrayList(config.getBatchCover() / config.getRetrieveInterval() + 1);
+            List<GeoLocation> coordinatesToPersist = coordinates;
+            coordinates = new ArrayList<>(config.getBatchCover() / config.getRetrieveInterval() + 1);
             GeoLocationBatch batch = new GeoLocationBatch(coordinatesToPersist);
             Resender.getInstance().send(batch);
         }
@@ -68,7 +64,7 @@ public class LocationProcessor {
 
     public boolean checkStartStop(GeoLocation location) {
         if (location != null) {
-            float speed = location.getSpeed().floatValue();
+            float speed = location.getSpeed();
             if (config.getMovingSpeed()[0] < speed && speed < config.getMovingSpeed()[1]) { //moving
                 if (!isStartDetecting) {
                     resetDetectingVariables(location);
@@ -111,9 +107,7 @@ public class LocationProcessor {
                                                 int configLocationsQuant,
                                                 GeoLocationState longState,
                                                 GeoLocationState changingState) {
-
         detectLocations.add(location);
-
         if (lastDetectingTimestamp != 0) {
             detectingTime += System.currentTimeMillis() - lastDetectingTimestamp;
         }
@@ -129,16 +123,13 @@ public class LocationProcessor {
                     "\n detectingTime: " + detectingTime +
                     "\n lastDetectingTimestamp: " + lastDetectingTimestamp +
                     "\n detectLocationsQuant: " + detectLocations.size() + ":";
-            int startindex = detectLocations.size() - 20 > 0 ? detectLocations.size() - 20 : 0;
-            for (int i = startindex; i < detectLocations.size(); i++) {
+            int startIndex = detectLocations.size() - 20 > 0 ? detectLocations.size() - 20 : 0;
+            for (int i = startIndex; i < detectLocations.size(); i++) {
                 message += "\n    " + detectLocations.get(i);
             }
             MCLoggerFactory.getLogger(getClass()).debug(message);
             return true;
         }
-
         return false;
-
     }
-
 }

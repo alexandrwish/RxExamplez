@@ -21,6 +21,7 @@ import com.magenta.mc.client.android.DistributionApplication;
 import com.magenta.mc.client.android.common.Constants;
 import com.magenta.mc.client.android.mc.MxAndroidUtil;
 import com.magenta.mc.client.android.mc.MxSettings;
+import com.magenta.mc.client.android.mc.client.resend.ResendableMetadata;
 import com.magenta.mc.client.android.mc.client.resend.Resender;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 import com.magenta.mc.client.android.mc.settings.Settings;
@@ -28,6 +29,7 @@ import com.magenta.mc.client.android.mc.tracking.GeoLocation;
 import com.magenta.mc.client.android.mc.tracking.GeoLocationBatch;
 import com.magenta.mc.client.android.record.LoginRecord;
 import com.magenta.mc.client.android.record.LoginResultRecord;
+import com.magenta.mc.client.android.rpc.RPCOut;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -49,6 +51,8 @@ import rx.Subscriber;
 import rx.schedulers.Schedulers;
 
 public class HttpClient {
+
+    private static final ResendableMetadata STATUS_RESENDABLE_METADATA = new ResendableMetadata("status");
 
     private static HttpClient instance;
     private final LoginClient loginClient;
@@ -98,7 +102,7 @@ public class HttpClient {
 
     @Deprecated
     // TODO: 2/17/17 fix me
-    public Observable<List<OrderActionResult>> sendState(String userId, String jobRef, String states, Map values) {
+    public void sendState(final long id, String userId, String jobRef, String states, Map values) {
         List<OrderAction> results = new ArrayList<>(1);
         OrderAction result = new OrderAction();
         result.setOrderId(Long.valueOf((String) values.get("stop-ref"), Character.MAX_RADIX));
@@ -112,14 +116,29 @@ public class HttpClient {
             result.setActionTime(new Date());
         }
         results.add(result);
-        return apiClient.actionPost(results);
+        // TODO: 2/20/17 return observer
+        apiClient.actionPost(results)
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<List<OrderActionResult>>() {
+                    public void onCompleted() {
+
+                    }
+
+                    public void onError(Throwable e) {
+                        MCLoggerFactory.getLogger(RPCOut.class).error(e.getMessage(), e);
+                    }
+
+                    public void onNext(List<OrderActionResult> orderActionResults) {
+                        Resender.getInstance().sent(STATUS_RESENDABLE_METADATA, id);
+                    }
+                });
     }
 
     @Deprecated
     // TODO: 2/17/17 fix me
-    public void sendLocations(final Long id, List locations) {
+    public void sendLocations(final Long id, List<GeoLocation> locations) {
         List<TelemetryRecord> records = new LinkedList<>();
-        for (GeoLocation o : (List<GeoLocation>) locations) {
+        for (GeoLocation o : locations) {
             TelemetryRecord record = new TelemetryRecord();
             record.setDate(System.currentTimeMillis());
             record.setHeading(o.getHeading().doubleValue());
@@ -131,6 +150,7 @@ public class HttpClient {
             record.setGprs(getNetworkInfo());
             record.setGps(isGPSEnable());
         }
+        // TODO: 2/20/17 return observer
         apiClient.telemetryPost(records)
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Subscriber<Boolean>() {
@@ -148,6 +168,7 @@ public class HttpClient {
                 });
     }
 
+    // TODO: 2/20/17 use EasyDeviceInfo
     private Double getBatteryLevel() {
         Intent batteryIntent = DistributionApplication.getInstance().registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
         if (batteryIntent == null) {

@@ -12,6 +12,7 @@ import com.magenta.mc.client.android.entity.Address;
 import com.magenta.mc.client.android.entity.MapProviderType;
 import com.magenta.mc.client.android.entity.MapSettingsEntity;
 import com.magenta.mc.client.android.mc.MxSettings;
+import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 import com.magenta.mc.client.android.mc.settings.Settings;
 import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.mc.xml.XMLDataBlock;
@@ -29,12 +30,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+@SuppressWarnings("unused")
 public class DistributionRPCOut extends RPCOut {
 
+    public static final String UPDATE_ROUTE_ACTION = "update_route";
     private static final String UPDATE_ROUTE = "updateRoute";
     private static final String SAVE_STATE = "savePhoneState";
-    public static final String UPDATE_ROUTE_ACTION = "update_route";
-
     private static DistributionRPCOut instance;
 
     private DistributionRPCOut() {
@@ -44,7 +45,6 @@ public class DistributionRPCOut extends RPCOut {
         return instance == null ? (instance = new DistributionRPCOut()) : instance;
     }
 
-    @SuppressWarnings("unused")
     public static void accountConfigurationResponse(Long id, XMLDataBlock data) {
         XMLDataBlock stringBlock = data.getChildBlock("string");
         XMLDataBlock response = stringBlock.getChildBlock("accountConfig");
@@ -115,7 +115,7 @@ public class DistributionRPCOut extends RPCOut {
                             updateSettings(new MapSettingsEntity(), mapSettings);
                         }
                     } catch (SQLException exception) {
-                        LOG.error(exception.getMessage(), exception);
+                        MCLoggerFactory.getLogger(DistributionRPCOut.class).error(exception.getMessage(), exception);
                     }
                     ((DistributionActivity) activity).updateMapSettings();
                 }
@@ -169,7 +169,6 @@ public class DistributionRPCOut extends RPCOut {
         JabberRPC.getInstance().call(UPDATE_ROUTE, new Object[]{locations}, synchronizeTimestamp);
     }
 
-    @SuppressWarnings("unused")
     public static void updateRouteResponse(Long id, XMLDataBlock data) {
         Bundle bundle = new Bundle();
         bundle.putString("route", data.getChildBlock("string").getChildBlock("route").getText());
@@ -181,12 +180,11 @@ public class DistributionRPCOut extends RPCOut {
         JabberRPC.getInstance().call(SAVE_STATE, new Object[]{phoneStatistics}, date.getTime());
     }
 
-    @SuppressWarnings("unused")
     public static void savePhoneStateResponse(final Long id, final XMLDataBlock data) {
         if (data.getChildBlock("string").getChildBlock("update").getText().equalsIgnoreCase("success")) {
             DistributionApplication.getInstance().completeStatisticSending(new Date(id));
         } else {
-            LOG.error("Cannot save state on sever");
+            MCLoggerFactory.getLogger(DistributionRPCOut.class).error("Cannot save state on sever");
         }
     }
 }
