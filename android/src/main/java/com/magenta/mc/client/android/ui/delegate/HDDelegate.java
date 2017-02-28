@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Pair;
 
 import com.magenta.mc.client.android.DistributionApplication;
 import com.magenta.mc.client.android.R;
@@ -17,6 +18,8 @@ import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 import com.magenta.mc.client.android.receiver.HDReceiver;
 import com.magenta.mc.client.android.service.HttpService;
 import com.magenta.mc.client.android.service.SenderService;
+import com.magenta.mc.client.android.service.SocketIOService;
+import com.magenta.mc.client.android.service.holder.ServiceHolder;
 import com.magenta.mc.client.android.ui.dialog.DialogFactory;
 import com.magenta.mc.client.android.ui.dialog.DistributionDialogFragment;
 
@@ -48,8 +51,9 @@ public class HDDelegate extends SmokeActivityDelegate implements HttpResponseLis
         MCLoggerFactory.getLogger(HDDelegate.class).debug("Login result = " + result);
         switch (result) {
             case Constants.OK: {
-                getActivity().startService(new Intent(getActivity(), HttpService.class).putExtra(IntentAttributes.HTTP_TYPE, Constants.SETTINGS_TYPE));
-                getActivity().startService(new Intent(getActivity(), HttpService.class).putExtra(IntentAttributes.HTTP_TYPE, Constants.JOBS_TYPE));
+                ServiceHolder.getInstance().startService(getActivity(), HttpService.class, new Pair<>(IntentAttributes.HTTP_TYPE, Constants.SETTINGS_TYPE));
+                ServiceHolder.getInstance().startService(getActivity(), HttpService.class, new Pair<>(IntentAttributes.HTTP_TYPE, Constants.JOBS_TYPE));
+                ServiceHolder.getInstance().bindService(getActivity(), SocketIOService.class);
                 break;
             }
             case Constants.WARN: {
@@ -88,6 +92,7 @@ public class HDDelegate extends SmokeActivityDelegate implements HttpResponseLis
     }
 
     public void jobsResult(int result) {
+        // TODO: 2/13/17 return answer to UI
         MCLoggerFactory.getLogger(HDDelegate.class).debug("Jobs result = " + result);
         switch (result) {
             case Constants.START: {

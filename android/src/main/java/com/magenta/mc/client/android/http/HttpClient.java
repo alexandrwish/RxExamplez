@@ -8,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.BatteryManager;
 
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.magenta.hdmate.mx.ApiClient;
 import com.magenta.hdmate.mx.api.MateApi;
@@ -19,6 +20,7 @@ import com.magenta.hdmate.mx.model.SettingsResultRecord;
 import com.magenta.hdmate.mx.model.TelemetryRecord;
 import com.magenta.mc.client.android.DistributionApplication;
 import com.magenta.mc.client.android.common.Constants;
+import com.magenta.mc.client.android.entity.Address;
 import com.magenta.mc.client.android.mc.MxAndroidUtil;
 import com.magenta.mc.client.android.mc.MxSettings;
 import com.magenta.mc.client.android.mc.client.resend.ResendableMetadata;
@@ -29,6 +31,7 @@ import com.magenta.mc.client.android.mc.tracking.GeoLocation;
 import com.magenta.mc.client.android.mc.tracking.GeoLocationBatch;
 import com.magenta.mc.client.android.record.LoginRecord;
 import com.magenta.mc.client.android.record.LoginResultRecord;
+import com.magenta.mc.client.android.record.PointsResultRecord;
 import com.magenta.mc.client.android.rpc.RPCOut;
 
 import java.text.ParseException;
@@ -55,15 +58,15 @@ public class HttpClient {
     private static final ResendableMetadata STATUS_RESENDABLE_METADATA = new ResendableMetadata("status");
 
     private static HttpClient instance;
-    private final LoginClient loginClient;
+    private final ServiceClient serviceClient;
     private MateApi apiClient;
 
     private HttpClient() {
-        loginClient = new Retrofit.Builder()
+        serviceClient = new Retrofit.Builder()
                 .baseUrl("https://maxoptra.com")
                 .client(new OkHttpClient.Builder().connectTimeout(5, TimeUnit.MINUTES).readTimeout(5, TimeUnit.MINUTES).build())
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()))
-                .build().create(LoginClient.class);
+                .build().create(ServiceClient.class);
     }
 
     public static HttpClient getInstance() {
@@ -82,14 +85,26 @@ public class HttpClient {
     }
 
     public Call<LoginResultRecord> login(String account, String login, String password) {
-        String port = "80"; // TODO: 2/6/17 impl
-        String address = ("443".equals(port) ? "https://" : "http://") + MxSettings.get().getProperty(Settings.HOST) + ":" + port + Constants.LOGIN_POSTFIX;
         LoginRecord record = new LoginRecord();
         record.setAccountTechName(account);
         record.setUsername(login);
         record.setPassword(password);
         record.setMd5Password(true);
-        return loginClient.login(address, record);
+        return serviceClient.login(getAddress(Constants.LOGIN_POSTFIX), record);
+    }
+
+    public Call<PointsResultRecord> getRoute(List<Address> addresses) {
+        Double[][] doubles = new Double[addresses.size()][];
+        for (int i = 0; i < addresses.size(); i++) {
+            doubles[i] = new Double[]{addresses.get(i).getLongitude(), addresses.get(i).getLatitude()};
+        }
+        String address = getAddress(Constants.GIS_POSTFIX) + "?" + Constants.PARAM_LOCATIONS + "=" + new Gson().toJson(doubles);
+        return serviceClient.updateRoute(address, Constants.CONTENT_TYPE_VALUE, com.magenta.mc.client.android.common.Settings.get().getAuthToken());
+    }
+
+    private String getAddress(String postfix) {
+        String port = "80"; // TODO: 2/6/17 impl
+        return ("443".equals(port) ? "https://" : "http://") + MxSettings.get().getProperty(Settings.HOST) + ":" + port + postfix;
     }
 
     public Observable<SettingsResultRecord> getSettings() {

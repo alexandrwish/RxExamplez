@@ -10,19 +10,20 @@ import com.google.inject.Module;
 import com.magenta.mc.client.android.db.MxDBAdapter;
 import com.magenta.mc.client.android.mc.MXNavApp;
 import com.magenta.mc.client.android.mc.MxSettings;
+import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
+import com.magenta.mc.client.android.mc.settings.Settings;
+import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.service.McService;
 import com.magenta.mc.client.android.ui.activity.common.SettingsActivity;
 import com.magenta.mc.client.android.ui.theme.Theme;
 import com.magenta.mc.client.android.ui.theme.ThemeManageable;
 import com.magenta.mc.client.android.ui.theme.ThemeManager;
 import com.magenta.mc.client.android.util.LocaleUtils;
-import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
-import com.magenta.mc.client.android.mc.settings.Settings;
-import com.magenta.mc.client.android.mc.setup.Setup;
 
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Timer;
 
 import roboguice.RoboGuice;
 
@@ -34,6 +35,7 @@ public abstract class McAndroidApplication extends Application implements ThemeM
     protected MxDBAdapter dbAdapter;
     protected MXNavApp mxNavApp;
     protected boolean loginPress;
+    private Timer mTimer;
 
     public static McAndroidApplication getInstance() {
         return instance;
@@ -163,6 +165,10 @@ public abstract class McAndroidApplication extends Application implements ThemeM
     }
 
     protected abstract Class<? extends McService> getServiceClass();
+
+    public Timer getTimer() {
+        return mTimer == null ? mTimer = new Timer(getString(R.string.mx_app_name)) : mTimer;
+    }
 
     private static class MxThemeManager extends ThemeManager {
 

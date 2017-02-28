@@ -93,6 +93,10 @@ public class Settings {
         return preferences.getString(AUTH_TOKEN, "");
     }
 
+    public String getLogin() {
+        return "";
+    }
+
     public static class SettingsBuilder {
 
         private static final SettingsBuilder instance = new SettingsBuilder();

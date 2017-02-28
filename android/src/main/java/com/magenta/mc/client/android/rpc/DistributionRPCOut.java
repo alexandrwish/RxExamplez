@@ -11,11 +11,13 @@ import com.magenta.mc.client.android.db.dao.DistributionDAO;
 import com.magenta.mc.client.android.entity.Address;
 import com.magenta.mc.client.android.entity.MapProviderType;
 import com.magenta.mc.client.android.entity.MapSettingsEntity;
+import com.magenta.mc.client.android.http.HttpClient;
 import com.magenta.mc.client.android.mc.MxSettings;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 import com.magenta.mc.client.android.mc.settings.Settings;
 import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.mc.xml.XMLDataBlock;
+import com.magenta.mc.client.android.record.PointsResultRecord;
 import com.magenta.mc.client.android.ui.AndroidUI;
 import com.magenta.mc.client.android.ui.activity.DistributionActivity;
 import com.magenta.mc.client.android.ui.dialog.DialogFactory;
@@ -29,6 +31,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 @SuppressWarnings("unused")
 public class DistributionRPCOut extends RPCOut {
@@ -160,20 +166,24 @@ public class DistributionRPCOut extends RPCOut {
         return false;
     }
 
-    public static void updateRoute(List<Address> addresses, Long synchronizeTimestamp) {
-        Object[][] locations = new Object[addresses.size() + 1][2];
-        for (int i = 0; i < addresses.size(); i++) {
-            locations[i] = new Object[]{addresses.get(i).getLatitude(), addresses.get(i).getLongitude()};
-        }
-        locations[addresses.size()] = new String[]{};
-        JabberRPC.getInstance().call(UPDATE_ROUTE, new Object[]{locations}, synchronizeTimestamp);
-    }
+    public static void updateRoute(List<Address> addresses, final Long synchronizeTimestamp) {
+        HttpClient.getInstance().getRoute(addresses).enqueue(new Callback<PointsResultRecord>() {
+            public void onResponse(Call<PointsResultRecord> call, Response<PointsResultRecord> response) {
+                if (response != null && response.body() != null) {
+                    PointsResultRecord record = response.body();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("route", "[]");
+                    bundle.putLong("synchronizeTimestamp", synchronizeTimestamp);
+                    ((AndroidUI) Setup.get().getUI()).getCurrentActivity().sendBroadcast(new Intent(UPDATE_ROUTE_ACTION).putExtras(bundle));
+                } else {
+                    //что-то пошло не так
+                }
+            }
 
-    public static void updateRouteResponse(Long id, XMLDataBlock data) {
-        Bundle bundle = new Bundle();
-        bundle.putString("route", data.getChildBlock("string").getChildBlock("route").getText());
-        bundle.putLong("synchronizeTimestamp", id);
-        ((AndroidUI) Setup.get().getUI()).getCurrentActivity().sendBroadcast(new Intent(UPDATE_ROUTE_ACTION).putExtras(bundle));
+            public void onFailure(Call<PointsResultRecord> call, Throwable t) {
+                MCLoggerFactory.getLogger(DistributionRPCOut.class).error(t.getMessage(), t);
+            }
+        });
     }
 
     public static void savePhoneState(String phoneStatistics, Date date) {
