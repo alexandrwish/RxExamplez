@@ -53,16 +53,22 @@ public class ServiceHolder {
         if (serviceClass == null || context == null) {
             return;
         }
-        if (listener != null) {
-            bindCallbacks.put(serviceClass.getName(), listener);
-        }
-        Bundle bundle = new Bundle();
-        if (args != null) {
-            for (Pair<String, Integer> arg : args) {
-                bundle.putInt(arg.first, arg.second);
+        if (binders.containsKey(serviceClass.getName())) {
+            if (listener != null) {
+                listener.onBind(binders.get(serviceClass.getName()));
             }
+        } else {
+            if (listener != null) {
+                bindCallbacks.put(serviceClass.getName(), listener);
+            }
+            Bundle bundle = new Bundle();
+            if (args != null) {
+                for (Pair<String, Integer> arg : args) {
+                    bundle.putInt(arg.first, arg.second);
+                }
+            }
+            context.bindService(new Intent(context, serviceClass).putExtras(bundle), connection, Context.BIND_AUTO_CREATE);
         }
-        context.bindService(new Intent(context, serviceClass).putExtras(bundle), connection, Context.BIND_AUTO_CREATE);
     }
 
     @SafeVarargs
