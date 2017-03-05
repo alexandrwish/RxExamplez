@@ -3,7 +3,7 @@ package com.magenta.mc.client.android.service.storage;
 import android.util.Pair;
 
 import com.magenta.hdmate.mx.model.JobRecord;
-import com.magenta.mc.client.android.DistributionApplication;
+import com.magenta.mc.client.android.McAndroidApplication;
 import com.magenta.mc.client.android.MobileApp;
 import com.magenta.mc.client.android.db.dao.CommonsDAO;
 import com.magenta.mc.client.android.entity.AbstractJobStatus;
@@ -236,7 +236,7 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
             });
         }
         if (currentJob != null && currentJob.isCompleted()) {
-            new CommonsDAO(DistributionApplication.getContext()).removeAllJobData(currentJob.getReferenceId());
+            new CommonsDAO(McAndroidApplication.getInstance()).removeAllJobData(currentJob.getReferenceId());
         }
     }
 
@@ -276,7 +276,7 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
         final long runNum = runID - dayStart;
         Date runDate = new Date(dayStart);
         Date nextDate = new Date(dayStart + 24 * 60 * 60 * 1000);
-        CommonsDAO dao = new CommonsDAO(DistributionApplication.getContext());
+        CommonsDAO dao = new CommonsDAO(McAndroidApplication.getInstance());
         dao.removeAllJobData(jobForCancel.getReferenceId());
         Map<String, String> refToNewRef = new TreeMap<>(new Comparator<String>() {
             public int compare(String o1, String o2) {

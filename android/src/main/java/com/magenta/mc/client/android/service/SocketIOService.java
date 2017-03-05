@@ -185,7 +185,6 @@ public class SocketIOService extends Service {
         McAndroidApplication.getInstance().getTimer().schedule(mUpdateTask, 5000, 5000);
     }
 
-
     protected void onConnecting() {
         MCLoggerFactory.getLogger(SocketIOService.class).debug("EVENT_CONNECTING");
     }
@@ -344,6 +343,6 @@ public class SocketIOService extends Service {
     }
 
     public IBinder onBind(Intent intent) {
-        return new Binder();
+        return new Binder(); // TODO: 3/5/17 class binder for this
     }
 }

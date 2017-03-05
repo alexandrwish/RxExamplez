@@ -7,8 +7,9 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 
-import com.magenta.mc.client.android.DistributionApplication;
+import com.magenta.mc.client.android.McAndroidApplication;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
+import com.magenta.mc.client.android.ui.activity.DistributionActivity;
 
 import net.sf.microlog.core.LoggerFactory;
 
@@ -41,7 +42,7 @@ public class ServicesRegistry {
             sLocationService = null;
         }
     };
-    private static Application application;
+
     private static Class<? extends CoreService> coreServiceClass;
     private static Class<? extends WorkflowService> workflowServiceClass;
     private static Class<? extends SaveLocationsService> saveLocationsServiceClass;
@@ -64,13 +65,12 @@ public class ServicesRegistry {
     }
 
     public static void startSaveLocationsService(final Application application, Class<? extends SaveLocationsService> saveLocationsServiceClass) {
-        ServicesRegistry.application = application;
         ServicesRegistry.saveLocationsServiceClass = saveLocationsServiceClass;
         connectToSaveLocationsServiceClass();
     }
 
     private static void connectToSaveLocationsServiceClass() {
-        if (!application.bindService(new Intent(application, saveLocationsServiceClass), SAVE_LOCATION_SERVICE, Context.BIND_AUTO_CREATE)) {
+        if (!McAndroidApplication.getInstance().bindService(new Intent(McAndroidApplication.getInstance(), saveLocationsServiceClass), SAVE_LOCATION_SERVICE, Context.BIND_AUTO_CREATE)) {
             throw new RuntimeException("Service not bound");
         }
     }
@@ -102,13 +102,12 @@ public class ServicesRegistry {
 
     private static void connectToCoreService() {
         MCLoggerFactory.getLogger(ServicesRegistry.class).warn("binding service");
-        if (!application.bindService(new Intent(application, coreServiceClass), CORE_SERVICE_CONNECTION, Context.BIND_AUTO_CREATE)) {
+        if (!McAndroidApplication.getInstance().bindService(new Intent(McAndroidApplication.getInstance(), coreServiceClass), CORE_SERVICE_CONNECTION, Context.BIND_AUTO_CREATE)) {
             throw new RuntimeException("Service not bound");
         }
     }
 
     public static void startCoreService(final Application application, Class<? extends CoreService> coreServiceClass) {
-        ServicesRegistry.application = application;
         ServicesRegistry.coreServiceClass = coreServiceClass;
         connectToCoreService();
     }
@@ -134,7 +133,7 @@ public class ServicesRegistry {
 
     public static WorkflowService getWorkflowService() {
         if (workflowService == null) {
-            return newWorkflowService(DistributionApplication.getContext());
+            return newWorkflowService(McAndroidApplication.getInstance());
         }
         return workflowService;
     }

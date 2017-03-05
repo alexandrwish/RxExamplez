@@ -10,7 +10,7 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.SelectArg;
 import com.j256.ormlite.stmt.UpdateBuilder;
 import com.j256.ormlite.support.ConnectionSource;
-import com.magenta.mc.client.android.DistributionApplication;
+import com.magenta.mc.client.android.McAndroidApplication;
 import com.magenta.mc.client.android.db.DBAdapter;
 import com.magenta.mc.client.android.db.DistributionDBHelper;
 import com.magenta.mc.client.android.entity.AbstractJobStatus;
@@ -36,7 +36,7 @@ public class DistributionDAO {
     private DBAdapter adapter;
 
     private DistributionDAO() {
-        this.adapter = (DBAdapter) DistributionApplication.getInstance().getDBAdapter();
+        this.adapter = McAndroidApplication.getInstance().getDBAdapter();
     }
 
     public static DistributionDAO getInstance() {

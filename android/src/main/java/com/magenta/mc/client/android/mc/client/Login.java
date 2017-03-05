@@ -79,9 +79,6 @@ public class Login implements LoginListener {
                     Login.getInstance().getListener().successAfterWake(initiatedByUser);
                     future.run();
                 } else {
-                    if (MobileApp.isRunningInTestMode() && Setup.get().getSettings().needToInitializeStorage()) {
-                        Setup.get().getStorageInitializer().initStorage();
-                    }
                     getInstance().doLogin(userId, pin, future);
                 }
             }

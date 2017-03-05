@@ -1,7 +1,6 @@
 package com.magenta.mc.client.android.service.renderer;
 
 import com.google.gson.Gson;
-import com.magenta.mc.client.android.DistributionApplication;
 import com.magenta.mc.client.android.db.dao.DistributionDAO;
 import com.magenta.mc.client.android.entity.Address;
 import com.magenta.mc.client.android.entity.DynamicAttributeEntity;

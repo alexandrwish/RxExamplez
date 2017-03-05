@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.gson.Gson;
-import com.magenta.mc.client.android.DistributionApplication;
+import com.magenta.mc.client.android.McAndroidApplication;
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.db.dao.DistributionDAO;
 import com.magenta.mc.client.android.entity.Address;
@@ -192,7 +192,7 @@ public class DistributionRPCOut extends RPCOut {
 
     public static void savePhoneStateResponse(final Long id, final XMLDataBlock data) {
         if (data.getChildBlock("string").getChildBlock("update").getText().equalsIgnoreCase("success")) {
-            DistributionApplication.getInstance().completeStatisticSending(new Date(id));
+            McAndroidApplication.getInstance().completeStatisticSending(new Date(id));
         } else {
             MCLoggerFactory.getLogger(DistributionRPCOut.class).error("Cannot save state on sever");
         }

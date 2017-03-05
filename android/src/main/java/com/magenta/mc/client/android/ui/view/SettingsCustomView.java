@@ -8,7 +8,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.magenta.mc.client.android.DistributionApplication;
+import com.magenta.mc.client.android.McAndroidApplication;
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.db.CacheDBHelper;
 import com.magenta.mc.client.android.db.dao.TileCacheDAO;
@@ -46,6 +46,6 @@ public class SettingsCustomView extends LinearLayout {
     }
 
     private void updateInfoField() {
-        ((TextView) findViewById(R.id.cache_space)).setText((new File(DistributionApplication.getInstance().getDBAdapter().getDB(CacheDBHelper.DATABASE_NAME).getPath()).length() / 1024 / 1024) + " mb");
+        ((TextView) findViewById(R.id.cache_space)).setText((new File(McAndroidApplication.getInstance().getDBAdapter().getDB(CacheDBHelper.DATABASE_NAME).getPath()).length() / 1024 / 1024) + " mb");
     }
 }

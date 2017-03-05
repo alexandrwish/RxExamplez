@@ -9,32 +9,18 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Pair;
 
+import com.magenta.mc.client.android.McAndroidApplication;
 import com.magenta.mc.client.android.service.listeners.BindListener;
+import com.magenta.mc.client.android.util.Triple;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 // TODO: 2/28/17 use dagger inject or stay as singleton?
-public class ServiceHolder {
+public final class ServiceHolder {
 
     private static ServiceHolder instance;
-    private final Map<String, IBinder> binders = new ConcurrentHashMap<>();
-    private final Map<String, BindListener> bindCallbacks = new ConcurrentHashMap<>();
-
-    private final ServiceConnection connection = new ServiceConnection() {
-
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            binders.put(name.getClassName(), service);
-            if (bindCallbacks.containsKey(name.getClassName())) {
-                bindCallbacks.remove(name.getClassName()).onBind(service);
-            }
-        }
-
-        public void onServiceDisconnected(ComponentName name) {
-            binders.remove(name.getClassName());
-            bindCallbacks.remove(name.getClassName());
-        }
-    };
+    private final Map<String, Triple<ServiceConnection, IBinder, BindListener>> binders = new ConcurrentHashMap<>();
 
     private ServiceHolder() {
     }
@@ -44,42 +30,65 @@ public class ServiceHolder {
     }
 
     @SafeVarargs
-    public final void bindService(Context context, Class<? extends Service> serviceClass, Pair<String, Integer>... args) {
-        bindService(context, serviceClass, null, args);
+    public final void bindService(Class<? extends Service> serviceClass, Pair<String, Integer>... args) {
+        bindService(serviceClass, null, args);
     }
 
     @SafeVarargs
-    public final void bindService(Context context, Class<? extends Service> serviceClass, BindListener listener, Pair<String, Integer>... args) {
-        if (serviceClass == null || context == null) {
+    public final void bindService(Class<? extends Service> serviceClass, BindListener listener, Pair<String, Integer>... args) {
+        if (serviceClass == null) {
             return;
         }
         if (binders.containsKey(serviceClass.getName())) {
             if (listener != null) {
-                listener.onBind(binders.get(serviceClass.getName()));
+                listener.onBind(binders.get(serviceClass.getName()).second);
             }
         } else {
-            if (listener != null) {
-                bindCallbacks.put(serviceClass.getName(), listener);
-            }
+            final Triple<ServiceConnection, IBinder, BindListener> triple = new Triple<>();
             Bundle bundle = new Bundle();
-            if (args != null) {
-                for (Pair<String, Integer> arg : args) {
-                    bundle.putInt(arg.first, arg.second);
-                }
+            for (Pair<String, Integer> arg : args) {
+                bundle.putInt(arg.first, arg.second);
             }
-            context.bindService(new Intent(context, serviceClass).putExtras(bundle), connection, Context.BIND_AUTO_CREATE);
+            triple.first = new ServiceConnection() {
+                public void onServiceConnected(ComponentName name, IBinder service) {
+                    triple.second = service;
+                    if (triple.third != null) {
+                        triple.third.onBind(service);
+                        triple.third = null;
+                    }
+                }
+
+                public void onServiceDisconnected(ComponentName name) {
+                    triple.second = null;
+                    triple.third = null;
+                }
+            };
+            triple.third = listener;
+            binders.put(serviceClass.getName(), triple);
+            Context context = McAndroidApplication.getInstance();
+            context.bindService(new Intent(context, serviceClass).putExtras(bundle), triple.first, Context.BIND_AUTO_CREATE);
         }
     }
 
     @SafeVarargs
-    public final void startService(Context context, Class<? extends Service> serviceClass, Pair<String, Integer>... args) {
+    public final void startService(Class<? extends Service> serviceClass, Pair<String, Integer>... args) {
         Bundle bundle = new Bundle();
         if (args != null) {
             for (Pair<String, Integer> arg : args) {
                 bundle.putInt(arg.first, arg.second);
             }
         }
+        Context context = McAndroidApplication.getInstance();
         context.startService(new Intent(context, serviceClass).putExtras(bundle));
+    }
+
+    public final void stopService(Class<? extends Service> serviceClass) {
+        Context context = McAndroidApplication.getInstance();
+        if (binders.containsKey(serviceClass.getName())) {
+            context.unbindService(binders.remove(serviceClass.getName()).first);
+        } else {
+            context.stopService(new Intent(context, serviceClass));
+        }
     }
 
     /**
@@ -87,6 +96,6 @@ public class ServiceHolder {
      *                    represented by this object.
      */
     public IBinder getService(String serviceName) {
-        return binders.get(serviceName);
+        return binders.get(serviceName).second;
     }
 }

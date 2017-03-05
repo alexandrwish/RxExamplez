@@ -27,12 +27,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.magenta.mc.client.android.DistributionApplication;
+import com.magenta.mc.client.android.McAndroidApplication;
+import com.magenta.mc.client.android.MobileApp;
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.common.Constants;
 import com.magenta.mc.client.android.http.HttpClient;
 import com.magenta.mc.client.android.mc.MxAndroidUtil;
-import com.magenta.mc.client.android.mc.MxMobile;
 import com.magenta.mc.client.android.mc.MxSettings;
 import com.magenta.mc.client.android.mc.client.Login;
 import com.magenta.mc.client.android.mc.client.XMPPClient;
@@ -182,7 +182,7 @@ public class LoginActivity extends SmokeLoginActivity<HDDelegate> implements Rem
     }
 
     protected void checkHistory(Runnable runnable) {
-        DistributionApplication.getInstance().checkHistory(runnable);
+        McAndroidApplication.getInstance().checkHistory(runnable);
     }
 
     protected void logSettings() {
@@ -242,7 +242,7 @@ public class LoginActivity extends SmokeLoginActivity<HDDelegate> implements Rem
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             finish();
-            MxMobile.getInstance().exit();
+            MobileApp.getInstance().exit();
         }
         return true;
     }
@@ -301,7 +301,7 @@ public class LoginActivity extends SmokeLoginActivity<HDDelegate> implements Rem
         Settings.get().saveSettings();
         checkHistory(new Runnable() {
             public void run() {
-                DistributionApplication.getInstance().setLoginPress(true);
+                McAndroidApplication.getInstance().setLoginPress(true);
                 Login.login(Settings.get().getUserId(), Settings.get().getPassword(),
 
                         new SynchronousCallback() {
@@ -321,7 +321,7 @@ public class LoginActivity extends SmokeLoginActivity<HDDelegate> implements Rem
                                                 );
                                                 RPCOut.accountConfiguration();
                                                 RPCOut.sendImei(MxAndroidUtil.getImei());
-                                                DistributionApplication.getInstance().setLoginPress(false);
+                                                McAndroidApplication.getInstance().setLoginPress(false);
                                                 ServicesRegistry.getWorkflowService().showNextActivity(Intent.FLAG_ACTIVITY_NEW_TASK);
                                             }
                                         }

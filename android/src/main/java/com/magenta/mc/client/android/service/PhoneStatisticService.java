@@ -12,7 +12,7 @@ import android.os.CountDownTimer;
 import android.os.IBinder;
 
 import com.google.gson.Gson;
-import com.magenta.mc.client.android.DistributionApplication;
+import com.magenta.mc.client.android.McAndroidApplication;
 import com.magenta.mc.client.android.db.dao.DistributionDAO;
 import com.magenta.mc.client.android.entity.PhoneStatisticEntity;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
@@ -45,9 +45,9 @@ public class PhoneStatisticService extends Service {
                     entity.setDate(new Date());
                     dao.createPhoneState(entity);
                     if (entity.getBatteryState() > 10) {
-                        ((DistributionApplication) DistributionApplication.getInstance()).lock();
+                        McAndroidApplication.getInstance().lock();
                     } else {
-                        ((DistributionApplication) DistributionApplication.getInstance()).unlock();
+                        McAndroidApplication.getInstance().unlock();
                     }
                     MCLoggerFactory.getLogger(getClass()).info("PhoneState. bat:" + entity.getBatteryState() + ", gps:" + entity.isGpsState() + ", gprs:" + entity.isGprsState());
                 } catch (SQLException ignore) {

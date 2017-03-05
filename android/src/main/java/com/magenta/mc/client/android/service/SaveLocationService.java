@@ -6,7 +6,6 @@ import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.magenta.mc.client.android.DistributionApplication;
 import com.magenta.mc.client.android.db.dao.DistributionDAO;
 import com.magenta.mc.client.android.entity.LocationEntity;
 import com.magenta.mc.client.android.mc.MxSettings;

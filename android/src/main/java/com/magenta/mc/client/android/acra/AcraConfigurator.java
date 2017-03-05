@@ -1,6 +1,6 @@
 package com.magenta.mc.client.android.acra;
 
-import com.magenta.mc.client.android.DistributionApplication;
+import com.magenta.mc.client.android.McAndroidApplication;
 import com.magenta.mc.client.android.mc.MxAndroidUtil;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 
@@ -9,7 +9,7 @@ import org.acra.ACRAConfiguration;
 
 public class AcraConfigurator {
 
-    public void init(DistributionApplication application) {
+    public void init(McAndroidApplication application) {
         try {
             ACRAConfiguration config = ACRA.getNewDefaultConfig(application);
             config.setSharedPreferenceName("acra");

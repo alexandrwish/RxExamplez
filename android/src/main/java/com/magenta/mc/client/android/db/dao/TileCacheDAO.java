@@ -4,7 +4,7 @@ import com.j256.ormlite.android.AndroidConnectionSource;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.stmt.DeleteBuilder;
-import com.magenta.mc.client.android.DistributionApplication;
+import com.magenta.mc.client.android.McAndroidApplication;
 import com.magenta.mc.client.android.db.CacheDBHelper;
 import com.magenta.mc.client.android.db.DBAdapter;
 import com.magenta.mc.client.android.entity.TileCacheEntity;
@@ -19,7 +19,7 @@ public class TileCacheDAO {
     private Dao<TileCacheEntity, Integer> dao;
 
     private TileCacheDAO() {
-        this.adapter = (DBAdapter) DistributionApplication.getInstance().getDBAdapter();
+        this.adapter = McAndroidApplication.getInstance().getDBAdapter();
     }
 
     public static TileCacheDAO getInstance() {

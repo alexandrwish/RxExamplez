@@ -5,7 +5,7 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 
 import com.google.gson.Gson;
-import com.magenta.mc.client.android.DistributionApplication;
+import com.magenta.mc.client.android.McAndroidApplication;
 import com.magenta.mc.client.android.mc.MxSettings;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 import com.magenta.mc.client.android.mc.settings.Settings;
@@ -54,7 +54,7 @@ public class GetRemoteSettings {
                         MCLoggerFactory.getLogger(getClass()).error(settings.get("message"));
                         return RESULT_ERROR;
                     } else {
-                        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(DistributionApplication.getContext()).edit();
+                        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(McAndroidApplication.getInstance()).edit();
                         for (Map.Entry<String, String> s : settings.entrySet()) {
                             Settings.get().setProperty(s.getKey(), s.getValue());
                             editor.putString(s.getKey(), s.getValue());

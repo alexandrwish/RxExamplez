@@ -9,7 +9,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Pair;
 
-import com.magenta.mc.client.android.DistributionApplication;
+import com.magenta.mc.client.android.McAndroidApplication;
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.common.Constants;
 import com.magenta.mc.client.android.common.IntentAttributes;
@@ -31,7 +31,7 @@ public class HDDelegate extends SmokeActivityDelegate implements HttpResponseLis
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        intent = PendingIntent.getService(DistributionApplication.getInstance(), 16022017, new Intent(DistributionApplication.getInstance(), SenderService.class), 0);
+        intent = PendingIntent.getService(McAndroidApplication.getInstance(), 16022017, new Intent(McAndroidApplication.getInstance(), SenderService.class), 0);
         intentFilter = new IntentFilter(Constants.HTTP_SERVICE_NAME);
         hdReceiver = new HDReceiver(this);
     }
@@ -51,9 +51,9 @@ public class HDDelegate extends SmokeActivityDelegate implements HttpResponseLis
         MCLoggerFactory.getLogger(HDDelegate.class).debug("Login result = " + result);
         switch (result) {
             case Constants.OK: {
-                ServiceHolder.getInstance().startService(DistributionApplication.getContext(), HttpService.class, new Pair<>(IntentAttributes.HTTP_TYPE, Constants.SETTINGS_TYPE));
-                ServiceHolder.getInstance().startService(DistributionApplication.getContext(), HttpService.class, new Pair<>(IntentAttributes.HTTP_TYPE, Constants.JOBS_TYPE));
-                ServiceHolder.getInstance().bindService(DistributionApplication.getContext(), SocketIOService.class);
+                ServiceHolder.getInstance().startService(HttpService.class, new Pair<>(IntentAttributes.HTTP_TYPE, Constants.SETTINGS_TYPE));
+                ServiceHolder.getInstance().startService(HttpService.class, new Pair<>(IntentAttributes.HTTP_TYPE, Constants.JOBS_TYPE));
+                ServiceHolder.getInstance().bindService(SocketIOService.class);
                 break;
             }
             case Constants.WARN: {
@@ -70,7 +70,7 @@ public class HDDelegate extends SmokeActivityDelegate implements HttpResponseLis
         MCLoggerFactory.getLogger(HDDelegate.class).debug("Login result = " + result);
         switch (result) {
             case Constants.OK: {
-                ((AlarmManager) DistributionApplication.getInstance().getSystemService(Context.ALARM_SERVICE))
+                ((AlarmManager) McAndroidApplication.getInstance().getSystemService(Context.ALARM_SERVICE))
                         .setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, Constants.SEND_DELTA, Constants.SEND_DELTA, intent);
                 break;
             }

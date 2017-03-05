@@ -4,7 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.magenta.mc.client.android.DistributionApplication;
+import com.magenta.mc.client.android.McAndroidApplication;
 
 @SuppressWarnings("unused")
 public class Settings {
@@ -29,7 +29,7 @@ public class Settings {
     private final SharedPreferences preferences;
 
     private Settings() {
-        preferences = PreferenceManager.getDefaultSharedPreferences(DistributionApplication.getContext());
+        preferences = PreferenceManager.getDefaultSharedPreferences(McAndroidApplication.getInstance());
     }
 
     public static Settings get() {

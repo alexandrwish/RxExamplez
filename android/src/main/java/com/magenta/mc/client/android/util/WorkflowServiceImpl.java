@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.magenta.mc.client.android.DistributionApplication;
+import com.magenta.mc.client.android.McAndroidApplication;
 import com.magenta.mc.client.android.handler.UpdateHandler;
 import com.magenta.mc.client.android.service.WorkflowService;
 import com.magenta.mc.client.android.ui.activity.ActivityDecorator;
@@ -28,11 +28,11 @@ public class WorkflowServiceImpl implements WorkflowService {
     }
 
     public void logout(Bundle... bundles) {
-        Intent intent = new Intent(DistributionApplication.getContext(), LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Intent intent = new Intent(McAndroidApplication.getInstance(), LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         if (bundles != null && bundles.length > 0) {
             intent.putExtras(bundles[0]);
         }
-        DistributionApplication.getContext().startActivity(intent);
+        McAndroidApplication.getInstance().startActivity(intent);
     }
 
     public void showNextActivity(int flags) {

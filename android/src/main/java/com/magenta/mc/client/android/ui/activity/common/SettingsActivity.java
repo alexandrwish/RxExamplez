@@ -10,7 +10,6 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceGroup;
 
-import com.magenta.mc.client.android.DistributionApplication;
 import com.magenta.mc.client.android.McAndroidApplication;
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.mc.MxSettings;
@@ -59,7 +58,7 @@ public class SettingsActivity extends PreferenceActivity implements SharedPrefer
         if (preference != null) {
             String key = preference.getKey();
             if (key != null && !key.isEmpty()) {
-                return !DistributionApplication.getInstance().getHiddenSettings().contains(key);
+                return !McAndroidApplication.getInstance().getHiddenSettings().contains(key);
             }
         }
         return true;

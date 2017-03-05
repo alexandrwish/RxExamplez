@@ -6,7 +6,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 
-import com.magenta.mc.client.android.DistributionApplication;
+import com.magenta.mc.client.android.McAndroidApplication;
 import com.magenta.mc.client.android.db.MxDBOpenHelper;
 
 public abstract class AbstractDAO {
@@ -20,7 +20,7 @@ public abstract class AbstractDAO {
 
     public AbstractDAO(Context context) {
         this.context = context;
-        this.dbOpenHelper = (MxDBOpenHelper) DistributionApplication.getInstance().getDBAdapter().getHelper(MxDBOpenHelper.DATABASE_NAME);
+        this.dbOpenHelper = (MxDBOpenHelper) McAndroidApplication.getInstance().getDBAdapter().getHelper(MxDBOpenHelper.DATABASE_NAME);
     }
 
     protected static Cursor query(final SQLiteDatabase db, final String table, final String[] columns, final String selection, final String[] selectionArgs) {

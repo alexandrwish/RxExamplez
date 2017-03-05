@@ -2,7 +2,7 @@ package com.magenta.mc.client.android.service.storage.entity;
 
 import android.content.Context;
 
-import com.magenta.mc.client.android.DistributionApplication;
+import com.magenta.mc.client.android.McAndroidApplication;
 import com.magenta.mc.client.android.db.dao.StopsDAO;
 import com.magenta.mc.client.android.entity.AbstractJob;
 import com.magenta.mc.client.android.entity.AbstractJobStatus;
@@ -82,7 +82,7 @@ public class Stop extends AbstractStop {
     }
 
     public AbstractJobStatus processSetState(final int state, final boolean send) {
-        Context context = DistributionApplication.getContext();
+        Context context = McAndroidApplication.getInstance();
         MCLoggerFactory.getLogger(getClass()).info("Update stop state in DB. stopName:" + stopName
                 + ", referenceId:" + referenceId
                 + " \"" + StatusUtils.translate(context, this.state) + "\"->\"" + StatusUtils.translate(context, state) + "\"");

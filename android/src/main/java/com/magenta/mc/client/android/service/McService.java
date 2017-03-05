@@ -6,7 +6,6 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.os.PowerManager;
 
-import com.magenta.mc.client.android.AndroidApp;
 import com.magenta.mc.client.android.MobileApp;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 import com.magenta.mc.client.android.mc.setup.Setup;
@@ -34,7 +33,7 @@ public class McService extends RoboService {
             partialLock.acquire();
         }
         MCLoggerFactory.getLogger(getClass()).info("onCreate");
-        AndroidApp.setInstance(createMobileApp());
+        MobileApp.setInstance(createMobileApp());
         MCLoggerFactory.getLogger(getClass()).trace("starting in foreground");
         Notifications notifications = ((AndroidUI) Setup.get().getUI()).getNotifications();
         String appName = Setup.get().getSettings().getAppName();
@@ -42,8 +41,8 @@ public class McService extends RoboService {
         MCLoggerFactory.getLogger(getClass()).trace("started in foreground");
     }
 
-    protected AndroidApp createMobileApp() {
-        return new AndroidApp(new String[]{}, this);
+    protected MobileApp createMobileApp() {
+        return new MobileApp();
     }
 
     public void onStart(Intent intent, int startId) {
@@ -55,7 +54,7 @@ public class McService extends RoboService {
         MCLoggerFactory.getLogger(getClass()).trace("onStartCommand: Received start id " + startId + ": " + intent);
         try {
             if (intent == null || !intent.getBooleanExtra("dont_login", false)) {
-                ((AndroidApp) MobileApp.getInstance()).needToLogin();
+                MobileApp.getInstance().needToLogin();
             }
         } catch (Exception e) {
             MCLoggerFactory.getLogger(getClass()).error("Error while service onStartCommand", e);

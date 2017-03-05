@@ -18,7 +18,7 @@ import com.magenta.hdmate.mx.model.OrderAction;
 import com.magenta.hdmate.mx.model.OrderActionResult;
 import com.magenta.hdmate.mx.model.SettingsResultRecord;
 import com.magenta.hdmate.mx.model.TelemetryRecord;
-import com.magenta.mc.client.android.DistributionApplication;
+import com.magenta.mc.client.android.McAndroidApplication;
 import com.magenta.mc.client.android.common.Constants;
 import com.magenta.mc.client.android.entity.Address;
 import com.magenta.mc.client.android.mc.MxAndroidUtil;
@@ -185,7 +185,7 @@ public class HttpClient {
 
     // TODO: 2/20/17 use EasyDeviceInfo
     private Double getBatteryLevel() {
-        Intent batteryIntent = DistributionApplication.getInstance().registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+        Intent batteryIntent = McAndroidApplication.getInstance().registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
         if (batteryIntent == null) {
             return -1d;
         }
@@ -198,12 +198,12 @@ public class HttpClient {
     }
 
     private boolean isGPSEnable() {
-        LocationManager manager = (LocationManager) DistributionApplication.getInstance().getSystemService(Context.LOCATION_SERVICE);
+        LocationManager manager = (LocationManager) McAndroidApplication.getInstance().getSystemService(Context.LOCATION_SERVICE);
         return manager != null && manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
     }
 
     private String getNetworkInfo() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) DistributionApplication.getInstance().getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivityManager = (ConnectivityManager) McAndroidApplication.getInstance().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null ? activeNetworkInfo.toString() : "[]";
     }

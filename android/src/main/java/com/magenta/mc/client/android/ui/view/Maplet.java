@@ -11,7 +11,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.magenta.mc.client.android.DistributionApplication;
+import com.magenta.mc.client.android.McAndroidApplication;
 import com.magenta.mc.client.android.db.CacheDBHelper;
 import com.magenta.mc.client.android.db.dao.DistributionDAO;
 import com.magenta.mc.client.android.db.dao.TileCacheDAO;
@@ -370,7 +370,7 @@ public class Maplet extends WebView {
                 entity.setZ(Integer.valueOf(z));
                 entity.setBlob(CompressUtils.compress(blob.getBytes(Charset.forName("US-ASCII"))));
                 TileCacheDAO.getInstance().saveTileToCache(entity);
-                if (new File(DistributionApplication.getInstance().getDBAdapter().getDB(CacheDBHelper.DATABASE_NAME).getPath()).length() >=
+                if (new File(McAndroidApplication.getInstance().getDBAdapter().getDB(CacheDBHelper.DATABASE_NAME).getPath()).length() >=
                         MxSettings.getInstance().getIntProperty(MxSettings.USED_CACHE_SPACE, "500") * 1024 * 1024) {
                     TileCacheDAO.getInstance().removeCacheTiles(null);
                 }

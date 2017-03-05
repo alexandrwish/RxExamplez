@@ -1,6 +1,15 @@
 package com.magenta.mc.client.android;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.widget.Toast;
+
+import com.magenta.mc.client.android.entity.AbstractJobStatus;
+import com.magenta.mc.client.android.mc.MxNotifications;
+import com.magenta.mc.client.android.mc.MxSettings;
+import com.magenta.mc.client.android.mc.MxSetup;
 import com.magenta.mc.client.android.mc.client.ConnectionListener;
+import com.magenta.mc.client.android.mc.client.DriverStatus;
 import com.magenta.mc.client.android.mc.client.Login;
 import com.magenta.mc.client.android.mc.client.Msg;
 import com.magenta.mc.client.android.mc.client.TimeSynchronization;
@@ -9,27 +18,29 @@ import com.magenta.mc.client.android.mc.client.resend.ResendableMetadata;
 import com.magenta.mc.client.android.mc.client.resend.Resender;
 import com.magenta.mc.client.android.mc.components.AbortableTask;
 import com.magenta.mc.client.android.mc.components.MCTimerTask;
-import com.magenta.mc.client.android.mc.exception.OperationTimeoutException;
+import com.magenta.mc.client.android.mc.demo.DemoStorageInitializer;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
-import com.magenta.mc.client.android.mc.log_sending.LogRequestProcessor;
 import com.magenta.mc.client.android.mc.settings.Settings;
 import com.magenta.mc.client.android.mc.setup.Setup;
-import com.magenta.mc.client.android.mc.storage.StorableMetadata;
 import com.magenta.mc.client.android.mc.tracking.GeoLocationBatch;
-import com.magenta.mc.client.android.mc.tracking.GeoLocationService;
-import com.magenta.mc.client.android.mc.tracking.GeoLocationServiceConfig;
 import com.magenta.mc.client.android.mc.util.ResourceManager;
-import com.magenta.mc.client.android.rpc.DefaultRPCQueryListener;
-import com.magenta.mc.client.android.rpc.DefaultRpcResponseHandler;
+import com.magenta.mc.client.android.rpc.DistributionRPCOut;
 import com.magenta.mc.client.android.rpc.JabberRPC;
+import com.magenta.mc.client.android.rpc.RPCTarget;
 import com.magenta.mc.client.android.rpc.bin_chunks.BinaryChunkResendable;
 import com.magenta.mc.client.android.rpc.bin_chunks.random.RandomBinTransTask;
 import com.magenta.mc.client.android.rpc.xmpp.XMPPStream;
+import com.magenta.mc.client.android.rpc.xmpp.XMPPStream2;
+import com.magenta.mc.client.android.service.SaveLocationService;
+import com.magenta.mc.client.android.service.ServicesRegistry;
+import com.magenta.mc.client.android.service.storage.DemoStorageInitializerImpl;
+import com.magenta.mc.client.android.ui.AndroidUI;
+import com.magenta.mc.client.android.ui.activity.MxGenericActivity;
+import com.magenta.mc.client.android.ui.activity.common.LoginActivity;
+import com.magenta.mc.client.android.util.AndroidResourceManager;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -44,41 +55,23 @@ import jaba.util.PropertyResourceBundleUtf8;
 public class MobileApp {
 
     protected static MobileApp instance;
-    private static boolean runningInTestMode;
-    private static boolean started;
     // a thread pool with unbounded queue and limited number of threads
     // should be used for every asynchronous task
     private static PooledExecutor mainThreadPool;
     // a thread pool with unbounded queue and single thread
     // designed for showing Dialogs one by one
     private static PooledExecutor consecutiveExecutor;
-    private static int syncTimeoutTaskThreadNum = 1;
     private static ResourceBundle resourceBundle;
-    protected String[] startupArgs;
-    protected boolean diagnosticRestart = false;
+    private final DemoStorageInitializer demoStorageInitializer;
     private Timer timer;
     private long prevCheckMillis = System.currentTimeMillis();
-    private Locale customLocale;
+    private volatile int needToLoginRequestsCount;
 
-    public MobileApp(String[] args) {
-        this.startupArgs = args;
-    }
-
-    public static void runInTestMode() {
-        runningInTestMode = true;
-    }
-
-    public static boolean isStarted() {
-        return started;
-    }
-
-    public static void main(String[] args) {
-        instance = new MobileApp(args);
-        instance.run();
-    }
-
-    public static boolean isRunningInTestMode() {
-        return runningInTestMode;
+    public MobileApp() {
+        demoStorageInitializer = new DemoStorageInitializerImpl();
+        instance = this;
+        run();
+        Settings.get().setProperty("offline.version", "false");
     }
 
     public static MobileApp getInstance() {
@@ -100,76 +93,6 @@ public class MobileApp {
 
     public static void runAbortableTaskWithTimeout(final Runnable task, Runnable abort, long timeout) {
         new AbortableTask(task, abort, timeout).run();
-    }
-
-    public static void runSyncTaskWithTimeout(final Runnable task, long timeout) {
-        final Object daemonMutex = new Object();
-        final List doneContainer = new ArrayList();
-        doneContainer.add(Boolean.FALSE);
-
-        final List errorContainer = new ArrayList();
-
-        // given task run asynchronously as a daemon, so it could be killed upon timeout
-        final Thread taskDaemon = new Thread(new Runnable() {
-            public void run() {
-                try {
-                    task.run();
-                } catch (Exception e) {
-                    errorContainer.add(e);
-                } finally {
-                    synchronized (daemonMutex) {
-                        if (!((Boolean) doneContainer.get(0)).booleanValue()) {
-                            doneContainer.set(0, Boolean.TRUE);
-                            daemonMutex.notify();
-                        }
-                    }
-                }
-            }
-        }, "SyncTimeoutTaskDaemon-" + syncTimeoutTaskThreadNum);
-        taskDaemon.setDaemon(true);
-
-        // killer thread runs taskDaemon - so once the killer stops, daemon dies
-        final Thread killerThread = new Thread(new Runnable() {
-            public void run() {
-                taskDaemon.start();
-                while (!((Boolean) doneContainer.get(0)).booleanValue()) {
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        taskDaemon.interrupt();
-                    }
-                }
-            }
-        }, "SyncTimeoutTaskKiller-" + syncTimeoutTaskThreadNum++);
-
-        try {
-            // let the show begin,
-            // daemon is gonna die should doneContainer contain TRUE
-            killerThread.start();
-
-            synchronized (daemonMutex) {
-                if (!((Boolean) doneContainer.get(0)).booleanValue()) {
-                    try {
-                        daemonMutex.wait(timeout);
-                    } catch (InterruptedException e) {
-                        // ok
-                    }
-                }
-            }
-        } finally { // in finally block to guarantee the killerThread stop
-            final boolean done = ((Boolean) doneContainer.get(0)).booleanValue();
-            doneContainer.set(0, Boolean.TRUE); // this stops killerThread thus killing taskDaemon
-            if (!killerThread.isInterrupted())
-                killerThread.interrupt();
-            if (!done) {
-                throw new OperationTimeoutException("Sync Operation Timeout");
-            } else if (errorContainer.size() > 0) {
-                final Exception cause = (Exception) errorContainer.get(0);
-                throw new RuntimeException(cause.getMessage(), cause);
-            }
-        }
-
-        // we're done, daemons die, exiting synchronously
     }
 
     private static void runOnThreadPool(Runnable task, PooledExecutor pool) {
@@ -207,27 +130,12 @@ public class MobileApp {
         }
     }
 
-    public static String localize(String key, String[] params) {
-        String localized = MobileApp.localize(key);
-        for (int i = 0; i < params.length; i++) {
-            String param = params[i];
-            final String pattern = "{" + i + "}";
-            int start;
-            while ((start = localized.indexOf(pattern)) > -1) {
-                localized = localized.substring(0, start)
-                        .concat(param)
-                        .concat(localized.substring(start + pattern.length()));
-            }
-        }
-        return localized;
-    }
-
     public XMPPStream initStream(String serverName, String host, int port, boolean ssl, long connectionId) throws IOException {
-        return null;
+        return new XMPPStream2(serverName, host, port, ssl, connectionId);
     }
 
-    protected void afterSetInstance() {
-
+    private void afterSetInstance() {
+        run();
     }
 
     public Timer getTimer() {
@@ -237,34 +145,12 @@ public class MobileApp {
         return timer;
     }
 
-    protected void startIPC() {
-
-    }
-
-    protected void stopIPC() {
-
-    }
-
-    protected void startDiagnostic() {
-
-    }
-
-    protected void stopDiagnostic() {
-
-    }
-
     private void stopThreadPools() {
         mainThreadPool.shutdownNow();
         consecutiveExecutor.shutdownNow();
     }
 
     protected void run() {
-
-        setupIPC();
-
-        startIPC();
-
-        startDiagnostic();
 
         //it's necessary to set valid ResourceManager before init settings,
         //because ResourceManager using for getting settings file from jar
@@ -298,37 +184,54 @@ public class MobileApp {
 
         setupMemoryUsageLogging();
 
-        checkDiagnosticParameters();
-
         setupGeoLocationAPI();
 
         Resender.getInstance().registerResendables(getResendablesMetadata());
-
-        afterRun();
 
         MCLoggerFactory.getLogger(MobileApp.class).info("Application started: " + Setup.get().getSettings().getAppName() +
                 " version: " + Setup.get().getSettings().getAppVersion() +
                 ", mcc-core: " + Setup.get().getSettings().getMcClientCoreVersion() +
                 ", mcc-platform: " + Setup.get().getSettings().getMcClientPlatformVersion());
+
+        McAndroidApplication.resetSettingsUserId();
+        needToLogin();
     }
 
-    protected void afterRun() {
-
+    public void needToLogin() {
+        MCLoggerFactory.getLogger(getClass()).debug("incrementing needToLoginRequestsCount, old value  " + needToLoginRequestsCount);
+        needToLoginRequestsCount++;
+        if (needToLoginRequestsCount == 2) {
+            needToLoginRequestsCount = 0;
+            try {
+                String pinAndPass = Setup.get().getSettings().getUserIdAndPassword();
+                final String[] pass = pinAndPass.split(";");
+                if (pass.length == 2) {
+                    MobileApp.runTask(new Runnable() {
+                        public void run() {
+                            Login.getInstance().doLogin(pass[0], pass[1], new Runnable() {
+                                public void run() {
+                                    MCLoggerFactory.getLogger(getClass()).debug("log in completed after service restart");
+                                }
+                            });
+                        }
+                    });
+                } else {
+                    MCLoggerFactory.getLogger(getClass()).error(String.format("Pin [%s] is wrong.", pinAndPass));
+                }
+            } catch (Exception e) {
+                MCLoggerFactory.getLogger(getClass()).error("Cant login after service restart", e);
+            }
+        }
     }
 
     protected void initSetup() {
-        // e.g. Setup.init(new WMSetup());
+        Setup.init(new MxSetup(McAndroidApplication.getInstance(), demoStorageInitializer));
+        MxSettings.getInstance().enableFeature(MxSettings.Features.ACCOUNT);
     }
 
     protected ResendableMetadata[] getResendablesMetadata() {
-        return new ResendableMetadata[]{GeoLocationBatch.METADATA, BinaryChunkResendable.METADATA, RandomBinTransTask.RESENDABLE_METADATA};
-    }
-
-    protected StorableMetadata[] joinMetadata(StorableMetadata[] meta1, StorableMetadata[] meta2) {
-        StorableMetadata[] result = new StorableMetadata[meta1.length + meta2.length];
-        System.arraycopy(meta1, 0, result, 0, meta1.length);
-        System.arraycopy(meta2, 0, result, meta1.length, meta2.length);
-        return result;
+        ResendableMetadata[] res = new ResendableMetadata[]{GeoLocationBatch.METADATA, BinaryChunkResendable.METADATA, RandomBinTransTask.RESENDABLE_METADATA};
+        return joinMetadata(res, new ResendableMetadata[]{AbstractJobStatus.RESENDABLE_METADATA});
     }
 
     protected ResendableMetadata[] joinMetadata(ResendableMetadata[] meta1, ResendableMetadata[] meta2) {
@@ -338,33 +241,19 @@ public class MobileApp {
         return result;
     }
 
-    protected void checkDiagnosticParameters() {
-
-    }
-
     protected void setupGeoLocationAPI() {
-        GeoLocationService.getInstance().init(new GeoLocationServiceConfig(Setup.get().getSettings()));
-        GeoLocationService.getInstance().start(false);
+        ServicesRegistry.startSaveLocationsService(McAndroidApplication.getInstance(), SaveLocationService.class);
     }
 
     protected void stopGeoLocationAPI() {
-        GeoLocationService.getInstance().stop(false);
+        ServicesRegistry.stopSaveLocationsService();
     }
 
-    protected void handleDiagnosticRestart() {
-        // init application data etc.
-    }
-
-    protected void setupIPC() {
-        //override
-    }
-
-    //override
-    protected void setupXmppConflictListener() {
-        //example
+    private void setupXmppConflictListener() {
         XMPPClient.getInstance().setXmppConflictListener(new Runnable() {
             public void run() {
-
+                Login.setUserLoggout();
+                McAndroidApplication.getInstance().startActivity(new Intent(McAndroidApplication.getInstance(), LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
             }
         });
     }
@@ -397,20 +286,20 @@ public class MobileApp {
     }
 
     protected void initResourceManager() {
-        ResourceManager.init(ResourceManager.getInstance());
+        ResourceManager.init(new AndroidResourceManager(McAndroidApplication.getInstance()));
     }
 
     protected void init() {
         // override and put initialization logic
     }
 
-    protected void setupTimeZone() {
+    private void setupTimeZone() {
         String strTimezone = Setup.get().getSettings().getProperty(Settings.TIMEZONE_PROPERTY, "DEFAULT");
         if (!"DEFAULT".equalsIgnoreCase(strTimezone)) {
             TimeZone timezone = null;
             String[] avails = TimeZone.getAvailableIDs();
-            for (int i = 0; i < avails.length; i++) {
-                if (avails[i].equals(strTimezone)) {
+            for (String avail : avails) {
+                if (avail.equals(strTimezone)) {
                     timezone = TimeZone.getTimeZone(strTimezone);
                     break;
                 }
@@ -424,25 +313,19 @@ public class MobileApp {
         }
     }
 
-    public Locale getCustomLocale() {
-        return customLocale;
-    }
-
-    protected void setupLocale() {
+    private void setupLocale() {
         String localeKey = Setup.get().getSettings().getProperty(Settings.LOCALE_KEY, "DEFAULT");
         if (!"DEFAULT".equalsIgnoreCase(localeKey)) {
-            String language = "";
-            String region = "";
+            String language;
+            String region;
             String country = "";
             String variant = "";
             // example: en_GB_
             int i = localeKey.indexOf('_');
             if (i >= 0) {
                 language = localeKey.substring(0, i);
-
                 region = localeKey.substring(i + 1);
-
-                if (region != null && region.length() > 0) {
+                if (region.length() > 0) {
                     // region can be of form country, country_variant, or _variant
                     int k = region.indexOf('_');
                     if (k >= 0) {
@@ -455,16 +338,16 @@ public class MobileApp {
             } else {
                 language = localeKey;
             }
-            customLocale = new Locale(language, country, variant);
+            Locale customLocale = new Locale(language, country, variant);
             Locale.setDefault(customLocale);
         }
     }
 
-    protected void initLogger() {
+    private void initLogger() {
         MCLoggerFactory.getInstance().initLogging();
     }
 
-    protected void setupThreadPools() {
+    private void setupThreadPools() {
         // default size is 3 = (N + 1) + 1
         // given N = 1 - number of processors, + 1 thread for servicing I/O of XMPP stream
         final int poolSize = Setup.get().getSettings().getIntProperty("main-thread-pool.size", "3");
@@ -479,7 +362,6 @@ public class MobileApp {
             }
         });
         mainThreadPool.setKeepAliveTime(-1);
-
         consecutiveExecutor = new PooledExecutor(new LinkedQueue(), 1);
         consecutiveExecutor.setThreadFactory(new ThreadFactory() {
             private int threadNum = 1;
@@ -491,10 +373,8 @@ public class MobileApp {
         consecutiveExecutor.setKeepAliveTime(-1);
     }
 
-    // override this method to set login listener
     protected void setupLoginListener() {
         final Login.Listener loginListener = Login.getInstance().getListener();
-
         Login.getInstance().setListener(new Login.Listener() {
             public void fail() {
                 if (loginListener != null) {
@@ -506,21 +386,19 @@ public class MobileApp {
                 if (loginListener != null) {
                     loginListener.successBeforeWake(initiatedByUser);
                 }
-                new LogRequestProcessor().checkRequests();
+                ServicesRegistry.getDataController().init();
+                Resender.getInstance().loadCacheIfNecessary();
             }
 
             public void successAfterWake(boolean initiatedByUser) {
-                if (loginListener != null) {
-                    loginListener.successAfterWake(initiatedByUser);
+                if (!Setup.get().getSettings().isOfflineVersion()) {
+                    TimeSynchronization.synchronize();
+                    ConnectionListener.getInstance().connected();
                 }
-                started = true;
             }
 
             public void afterLogout() {
-                if (loginListener != null) {
-                    loginListener.afterLogout();
-                }
-                diagnosticRestart = false;
+                Login.setUserLoggout();
             }
         });
     }
@@ -528,12 +406,15 @@ public class MobileApp {
     protected void setupMessageListener() {
         XMPPClient.getInstance().setMsgListener(new XMPPClient.MsgListener() {
             public void incoming(final Msg msg) {
-                Setup.get().getUI().getDialogManager().asyncMessageSafe(localize("incoming_message"), msg.getBody());
+                Setup.get().getUI().getDialogManager().runAsyncDialogTask(new Runnable() {
+                    public void run() {
+                        Toast.makeText(((AndroidUI) Setup.get().getUI()).getCurrentActivity(), msg.getBody(), Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
     }
 
-    // override this method to set connection listener
     protected void setupConnectionListener() {
         final ConnectionListener.Listener listener = ConnectionListener.getInstance().getListener();
         ConnectionListener.getInstance().setListener(new ConnectionListener.Listener() {
@@ -544,24 +425,32 @@ public class MobileApp {
                         Setup.get().getUpdateCheck().check();
                     }
                 });
+                Activity currActivity = ((AndroidUI) Setup.get().getUI()).getCurrentActivity();
+                if (currActivity instanceof MxGenericActivity) {
+                    ((MxGenericActivity) currActivity).getDelegate().setDriverStatus(DriverStatus.ONLINE);
+                }
+                MxNotifications.showConnectionStatus(McAndroidApplication.getInstance(), true, Setup.get().getSettings().getAppName());
             }
 
             public void disconnected() {
                 listener.disconnected();
+                Activity currActivity = ((AndroidUI) Setup.get().getUI()).getCurrentActivity();
+                if (currActivity instanceof MxGenericActivity) {
+                    ((MxGenericActivity) currActivity).getDelegate().setDriverStatus(DriverStatus.OFFLINE);
+                }
+                MxNotifications.showConnectionStatus(McAndroidApplication.getInstance(), false, Setup.get().getSettings().getAppName());
             }
         });
     }
 
     // override this method to set RPC listeners
     protected void setupRPCListeners() {
-        JabberRPC.getInstance().setListener(new DefaultRPCQueryListener());
-        JabberRPC.getInstance().setHandler(new DefaultRpcResponseHandler());
+        JabberRPC.getInstance().setListener(RPCTarget.getInstance());
+        JabberRPC.getInstance().setHandler(DistributionRPCOut.getInstance());
     }
 
     protected void stop() {
         stopGeoLocationAPI();
-        stopDiagnostic();
-        stopIPC();
         stopThreadPools();
         Setup.get().getUI().shutdown();
     }

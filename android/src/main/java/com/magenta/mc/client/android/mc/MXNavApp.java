@@ -3,7 +3,7 @@ package com.magenta.mc.client.android.mc;
 import android.content.Context;
 import android.widget.Toast;
 
-import com.magenta.mc.client.android.DistributionApplication;
+import com.magenta.mc.client.android.McAndroidApplication;
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.entity.LocationEntity;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
@@ -74,7 +74,7 @@ public class MXNavApp implements Routeable.Listener {
         if (client == null) return;
         Routeable routeable = client.makeRouteable(lat, lon);
         client.getTripManager().planTrip(routeable, listener);
-        Toast.makeText(DistributionApplication.getContext(), R.string.mx_tomtom_route, Toast.LENGTH_LONG).show();
+        Toast.makeText(McAndroidApplication.getInstance(), R.string.mx_tomtom_route, Toast.LENGTH_LONG).show();
     }
 
     public void registerCurrentLocationListener() {

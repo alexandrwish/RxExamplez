@@ -14,18 +14,18 @@ import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.widget.Toast;
 
-import com.magenta.mc.client.android.entity.Address;
-import com.magenta.mc.client.android.DistributionApplication;
+import com.magenta.mc.client.android.McAndroidApplication;
 import com.magenta.mc.client.android.R;
+import com.magenta.mc.client.android.entity.Address;
 import com.magenta.mc.client.android.entity.LocationEntity;
-import com.magenta.mc.client.android.service.LocationService;
-import com.magenta.mc.client.android.service.ServicesRegistry;
-import com.magenta.mc.client.android.util.AndroidUtil2;
-import com.magenta.mc.client.android.util.ReflectionUtils;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 import com.magenta.mc.client.android.mc.settings.Settings;
 import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.mc.tracking.GeoLocation;
+import com.magenta.mc.client.android.service.LocationService;
+import com.magenta.mc.client.android.service.ServicesRegistry;
+import com.magenta.mc.client.android.util.AndroidUtil2;
+import com.magenta.mc.client.android.util.ReflectionUtils;
 import com.tomtom.navapp.Trip;
 
 import java.io.BufferedReader;
@@ -49,11 +49,11 @@ public final class MxAndroidUtil {
     }
 
     public static String getPhoneNumber() {
-        return ((TelephonyManager) DistributionApplication.getContext().getSystemService(Context.TELEPHONY_SERVICE)).getLine1Number();
+        return ((TelephonyManager) McAndroidApplication.getInstance().getSystemService(Context.TELEPHONY_SERVICE)).getLine1Number();
     }
 
     public static String getImei() {
-        final String imei = ((TelephonyManager) DistributionApplication.getContext().getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
+        final String imei = ((TelephonyManager) McAndroidApplication.getInstance().getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
         return imei == null ? "" : imei;
     }
 
@@ -95,7 +95,7 @@ public final class MxAndroidUtil {
 
     public static boolean showTomTomOrDefaultNavigator(final Address address, final Context context) {
         try {
-            MXNavApp app = DistributionApplication.getInstance().getMxNavApp();
+            MXNavApp app = McAndroidApplication.getInstance().getMxNavApp();
             if (app != null) {
                 app.planTrip(address.getLatitude(), address.getLongitude(),
                         new Trip.PlanListener() {
@@ -159,8 +159,8 @@ public final class MxAndroidUtil {
                 intentFilter.addCategory(category);
             }
         }
-        List<PackageInfo> packageInfoList = new LinkedList<PackageInfo>();
-        List<IntentFilter> filters = new ArrayList<IntentFilter>();
+        List<PackageInfo> packageInfoList = new LinkedList<>();
+        List<IntentFilter> filters = new ArrayList<>();
         filters.add(intentFilter);
         List<ComponentName> preferredActivities = new ArrayList<ComponentName>();
         pm.getPreferredActivities(filters, preferredActivities, null);
@@ -213,7 +213,7 @@ public final class MxAndroidUtil {
     }
 
     public static LocationEntity getGeoLocation() {
-        MXNavApp mxNavApp = DistributionApplication.getInstance().getMxNavApp();
+        MXNavApp mxNavApp = McAndroidApplication.getInstance().getMxNavApp();
         LocationEntity location = null;
         if (mxNavApp != null) {
             location = mxNavApp.getLocation(5 * 60 * 1000); //5 minutes Turkish
