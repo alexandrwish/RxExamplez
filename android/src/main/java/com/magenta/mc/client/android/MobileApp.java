@@ -1,17 +1,10 @@
 package com.magenta.mc.client.android;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.widget.Toast;
 
 import com.magenta.mc.client.android.entity.AbstractJobStatus;
-import com.magenta.mc.client.android.mc.MxNotifications;
-import com.magenta.mc.client.android.mc.MxSettings;
 import com.magenta.mc.client.android.mc.MxSetup;
-import com.magenta.mc.client.android.mc.client.ConnectionListener;
-import com.magenta.mc.client.android.mc.client.DriverStatus;
 import com.magenta.mc.client.android.mc.client.Login;
-import com.magenta.mc.client.android.mc.client.Msg;
 import com.magenta.mc.client.android.mc.client.TimeSynchronization;
 import com.magenta.mc.client.android.mc.client.XMPPClient;
 import com.magenta.mc.client.android.mc.client.resend.ResendableMetadata;
@@ -20,22 +13,15 @@ import com.magenta.mc.client.android.mc.components.AbortableTask;
 import com.magenta.mc.client.android.mc.components.MCTimerTask;
 import com.magenta.mc.client.android.mc.demo.DemoStorageInitializer;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
-import com.magenta.mc.client.android.mc.settings.Settings;
 import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.mc.tracking.GeoLocationBatch;
 import com.magenta.mc.client.android.mc.util.ResourceManager;
-import com.magenta.mc.client.android.rpc.DistributionRPCOut;
-import com.magenta.mc.client.android.rpc.JabberRPC;
-import com.magenta.mc.client.android.rpc.RPCTarget;
 import com.magenta.mc.client.android.rpc.bin_chunks.BinaryChunkResendable;
 import com.magenta.mc.client.android.rpc.bin_chunks.random.RandomBinTransTask;
 import com.magenta.mc.client.android.rpc.xmpp.XMPPStream;
-import com.magenta.mc.client.android.rpc.xmpp.XMPPStream2;
 import com.magenta.mc.client.android.service.SaveLocationService;
 import com.magenta.mc.client.android.service.ServicesRegistry;
 import com.magenta.mc.client.android.service.storage.DemoStorageInitializerImpl;
-import com.magenta.mc.client.android.ui.AndroidUI;
-import com.magenta.mc.client.android.ui.activity.MxGenericActivity;
 import com.magenta.mc.client.android.ui.activity.common.LoginActivity;
 import com.magenta.mc.client.android.util.AndroidResourceManager;
 
@@ -71,7 +57,6 @@ public class MobileApp {
         demoStorageInitializer = new DemoStorageInitializerImpl();
         instance = this;
         run();
-        Settings.get().setProperty("offline.version", "false");
     }
 
     public static MobileApp getInstance() {
@@ -131,7 +116,7 @@ public class MobileApp {
     }
 
     public XMPPStream initStream(String serverName, String host, int port, boolean ssl, long connectionId) throws IOException {
-        return new XMPPStream2(serverName, host, port, ssl, connectionId);
+        return new XMPPStream(serverName, host, port, ssl, connectionId);
     }
 
     private void afterSetInstance() {
@@ -151,14 +136,7 @@ public class MobileApp {
     }
 
     protected void run() {
-
-        //it's necessary to set valid ResourceManager before init settings,
-        //because ResourceManager using for getting settings file from jar
         initResourceManager();
-
-        // it's important to call this method prior to any other setup
-        // to let descendants override settings etc.
-        init();
 
         initSetup();
 
@@ -169,14 +147,6 @@ public class MobileApp {
         setupLocale();
 
         setupThreadPools();
-
-        setupLoginListener();
-
-        setupConnectionListener();
-
-        setupMessageListener();
-
-        setupRPCListeners();
 
         setupXmppConflictListener();
 
@@ -224,28 +194,27 @@ public class MobileApp {
         }
     }
 
-    protected void initSetup() {
+    private void initSetup() {
         Setup.init(new MxSetup(McAndroidApplication.getInstance(), demoStorageInitializer));
-        MxSettings.getInstance().enableFeature(MxSettings.Features.ACCOUNT);
     }
 
-    protected ResendableMetadata[] getResendablesMetadata() {
+    private ResendableMetadata[] getResendablesMetadata() {
         ResendableMetadata[] res = new ResendableMetadata[]{GeoLocationBatch.METADATA, BinaryChunkResendable.METADATA, RandomBinTransTask.RESENDABLE_METADATA};
         return joinMetadata(res, new ResendableMetadata[]{AbstractJobStatus.RESENDABLE_METADATA});
     }
 
-    protected ResendableMetadata[] joinMetadata(ResendableMetadata[] meta1, ResendableMetadata[] meta2) {
+    private ResendableMetadata[] joinMetadata(ResendableMetadata[] meta1, ResendableMetadata[] meta2) {
         ResendableMetadata[] result = new ResendableMetadata[meta1.length + meta2.length];
         System.arraycopy(meta1, 0, result, 0, meta1.length);
         System.arraycopy(meta2, 0, result, meta1.length, meta2.length);
         return result;
     }
 
-    protected void setupGeoLocationAPI() {
+    private void setupGeoLocationAPI() {
         ServicesRegistry.startSaveLocationsService(McAndroidApplication.getInstance(), SaveLocationService.class);
     }
 
-    protected void stopGeoLocationAPI() {
+    private void stopGeoLocationAPI() {
         ServicesRegistry.stopSaveLocationsService();
     }
 
@@ -285,7 +254,7 @@ public class MobileApp {
                 }, 0, 1000 * 60 * 10);     //print memory usage every 10 min
     }
 
-    protected void initResourceManager() {
+    private void initResourceManager() {
         ResourceManager.init(new AndroidResourceManager(McAndroidApplication.getInstance()));
     }
 
@@ -294,7 +263,7 @@ public class MobileApp {
     }
 
     private void setupTimeZone() {
-        String strTimezone = Setup.get().getSettings().getProperty(Settings.TIMEZONE_PROPERTY, "DEFAULT");
+        String strTimezone = com.magenta.mc.client.android.common.Settings.get().getTimezone();
         if (!"DEFAULT".equalsIgnoreCase(strTimezone)) {
             TimeZone timezone = null;
             String[] avails = TimeZone.getAvailableIDs();
@@ -314,7 +283,7 @@ public class MobileApp {
     }
 
     private void setupLocale() {
-        String localeKey = Setup.get().getSettings().getProperty(Settings.LOCALE_KEY, "DEFAULT");
+        String localeKey = com.magenta.mc.client.android.common.Settings.get().getLocale();
         if (!"DEFAULT".equalsIgnoreCase(localeKey)) {
             String language;
             String region;
@@ -373,82 +342,6 @@ public class MobileApp {
         consecutiveExecutor.setKeepAliveTime(-1);
     }
 
-    protected void setupLoginListener() {
-        final Login.Listener loginListener = Login.getInstance().getListener();
-        Login.getInstance().setListener(new Login.Listener() {
-            public void fail() {
-                if (loginListener != null) {
-                    loginListener.fail();
-                }
-            }
-
-            public void successBeforeWake(boolean initiatedByUser) {
-                if (loginListener != null) {
-                    loginListener.successBeforeWake(initiatedByUser);
-                }
-                ServicesRegistry.getDataController().init();
-                Resender.getInstance().loadCacheIfNecessary();
-            }
-
-            public void successAfterWake(boolean initiatedByUser) {
-                if (!Setup.get().getSettings().isOfflineVersion()) {
-                    TimeSynchronization.synchronize();
-                    ConnectionListener.getInstance().connected();
-                }
-            }
-
-            public void afterLogout() {
-                Login.setUserLoggout();
-            }
-        });
-    }
-
-    protected void setupMessageListener() {
-        XMPPClient.getInstance().setMsgListener(new XMPPClient.MsgListener() {
-            public void incoming(final Msg msg) {
-                Setup.get().getUI().getDialogManager().runAsyncDialogTask(new Runnable() {
-                    public void run() {
-                        Toast.makeText(((AndroidUI) Setup.get().getUI()).getCurrentActivity(), msg.getBody(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });
-    }
-
-    protected void setupConnectionListener() {
-        final ConnectionListener.Listener listener = ConnectionListener.getInstance().getListener();
-        ConnectionListener.getInstance().setListener(new ConnectionListener.Listener() {
-            public void connected() {
-                listener.connected();
-                runTask(new Runnable() {
-                    public void run() {
-                        Setup.get().getUpdateCheck().check();
-                    }
-                });
-                Activity currActivity = ((AndroidUI) Setup.get().getUI()).getCurrentActivity();
-                if (currActivity instanceof MxGenericActivity) {
-                    ((MxGenericActivity) currActivity).getDelegate().setDriverStatus(DriverStatus.ONLINE);
-                }
-                MxNotifications.showConnectionStatus(McAndroidApplication.getInstance(), true, Setup.get().getSettings().getAppName());
-            }
-
-            public void disconnected() {
-                listener.disconnected();
-                Activity currActivity = ((AndroidUI) Setup.get().getUI()).getCurrentActivity();
-                if (currActivity instanceof MxGenericActivity) {
-                    ((MxGenericActivity) currActivity).getDelegate().setDriverStatus(DriverStatus.OFFLINE);
-                }
-                MxNotifications.showConnectionStatus(McAndroidApplication.getInstance(), false, Setup.get().getSettings().getAppName());
-            }
-        });
-    }
-
-    // override this method to set RPC listeners
-    protected void setupRPCListeners() {
-        JabberRPC.getInstance().setListener(RPCTarget.getInstance());
-        JabberRPC.getInstance().setHandler(DistributionRPCOut.getInstance());
-    }
-
     protected void stop() {
         stopGeoLocationAPI();
         stopThreadPools();
@@ -456,10 +349,7 @@ public class MobileApp {
     }
 
     public void exit() {
-        try {
-            stop();
-        } finally {
-            System.exit(0);
-        }
+        stop();
+        System.exit(0);
     }
 }

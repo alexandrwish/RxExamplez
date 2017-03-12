@@ -71,8 +71,10 @@ public final class ServiceHolder {
     }
 
     @SafeVarargs
-    public final void startService(Class<? extends Service> serviceClass, Pair<String, Integer>... args) {
-        Bundle bundle = new Bundle();
+    public final void startService(Class<? extends Service> serviceClass, Bundle bundle, Pair<String, Integer>... args) {
+        if (bundle == null) {
+            bundle = new Bundle();
+        }
         if (args != null) {
             for (Pair<String, Integer> arg : args) {
                 bundle.putInt(arg.first, arg.second);
@@ -80,6 +82,11 @@ public final class ServiceHolder {
         }
         Context context = McAndroidApplication.getInstance();
         context.startService(new Intent(context, serviceClass).putExtras(bundle));
+    }
+
+    @SafeVarargs
+    public final void startService(Class<? extends Service> serviceClass, Pair<String, Integer>... args) {
+        startService(serviceClass, new Bundle(), args);
     }
 
     public final void stopService(Class<? extends Service> serviceClass) {

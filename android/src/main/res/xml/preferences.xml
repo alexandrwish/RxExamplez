@@ -4,22 +4,14 @@
     <PreferenceCategory android:title="@string/mx_activity_preferences_communicationServer">
 
         <EditTextPreference
-            android:key="server.component.name"
-            android:title="@string/mx_activity_preferences_componentName" />
-
-        <EditTextPreference
             android:inputType="textUri"
-            android:key="server.address"
+            android:key="app.host"
             android:title="@string/mx_activity_preferences_host" />
 
         <EditTextPreference
             android:inputType="number"
-            android:key="server.port"
+            android:key="app.port"
             android:title="@string/mx_activity_preferences_port" />
-
-        <CheckBoxPreference
-            android:key="session.quickstart"
-            android:title="@string/mx_fast_login" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/mx_activity_preferences_tracking">
@@ -32,28 +24,14 @@
         <EditTextPreference
             android:dependency="tracking.enabled"
             android:inputType="number"
-            android:key="tracking.retrieveIntervalSec"
-            android:title="@string/mx_activity_preferences_retrieveInterval" />
-
-        <EditTextPreference
-            android:dependency="tracking.enabled"
-            android:inputType="number"
-            android:key="tracking.batchCoverSec"
+            android:key="save.location.interval"
             android:title="@string/mx_activity_preferences_batchCover" />
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/mx_activity_preferences_update">
-
-        <EditTextPreference
-            android:inputType="number"
-            android:key="update.server.port"
-            android:title="@string/mx_activity_preferences_update_serverPort" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/mx_other">
 
         <CheckBoxPreference
-            android:key="incoming-update.play-sound"
+            android:key="update.alert"
             android:summary="@string/mx_play_a_sound_alert_for_incoming_changes"
             android:title="@string/mx_audio_alerts" />
 
@@ -66,19 +44,19 @@
         <ListPreference
             android:defaultValue="en"
             android:entryValues="@array/mx_locale_list"
-            android:key="locale.key"
+            android:key="user.locale"
             android:title="@string/mx_language" />
 
         <ListPreference
             android:defaultValue="0"
             android:entries="@array/settings_theme_entries"
             android:entryValues="@array/settings_theme_values"
-            android:key="ui.theme"
+            android:key="app.theme"
             android:title="@string/menu_switch_theme" />
 
         <CheckBoxPreference
             android:defaultValue="false"
-            android:key="barcode.scaner"
+            android:key="moto.barcode"
             android:title="@string/mx_activity_preferences_barcode_scanner" />
     </PreferenceCategory>
 

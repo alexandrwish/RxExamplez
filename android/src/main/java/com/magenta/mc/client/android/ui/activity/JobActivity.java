@@ -18,12 +18,12 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.magenta.mc.client.android.R;
+import com.magenta.mc.client.android.common.IntentAttributes;
+import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.entity.AbstractStop;
 import com.magenta.mc.client.android.entity.TaskState;
 import com.magenta.mc.client.android.events.EventType;
 import com.magenta.mc.client.android.events.JobEvent;
-import com.magenta.mc.client.android.mc.HDSettings;
-import com.magenta.mc.client.android.mc.MxSettings;
 import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.service.ServicesRegistry;
 import com.magenta.mc.client.android.service.listeners.BroadcastEvent;
@@ -34,7 +34,6 @@ import com.magenta.mc.client.android.service.storage.entity.Stop;
 import com.magenta.mc.client.android.ui.AndroidUI;
 import com.magenta.mc.client.android.ui.adapter.StopsAdapter;
 import com.magenta.mc.client.android.util.DateUtils;
-import com.magenta.mc.client.android.common.IntentAttributes;
 import com.magenta.mc.client.android.util.JobWorkflowUtils;
 
 import java.text.DecimalFormat;
@@ -62,6 +61,7 @@ public class JobActivity extends DistributionActivity implements WorkflowActivit
         return getString(R.string.job_activity_title);
     }
 
+    @SuppressWarnings("unused")
     @MxBroadcastEvents({EventType.NEW_JOB, EventType.JOB_CANCELLED, EventType.JOB_UPDATED})
     public void onScheduleUpdate(BroadcastEvent<String> e) {
         final Job job = (Job) ServicesRegistry.getDataController().findJob(currentJobId);
@@ -253,8 +253,8 @@ public class JobActivity extends DistributionActivity implements WorkflowActivit
         NumberFormat format = new DecimalFormat("#.#####");
         if (totalLoad > 0 || totalVolume > 0) {
             this.totalLoad.setText(String.format("%s %s / %s %s",
-                    format.format(totalLoad), MxSettings.get().getProperty(HDSettings.MX_CONFIG_CAPACITY_UNITS, ""),
-                    format.format(totalVolume), MxSettings.get().getProperty(HDSettings.MX_CONFIG_VOLUME_UNIT, "")));
+                    format.format(totalLoad), Settings.get().getCapacityUnit(),
+                    format.format(totalVolume), Settings.get().getVolumeUnit()));
         } else {
             this.totalLoad.setText("");
         }
@@ -275,7 +275,7 @@ public class JobActivity extends DistributionActivity implements WorkflowActivit
     }
 
     public void onBackPressed() {
-        startActivity(new Intent(JobActivity.this, ServicesRegistry.getWorkflowService().getFirstActivity()).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+        startActivity(new Intent(JobActivity.this, JobsActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
     }
 
     private void refreshStops(boolean invokedFromActivity) {

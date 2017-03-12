@@ -28,6 +28,7 @@ import com.magenta.mc.client.android.util.StringUtils;
 import com.magenta.mc.client.android.util.WorkflowStatusAuto;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -47,6 +48,7 @@ public class Stop extends AbstractStop {
     public static final String ATTR_CUSTOMER = "customer";
     public static final String ATTR_COST = "cost";
     public static final String ATTR_ORDER_TYPE = "orderTypes";
+    public static final String ATTR_CUSTOMER_LOCATION_VERIFIED = "customerLocationIsVerified";
     public static final String FIELD_UPDATE_TYPE = "updateType";
     public static final String ATTR_LOCATION = "locationName";
 
@@ -191,6 +193,13 @@ public class Stop extends AbstractStop {
     public void setUpdateType(int updateType) {
         this.updateType = updateType;
         save();
+    }
+
+    public void setParameter(String name, String value) {
+        if (parameters == null) {
+            parameters = new HashMap();
+        }
+        parameters.put(name, value);
     }
 
     public FieldSetter[] getSetters() {

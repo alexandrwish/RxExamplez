@@ -9,7 +9,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 
 import com.magenta.mc.client.android.R;
-import com.magenta.mc.client.android.mc.MxSettings;
+import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.events.EventType;
@@ -37,7 +37,7 @@ public class CoreServiceImpl extends CoreServiceGeneric {
             if (((JobEvent) event).isRequireAlert()) {
                 processEvent((JobEvent) event, activity);
             } else if (event.is(EventType.JOB_CANCELLED)) {
-                context.startActivity(new Intent(context, ServicesRegistry.getWorkflowService().getFirstActivity()));
+                context.startActivity(new Intent(context, JobsActivity.class));
             }
         }
     }
@@ -55,7 +55,7 @@ public class CoreServiceImpl extends CoreServiceGeneric {
         } else {
             showNotification(title, message, closeWorkflowActivity);
         }
-        if (MxSettings.getInstance().isIncomingUpdatePlaySoundEnabled()) {
+        if (Settings.get().getAudioAlert()) {
             try {
                 mediaPlayer.start();
             } catch (Exception ignore) {
@@ -103,7 +103,7 @@ public class CoreServiceImpl extends CoreServiceGeneric {
         Activity activity = ((AndroidUI) Setup.get().getUI()).getCurrentActivity();
         if (closeWorkflowActivity && activity != null && !activity.isFinishing() && activity instanceof WorkflowActivity && !(activity instanceof JobsActivity)) {
             try {
-                context.startActivity(new Intent(context, ServicesRegistry.getWorkflowService().getFirstActivity()).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
+                context.startActivity(new Intent(context, JobsActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
             } catch (Exception e) {
                 MCLoggerFactory.getLogger(getClass()).error(e);
             }

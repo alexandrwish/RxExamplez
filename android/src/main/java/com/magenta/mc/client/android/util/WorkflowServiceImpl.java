@@ -1,12 +1,10 @@
 package com.magenta.mc.client.android.util;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.magenta.mc.client.android.McAndroidApplication;
-import com.magenta.mc.client.android.handler.UpdateHandler;
 import com.magenta.mc.client.android.service.WorkflowService;
 import com.magenta.mc.client.android.ui.activity.ActivityDecorator;
 import com.magenta.mc.client.android.ui.activity.ArriveMapActivity;
@@ -16,11 +14,9 @@ import com.magenta.mc.client.android.ui.activity.JobsActivity;
 import com.magenta.mc.client.android.ui.activity.StartActivity;
 import com.magenta.mc.client.android.ui.activity.WorkflowActivity;
 import com.magenta.mc.client.android.ui.activity.common.LoginActivity;
-import com.magenta.mc.client.android.ui.activity.common.SettingsActivity;
 
 public class WorkflowServiceImpl implements WorkflowService {
 
-    private static final UpdateHandler updateHandler = new UpdateHandler();
     private final Context context;
 
     public WorkflowServiceImpl(Context context) {
@@ -43,10 +39,6 @@ public class WorkflowServiceImpl implements WorkflowService {
         return JobsActivity.class;
     }
 
-    public void showSettings(Activity activity, int requestCode) {
-        activity.startActivityForResult(new Intent(activity, SettingsActivity.class), requestCode);
-    }
-
     public Class<? extends WorkflowActivity> getStartActivity() {
         return StartActivity.class;
     }
@@ -61,9 +53,5 @@ public class WorkflowServiceImpl implements WorkflowService {
 
     public ActivityDecorator getDecorator(final Context context) {
         return new HDActivityDecorator(context);
-    }
-
-    public UpdateHandler getUpdateHandler() {
-        return updateHandler;
     }
 }

@@ -2,7 +2,6 @@ package com.magenta.mc.client.android.service.storage;
 
 import android.util.Pair;
 
-import com.magenta.hdmate.mx.model.JobRecord;
 import com.magenta.mc.client.android.McAndroidApplication;
 import com.magenta.mc.client.android.MobileApp;
 import com.magenta.mc.client.android.db.dao.CommonsDAO;
@@ -137,10 +136,6 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
         }
     }
 
-    public void reloadNewJobs(List<JobRecord> records) {
-
-    }
-
     public Job findJob(String refId) {
         return refToJob.get(refId);
     }
@@ -154,7 +149,7 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
 
     public Pair<Job, Stop> find(final String jobId, final String stopId) {
         final Job job = refToJob.get(jobId);
-        return job != null ? new Pair<>(job, (Stop) job.getStop(stopId)) : null;
+        return job != null ? Pair.create(job, (Stop) job.getStop(stopId)) : null;
     }
 
     public void addJob(final Job job) {

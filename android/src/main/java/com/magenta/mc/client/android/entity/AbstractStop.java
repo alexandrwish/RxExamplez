@@ -1,6 +1,5 @@
 package com.magenta.mc.client.android.entity;
 
-import android.app.Activity;
 import android.content.Context;
 
 import com.magenta.mc.client.android.mc.storage.FieldGetter;
@@ -134,7 +133,7 @@ public abstract class AbstractStop extends StorableField {
     }
 
     public String getFactCost() {
-        return (String) getStopValues().get("factCost");
+        return getStopValues().get("factCost");
     }
 
     public void setFactCost(String factCost) {

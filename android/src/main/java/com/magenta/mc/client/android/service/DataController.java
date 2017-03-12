@@ -2,7 +2,6 @@ package com.magenta.mc.client.android.service;
 
 import android.util.Pair;
 
-import com.magenta.hdmate.mx.model.JobRecord;
 import com.magenta.mc.client.android.entity.JobEntity;
 import com.magenta.mc.client.android.entity.JobStatusEntity;
 
@@ -36,6 +35,4 @@ public interface DataController<J extends JobEntity, S extends JobStatusEntity, 
     List<J> loadCurrentJobs();
 
     void checkCancelledAndCompletedJobs();
-
-    void reloadNewJobs(List<JobRecord> records);
 }

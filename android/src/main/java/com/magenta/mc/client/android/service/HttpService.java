@@ -4,9 +4,8 @@ import android.app.IntentService;
 import android.content.Intent;
 
 import com.google.gson.Gson;
-import com.magenta.hdmate.mx.model.CancelationReason;
-import com.magenta.hdmate.mx.model.JobRecord;
-import com.magenta.hdmate.mx.model.SettingsResultRecord;
+import com.magenta.hdmate.mx.model.Job;
+import com.magenta.hdmate.mx.model.OrderCancelationReason;
 import com.magenta.mc.client.android.common.Constants;
 import com.magenta.mc.client.android.common.IntentAttributes;
 import com.magenta.mc.client.android.common.Settings;
@@ -14,21 +13,19 @@ import com.magenta.mc.client.android.db.dao.DistributionDAO;
 import com.magenta.mc.client.android.entity.MapProviderType;
 import com.magenta.mc.client.android.entity.MapSettingsEntity;
 import com.magenta.mc.client.android.http.HttpClient;
-import com.magenta.mc.client.android.mc.MxSettings;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.record.LoginResultRecord;
+import com.magenta.mc.client.android.service.renderer.SingleJobRenderer;
 import com.magenta.mc.client.android.ui.activity.common.LoginActivity;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import rx.Subscriber;
 import rx.schedulers.Schedulers;
 
@@ -72,6 +69,10 @@ public class HttpService extends IntentService {
                     getJobs();
                     break;
                 }
+                case (Constants.ROUTE_TYPE): {
+                    getRoute();
+                    break;
+                }
             }
         }
     }
@@ -80,20 +81,20 @@ public class HttpService extends IntentService {
         HttpClient.getInstance().login(intent.getStringExtra(IntentAttributes.HTTP_ACCOUNT),
                 intent.getStringExtra(IntentAttributes.HTTP_LOGIN),
                 intent.getStringExtra(IntentAttributes.HTTP_PASS))
-                .enqueue(new Callback<LoginResultRecord>() {
-                    public void onResponse(Call<LoginResultRecord> call, Response<LoginResultRecord> response) {
-                        if (response != null && response.body() != null) {
-                            LoginResultRecord result = response.body();
-                            Settings.SettingsBuilder.get().start().setAuthToken(result.getToken()).apply();
-                            sendBroadcast(new Intent(Constants.HTTP_SERVICE_NAME).putExtra(IntentAttributes.HTTP_LOGIN_RESPONSE_TYPE, Constants.OK)); //все хорошо
-                        } else {
-                            sendBroadcast(new Intent(Constants.HTTP_SERVICE_NAME).putExtra(IntentAttributes.HTTP_LOGIN_RESPONSE_TYPE, Constants.WARN)); //что-то пошло не так
-                        }
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<LoginResultRecord>() {
+                    public void onCompleted() {
+
                     }
 
-                    public void onFailure(Call<LoginResultRecord> call, Throwable t) {
-                        MCLoggerFactory.getLogger(HttpService.class).error(t.getMessage(), t);
+                    public void onError(Throwable e) {
+                        MCLoggerFactory.getLogger(HttpService.class).error(e.getMessage(), e);
                         sendBroadcast(new Intent(Constants.HTTP_SERVICE_NAME).putExtra(IntentAttributes.HTTP_LOGIN_RESPONSE_TYPE, Constants.ERROR)); //все плохо
+                    }
+
+                    public void onNext(LoginResultRecord result) {
+                        Settings.SettingsBuilder.get().start().setAuthToken(result.getToken()).apply();
+                        sendBroadcast(new Intent(Constants.HTTP_SERVICE_NAME).putExtra(IntentAttributes.HTTP_LOGIN_RESPONSE_TYPE, Constants.OK)); //все хорошо
                     }
                 });
     }
@@ -101,7 +102,7 @@ public class HttpService extends IntentService {
     private void getSettings() {
         HttpClient.getInstance().getSettings()
                 .subscribeOn(Schedulers.newThread())
-                .subscribe(new Subscriber<SettingsResultRecord>() {
+                .subscribe(new Subscriber<com.magenta.hdmate.mx.model.Settings>() {
                     public void onCompleted() {
                         sendBroadcast(new Intent(Constants.HTTP_SERVICE_NAME).putExtra(IntentAttributes.HTTP_SETTINGS_RESPONSE_TYPE, Constants.OK));
                     }
@@ -111,9 +112,9 @@ public class HttpService extends IntentService {
                         sendBroadcast(new Intent(Constants.HTTP_SERVICE_NAME).putExtra(IntentAttributes.HTTP_SETTINGS_RESPONSE_TYPE, Constants.ERROR));
                     }
 
-                    public void onNext(SettingsResultRecord result) {
+                    public void onNext(com.magenta.hdmate.mx.model.Settings result) {
                         if (result == null) return;
-                        com.magenta.mc.client.android.common.Settings.SettingsBuilder.get().start()
+                        Settings.SettingsBuilder.get().start()
                                 .setFactCost(result.getAllowFactCost())
                                 .setBarcodeScreen(result.getEnableBarcodeScreen())
                                 .setSignatureScreen(result.getEnableSignatureScreen())
@@ -128,14 +129,13 @@ public class HttpService extends IntentService {
                                 .setVolumeUnit(result.getVolumeUnits())
                                 .setDefaultMap(result.getDefaultMap())
                                 .apply();
-                        List<String> reasons = new ArrayList<>(result.getOrderCancelReasons().size());
-                        for (CancelationReason reason : result.getOrderCancelReasons()) {
+                        Set<String> reasons = new HashSet<>();
+                        for (OrderCancelationReason reason : result.getOrderCancelationReasons()) {
                             reasons.add(reason.getTitle());
                         }
-                        MxSettings.getInstance().setOrderCancelReasons(reasons);
-                        MxSettings.getInstance().saveSettings();
+                        Settings.SettingsBuilder.get().start().setOrderCancellationReasons(reasons);
                         Map<String, Map<String, String>> mapSettings = result.getMapProperties();
-                        for (String s : MxSettings.ignoredMapProviders) {
+                        for (String s : Settings.IGNORED_MAP_PROVIDERS) {
                             mapSettings.remove(s);
                         }
                         if (result.getMapProperties().isEmpty()) {
@@ -164,7 +164,7 @@ public class HttpService extends IntentService {
     private void getJobs() {
         HttpClient.getInstance().getJobs()
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<List<JobRecord>>() {
+                .subscribe(new Subscriber<List<Job>>() {
                     public void onCompleted() {
                         sendBroadcast(new Intent(Constants.HTTP_SERVICE_NAME).putExtra(IntentAttributes.HTTP_JOBS_RESPONSE_TYPE, Constants.STOP));
                     }
@@ -174,10 +174,15 @@ public class HttpService extends IntentService {
                         sendBroadcast(new Intent(Constants.HTTP_SERVICE_NAME).putExtra(IntentAttributes.HTTP_JOBS_RESPONSE_TYPE, Constants.ERROR));
                     }
 
-                    public void onNext(List<JobRecord> jobRecords) {
+                    public void onNext(List<Job> jobRecords) {
                         sendBroadcast(new Intent(Constants.HTTP_SERVICE_NAME).putExtra(IntentAttributes.HTTP_JOBS_RESPONSE_TYPE, Constants.START));
-                        ServicesRegistry.getDataController().reloadNewJobs(jobRecords);
+                        for (Job jobRecord : jobRecords) {
+                            ServicesRegistry.getDataController().updateJob(SingleJobRenderer.renderJob(jobRecord));
+                        }
                     }
                 });
+    }
+
+    private void getRoute() {
     }
 }

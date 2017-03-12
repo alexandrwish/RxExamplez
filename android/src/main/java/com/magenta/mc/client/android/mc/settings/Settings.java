@@ -38,7 +38,6 @@ public class Settings extends Properties {
     public static final String USER_ID = "user.id";
     public static final String SERVER_COMPONENT_NAME = "server.component.name";
     public static final String XMPP_RESOURCE = "xmpp.resource";
-    public static final String TIMEZONE_PROPERTY = "timezone";
     public static final String LOCALE_KEY = "locale.key";
     public static final String LOGGING_ENABLED = "logging.enabled";
     public static final String LOGGING_FILE = "logging.file";

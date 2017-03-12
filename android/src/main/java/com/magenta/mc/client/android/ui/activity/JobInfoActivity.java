@@ -8,12 +8,12 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.magenta.mc.client.android.R;
+import com.magenta.mc.client.android.common.IntentAttributes;
+import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.entity.AbstractStop;
 import com.magenta.mc.client.android.entity.TaskState;
 import com.magenta.mc.client.android.events.EventType;
 import com.magenta.mc.client.android.events.JobEvent;
-import com.magenta.mc.client.android.mc.HDSettings;
-import com.magenta.mc.client.android.mc.MxSettings;
 import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.service.ServicesRegistry;
 import com.magenta.mc.client.android.service.listeners.BroadcastEvent;
@@ -22,7 +22,6 @@ import com.magenta.mc.client.android.service.storage.entity.Job;
 import com.magenta.mc.client.android.ui.AndroidUI;
 import com.magenta.mc.client.android.ui.adapter.JobDetailStopsAdapter;
 import com.magenta.mc.client.android.util.DateUtils;
-import com.magenta.mc.client.android.common.IntentAttributes;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -47,6 +46,7 @@ public class JobInfoActivity extends DistributionActivity implements WorkflowAct
         return getString(R.string.job_activity_title);
     }
 
+    @SuppressWarnings("unused")
     @MxBroadcastEvents({EventType.NEW_JOB, EventType.JOB_CANCELLED, EventType.JOB_UPDATED})
     public void onScheduleUpdate(BroadcastEvent<String> e) {
         final Job job = (Job) ServicesRegistry.getDataController().findJob(currentJobId);
@@ -78,7 +78,7 @@ public class JobInfoActivity extends DistributionActivity implements WorkflowAct
                 Job job = (Job) ServicesRegistry.getDataController().findJob(currentJobId);
                 if (job != null) {
                     job.processSetState(TaskState.RUN_ACCEPTED);
-                    startActivity(new Intent(JobInfoActivity.this, ServicesRegistry.getWorkflowService().getJobActivity())
+                    startActivity(new Intent(JobInfoActivity.this, JobActivity.class)
                             .putExtra(IntentAttributes.JOB_ID, currentJobId)
                             .putExtra(IntentAttributes.STOP_ID, currentStopId));
                     finish();
@@ -90,7 +90,7 @@ public class JobInfoActivity extends DistributionActivity implements WorkflowAct
                 Job job = (Job) ServicesRegistry.getDataController().findJob(currentJobId);
                 if (job != null) {
                     job.processSetState(TaskState.RUN_REJECTED);
-                    startActivity(new Intent(JobInfoActivity.this, ServicesRegistry.getWorkflowService().getFirstActivity()).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                    startActivity(new Intent(JobInfoActivity.this, JobsActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                 }
             }
         });
@@ -114,7 +114,7 @@ public class JobInfoActivity extends DistributionActivity implements WorkflowAct
     }
 
     public void onBackPressed() {
-        startActivity(new Intent(JobInfoActivity.this, ServicesRegistry.getWorkflowService().getFirstActivity()).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+        startActivity(new Intent(JobInfoActivity.this, JobsActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
     }
 
     void processAcceptAndRejectButtonsVisibility() {
@@ -165,7 +165,7 @@ public class JobInfoActivity extends DistributionActivity implements WorkflowAct
             unloadingRow.setVisibility(View.GONE);
         }
         if (totalLoad > 0 || totalVolume > 0) {
-            this.totalLoad.setText(String.format("%s %s / %s %s", format.format(totalLoad), MxSettings.get().getProperty(HDSettings.MX_CONFIG_CAPACITY_UNITS, ""), format.format(totalVolume), MxSettings.get().getProperty(HDSettings.MX_CONFIG_VOLUME_UNIT, "")));
+            this.totalLoad.setText(String.format("%s %s / %s %s", format.format(totalLoad), Settings.get().getCapacityUnit(), format.format(totalVolume), Settings.get().getVolumeUnit()));
         } else {
             this.totalLoad.setText("");
         }

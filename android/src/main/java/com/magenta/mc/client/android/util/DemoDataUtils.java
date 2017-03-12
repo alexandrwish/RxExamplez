@@ -292,7 +292,7 @@ public class DemoDataUtils {
      */
     public static Pair<Country, Town> parseCountryAndTown(final String name) {
         final String[] parts = name.split(",");
-        return new Pair<>(parts.length > 1 ? Country.valueOf(parts[1].trim().toUpperCase()) : null, parts.length > 0 ? Town.valueOf(parts[0].trim().toUpperCase()) : null);
+        return Pair.create(parts.length > 1 ? Country.valueOf(parts[1].trim().toUpperCase()) : null, parts.length > 0 ? Town.valueOf(parts[0].trim().toUpperCase()) : null);
     }
 
     public enum Country {

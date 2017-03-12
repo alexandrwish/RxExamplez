@@ -1,7 +1,6 @@
 package com.magenta.mc.client.android;
 
 import android.app.Application;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.PowerManager;
@@ -9,6 +8,8 @@ import android.view.ContextThemeWrapper;
 
 import com.google.inject.Module;
 import com.magenta.mc.client.android.acra.AcraConfigurator;
+import com.magenta.mc.client.android.common.Settings;
+import com.magenta.mc.client.android.common.UserStatus;
 import com.magenta.mc.client.android.db.DBAdapter;
 import com.magenta.mc.client.android.db.MxDBOpenHelper;
 import com.magenta.mc.client.android.db.dao.DistributionDAO;
@@ -16,18 +17,13 @@ import com.magenta.mc.client.android.db.dao.TileCacheDAO;
 import com.magenta.mc.client.android.mc.MXNavApp;
 import com.magenta.mc.client.android.mc.MxSettings;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
-import com.magenta.mc.client.android.mc.settings.Settings;
-import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.renderer.Renderer;
-import com.magenta.mc.client.android.rpc.xmpp.XMPPStream2;
 import com.magenta.mc.client.android.service.CoreServiceImpl;
 import com.magenta.mc.client.android.service.LocationService;
-import com.magenta.mc.client.android.service.PhoneStatisticService;
 import com.magenta.mc.client.android.service.ServicesRegistry;
 import com.magenta.mc.client.android.service.renderer.SingleJobRenderer;
 import com.magenta.mc.client.android.service.storage.DataControllerImpl;
-import com.magenta.mc.client.android.task.LoginCheckTask;
-import com.magenta.mc.client.android.ui.activity.common.SettingsActivity;
+import com.magenta.mc.client.android.ui.activity.SettingsActivity;
 import com.magenta.mc.client.android.ui.theme.Theme;
 import com.magenta.mc.client.android.ui.theme.ThemeManageable;
 import com.magenta.mc.client.android.ui.theme.ThemeManager;
@@ -41,11 +37,8 @@ import org.acra.annotation.ReportsCrashes;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.Timer;
 
-import okhttp3.OkHttpClient;
 import roboguice.RoboGuice;
 
 @ReportsCrashes(formKey = "")
@@ -56,10 +49,9 @@ public abstract class McAndroidApplication extends Application implements ThemeM
     protected ThemeManager themeManager;
     protected DBAdapter dbAdapter;
     protected MXNavApp mxNavApp;
-    protected boolean loginPress;
     protected boolean locked = false;
     protected PowerManager.WakeLock lock;
-    private Timer mTimer;
+    private UserStatus status;
 
     public static McAndroidApplication getInstance() {
         return instance;
@@ -70,9 +62,6 @@ public abstract class McAndroidApplication extends Application implements ThemeM
         if (isFirstStart) {
             isFirstStart = false;
             //Clear UserID
-            Settings settings = Setup.get().getSettings();
-            settings.setUserId("");
-            settings.saveSettings();
         }
     }
 
@@ -95,8 +84,7 @@ public abstract class McAndroidApplication extends Application implements ThemeM
         ServicesRegistry.startCoreService(this, CoreServiceImpl.class);
         ServicesRegistry.startLocationService(this, LocationService.class);
         new MobileApp();
-        startService(new Intent(this, PhoneStatisticService.class));
-        LocaleUtils.changeLocale(this, MxSettings.getInstance().getLocale());
+        LocaleUtils.changeLocale(this, Settings.get().getLocale());
         DSoundPool.init(getInstance());
         try {
             TileCacheDAO.getInstance().removeCacheTiles(System.currentTimeMillis() - (MxSettings.getInstance().getIntProperty(MxSettings.CLEAN_CACHE_PERIOD, "0") * 24 * 60 * 60 * 1000));
@@ -119,15 +107,7 @@ public abstract class McAndroidApplication extends Application implements ThemeM
 
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        LocaleUtils.changeLocale(this, MxSettings.get().getProperty(Settings.LOCALE_KEY));
-    }
-
-    public boolean isLoginPress() {
-        return loginPress;
-    }
-
-    public void setLoginPress(boolean loginPress) {
-        this.loginPress = loginPress;
+        LocaleUtils.changeLocale(this, Settings.get().getLocale());
     }
 
     public void onTerminate() {
@@ -141,7 +121,6 @@ public abstract class McAndroidApplication extends Application implements ThemeM
         ServicesRegistry.stopCoreService();
         super.onTerminate();
     }
-
 
     protected void initDBAdapter() {
         this.dbAdapter = new DBAdapter(this);
@@ -163,7 +142,6 @@ public abstract class McAndroidApplication extends Application implements ThemeM
     public MXNavApp getMxNavApp() {
         return mxNavApp;
     }
-
 
     public ThemeManager createThemeManager() {
         return new MxThemeManager();
@@ -196,10 +174,6 @@ public abstract class McAndroidApplication extends Application implements ThemeM
         setTheme(themeManager.getCurrentThemeId(null));
     }
 
-    public Timer getTimer() {
-        return mTimer == null ? mTimer = new Timer(getString(R.string.mx_app_name)) : mTimer;
-    }
-
     public String getDeviceName() {
         String manufacturer = Build.MANUFACTURER;
         String model = Build.MODEL;
@@ -223,20 +197,6 @@ public abstract class McAndroidApplication extends Application implements ThemeM
         }
     }
 
-    public void checkHistory(final Runnable runnable) {
-        MobileApp.runConsecutiveTask(new Runnable() {
-            public void run() {
-                OkHttpClient client = XMPPStream2.getThreadSafeClient();
-                List<String> drivers = DistributionDAO.getInstance().getDrivers();
-                final LoginCheckTask receiver = new LoginCheckTask();
-                for (String driver : drivers) {
-                    receiver.checkDriverAndSentLocations(client, driver, false);
-                }
-                runnable.run();
-            }
-        });
-    }
-
     public void lock() {
         if (locked) return;
         if (lock == null) {
@@ -253,24 +213,31 @@ public abstract class McAndroidApplication extends Application implements ThemeM
         }
     }
 
+    public UserStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(UserStatus status) {
+        this.status = status;
+    }
 
     private static class MxThemeManager extends ThemeManager {
 
         protected int getThemeId(ContextThemeWrapper context, Theme theme) {
             if (context != null && context instanceof SettingsActivity) {
                 switch (theme) {
-                    case day:
+                    case DAY:
                         return R.style.McTheme_NoTitleBar_Light;
-                    case night:
+                    case NIGHT:
                         return R.style.McTheme_NoTitleBar;
                     default:
                         throw new IllegalArgumentException();
                 }
             } else {
                 switch (theme) {
-                    case day:
+                    case DAY:
                         return R.style.McTheme_Light;
-                    case night:
+                    case NIGHT:
                         return R.style.McTheme;
                     default:
                         throw new IllegalArgumentException();

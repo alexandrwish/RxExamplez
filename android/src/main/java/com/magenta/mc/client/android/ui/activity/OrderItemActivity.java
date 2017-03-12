@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.magenta.mc.client.android.R;
+import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.db.dao.DistributionDAO;
 import com.magenta.mc.client.android.entity.OrderItemCheckStatus;
 import com.magenta.mc.client.android.entity.OrderItemEntity;
@@ -36,34 +37,12 @@ import java.util.List;
 
 public class OrderItemActivity extends DistributionActivity implements WorkflowActivity {
 
-    public static final int REQUEST_CODE = OrderItemActivity.class.hashCode();
-    public static final String EXTRA_BARCODE_LIST = "BARCODE_LIST";
-    // Let's define some intent strings
-    // This intent string contains the source of the data as a string
-    static final String SOURCE_TAG = "com.motorolasolutions.emdk.datawedge.source";
-    // This intent string contains the order_item_activity symbology as a string
-    static final String LABEL_TYPE_TAG = "com.motorolasolutions.emdk.datawedge.label_type";
-    // This intent string contains the order_item_activity data as a byte array list
-    static final String DECODE_DATA_TAG = "com.motorolasolutions.emdk.datawedge.decode_data";
-    // This intent string contains the captured data as a string
-    // (in the case of MSR this data string contains a concatenation of the track data)
     static final String DATA_STRING_TAG = "com.motorolasolutions.emdk.datawedge.data_string";
-    // Let's define the MSR intent strings (in case we want to use these in the future)
-    static final String MSR_DATA_TAG = "com.motorolasolutions.emdk.datawedge.msr_data";
-    static final String MSR_TRACK1_TAG = "com.motorolasolutions.emdk.datawedge.msr_track1";
-    static final String MSR_TRACK2_TAG = "com.motorolasolutions.emdk.datawedge.msr_track2";
-    static final String MSR_TRACK3_TAG = "com.motorolasolutions.emdk.datawedge.msr_track3";
-    static final String MSR_TRACK1_STATUS_TAG = "com.motorolasolutions.emdk.datawedge.msr_track1_status";
-    static final String MSR_TRACK2_STATUS_TAG = "com.motorolasolutions.emdk.datawedge.msr_track2_status";
-    static final String MSR_TRACK3_STATUS_TAG = "com.motorolasolutions.emdk.datawedge.msr_track3_status";
-    // Let's define the API intent strings for the soft scan trigger
     static final String ACTION_SOFTSCANTRIGGER = "com.motorolasolutions.emdk.datawedge.api.ACTION_SOFTSCANTRIGGER";
     static final String EXTRA_PARAM = "com.motorolasolutions.emdk.datawedge.api.EXTRA_PARAMETER";
-    static final String DWAPI_START_SCANNING = "START_SCANNING";
-    static final String DWAPI_STOP_SCANNING = "STOP_SCANNING";
     static final String DWAPI_TOGGLE_SCANNING = "TOGGLE_SCANNING";
     static final String ourIntentAction = "com.magenta.maxunits.mobile.hd.RECVR";
-    List<OrderItemEntity> orderItems = new ArrayList<OrderItemEntity>();
+    List<OrderItemEntity> orderItems = new ArrayList<>();
     EditText valueBarcode;
     EditText nameBarcode;
     LinearLayout header;
@@ -207,7 +186,7 @@ public class OrderItemActivity extends DistributionActivity implements WorkflowA
     }
 
     private void startScanner() {
-        if (Setup.get().getSettings().getBooleanProperty(MxSettings.MOTO_BARCODE, "false")) {
+        if (Settings.get().getMotoBarcode()) {
             OrderItemActivity.this.sendBroadcast(new Intent().setAction(ACTION_SOFTSCANTRIGGER).putExtra(EXTRA_PARAM, DWAPI_TOGGLE_SCANNING));
             Toast.makeText(this, "Soft scan trigger toggled.", Toast.LENGTH_SHORT).show();
             IntentFilter filter = new IntentFilter("com.magenta.maxunits.mobile.hd.RECVR");

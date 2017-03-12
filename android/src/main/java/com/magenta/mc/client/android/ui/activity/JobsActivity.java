@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.magenta.mc.client.android.R;
+import com.magenta.mc.client.android.common.IntentAttributes;
 import com.magenta.mc.client.android.entity.AbstractStop;
 import com.magenta.mc.client.android.entity.TaskState;
 import com.magenta.mc.client.android.events.EventType;
@@ -37,7 +38,6 @@ import com.magenta.mc.client.android.service.storage.entity.Stop;
 import com.magenta.mc.client.android.ui.AndroidUI;
 import com.magenta.mc.client.android.ui.activity.common.LoginActivity;
 import com.magenta.mc.client.android.ui.adapter.JobsAdapter;
-import com.magenta.mc.client.android.common.IntentAttributes;
 import com.magenta.mc.client.android.util.PhoneUtils;
 
 import java.util.List;
@@ -96,12 +96,12 @@ public class JobsActivity extends DistributionActivity implements WorkflowActivi
                     if (state == TaskState.RUN_RECEIVED && (allowToPassJobsInArbitraryOrder || position == 0)) {
                         intent = new Intent(JobsActivity.this, JobInfoActivity.class);
                     } else if (job.isCancelled() || job.isCompleted()) {
-                        intent = new Intent(JobsActivity.this, ServicesRegistry.getWorkflowService().getJobActivity());
+                        intent = new Intent(JobsActivity.this, JobActivity.class);
                     } else if (position != 0 && !(allPreviousRunIsComplete || (allowToPassJobsInArbitraryOrder && allowToPassStopsInArbitraryOrder))) {
                         intent = new Intent(JobsActivity.this, JobInfoActivity.class);
                         intent.putExtra(JobInfoActivity.HIDE_ACCEPT_AND_REJECT_BUTTONS, true);
                     } else {
-                        intent = new Intent(JobsActivity.this, ServicesRegistry.getWorkflowService().getJobActivity());
+                        intent = new Intent(JobsActivity.this, JobActivity.class);
                     }
                     intent.putExtra(IntentAttributes.JOB_ID, job.getReferenceId());
                     startActivity(intent);

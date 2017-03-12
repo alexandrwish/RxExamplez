@@ -51,8 +51,8 @@ public class HDDelegate extends SmokeActivityDelegate implements HttpResponseLis
         MCLoggerFactory.getLogger(HDDelegate.class).debug("Login result = " + result);
         switch (result) {
             case Constants.OK: {
-                ServiceHolder.getInstance().startService(HttpService.class, new Pair<>(IntentAttributes.HTTP_TYPE, Constants.SETTINGS_TYPE));
-                ServiceHolder.getInstance().startService(HttpService.class, new Pair<>(IntentAttributes.HTTP_TYPE, Constants.JOBS_TYPE));
+                ServiceHolder.getInstance().startService(HttpService.class, Pair.create(IntentAttributes.HTTP_TYPE, Constants.SETTINGS_TYPE));
+                ServiceHolder.getInstance().startService(HttpService.class, Pair.create(IntentAttributes.HTTP_TYPE, Constants.JOBS_TYPE));
                 ServiceHolder.getInstance().bindService(SocketIOService.class);
                 break;
             }

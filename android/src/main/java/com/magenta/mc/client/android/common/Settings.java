@@ -6,13 +6,20 @@ import android.preference.PreferenceManager;
 
 import com.magenta.mc.client.android.McAndroidApplication;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @SuppressWarnings("unused")
 public class Settings {
 
-    private static final Settings instance = new Settings();
+    public static final String USER_LOCALE = "user.locale";
+    public static final String APP_THEME = "app.theme";
+    public static final String SETTING_PASSWORD = "settings.password";
 
+    private static final Settings instance = new Settings();
     private static final String FACT_COST = "fact.cost";
     private static final String BARCODE_SCREEN = "barcode.screen";
+    private static final String UPDATE_ALERT = "update.alert";
     private static final String SIGNATURE_SCREEN = "signature.screen";
     private static final String RANDOM_ORDERS = "random.orders";
     private static final String SEVERAL_RUNS = "several.runs";
@@ -25,6 +32,26 @@ public class Settings {
     private static final String VOLUME_UNIT = "volume.unit";
     private static final String DEFAULT_MAP = "default.map";
     private static final String AUTH_TOKEN = "api.key";
+    private static final String USER_LOGIN = "user.login";
+    private static final String USER_ACCOUNT = "user.account";
+    private static final String APP_HOST = "app.host";
+    private static final String APP_PORT = "app.port";
+    private static final String AUDIO_ALERT = "audio.alert";
+    private static final String CANCEL_REASONS = "cancel.reasons";
+    private static final String MOTO_BARCODE = "moto.barcode";
+    private static final String SAVE_LOCATION_INTERVAL = "save.location.interval";
+    private static final String TRACKING_ENABLED = "tracking.enabled";
+    private static final String TIMEZONE = "timezone";
+    public static String[] IGNORED_MAP_PROVIDERS = {
+            "googlesatellite",
+            "ptv",
+            "geoinformsputnik",
+            "geobase",
+            "geoserver",
+            "yahoo",
+            "mapquest",
+            "map24"
+    };
 
     private final SharedPreferences preferences;
 
@@ -43,7 +70,6 @@ public class Settings {
     public Boolean getBarcodeScreen() {
         return preferences.getBoolean(BARCODE_SCREEN, false);
     }
-
 
     public Boolean getSignatureScreen() {
         return preferences.getBoolean(SIGNATURE_SCREEN, false);
@@ -94,7 +120,51 @@ public class Settings {
     }
 
     public String getLogin() {
-        return "";
+        return preferences.getString(USER_LOGIN, "");
+    }
+
+    public String getAccount() {
+        return preferences.getString(USER_ACCOUNT, "");
+    }
+
+    public String getUserId() {
+        return getAccount() + "-" + getLogin();
+    }
+
+    public String getLocale() {
+        return preferences.getString(USER_LOCALE, "");
+    }
+
+    public String getHost() {
+        return preferences.getString(APP_HOST, "");
+    }
+
+    public String getPort() {
+        return preferences.getString(APP_PORT, "");
+    }
+
+    public Boolean getAudioAlert() {
+        return preferences.getBoolean(AUDIO_ALERT, false);
+    }
+
+    public Set<String> getCancelReasons() {
+        return preferences.getStringSet(CANCEL_REASONS, new HashSet<String>());
+    }
+
+    public Boolean getMotoBarcode() {
+        return preferences.getBoolean(MOTO_BARCODE, false);
+    }
+
+    public Long getSaveLocationInterval() {
+        return preferences.getLong(SAVE_LOCATION_INTERVAL, 60000L);
+    }
+
+    public Boolean getTrackingEnabled() {
+        return preferences.getBoolean(TRACKING_ENABLED, true);
+    }
+
+    public String getTimezone() {
+        return preferences.getString(TIMEZONE, "DEFAULT");
     }
 
     public static class SettingsBuilder {
@@ -207,9 +277,93 @@ public class Settings {
             return this;
         }
 
+        public SettingsBuilder setLogin(String login) {
+            if (login != null) {
+                editor.putString(USER_LOGIN, login);
+            }
+            return this;
+        }
+
+        public SettingsBuilder setAccount(String account) {
+            if (account != null) {
+                editor.putString(USER_ACCOUNT, account);
+            }
+            return this;
+        }
+
+        public SettingsBuilder setLocale(String locale) {
+            if (locale != null) {
+                editor.putString(USER_LOCALE, locale);
+            }
+            return this;
+        }
+
         public SettingsBuilder setAuthToken(String token) {
             if (token != null) {
                 editor.putString(AUTH_TOKEN, token);
+            }
+            return this;
+        }
+
+        public SettingsBuilder setHost(String host) {
+            if (host != null) {
+                editor.putString(APP_HOST, host);
+            }
+            return this;
+        }
+
+        public SettingsBuilder setPort(String port) {
+            if (port != null) {
+                editor.putString(APP_PORT, port);
+            }
+            return this;
+        }
+
+        public SettingsBuilder setAudioAlert(Boolean audioAlert) {
+            if (audioAlert != null) {
+                editor.putBoolean(AUDIO_ALERT, audioAlert);
+            }
+            return this;
+        }
+
+        public SettingsBuilder setOrderCancellationReasons(Set<String> reasons) {
+            if (reasons != null) {
+                editor.putStringSet(CANCEL_REASONS, reasons);
+            }
+            return this;
+        }
+
+        public SettingsBuilder setMotoBarcode(Boolean motoBarcode) {
+            if (motoBarcode != null) {
+                editor.putBoolean(MOTO_BARCODE, motoBarcode);
+            }
+            return this;
+        }
+
+        public SettingsBuilder setSaveLocationInterval(Long saveLocationInterval) {
+            if (saveLocationInterval != null) {
+                editor.putLong(SAVE_LOCATION_INTERVAL, saveLocationInterval);
+            }
+            return this;
+        }
+
+        public SettingsBuilder setTrackingEnabled(Boolean trackingEnabled) {
+            if (trackingEnabled != null) {
+                editor.putBoolean(TRACKING_ENABLED, trackingEnabled);
+            }
+            return this;
+        }
+
+        public SettingsBuilder setTimezone(String timezone) {
+            if (timezone != null) {
+                editor.putString(TIMEZONE, timezone);
+            }
+            return this;
+        }
+
+        public SettingsBuilder setTheme(String theme) {
+            if (theme != null) {
+                editor.putString(APP_THEME, theme);
             }
             return this;
         }

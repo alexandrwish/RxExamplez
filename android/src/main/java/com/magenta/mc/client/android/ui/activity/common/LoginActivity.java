@@ -3,20 +3,15 @@ package com.magenta.mc.client.android.ui.activity.common;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,59 +22,73 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.magenta.mc.client.android.McAndroidApplication;
 import com.magenta.mc.client.android.MobileApp;
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.common.Constants;
+import com.magenta.mc.client.android.common.IntentAttributes;
+import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.http.HttpClient;
-import com.magenta.mc.client.android.mc.MxAndroidUtil;
-import com.magenta.mc.client.android.mc.MxSettings;
 import com.magenta.mc.client.android.mc.client.Login;
 import com.magenta.mc.client.android.mc.client.XMPPClient;
-import com.magenta.mc.client.android.mc.components.dialogs.SynchronousCallback;
-import com.magenta.mc.client.android.mc.log.MCLogger;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
-import com.magenta.mc.client.android.mc.settings.Settings;
 import com.magenta.mc.client.android.mc.setup.Setup;
-import com.magenta.mc.client.android.mc.util.McDiagnosticAgent;
-import com.magenta.mc.client.android.rpc.RPCOut;
 import com.magenta.mc.client.android.service.HttpService;
-import com.magenta.mc.client.android.service.ServicesRegistry;
-import com.magenta.mc.client.android.task.GetRemoteSettings;
-import com.magenta.mc.client.android.task.RemoteSettingsCallback;
 import com.magenta.mc.client.android.ui.AndroidUI;
-import com.magenta.mc.client.android.ui.activity.SmokeLoginActivity;
+import com.magenta.mc.client.android.ui.activity.SettingsActivity;
+import com.magenta.mc.client.android.ui.activity.SmokeActivity;
 import com.magenta.mc.client.android.ui.delegate.HDDelegate;
 import com.magenta.mc.client.android.ui.dialog.InputDialog;
 import com.magenta.mc.client.android.util.Checksum;
-import com.magenta.mc.client.android.common.IntentAttributes;
 import com.magenta.mc.client.android.util.StringUtils;
 import com.magenta.mc.client.android.util.UserUtils;
 
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
-public class LoginActivity extends SmokeLoginActivity<HDDelegate> implements RemoteSettingsCallback {
+public class LoginActivity extends SmokeActivity<HDDelegate> {
 
     private String oldLocale;
-    private SharedPreferences preferences;
     private Activity previous;
     private EditText mEditTextAccount;
     private EditText mEditTextLogin;
-    private EditText mEditTextpassword;
-    private ProgressDialog mUpdateSettingsProgress;
-    private GetRemoteSettings mGetRemoteSettings;
+    private EditText mEditTextPassword;
 
     public void initActivity(Bundle savedInstanceState) {
         setContentView(R.layout.login_activity);
+        Activity currentActivity = ((AndroidUI) Setup.get().getUI()).getCurrentActivity();
+        if (currentActivity != null && !(currentActivity instanceof LoginActivity) && XMPPClient.getInstance().isLoggedIn()) {
+            Intent intent = new Intent(LoginActivity.this, currentActivity.getClass());
+            startActivity(intent);
+            finish();
+            return;
+        }
         mEditTextAccount = (EditText) findViewById(R.id.mxAccount);
         mEditTextLogin = (EditText) findViewById(R.id.mxUsername);
-        mEditTextpassword = (EditText) findViewById(R.id.mxPassword);
-        Button mLoginButton = ((Button) findViewById(R.id.login_button));
-        mLoginButton.setText(getString(R.string.mx_activity_login_login));
-        ((TextView) findViewById(R.id.mcApplicationName)).setText(Settings.get().getAppName());
+        mEditTextPassword = (EditText) findViewById(R.id.mxPassword);
+        ((TextView) findViewById(R.id.mcApplicationName)).setText(getString(R.string.mx_app_name));
+        Button loginButton = (Button) findViewById(R.id.login_button);
+        loginButton.setText(getString(R.string.mx_activity_login_login));
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                processLogin();
+            }
+        });
+        findViewById(R.id.settings_button).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                processSettingsButtonClick();
+            }
+        });
+        mEditTextLogin.setText(Settings.get().getLogin());
+        mEditTextAccount.setText(Settings.get().getAccount());
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            createGpsDisabledAlert();
+        }
+        checkPermissions();
+    }
+
+    private void checkPermissions() {
         List<String> permission = new LinkedList<>();
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
             permission.add(Manifest.permission.INTERNET);
@@ -124,48 +133,14 @@ public class LoginActivity extends SmokeLoginActivity<HDDelegate> implements Rem
             permission.add(Manifest.permission.READ_CALL_LOG);
         }
         ActivityCompat.requestPermissions(this, permission.toArray(new String[permission.size()]), 27102016);
-        findViewById(R.id.login_button).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                setCurrentActivity();
-                processLogin();
-            }
-        });
-        findViewById(R.id.settings_button).setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                setCurrentActivity();
-                processSettingsButtonClick();
-            }
-        });
-        preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        mEditTextLogin.setText(preferences.getString("user.login", ""));
-        mEditTextAccount.setText(preferences.getString("user.account", ""));
-        mEditTextAccount.setVisibility(MxSettings.getInstance().hasFeature(MxSettings.Features.ACCOUNT) ? View.VISIBLE : View.GONE);
-        Activity currentActivity = ((AndroidUI) Setup.get().getUI()).getCurrentActivity();
-        if (currentActivity != null && !(currentActivity instanceof LoginActivity) && XMPPClient.getInstance().isLoggedIn()) {
-            Intent intent = new Intent(LoginActivity.this, currentActivity.getClass());
-            startActivity(intent);
-        }
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            createGpsDisabledAlert();
-        }
-        mGetRemoteSettings = new GetRemoteSettings(this);
-    }
-
-    protected void setCurrentActivity() {
-        // ?
     }
 
     protected void processLogin() {
-        if (Settings.get().isOfflineVersion()) {
-            login();
-            return;
-        }
+        // TODO: 3/8/17 implement offline
         String login = mEditTextLogin.getText().toString().trim();
         String account = mEditTextAccount.getText().toString().trim();
-        preferences.edit().putString("user.login", login).putString("user.account", account).apply();
-        MxSettings.getInstance().setUserAccount(account);
-        if (account.isEmpty() || login.isEmpty() || mEditTextpassword.getText().toString().trim().isEmpty()) {
+        String password = UserUtils.encodeLoginPassword(mEditTextPassword.getText().toString());
+        if (account.isEmpty() || login.isEmpty() || password.isEmpty()) {
             return;
         }
         try {
@@ -173,35 +148,22 @@ public class LoginActivity extends SmokeLoginActivity<HDDelegate> implements Rem
             inputManager.hideSoftInputFromWindow(getCurrentFocus() != null ? getCurrentFocus().getWindowToken() : null, InputMethodManager.HIDE_NOT_ALWAYS);
         } catch (Exception ignore) {
         }
-        mUpdateSettingsProgress = new ProgressDialog(this);
-        mUpdateSettingsProgress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        mUpdateSettingsProgress.setMessage(getString(R.string.sync_in_progress));
-        mUpdateSettingsProgress.setCancelable(false);
-        mUpdateSettingsProgress.show();
-        mGetRemoteSettings.update();
-    }
-
-    protected void checkHistory(Runnable runnable) {
-        McAndroidApplication.getInstance().checkHistory(runnable);
-    }
-
-    protected void logSettings() {
-        MCLogger logger = MCLoggerFactory.getLogger(LoginActivity.class);
-        MxSettings settings = (MxSettings) Setup.get().getSettings();
-        logger.debug("Settings start:");
-        for (Map.Entry<Object, Object> entry : settings.entrySet()) {
-            logger.debug(entry.getKey() + " : " + entry.getValue() + " ;");
-        }
-        logger.debug("Settings end.");
+        HttpClient.getInstance().init();
+        startService(new Intent(LoginActivity.this, HttpService.class)
+                .putExtra(IntentAttributes.HTTP_TYPE, Constants.LOGIN_TYPE)
+                .putExtra(IntentAttributes.HTTP_ACCOUNT, account)
+                .putExtra(IntentAttributes.HTTP_LOGIN, login)
+                .putExtra(IntentAttributes.HTTP_PASS, password)
+        );
     }
 
     protected void processSettingsButtonClick() {
-        final String password = StringUtils.toBlank(MxSettings.getInstance().getSettingsPassword());
+        final String password = StringUtils.toBlank("");
         if (password != null) {
             InputDialog.showPasswordInput(getString(R.string.mx_settings_locked), getString(R.string.mx_enter_password), new InputDialog.Callback<String>() {
                 public void ok(final String value) {
                     if (Checksum.md5(value).equals(password)) {
-                        ServicesRegistry.getWorkflowService().showSettings(LoginActivity.this, SettingsActivity.class.hashCode());
+                        startActivityForResult(new Intent(LoginActivity.this, SettingsActivity.class), SettingsActivity.class.hashCode());
                     } else {
                         Toast.makeText(LoginActivity.this, getString(R.string.mx_incorrect_password), Toast.LENGTH_SHORT).show();
                     }
@@ -212,15 +174,15 @@ public class LoginActivity extends SmokeLoginActivity<HDDelegate> implements Rem
                 }
             }, this);
         } else {
-            oldLocale = MxSettings.get().getProperty(Settings.LOCALE_KEY);
-            ServicesRegistry.getWorkflowService().showSettings(LoginActivity.this, SettingsActivity.class.hashCode());
+            oldLocale = Settings.get().getLocale();
+            startActivityForResult(new Intent(LoginActivity.this, SettingsActivity.class), SettingsActivity.class.hashCode());
         }
     }
 
     public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         if (SettingsActivity.class.hashCode() == requestCode) {
-            final String newLocale = MxSettings.get().getProperty(Settings.LOCALE_KEY);
-            if (oldLocale == null ? newLocale != null : !oldLocale.equals(newLocale)) { // restart
+            final String newLocale = Settings.get().getLocale();
+            if (oldLocale == null ? newLocale != null : !oldLocale.equals(newLocale)) {
                 finish();
                 startActivity(new Intent(this, getClass()));
             }
@@ -245,14 +207,6 @@ public class LoginActivity extends SmokeLoginActivity<HDDelegate> implements Rem
             MobileApp.getInstance().exit();
         }
         return true;
-    }
-
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            moveTaskToBack(true);
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
     }
 
     private void createGpsDisabledAlert() {
@@ -287,80 +241,8 @@ public class LoginActivity extends SmokeLoginActivity<HDDelegate> implements Rem
     protected void onResume() {
         previous = ((AndroidUI) Setup.get().getUI()).getCurrentActivity();
         super.onResume();
+        switchToCurrentActivityIfNecessary();
         installApkUpdateIfPresent();
-    }
-
-    private void login() {
-        final String login = preferences.getString("user.login", "");
-        final String account = preferences.getString("user.account", "");
-        final String password = UserUtils.encodeLoginPassword(mEditTextpassword.getText().toString());
-        final String userName = UserUtils.createUserId(login, account);
-        Settings.get().setUserId(userName.trim());
-        Settings.get().setPassword(password);
-        Settings.get().setUpdateApplicationName(account);
-        Settings.get().saveSettings();
-        checkHistory(new Runnable() {
-            public void run() {
-                McAndroidApplication.getInstance().setLoginPress(true);
-                Login.login(Settings.get().getUserId(), Settings.get().getPassword(),
-
-                        new SynchronousCallback() {
-                            public void done(boolean ok) {
-                                if ((ok && XMPPClient.getInstance().isLoggedIn()) || Settings.get().isOfflineVersion()) {
-                                    McDiagnosticAgent.getInstance().signalCredentials(userName + "|" + password);
-                                    new Handler().post(new Runnable() {
-                                        public void run() {
-                                            if (MxSettings.getInstance().hasFeature(MxSettings.Features.ACCOUNT_CONFIGURATION)) {
-                                                RPCOut.reloadJobs();
-                                                HttpClient.getInstance().init();
-                                                startService(new Intent(LoginActivity.this, HttpService.class)
-                                                        .putExtra(IntentAttributes.HTTP_TYPE, Constants.LOGIN_TYPE)
-                                                        .putExtra(IntentAttributes.HTTP_ACCOUNT, account)
-                                                        .putExtra(IntentAttributes.HTTP_LOGIN, login)
-                                                        .putExtra(IntentAttributes.HTTP_PASS, password)
-                                                );
-                                                RPCOut.accountConfiguration();
-                                                RPCOut.sendImei(MxAndroidUtil.getImei());
-                                                McAndroidApplication.getInstance().setLoginPress(false);
-                                                ServicesRegistry.getWorkflowService().showNextActivity(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                            }
-                                        }
-                                    });
-                                }
-                            }
-                        });
-                logSettings();
-            }
-        });
-    }
-
-    public void getRemoteSettingsSuccess() {
-        if (!isFinishing() && mUpdateSettingsProgress.isShowing()) {
-            mUpdateSettingsProgress.dismiss();
-        }
-        login();
-    }
-
-    public void getRemoteSettingsError() {
-        if (!isFinishing()) {
-
-            if (mUpdateSettingsProgress.isShowing()) {
-                mUpdateSettingsProgress.dismiss();
-            }
-            new AlertDialog.Builder(this)
-                    .setTitle(R.string.mx_api_server_connection_error_title)
-                    .setMessage(R.string.mx_api_server_connection_error_message)
-                    .setCancelable(false)
-                    .setPositiveButton(R.string.mx_ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            mGetRemoteSettings.update();
-                        }
-                    })
-                    .setNegativeButton(R.string.mx_cancel, null)
-                    .create()
-                    .show();
-        }
     }
 
     protected void installApkUpdateIfPresent() {
@@ -374,5 +256,34 @@ public class LoginActivity extends SmokeLoginActivity<HDDelegate> implements Rem
             startActivity(updateIntent);
             getIntent().removeExtra("update");
         }
+    }
+
+
+    public boolean isHasTitleBar() {
+        return false;
+    }
+
+    private void switchToCurrentActivityIfNecessary() {
+        MCLoggerFactory.getLogger(getClass()).debug("Switch to current activity if necessary");
+        if (Setup.isInitialized()) {
+            Activity currentActivity = chooseNextActivity();
+            String activityClass = currentActivity != null ? currentActivity.getClass().getSimpleName() : "null";
+            MCLoggerFactory.getLogger(getClass()).debug("LoginActivity " + activityClass + " " + Login.isUserLoggedIn());
+            if (currentActivity != null
+                    && !(currentActivity instanceof LoginActivity)
+                    && Login.isUserLoggedIn()) {
+                Intent intent = new Intent(LoginActivity.this, currentActivity.getClass());
+                intent.putExtra("FROM_LOGIN_ACTIVITY", true);
+                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                finish();
+                startActivity(intent);
+            }
+        } else {
+            MCLoggerFactory.getLogger(getClass()).debug("Setup is not initialized, can't get current activity.");
+        }
+    }
+
+    public void onBackPressed() {
+        moveTaskToBack(true);
     }
 }

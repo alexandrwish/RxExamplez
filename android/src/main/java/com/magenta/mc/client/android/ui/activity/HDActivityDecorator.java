@@ -42,13 +42,13 @@ public class HDActivityDecorator extends ActivityDecorator {
                             Intent intent;
                             if (runs.size() == 1) {
                                 if (jobs.size() == 1) {
-                                    intent = new Intent(context, ServicesRegistry.getWorkflowService().getStartActivity()).putExtra(IntentAttributes.STOP_ID, jobs.get(0));
+                                    intent = new Intent(context, StartActivity.class).putExtra(IntentAttributes.STOP_ID, jobs.get(0));
                                 } else {
-                                    intent = new Intent(context, ServicesRegistry.getWorkflowService().getJobActivity());
+                                    intent = new Intent(context, JobActivity.class);
                                 }
                                 intent.putExtra(IntentAttributes.JOB_ID, runs.get(0));
                             } else {
-                                intent = new Intent(context, ServicesRegistry.getWorkflowService().getFirstActivity());
+                                intent = new Intent(context, JobsActivity.class);
                             }
                             context.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                         }

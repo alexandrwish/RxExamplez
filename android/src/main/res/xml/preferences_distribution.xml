@@ -1,25 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="@string/mx_activity_preferences_mx_api">
-
-        <CheckBoxPreference
-            android:key="enable.api"
-            android:title="@string/enable_api" />
-
-        <EditTextPreference
-            android:dependency="enable.api"
-            android:inputType="text"
-            android:key="api.path"
-            android:title="@string/api_path" />
-
-        <EditTextPreference
-            android:dependency="enable.api"
-            android:inputType="text"
-            android:key="api.address"
-            android:title="@string/api_address" />
-    </PreferenceCategory>
-
     <PreferenceCategory android:title="@string/mx_activity_preferences_map_cache">
 
         <CheckBoxPreference

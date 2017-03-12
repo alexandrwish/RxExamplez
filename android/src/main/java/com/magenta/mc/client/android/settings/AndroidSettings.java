@@ -20,7 +20,7 @@ public class AndroidSettings extends Settings {
     public static final String PROPERTY_UI_THEME = "ui.theme";
     private static final String PROPERTY_UPDATE_SERVER_PORT = "update.server.port";
     private static final int PROPERTY_UPDATE_SERVER_PORT_DEFAULT = 8280;
-    private static final Theme PROPERTY_UI_THEME_DEFAULT = Theme.night;
+    private static final Theme PROPERTY_UI_THEME_DEFAULT = Theme.NIGHT;
 
     protected Context applicationContext;
 

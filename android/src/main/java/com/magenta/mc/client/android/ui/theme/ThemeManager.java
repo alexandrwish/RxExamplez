@@ -12,7 +12,7 @@ import java.util.Map;
 
 public abstract class ThemeManager {
 
-    public static final Theme DEFAULT_THEME = Theme.night;
+    public static final Theme DEFAULT_THEME = Theme.NIGHT;
     private Theme currentTheme;
     private ThemeManagerListener listener;
     private Map<String, Theme> activityThemeCache = new HashMap<>();

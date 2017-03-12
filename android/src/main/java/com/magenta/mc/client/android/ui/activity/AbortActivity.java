@@ -122,9 +122,9 @@ public class AbortActivity extends DistributionActivity implements WorkflowActiv
                                             Toast.makeText(AbortActivity.this, getString(R.string.aborted), Toast.LENGTH_SHORT).show();
                                         }
                                     }
-                                    intent = new Intent(AbortActivity.this, !job.isCancelled() && !job.isCompleted() ? ServicesRegistry.getWorkflowService().getJobActivity() : ServicesRegistry.getWorkflowService().getFirstActivity()).putExtra(IntentAttributes.JOB_ID, currentJobId);
+                                    intent = new Intent(AbortActivity.this, !job.isCancelled() && !job.isCompleted() ? JobActivity.class : JobsActivity.class).putExtra(IntentAttributes.JOB_ID, currentJobId);
                                 }
-                                startActivity(intent != null ? intent : new Intent(AbortActivity.this, ServicesRegistry.getWorkflowService().getFirstActivity()).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                                startActivity(intent != null ? intent : new Intent(AbortActivity.this, JobsActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                                 dialog.dismiss();
                             }
                         })

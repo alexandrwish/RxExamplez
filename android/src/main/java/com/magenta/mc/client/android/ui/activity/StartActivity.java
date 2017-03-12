@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.TableLayout;
 
 import com.magenta.mc.client.android.R;
+import com.magenta.mc.client.android.common.IntentAttributes;
 import com.magenta.mc.client.android.db.dao.DistributionDAO;
 import com.magenta.mc.client.android.entity.DynamicAttributeType;
 import com.magenta.mc.client.android.entity.TaskState;
@@ -25,7 +26,6 @@ import com.magenta.mc.client.android.service.storage.entity.Stop;
 import com.magenta.mc.client.android.ui.view.DynamicAttributeView;
 import com.magenta.mc.client.android.util.Attribute;
 import com.magenta.mc.client.android.util.DistributionUtils;
-import com.magenta.mc.client.android.common.IntentAttributes;
 import com.magenta.mc.client.android.util.StringUtils;
 
 import java.sql.SQLException;
@@ -237,7 +237,7 @@ public class StartActivity extends DistributionActivity implements WorkflowActiv
     }
 
     protected void goToArriveMapActivity() {
-        startActivity(new Intent(StartActivity.this, ServicesRegistry.getWorkflowService().getArrivedActivity())
+        startActivity(new Intent(StartActivity.this, ArriveMapActivity.class)
                 .putExtra(IntentAttributes.JOB_ID, currentJobId)
                 .putExtra(IntentAttributes.STOP_ID, currentStopId));
         finish();

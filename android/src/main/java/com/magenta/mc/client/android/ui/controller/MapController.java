@@ -11,36 +11,37 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.magenta.mc.client.android.R;
+import com.magenta.mc.client.android.common.Constants;
+import com.magenta.mc.client.android.common.IntentAttributes;
 import com.magenta.mc.client.android.entity.AbstractStop;
 import com.magenta.mc.client.android.entity.Address;
 import com.magenta.mc.client.android.entity.TaskState;
-import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.handler.MapUpdateHandler;
 import com.magenta.mc.client.android.mc.MxAndroidUtil;
-import com.magenta.mc.client.android.mc.MxSettings;
 import com.magenta.mc.client.android.receiver.RouteUpdateReceiver;
-import com.magenta.mc.client.android.rpc.DistributionRPCOut;
-import com.magenta.mc.client.android.service.ServicesRegistry;
+import com.magenta.mc.client.android.service.HttpService;
+import com.magenta.mc.client.android.service.holder.ServiceHolder;
 import com.magenta.mc.client.android.service.storage.entity.Job;
 import com.magenta.mc.client.android.service.storage.entity.Stop;
 import com.magenta.mc.client.android.ui.activity.AbortActivity;
+import com.magenta.mc.client.android.ui.activity.ArriveMapActivity;
 import com.magenta.mc.client.android.util.DateUtils;
-import com.magenta.mc.client.android.common.IntentAttributes;
 import com.magenta.mc.client.android.util.JobWorkflowUtils;
 import com.magenta.mc.client.android.util.PhoneUtils;
 import com.magenta.mc.client.android.util.StringUtils;
-import com.magenta.mc.client.android.mc.setup.Setup;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public abstract class MapController implements View.OnClickListener {
@@ -53,8 +54,7 @@ public abstract class MapController implements View.OnClickListener {
     protected boolean routeWithDriver;
     protected RouteUpdateReceiver routeUpdateReceiver;
     protected Long synchronizeTimestamp;
-    protected List<Address> addresses;
-    protected boolean mIsMapDisplayingEnabled;
+    protected ArrayList<Address> addresses;
     protected AlertDialog mDialog;
     protected View mBaseMapView;
     protected ImageButton mBtnZoomIn, mBtnZoomOut, mBtnMyLocation;
@@ -73,7 +73,6 @@ public abstract class MapController implements View.OnClickListener {
         this.routeWithDriver = routeWithDriver;
         this.routeUpdateReceiver = new RouteUpdateReceiver(this);
         this.addresses = new ArrayList<>();
-        mIsMapDisplayingEnabled = ((MxSettings) Setup.get().getSettings()).isMapDisplayingEnabled();
         mBtnZoomIn.setOnClickListener(this);
         mBtnZoomOut.setOnClickListener(this);
         mBtnMyLocation.setOnClickListener(this);
@@ -92,9 +91,9 @@ public abstract class MapController implements View.OnClickListener {
     }
 
     public void onStart() {
-        synchronizeTimestamp = new Date().getTime();
+        synchronizeTimestamp = System.currentTimeMillis();
         IntentFilter filter = new IntentFilter();
-        filter.addAction(DistributionRPCOut.UPDATE_ROUTE_ACTION);
+        filter.addAction(IntentAttributes.UPDATE_ROUTE_ACTION);
         mActivity.registerReceiver(routeUpdateReceiver, filter);
     }
 
@@ -223,7 +222,7 @@ public abstract class MapController implements View.OnClickListener {
     }
 
     private void goToArriveMapActivity(String jobRef, String stopRef) {
-        mActivity.startActivity(new Intent(mActivity, ServicesRegistry.getWorkflowService().getArrivedActivity())
+        mActivity.startActivity(new Intent(mActivity, ArriveMapActivity.class)
                 .putExtra(IntentAttributes.JOB_ID, jobRef)
                 .putExtra(IntentAttributes.STOP_ID, stopRef));
         mActivity.finish();
@@ -295,7 +294,7 @@ public abstract class MapController implements View.OnClickListener {
         return true;
     }
 
-    public Bitmap drawBitmap(Integer piority, String time, boolean isPu) {
+    public Bitmap drawBitmap(Integer priority, String time, boolean isPu) {
         Bitmap bitmap = BitmapFactory.decodeResource(mActivity.getResources(), R.drawable.stop_icon);
         Bitmap.Config bitmapConfig = bitmap.getConfig();
         if (bitmapConfig == null) {
@@ -305,7 +304,7 @@ public abstract class MapController implements View.OnClickListener {
         Canvas canvas = new Canvas(bitmap);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         int color;
-        switch (piority) {
+        switch (priority) {
             case 0: {
                 color = Color.GREEN;
                 break;
@@ -343,7 +342,10 @@ public abstract class MapController implements View.OnClickListener {
                 addresses.clear();
                 addresses.addAll(addressList);
             }
-            DistributionRPCOut.updateRoute(addresses, getSynchronizeTimestamp());
+            Bundle bundle = new Bundle(3);
+            bundle.putParcelableArrayList(Constants.ADDRESS_LIST, addresses);
+            bundle.putLong(Constants.SYNCHRONIZE_TIMESTAMP, getSynchronizeTimestamp());
+            ServiceHolder.getInstance().startService(HttpService.class, bundle, Pair.create(IntentAttributes.HTTP_TYPE, Constants.ROUTE_TYPE));
         }
     }
 

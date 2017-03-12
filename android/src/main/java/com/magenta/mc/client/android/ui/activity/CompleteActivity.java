@@ -20,16 +20,15 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.magenta.mc.client.android.R;
+import com.magenta.mc.client.android.common.IntentAttributes;
+import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.db.dao.DistributionDAO;
 import com.magenta.mc.client.android.db.dao.SignatureDAO;
 import com.magenta.mc.client.android.entity.DynamicAttributeEntity;
 import com.magenta.mc.client.android.entity.DynamicAttributeType;
 import com.magenta.mc.client.android.entity.OrderItemEntity;
 import com.magenta.mc.client.android.entity.TaskState;
-import com.magenta.mc.client.android.mc.HDSettings;
 import com.magenta.mc.client.android.mc.MxAndroidUtil;
-import com.magenta.mc.client.android.mc.MxSettings;
-import com.magenta.mc.client.android.mc.settings.Settings;
 import com.magenta.mc.client.android.record.DynamicAttributeRecord;
 import com.magenta.mc.client.android.record.OrderItemRecord;
 import com.magenta.mc.client.android.service.ServicesRegistry;
@@ -41,7 +40,6 @@ import com.magenta.mc.client.android.ui.view.DynamicAttributeView;
 import com.magenta.mc.client.android.ui.view.TimeView;
 import com.magenta.mc.client.android.util.Attribute;
 import com.magenta.mc.client.android.util.DistributionUtils;
-import com.magenta.mc.client.android.common.IntentAttributes;
 import com.magenta.mc.client.android.util.StringUtils;
 import com.magenta.mc.client.android.util.TextFilter;
 
@@ -91,8 +89,8 @@ public class CompleteActivity extends DistributionActivity {
                                 return MxAndroidUtil.showTomTomOrDefaultNavigator(stop.getAddress(), CompleteActivity.this);
                             }
                         }))
-                .add(new Attribute(getString(R.string.load), StringUtils.formatDouble(stop.getParameter(Stop.ATTR_LOAD))).setUnit(MxSettings.get().getProperty(HDSettings.MX_CONFIG_CAPACITY_UNITS, "")))
-                .add(new Attribute(getString(R.string.volume), StringUtils.formatDouble(stop.getParameter(Stop.ATTR_VOLUME))).setUnit(MxSettings.get().getProperty(HDSettings.MX_CONFIG_CAPACITY_UNITS, "")))
+                .add(new Attribute(getString(R.string.load), StringUtils.formatDouble(stop.getParameter(Stop.ATTR_LOAD))).setUnit(Settings.get().getCapacityUnit()))
+                .add(new Attribute(getString(R.string.volume), StringUtils.formatDouble(stop.getParameter(Stop.ATTR_VOLUME))).setUnit(Settings.get().getCapacityUnit()))
                 .add(new Attribute(getString(R.string.contact_label), stop.getContactPerson()))
                 .add(new Attribute(getString(R.string.phone_label), stop.getContactPhone()).setType(DynamicAttributeType.PHONE))
                 .add(new Attribute(getString(R.string.cost_label), StringUtils.formatCost(stop.getParameter(Stop.ATTR_COST))))
@@ -127,7 +125,7 @@ public class CompleteActivity extends DistributionActivity {
         timerField = (TextView) findViewById(R.id.timer);
         List<Button> btnList = new LinkedList<>();
         AbsListView.LayoutParams params = new AbsListView.LayoutParams(AbsListView.LayoutParams.MATCH_PARENT, AbsListView.LayoutParams.MATCH_PARENT);
-        if (((MxSettings) Settings.get()).isFactCostEnabled()) {
+        if (Settings.get().getFactCost()) {
             Button costButton = new Button(this);
             costButton.setLayoutParams(params);
             costButton.setText(R.string.cost);
@@ -158,7 +156,7 @@ public class CompleteActivity extends DistributionActivity {
             });
             btnList.add(costButton);
         }
-        if (((MxSettings) Settings.get()).isBarcodeEnabled()) {
+        if (Settings.get().getBarcodeScreen()) {
             Button scanButton = new Button(this);
             scanButton.setLayoutParams(params);
             scanButton.setText(R.string.scan);
@@ -170,7 +168,7 @@ public class CompleteActivity extends DistributionActivity {
             });
             btnList.add(scanButton);
         }
-        if (((MxSettings) Settings.get()).isSignatureEnabled()) {
+        if (Settings.get().getSignatureScreen()) {
             Button pobButton = new Button(this);
             pobButton.setLayoutParams(params);
             pobButton.setText(R.string.pod);
@@ -224,7 +222,7 @@ public class CompleteActivity extends DistributionActivity {
 
     private void suspendStop() {
         stop.processSetState(TaskState.STOP_SUSPENDED);
-        startActivity(new Intent(CompleteActivity.this, ServicesRegistry.getWorkflowService().getJobActivity()));
+        startActivity(new Intent(CompleteActivity.this, JobActivity.class));
         finish();
     }
 
@@ -267,9 +265,9 @@ public class CompleteActivity extends DistributionActivity {
         }
         stop.processSetState(TaskState.STOP_COMPLETED);
         if (job.isCompleted() || job.stopsDone()) {
-            startActivity(new Intent(CompleteActivity.this, ServicesRegistry.getWorkflowService().getFirstActivity()).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+            startActivity(new Intent(CompleteActivity.this, JobsActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
         } else {
-            startActivity(new Intent(CompleteActivity.this, ServicesRegistry.getWorkflowService().getJobActivity()).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).putExtra(IntentAttributes.JOB_ID, currentJobId).putExtra(IntentAttributes.STOP_ID, currentStopId));
+            startActivity(new Intent(CompleteActivity.this, JobActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP).putExtra(IntentAttributes.JOB_ID, currentJobId).putExtra(IntentAttributes.STOP_ID, currentStopId));
         }
     }
 
@@ -290,7 +288,7 @@ public class CompleteActivity extends DistributionActivity {
                 }
                 String leftTime;
                 if (days > 0) {
-                    leftTime = String.format(Locale.UK, "%d day(s) %s%02d:%02d", days, isLate ? "-" : "", hours, minutes);
+                    leftTime = String.format(Locale.UK, "%d DAY(s) %s%02d:%02d", days, isLate ? "-" : "", hours, minutes);
                 } else {
                     leftTime = String.format(Locale.UK, "%s%02d:%02d", isLate ? "-" : "", hours, minutes);
                 }

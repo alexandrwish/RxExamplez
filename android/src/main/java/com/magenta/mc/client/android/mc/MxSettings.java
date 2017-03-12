@@ -48,16 +48,7 @@ public class MxSettings extends AndroidSettings {
     private static final String USER_ACCOUNT = "user.account";
     private static final String UPDATE_DELAYED = "update_already.delayed";
 
-    public static String[] ignoredMapProviders = {
-            "googlesatellite",
-            "ptv",
-            "geoinformsputnik",
-            "geobase",
-            "geoserver",
-            "yahoo",
-            "mapquest",
-            "map24"
-    };
+
 
     public MxSettings(Context applicationContext) {
         super(applicationContext);

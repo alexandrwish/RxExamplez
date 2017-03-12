@@ -16,13 +16,14 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.magenta.mc.client.android.R;
+import com.magenta.mc.client.android.common.IntentAttributes;
+import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.db.dao.DistributionDAO;
 import com.magenta.mc.client.android.db.dao.StopsDAO;
 import com.magenta.mc.client.android.entity.AbstractStop;
 import com.magenta.mc.client.android.entity.DynamicAttributeType;
 import com.magenta.mc.client.android.entity.MapSettingsEntity;
 import com.magenta.mc.client.android.entity.TaskState;
-import com.magenta.mc.client.android.mc.HDSettings;
 import com.magenta.mc.client.android.mc.MxAndroidUtil;
 import com.magenta.mc.client.android.mc.MxSettings;
 import com.magenta.mc.client.android.mc.setup.Setup;
@@ -39,7 +40,6 @@ import com.magenta.mc.client.android.ui.view.DynamicAttributeView;
 import com.magenta.mc.client.android.ui.view.Maplet;
 import com.magenta.mc.client.android.ui.view.TimeView;
 import com.magenta.mc.client.android.util.Attribute;
-import com.magenta.mc.client.android.common.IntentAttributes;
 import com.magenta.mc.client.android.util.StringUtils;
 
 import java.sql.SQLException;
@@ -71,7 +71,7 @@ public abstract class AbstractArriveMapActivity extends DistributionActivity imp
             finish();
             return;
         }
-        stop = (Stop) job.getStop(currentStopId);
+        stop = job.getStop(currentStopId);
         if (stop == null) {
             finish();
             return;
@@ -102,7 +102,6 @@ public abstract class AbstractArriveMapActivity extends DistributionActivity imp
         }
         stop.setUpdateType(Stop.NOT_CHANGED_STOP);
         isPickup = stop.isPickup();
-        trackingEnabled = MxSettings.getInstance().isMapTrackingEnabled();
         ((TextView) findViewById(R.id.date_value)).setText(StringUtils.formatDayAndMonth(stop.getDate()));
         ((TimeView) findViewById(R.id.time_value)).setTime(StringUtils.formatTime(stop.getDate()));
         setTimeWindow(stop);
@@ -119,8 +118,8 @@ public abstract class AbstractArriveMapActivity extends DistributionActivity imp
                                 return MxAndroidUtil.showTomTomOrDefaultNavigator(stop.getAddress(), AbstractArriveMapActivity.this);
                             }
                         }))
-                .add(new Attribute(getString(R.string.load), StringUtils.formatDouble(stop.getParameter(Stop.ATTR_LOAD))).setUnit(MxSettings.get().getProperty(HDSettings.MX_CONFIG_CAPACITY_UNITS, "")))
-                .add(new Attribute(getString(R.string.volume), StringUtils.formatDouble(stop.getParameter(Stop.ATTR_VOLUME))).setUnit(MxSettings.get().getProperty(HDSettings.MX_CONFIG_CAPACITY_UNITS, "")))
+                .add(new Attribute(getString(R.string.load), StringUtils.formatDouble(stop.getParameter(Stop.ATTR_LOAD))).setUnit(Settings.get().getCapacityUnit()))
+                .add(new Attribute(getString(R.string.volume), StringUtils.formatDouble(stop.getParameter(Stop.ATTR_VOLUME))).setUnit(Settings.get().getVolumeUnit()))
                 .add(new Attribute(getString(R.string.contact_label), stop.getContactPerson()))
                 .add(new Attribute(getString(R.string.phone_label), stop.getContactPhone()).setType(DynamicAttributeType.PHONE))
                 .add(new Attribute(getString(R.string.cost_label), StringUtils.formatCost(stop.getParameter(Stop.ATTR_COST))))
@@ -161,14 +160,14 @@ public abstract class AbstractArriveMapActivity extends DistributionActivity imp
     protected void initButtons() {
         arriveButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (stop.getParameters().containsKey("customerLocationIsVerified") && MxAndroidUtil.getGeoLocation() != null && ((LocationManager) getSystemService(Context.LOCATION_SERVICE)).isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                if (stop.getParameters().containsKey(Stop.ATTR_CUSTOMER_LOCATION_VERIFIED) && MxAndroidUtil.getGeoLocation() != null && ((LocationManager) getSystemService(Context.LOCATION_SERVICE)).isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(AbstractArriveMapActivity.this);
                     builder.setMessage(R.string.mx_msg_verify_location_question)
                             .setCancelable(false)
                             .setPositiveButton(R.string.mx_yes,
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
-                                            stop.getStopValues().put("customerLocationIsVerified", "true");
+                                            stop.getStopValues().put(Stop.ATTR_CUSTOMER_LOCATION_VERIFIED, "true");
                                             processStopArrived();
                                         }
                                     });
@@ -221,7 +220,7 @@ public abstract class AbstractArriveMapActivity extends DistributionActivity imp
 
     protected void suspendStop() {
         stop.processSetState(TaskState.STOP_SUSPENDED);
-        startActivity(new Intent(AbstractArriveMapActivity.this, ServicesRegistry.getWorkflowService().getJobActivity()));
+        startActivity(new Intent(AbstractArriveMapActivity.this, JobActivity.class));
         finish();
     }
 

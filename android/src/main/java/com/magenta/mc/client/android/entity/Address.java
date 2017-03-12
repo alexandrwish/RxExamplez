@@ -1,14 +1,26 @@
 package com.magenta.mc.client.android.entity;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.magenta.mc.client.android.mc.storage.FieldGetter;
 import com.magenta.mc.client.android.mc.storage.FieldSetter;
 import com.magenta.mc.client.android.mc.storage.StorableField;
 
-public class Address extends StorableField {
+public class Address extends StorableField implements Parcelable {
+
+    public static final Creator<Address> CREATOR = new Creator<Address>() {
+        public Address createFromParcel(Parcel in) {
+            return new Address(in);
+        }
+
+        public Address[] newArray(int size) {
+            return new Address[size];
+        }
+    };
 
     private static final long serialVersionUID = 3;
-
-    private static final String FIELD_FULLADDRESS = "fulladdress";
+    private static final String FIELD_FULL_ADDRESS = "full.address";
     private static final String FIELD_POSTAL = "postal";
     private static final String FIELD_LATITUDE = "latitude";
     private static final String FIELD_LONGITUDE = "longitude";
@@ -24,6 +36,13 @@ public class Address extends StorableField {
     }
 
     public Address() {
+    }
+
+    protected Address(Parcel in) {
+        fullAddress = in.readString();
+        postal = in.readString();
+        latitude = in.readDouble();
+        longitude = in.readDouble();
     }
 
     public String getFullAddress() {
@@ -64,7 +83,7 @@ public class Address extends StorableField {
 
     public FieldSetter[] getSetters() {
         return new FieldSetter[]{
-                new FieldSetter(FIELD_FULLADDRESS) {
+                new FieldSetter(FIELD_FULL_ADDRESS) {
                     public void setValue(Object value) {
                         fullAddress = (String) value;
                     }
@@ -89,7 +108,7 @@ public class Address extends StorableField {
 
     public FieldGetter[] getGetters() {
         return new FieldGetter[]{
-                new FieldGetter(FIELD_FULLADDRESS) {
+                new FieldGetter(FIELD_FULL_ADDRESS) {
                     public Object getValue() {
                         return fullAddress;
                     }
@@ -110,5 +129,16 @@ public class Address extends StorableField {
                     }
                 }
         };
+    }
+
+    public int describeContents() {
+        return 0;
+    }
+
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(fullAddress);
+        dest.writeString(postal);
+        dest.writeDouble(latitude);
+        dest.writeDouble(longitude);
     }
 }

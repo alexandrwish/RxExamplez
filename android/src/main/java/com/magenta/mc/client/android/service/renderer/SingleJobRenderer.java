@@ -1,14 +1,23 @@
 package com.magenta.mc.client.android.service.renderer;
 
 import com.google.gson.Gson;
+import com.magenta.hdmate.mx.model.AttributeRecord;
+import com.magenta.hdmate.mx.model.LocationRecord;
+import com.magenta.hdmate.mx.model.Order;
+import com.magenta.hdmate.mx.model.OrderItem;
+import com.magenta.hdmate.mx.model.TimeWindow;
 import com.magenta.mc.client.android.db.dao.DistributionDAO;
+import com.magenta.mc.client.android.entity.AbstractStop;
 import com.magenta.mc.client.android.entity.Address;
 import com.magenta.mc.client.android.entity.DynamicAttributeEntity;
+import com.magenta.mc.client.android.entity.DynamicAttributeType;
+import com.magenta.mc.client.android.entity.JobEntity;
 import com.magenta.mc.client.android.entity.JobType;
+import com.magenta.mc.client.android.entity.LocalizeStringEntity;
 import com.magenta.mc.client.android.entity.OrderItemEntity;
-import com.magenta.mc.client.android.entity.Parcel;
-import com.magenta.mc.client.android.entity.Passenger;
+import com.magenta.mc.client.android.entity.OrderItemStatus;
 import com.magenta.mc.client.android.entity.TaskState;
+import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 import com.magenta.mc.client.android.mc.util.Resources;
 import com.magenta.mc.client.android.mc.xml.XMLDataBlock;
 import com.magenta.mc.client.android.record.DynamicAttributeRecord;
@@ -24,105 +33,13 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
 public class SingleJobRenderer implements ObjectRenderer {
-
-    private static void setParcelsAndPassengersToStop(Job job) {
-        if (job.getParcels() != null && job.getParcels().length > 0) {
-            Map<Integer, List<Parcel>> idToParcels = new HashMap<>();
-            for (Parcel parcel : job.getParcels()) {
-                List<Parcel> stopParcels = idToParcels.get(parcel.getDrop());
-                if (stopParcels == null) {
-                    stopParcels = new ArrayList<>();
-                    idToParcels.put(parcel.getDrop(), stopParcels);
-                }
-                stopParcels.add(parcel);
-                stopParcels = idToParcels.get(parcel.getPickup());
-                if (stopParcels == null) {
-                    stopParcels = new ArrayList<>();
-                    idToParcels.put(parcel.getPickup(), stopParcels);
-                }
-                stopParcels.add(parcel);
-            }
-            for (int i = 0; i < job.getStops().size(); i++) {
-                Stop stop = (Stop) job.getStops().get(i);
-                stop.setParcels(idToParcels.get(stop.getIndex()));
-            }
-        }
-        if (job.getPassengers() != null && job.getPassengers().length > 0) {
-            Map<Integer, List<Passenger>> idToPassenger = new HashMap<>();
-            for (Passenger passenger : job.getPassengers()) {
-                List<Passenger> passengers = idToPassenger.get(passenger.getDrop());
-                if (passengers == null) {
-                    passengers = new ArrayList<>();
-                    idToPassenger.put(passenger.getDrop(), passengers);
-                }
-                passengers.add(passenger);
-                passengers = idToPassenger.get(passenger.getPickup());
-                if (passengers == null) {
-                    passengers = new ArrayList<>();
-                    idToPassenger.put(passenger.getPickup(), passengers);
-                }
-                passengers.add(passenger);
-            }
-            for (int i = 0; i < job.getStops().size(); i++) {
-                Stop stop = (Stop) job.getStops().get(i);
-                stop.setPassengers((List) idToPassenger.get(stop.getIndex()));
-            }
-        }
-    }
-
-    private static Passenger[] createPassengers(XMLDataBlock passengersBlock) {
-        if (passengersBlock == null || passengersBlock.getChildBlocks() == null) {
-            return null;
-        }
-        final Vector<XMLDataBlock> passangerBlocks = passengersBlock.getChildBlocks();
-        final Passenger[] passengers = new Passenger[passangerBlocks.size()];
-        int i = 0;
-        for (XMLDataBlock passengerBlock : passangerBlocks) {
-            final String name = passengerBlock.getChildBlockText("name");
-            final String phone1 = passengerBlock.getChildBlockText("phone1");
-            final String phone2 = passengerBlock.getChildBlockText("phone2");
-            final String pickup = passengerBlock.getChildBlockText("pickup");
-            final String drop = passengerBlock.getChildBlockText("drop");
-            passengers[i] = new Passenger(
-                    name,
-                    phone1,
-                    phone2,
-                    pickup != null && pickup.length() > 0 ? Integer.valueOf(pickup) : null,
-                    drop != null && drop.length() > 0 ? Integer.valueOf(drop) : null
-            );
-            i++;
-        }
-        return passengers;
-    }
-
-    private static Parcel[] createParcels(XMLDataBlock parcelssBlock) {
-        if (parcelssBlock == null || parcelssBlock.getChildBlocks() == null) {
-            return null;
-        }
-        final Vector<XMLDataBlock> parcelBlocks = parcelssBlock.getChildBlocks();
-        final Parcel[] parcels = new Parcel[parcelBlocks.size()];
-        int i = 0;
-        for (XMLDataBlock parcelBlock : parcelBlocks) {
-            final String description = parcelBlock.getChildBlockText("description");
-            final String quantity = parcelBlock.getChildBlockText("quantity");
-            final String pickup = parcelBlock.getChildBlockText("pickup");
-            final String drop = parcelBlock.getChildBlockText("drop");
-            parcels[i] = new Parcel(
-                    description,
-                    quantity != null && quantity.length() > 0 ? Integer.valueOf(quantity) : null,
-                    pickup != null && pickup.length() > 0 ? Integer.valueOf(pickup) : null,
-                    drop != null && drop.length() > 0 ? Integer.valueOf(drop) : null
-            );
-            i++;
-        }
-        return parcels;
-    }
 
     private static List createStops(XMLDataBlock stopsBlock, Job job) {
         final List stops = new ArrayList();
@@ -171,7 +88,7 @@ public class SingleJobRenderer implements ObjectRenderer {
                     dao.clearOrderItems(stop.getReferenceId());
                     dao.clearDynamicAttribute(stop.getReferenceId());
                     if (orderItemRecords != null && orderItemRecords.length > 0) {
-                        List<OrderItemEntity> orderItemEntities = new ArrayList<OrderItemEntity>(orderItemRecords.length);
+                        List<OrderItemEntity> orderItemEntities = new ArrayList<>(orderItemRecords.length);
                         for (OrderItemRecord record : orderItemRecords) {
                             OrderItemEntity entity = record.toEntity();
                             entity.setJob(job.getReferenceId());
@@ -181,7 +98,7 @@ public class SingleJobRenderer implements ObjectRenderer {
                         dao.createOrderItems(orderItemEntities);
                     }
                     if (dynamicAttributeRecords != null && dynamicAttributeRecords.length > 0) {
-                        List<DynamicAttributeEntity> dynamicAttributeEntities = new ArrayList<DynamicAttributeEntity>(dynamicAttributeRecords.length);
+                        List<DynamicAttributeEntity> dynamicAttributeEntities = new ArrayList<>(dynamicAttributeRecords.length);
                         for (DynamicAttributeRecord record : dynamicAttributeRecords) {
                             DynamicAttributeEntity entity = record.toEntity();
                             entity.setJob(job.getReferenceId());
@@ -239,6 +156,120 @@ public class SingleJobRenderer implements ObjectRenderer {
         return address;
     }
 
+    public static JobEntity renderJob(com.magenta.hdmate.mx.model.Job job) {
+        Job result = new Job();
+        result.setAddress(createAddress(job.getDepotLocation()));
+        result.setStartAddress(createAddress(job.getStartLocation()));
+        result.setEndAddress(createAddress(job.getEndLocation()));
+        result.setReferenceId(job.getReference());
+        result.setDate(new Date(job.getDate()));
+        result.setParameter(Job.ATTR_NUMBER, String.valueOf(job.getNumber()));
+        result.setParameter(Job.ATTR_LOADING_END_TIME, String.valueOf(job.getLoadingEndTime()));
+        result.setParameter(Job.ATTR_LOADING_DURATION, String.valueOf(job.getLoadingDuration()));
+        result.setParameter(Job.ATTR_UNLOADING_DURATION, String.valueOf(job.getUnloadingDuration()));
+        result.setParameter(Job.ATTR_UNLOADING_END_TIME, String.valueOf(job.getUnloadingEndTime()));
+        result.setParameter(Job.ATTR_DRIVING_TIME, String.valueOf(job.getDrivingTime()));
+        result.setParameter(Job.ATTR_TOTAL_DISTANCE, String.valueOf(job.getDistance()));
+        result.setParameter(Job.ATTR_TOTAL_VOLUME, String.valueOf(job.getVolume()));
+        result.setParameter(Job.ATTR_TOTAL_LOAD, String.valueOf(job.getLoad()));
+        List<AbstractStop> stops = new LinkedList<>();
+        for (Order order : job.getStops()) {
+            AbstractStop stop = createStop(order, result);
+            stops.add(stop);
+        }
+        result.setStops(stops);
+/*
+        job.getDriver();
+*/
+        return result;
+    }
+
+    private static AbstractStop createStop(Order order, Job job) {
+        Stop stop = new Stop(order.getName(),
+                order.getReference(),
+                "pu",
+                createAddress(order.getLocation()),
+                order.getDescription(),
+                -1,
+                "STOP_RUN_ACCEPTED");
+        stop.setParentJob(job);
+        stop.setAddress(createAddress(order.getLocation()));
+//        stop.setState(order.getStatus()); // TODO: 3/11/17 impl
+        stop.setState(1);
+        stop.setDate(new Date(order.getDate()));
+        stop.setArriveDate(new Date(order.getExpectedArrival()));
+        stop.setParameter(Stop.ATTR_PRIORITY, String.valueOf(1));
+//        stop.setParameter(Stop.ATTR_PRIORITY, order.getPriority()); // TODO: 3/11/17 impl
+        stop.setParameter(Stop.ATTR_CUSTOMER, order.getCustomer());
+        stop.setParameter(Stop.ATTR_DURATION, String.valueOf(order.getDuration()));
+        stop.setParameter(Stop.ATTR_CONTACT_PERSON, order.getContactName());
+        stop.setParameter(Stop.ATTR_CONTACT_NUMBER, order.getContactPhone());
+        stop.setParameter(Stop.ATTR_CUSTOMER_LOCATION_VERIFIED, order.getCustomerLocationIsVerified());
+        if (order.getTimeWindows() != null && order.getTimeWindows().size() > 0) {
+            TimeWindow w = order.getTimeWindows().get(0);
+            stop.setParameter(Stop.ATTR_WINDOW_START_TIME, String.valueOf(w.getStart().getTime()));
+            stop.setParameter(Stop.ATTR_WINDOW_END_TIME, String.valueOf(w.getFinish().getTime()));
+        }
+        try {
+            DistributionDAO dao = DistributionDAO.getInstance();
+            dao.clearOrderItems(stop.getReferenceId());
+            dao.clearDynamicAttribute(stop.getReferenceId());
+            if (order.getOrderItems() != null) {
+                List<OrderItemEntity> orderItemEntities = new ArrayList<>();
+                for (OrderItem item : order.getOrderItems()) {
+                    OrderItemEntity entity = new OrderItemEntity();
+                    entity.setMxID("1"); // TODO: 3/11/17 impl
+                    entity.setName(item.getName());
+                    entity.setBarcode(item.getBarcode());
+                    entity.setStatus(OrderItemStatus.NOT_CHECKED); // TODO: 3/11/17 impl
+                    entity.setJob(job.getReferenceId());
+                    entity.setStop(stop.getReferenceId());
+                    orderItemEntities.add(entity);
+                }
+                dao.createOrderItems(orderItemEntities);
+            }
+            if (order.getAttributes() != null) {
+                List<DynamicAttributeEntity> dynamicAttributeEntities = new ArrayList<>();
+                for (AttributeRecord record : order.getAttributes()) {
+                    DynamicAttributeEntity entity = new DynamicAttributeEntity();
+                    entity.setMxID(String.valueOf(record.getMxId()));
+                    entity.setPdaEditable(record.getPdaEditable());
+                    entity.setPdaRequired(record.getPdaRequired());
+                    entity.setValue(record.getValue());
+                    entity.setName(record.getName());
+                    entity.setUnit(record.getUnit());
+                    entity.setTitle(new LocalizeStringEntity());
+                    entity.setTypeName(DynamicAttributeType.valueOf(record.getTypeName().name()));
+                    entity.setJob(job.getReferenceId());
+                    entity.setStop(stop.getReferenceId());
+                    dynamicAttributeEntities.add(entity);
+                }
+                dao.createDynamicAttributes(dynamicAttributeEntities);
+            }
+        } catch (Exception e) {
+            MCLoggerFactory.getLogger(SingleJobRenderer.class).error(e.getMessage(), e);
+        }
+        /*
+        order.getId();
+        order.getDrivingTime();
+        order.getDistance();
+        order.getJobTypes();
+        order.getStopKind();
+        */
+        return stop;
+    }
+
+    private static Address createAddress(LocationRecord record) {
+        if (record != null) {
+            Address a = new Address();
+            a.setFullAddress(record.getAddress());
+            a.setLatitude(record.getLat());
+            a.setLongitude(record.getLon());
+            return a;
+        }
+        return null;
+    }
+
     public Object renderFromBlock(XMLDataBlock jobBlock) {
         Job result = new Job();
         result.setReferenceId(jobBlock.getChildBlockText("reference"));
@@ -253,8 +284,6 @@ public class SingleJobRenderer implements ObjectRenderer {
         result.setContactName(jobBlock.getChildBlockText("contactName"));
         result.setContactPhone(jobBlock.getChildBlockText("contactPhone"));
         result.setStops(createStops(jobBlock.getChildBlock("stops"), result));
-        result.setPassengers(createPassengers(jobBlock.getChildBlock("passengers")));
-        result.setParcels(createParcels(jobBlock.getChildBlock("parcels")));
         result.setParameters(ParametersParser.fromString(jobBlock.getChildBlockText("parameters")));
         result.setEndAddress(getAddressFromString(result.getParameters().remove("end-location")));
         result.setStartAddress(getAddressFromString(result.getParameters().remove("start-location")));
@@ -270,7 +299,6 @@ public class SingleJobRenderer implements ObjectRenderer {
             result.setType(JobType.fromString(type));
         }
         result.setAddress(createAddress(jobBlock.getChildBlock("address")));
-        setParcelsAndPassengersToStop(result);
         return result;
     }
 

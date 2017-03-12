@@ -13,20 +13,18 @@ import com.google.gson.GsonBuilder;
 import com.magenta.hdmate.mx.ApiClient;
 import com.magenta.hdmate.mx.api.MateApi;
 import com.magenta.hdmate.mx.auth.ApiKeyAuth;
-import com.magenta.hdmate.mx.model.JobRecord;
+import com.magenta.hdmate.mx.model.Job;
 import com.magenta.hdmate.mx.model.OrderAction;
 import com.magenta.hdmate.mx.model.OrderActionResult;
-import com.magenta.hdmate.mx.model.SettingsResultRecord;
 import com.magenta.hdmate.mx.model.TelemetryRecord;
 import com.magenta.mc.client.android.McAndroidApplication;
 import com.magenta.mc.client.android.common.Constants;
+import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.entity.Address;
 import com.magenta.mc.client.android.mc.MxAndroidUtil;
-import com.magenta.mc.client.android.mc.MxSettings;
 import com.magenta.mc.client.android.mc.client.resend.ResendableMetadata;
 import com.magenta.mc.client.android.mc.client.resend.Resender;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
-import com.magenta.mc.client.android.mc.settings.Settings;
 import com.magenta.mc.client.android.mc.tracking.GeoLocation;
 import com.magenta.mc.client.android.mc.tracking.GeoLocationBatch;
 import com.magenta.mc.client.android.record.LoginRecord;
@@ -46,7 +44,6 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
-import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
@@ -77,14 +74,14 @@ public class HttpClient {
     }
 
     public void init() {
-        String port = "80";
-        ApiClient client = new ApiClient().defaultAdapter(("443".equals(port) ? "https://" : "http://") + MxSettings.get().getProperty(Settings.HOST) + ":" + port + Constants.MX_MATE_POSTFIX);
+        String port = Settings.get().getPort();
+        ApiClient client = new ApiClient().defaultAdapter(("443".equals(port) ? "https://" : "http://") + Settings.get().getHost() + ":" + port + Constants.MX_MATE_POSTFIX);
         client.addAuthorization("api_key", new ApiKeyAuth("header", "sessionId"));
         client.setApiKey(com.magenta.mc.client.android.common.Settings.get().getAuthToken());
         apiClient = client.createService(MateApi.class);
     }
 
-    public Call<LoginResultRecord> login(String account, String login, String password) {
+    public Observable<LoginResultRecord> login(String account, String login, String password) {
         LoginRecord record = new LoginRecord();
         record.setAccountTechName(account);
         record.setUsername(login);
@@ -93,7 +90,7 @@ public class HttpClient {
         return serviceClient.login(getAddress(Constants.LOGIN_POSTFIX), record);
     }
 
-    public Call<PointsResultRecord> getRoute(List<Address> addresses) {
+    public Observable<PointsResultRecord> getRoute(List<Address> addresses) {
         Double[][] doubles = new Double[addresses.size()][];
         for (int i = 0; i < addresses.size(); i++) {
             doubles[i] = new Double[]{addresses.get(i).getLongitude(), addresses.get(i).getLatitude()};
@@ -103,15 +100,15 @@ public class HttpClient {
     }
 
     private String getAddress(String postfix) {
-        String port = "80"; // TODO: 2/6/17 impl
-        return ("443".equals(port) ? "https://" : "http://") + MxSettings.get().getProperty(Settings.HOST) + ":" + port + postfix;
+        String port = Settings.get().getPort();
+        return ("443".equals(port) ? "https://" : "http://") + Settings.get().getHost() + ":" + port + postfix;
     }
 
-    public Observable<SettingsResultRecord> getSettings() {
+    public Observable<com.magenta.hdmate.mx.model.Settings> getSettings() {
         return apiClient.registerLogin(MxAndroidUtil.getImei()).observeOn(Schedulers.io());
     }
 
-    public Observable<List<JobRecord>> getJobs() {
+    public Observable<List<Job>> getJobs() {
         return apiClient.allscheduleGet().observeOn(Schedulers.io());
     }
 

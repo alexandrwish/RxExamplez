@@ -17,10 +17,14 @@ public interface Constants {
     String GIS_POSTFIX = "/gis-service/rest/routing/getRoute";
     String SOCKET_IO_POSTFIX = "/pda.io";
 
+    String ADDRESS_LIST = "address.list";
+    String SYNCHRONIZE_TIMESTAMP = "synchronize.timestamp";
+
     int LOGIN_TYPE = 1;
     int SETTINGS_TYPE = 2;
-
     int JOBS_TYPE = 3;
+    int ROUTE_TYPE = 4;
+
     int OK = 1;
     int WARN = 2;
 

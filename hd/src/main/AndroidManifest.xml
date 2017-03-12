@@ -67,7 +67,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.magenta.mc.client.android.ui.activity.common.SettingsActivity"
+            android:name="com.magenta.mc.client.android.ui.activity.SettingsActivity"
             android:configChanges="locale|orientation"
             android:theme="@android:style/Theme.Black" />
         <activity

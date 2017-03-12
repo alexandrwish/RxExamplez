@@ -80,10 +80,10 @@ public abstract class WorkflowConfiguration<TASK, SUBTASK> implements ThemeManag
         Theme currentTheme = getCurrentTheme();
         int backgroundId;
         switch (currentTheme) {
-            case night:
+            case NIGHT:
                 backgroundId = R.drawable.mc_button_default_bg;
                 break;
-            case day:
+            case DAY:
                 backgroundId = R.drawable.mc_button_light_bg;
                 break;
             default:

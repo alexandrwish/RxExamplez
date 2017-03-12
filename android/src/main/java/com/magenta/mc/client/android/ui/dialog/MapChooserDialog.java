@@ -12,10 +12,10 @@ import android.widget.Spinner;
 
 import com.google.gson.Gson;
 import com.magenta.mc.client.android.R;
+import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.db.dao.DistributionDAO;
 import com.magenta.mc.client.android.entity.MapProviderType;
 import com.magenta.mc.client.android.entity.MapSettingsEntity;
-import com.magenta.mc.client.android.mc.MxSettings;
 import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.util.StringUtils;
 
@@ -134,7 +134,7 @@ public class MapChooserDialog extends DistributionDialogFragment {
         Object o = Setup.get().getSettings().get("default.map");
         if (o != null && !StringUtils.isBlank((String) o)) {
             String provider = ((String) o).toLowerCase();
-            for (String s : MxSettings.ignoredMapProviders) {
+            for (String s : Settings.IGNORED_MAP_PROVIDERS) {
                 if (s.equalsIgnoreCase(provider)) {
                     provider = "openstreetmap";
                     break;

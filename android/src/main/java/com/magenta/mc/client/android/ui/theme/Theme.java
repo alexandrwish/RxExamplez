@@ -2,7 +2,7 @@ package com.magenta.mc.client.android.ui.theme;
 
 public enum Theme {
 
-    night(0), day(1);
+    NIGHT(0), DAY(1);
 
     private final int code;
 
@@ -13,9 +13,9 @@ public enum Theme {
     public static Theme lookup(int code) {
         switch (code) {
             case 0:
-                return night;
+                return NIGHT;
             case 1:
-                return day;
+                return DAY;
             default:
                 throw new IllegalArgumentException();
         }
@@ -23,10 +23,10 @@ public enum Theme {
 
     public static Theme changeTheme(Theme oldTheme) {
         switch (oldTheme) {
-            case day:
-                return night;
-            case night:
-                return day;
+            case DAY:
+                return NIGHT;
+            case NIGHT:
+                return DAY;
             default:
                 throw new IllegalArgumentException();
         }
