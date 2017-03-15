@@ -8,12 +8,12 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 
 import com.magenta.mc.client.android.R;
+import com.magenta.mc.client.android.common.IntentAttributes;
+import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.db.dao.DistributionDAO;
 import com.magenta.mc.client.android.entity.AbstractStop;
 import com.magenta.mc.client.android.entity.Address;
 import com.magenta.mc.client.android.entity.MapSettingsEntity;
-import com.magenta.mc.client.android.mc.MxSettings;
-import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.service.ServicesRegistry;
 import com.magenta.mc.client.android.service.storage.DataControllerImpl;
 import com.magenta.mc.client.android.service.storage.entity.Job;
@@ -24,7 +24,6 @@ import com.magenta.mc.client.android.ui.controller.MapController;
 import com.magenta.mc.client.android.ui.controller.MapletController;
 import com.magenta.mc.client.android.ui.controller.YandexMapController;
 import com.magenta.mc.client.android.ui.view.Maplet;
-import com.magenta.mc.client.android.common.IntentAttributes;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -72,7 +71,7 @@ public class MapActivity extends DistributionActivity implements WorkflowActivit
         }
         List<MapSettingsEntity> entities;
         try {
-            entities = DistributionDAO.getInstance().getMapSettings(Setup.get().getSettings().getLogin());
+            entities = DistributionDAO.getInstance().getMapSettings(Settings.get().getLogin());
         } catch (SQLException ignore) {
             entities = new ArrayList<>(0);
         }
@@ -92,7 +91,6 @@ public class MapActivity extends DistributionActivity implements WorkflowActivit
         } else {
             mapController = new EmptyMapController(this, tmp.isEmpty() ? j.getStops() : tmp, !tmp.isEmpty());
         }
-        trackingEnabled = MxSettings.getInstance().isMapTrackingEnabled();
     }
 
     protected void onStart() {
@@ -132,7 +130,7 @@ public class MapActivity extends DistributionActivity implements WorkflowActivit
                         })
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                MxSettings.getInstance().setMapTrackingEnabled(trackingEnabled = trackingEnabledNewValue);
+                                // TODO: 3/12/17 impl
                             }
                         })
                         .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {

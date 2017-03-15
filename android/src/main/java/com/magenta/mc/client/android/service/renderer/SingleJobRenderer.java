@@ -5,6 +5,7 @@ import com.magenta.hdmate.mx.model.AttributeRecord;
 import com.magenta.hdmate.mx.model.LocationRecord;
 import com.magenta.hdmate.mx.model.Order;
 import com.magenta.hdmate.mx.model.OrderItem;
+import com.magenta.hdmate.mx.model.StopKind;
 import com.magenta.hdmate.mx.model.TimeWindow;
 import com.magenta.mc.client.android.db.dao.DistributionDAO;
 import com.magenta.mc.client.android.entity.AbstractStop;
@@ -187,15 +188,14 @@ public class SingleJobRenderer implements ObjectRenderer {
     private static AbstractStop createStop(Order order, Job job) {
         Stop stop = new Stop(order.getName(),
                 order.getReference(),
-                "pu",
+                StopKind.DROP.equals(order.getStopKind()) ? "do" : "pu",
                 createAddress(order.getLocation()),
                 order.getDescription(),
                 -1,
-                "STOP_RUN_ACCEPTED");
+                TaskState.getStatus(order.getStatus()));
         stop.setParentJob(job);
         stop.setAddress(createAddress(order.getLocation()));
 //        stop.setState(order.getStatus()); // TODO: 3/11/17 impl
-        stop.setState(1);
         stop.setDate(new Date(order.getDate()));
         stop.setArriveDate(new Date(order.getExpectedArrival()));
         stop.setParameter(Stop.ATTR_PRIORITY, String.valueOf(1));
@@ -207,8 +207,8 @@ public class SingleJobRenderer implements ObjectRenderer {
         stop.setParameter(Stop.ATTR_CUSTOMER_LOCATION_VERIFIED, order.getCustomerLocationIsVerified());
         if (order.getTimeWindows() != null && order.getTimeWindows().size() > 0) {
             TimeWindow w = order.getTimeWindows().get(0);
-            stop.setParameter(Stop.ATTR_WINDOW_START_TIME, String.valueOf(w.getStart().getTime()));
-            stop.setParameter(Stop.ATTR_WINDOW_END_TIME, String.valueOf(w.getFinish().getTime()));
+            stop.setParameter(Stop.ATTR_WINDOW_START_TIME, String.valueOf(w.getStart()));
+            stop.setParameter(Stop.ATTR_WINDOW_END_TIME, String.valueOf(w.getFinish()));
         }
         try {
             DistributionDAO dao = DistributionDAO.getInstance();

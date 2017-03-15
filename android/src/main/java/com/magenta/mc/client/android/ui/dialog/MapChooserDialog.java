@@ -23,6 +23,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class MapChooserDialog extends DistributionDialogFragment {
@@ -34,7 +35,7 @@ public class MapChooserDialog extends DistributionDialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         View mapChooser = getActivity().getLayoutInflater().inflate(R.layout.view_choose_map, null);
         Bundle bundle = getArguments();
-        String driver = Setup.get().getSettings().getLogin();
+        String driver = Settings.get().getLogin();
         mapSettings = (Map) bundle.getSerializable("map.property");
         final ArrayList<String> mapProviders = new ArrayList<>(mapSettings.keySet());
         try {
@@ -44,7 +45,7 @@ public class MapChooserDialog extends DistributionDialogFragment {
                 entity.setDriver(driver);
             } else {
                 if (settingsEntities.size() != 1) {
-                    LOG.error(String.format("Settings size = %d for driver %s", settingsEntities.size(), Setup.get().getSettings().getLogin()));
+                    LOG.error(String.format(Locale.UK, "Settings size = %d for driver %s", settingsEntities.size(), driver));
                 }
                 entity = settingsEntities.get(0);
                 emptySettings = false;
@@ -131,7 +132,7 @@ public class MapChooserDialog extends DistributionDialogFragment {
         if (!emptySettings) {
             return;
         }
-        Object o = Setup.get().getSettings().get("default.map");
+        Object o = "google"; // TODO: 3/12/17 impl
         if (o != null && !StringUtils.isBlank((String) o)) {
             String provider = ((String) o).toLowerCase();
             for (String s : Settings.IGNORED_MAP_PROVIDERS) {

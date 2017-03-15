@@ -14,8 +14,6 @@ import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.mc.update.UpdateCheck;
 import com.magenta.mc.client.android.mc.util.FileUtils;
-import com.magenta.mc.client.android.rpc.DefaultRpcResponseHandler;
-import com.magenta.mc.client.android.settings.AndroidSettings;
 import com.magenta.mc.client.android.ui.AndroidUI;
 
 import java.io.File;
@@ -54,23 +52,24 @@ abstract class AbstractAndroidUpdateCheck implements UpdateCheck {
             // nothing, imei check has already been done by this user since application start
             MCLoggerFactory.getLogger(AndroidUpdateCheck.class).debug("skipping update check as it was done recently");
         } else {
-            DefaultRpcResponseHandler.isUpdateAvailable(
-                    Setup.get().getSettings().getAppVersion(),
-                    PLATFORM,
-                    Setup.get().getSettings().getUpdateApplicationName());
+            // TODO: 3/12/17 impl
+//            DefaultRpcResponseHandler.isUpdateAvailable(
+//                    Setup.get().getSettings().getAppVersion(),
+//                    PLATFORM,
+//                    Setup.get().getSettings().getUpdateApplicationName());
         }
     }
 
     public void updateReported(final String platform, final String application) {
-        final String thisApplication = Setup.get().getSettings().getUpdateApplicationName();
-        if (!PLATFORM.equalsIgnoreCase(platform) || !thisApplication.equalsIgnoreCase(application)) {
-            return;
-        }
-        MobileApp.runTask(new Runnable() {
-            public void run() {
-                DefaultRpcResponseHandler.isUpdateAvailable(Setup.get().getSettings().getAppVersion(), PLATFORM, thisApplication);
-            }
-        });
+//        final String thisApplication = Setup.get().getSettings().getUpdateApplicationName();
+//        if (!PLATFORM.equalsIgnoreCase(platform) || !thisApplication.equalsIgnoreCase(application)) {
+//            return;
+//        }
+//        MobileApp.runTask(new Runnable() {
+//            public void run() {
+//                DefaultRpcResponseHandler.isUpdateAvailable(Setup.get().getSettings().getAppVersion(), PLATFORM, thisApplication);
+//            }
+//        });
     }
 
     public void complete(final Boolean available) {
@@ -158,13 +157,17 @@ abstract class AbstractAndroidUpdateCheck implements UpdateCheck {
         return "0";
     }
 
+    @Deprecated
     protected String getUpdateServiceUrl() {
+        /*
         final String applicationName = Setup.get().getSettings().getUpdateApplicationName();
         return getUpdateServerUrl()
                 + "/" + Setup.get().getSettings().getServerComponentName()
                 + "/" + PLATFORM
                 + "/" + Setup.get().getSettings().getAppVersion()
                 + (applicationName != null && applicationName.length() != 0 ? "/" + applicationName : "");
+        */
+        return "";
     }
 
     protected void onUpdateDownloaded() {
@@ -236,7 +239,7 @@ abstract class AbstractAndroidUpdateCheck implements UpdateCheck {
                 String apkFilePath = apkFile.getPath();
                 PackageInfo pi = getContext().getPackageManager().getPackageArchiveInfo(apkFilePath, 0);
                 String newVersion = pi.versionName;
-                String oldVersion = Setup.get().getSettings().getAppVersion();
+                String oldVersion = /*Setup.get().getSettings().getAppVersion()*/pi.versionName + "_old"; // TODO: 3/12/17 impl
                 if (!newVersion.equals(oldVersion)) {
                     MCLoggerFactory.getLogger(AndroidUpdateCheck.class).warn("versions is different (new: " + newVersion + ", old:" + oldVersion + ") updating...");
                     return true;
@@ -258,7 +261,8 @@ abstract class AbstractAndroidUpdateCheck implements UpdateCheck {
     }
 
     String getUpdateFileName() {
-        return Setup.get().getSettings().getUpdateApplicationName() + Setup.get().getSettings().getAppVersion();
+//        return Setup.get().getSettings().getUpdateApplicationName() + Setup.get().getSettings().getAppVersion();
+        return "";
     }
 
     protected String getMyUploadApiVersion() {
@@ -266,15 +270,16 @@ abstract class AbstractAndroidUpdateCheck implements UpdateCheck {
     }
 
     private String getUpdateServerUrl() {
-        final AndroidSettings settings = (AndroidSettings) AndroidSettings.get();
-        String url = settings.getProperty("update.server.url.pattern", "http://%s:%d/mc/update-servlet/v2");
-        String myApiVersion = getMyUploadApiVersion();
-        if (url.endsWith("/")) {
-            myApiVersion += "/";
-        }
-        if (!url.endsWith(myApiVersion)) {
-            url = url.substring(0, url.length() - myApiVersion.length()) + myApiVersion;
-        }
-        return String.format(url, settings.getHost(), settings.getUpdateServerPort());
+//        final AndroidSettings settings = (AndroidSettings) AndroidSettings.get();
+//        String url = settings.getProperty("update.server.url.pattern", "http://%s:%d/mc/update-servlet/v2");
+//        String myApiVersion = getMyUploadApiVersion();
+//        if (url.endsWith("/")) {
+//            myApiVersion += "/";
+//        }
+//        if (!url.endsWith(myApiVersion)) {
+//            url = url.substring(0, url.length() - myApiVersion.length()) + myApiVersion;
+//        }
+//        return String.format(url, settings.getHost(), settings.getUpdateServerPort());
+        return "";
     }
 }

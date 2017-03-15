@@ -1,8 +1,8 @@
 package com.magenta.mc.client.android.mc.tracking;
 
+import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.mc.client.resend.Resender;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
-import com.magenta.mc.client.android.mc.setup.Setup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,7 @@ public class LocationProcessor {
     }
 
     public void processLocationAndSendBatchIfNecessary(GeoLocation location) {
-        location.setUserId(Setup.get().getSettings().getUserId());
+        location.setUserId(Settings.get().getUserId());
         MCLoggerFactory.getLogger(getClass()).debug("process location: " + location);
         if (location.getState() == null) {
             location.setState(currentState);

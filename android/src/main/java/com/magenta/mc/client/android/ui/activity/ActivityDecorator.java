@@ -2,15 +2,18 @@ package com.magenta.mc.client.android.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.IBinder;
 
+import com.magenta.mc.client.android.binder.SocketBinder;
 import com.magenta.mc.client.android.service.CoreService;
 import com.magenta.mc.client.android.service.ServicesRegistry;
-import com.magenta.mc.client.android.ui.activity.common.LoginActivity;
-import com.magenta.mc.client.android.rpc.operations.LogoutLock;
+import com.magenta.mc.client.android.service.SocketIOService;
+import com.magenta.mc.client.android.service.holder.ServiceHolder;
 import com.magenta.mc.client.android.service.listeners.BroadcastEvent;
 import com.magenta.mc.client.android.service.listeners.BroadcastEventsListener;
 import com.magenta.mc.client.android.service.listeners.GenericBroadcastEventsAdapter;
 import com.magenta.mc.client.android.service.listeners.MxBroadcastEvents;
+import com.magenta.mc.client.android.ui.activity.common.LoginActivity;
 
 import java.lang.reflect.Method;
 import java.util.HashSet;
@@ -30,12 +33,20 @@ public class ActivityDecorator {
         registerListener();
     }
 
-    public void onPause() {
-        removeListener();
-    }
-
     public void onResume() {
         registerListener();
+        IBinder binder = ServiceHolder.getInstance().getService(SocketIOService.class.getName());
+        if (binder != null) {
+            ((SocketBinder)binder).subscribe(this);
+        }
+    }
+
+    public void onPause() {
+        removeListener();
+        IBinder binder = ServiceHolder.getInstance().getService(SocketIOService.class.getName());
+        if (binder != null) {
+            ((SocketBinder)binder).unsubscribe();
+        }
     }
 
     private synchronized void removeListener() {
@@ -76,7 +87,7 @@ public class ActivityDecorator {
     }
 
     public void doLogout() {
-        LogoutLock.getInstance().logout();
         context.startActivity(new Intent(context, LoginActivity.class));
+        // TODO: 3/12/17 logout
     }
 }

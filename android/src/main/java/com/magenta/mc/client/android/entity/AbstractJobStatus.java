@@ -60,8 +60,6 @@ public abstract class AbstractJobStatus extends Resendable {
         this.values = values;
     }
 
-    public abstract boolean send();
-
     protected String valuesToString() {
         StringBuilder result = new StringBuilder();
         if (values != null) {

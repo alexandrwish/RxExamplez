@@ -11,12 +11,10 @@ import com.magenta.mc.client.android.entity.JobType;
 import com.magenta.mc.client.android.entity.TaskState;
 import com.magenta.mc.client.android.events.EventType;
 import com.magenta.mc.client.android.events.JobEvent;
-import com.magenta.mc.client.android.mc.MxSettings;
 import com.magenta.mc.client.android.mc.client.resend.Resender;
 import com.magenta.mc.client.android.mc.exception.UnknownJobStatusException;
 import com.magenta.mc.client.android.mc.log.MCLogger;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
-import com.magenta.mc.client.android.mc.settings.Settings;
 import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.mc.util.Resources;
 import com.magenta.mc.client.android.service.DataController;
@@ -62,17 +60,17 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
     }
 
     private void loadJobCache() {
-        if (Settings.get().isOfflineVersion()) {
-            return;
-        }
+//        if (Settings.get().isOfflineVersion()) {
+//            return;
+//        }
         List jobs = Setup.get().getStorage().load(Job.STORABLE_METADATA);
         refToJob = listJobToMap(jobs);
     }
 
     private void loadFullHistory() {
-        if (Settings.get().isOfflineVersion()) {
-            return;
-        }
+//        if (Settings.get().isOfflineVersion()) {
+//            return;
+//        }
         List jobs = Setup.get().getStorage().load(FullJobHistory.STORABLE_METADATA);
         fullJobHistory = listFullJobHistoryToMap(jobs);
         deleteUnusedHistory();
@@ -159,7 +157,7 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
         }
         //removeJobHistory(jobRef);
         final Job oldJob = findJob(jobRef);
-        if (oldJob == null || (oldJob.getState() == TaskState.RUN_CANCELLED || ((MxSettings) Setup.get().getSettings()).isIgnoreNewRunDuplicates())) {
+        if (oldJob == null || (oldJob.getState() == TaskState.RUN_CANCELLED)) {
             job.updated(); // mark for acknowledgement
             final List<AbstractJobStatus> jobStatusContainer = new ArrayList<>();
             if (job.getState() == TaskState.RUN_ASSIGNED || job.getState() == TaskState.RUN_SENT) {
@@ -355,7 +353,7 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
         jobStatus.setJobReferenceId(jobReferenceId);
         jobStatus.setJobStatus(jobStatusString);
         final Map<String, String> params = new HashMap<>();
-        params.put("date", Resources.UTC_DATE_FORMAT.format(Setup.get().getSettings().getCurrentDate()));
+        params.put("date", Resources.UTC_DATE_FORMAT.format(new Date()));
         if (additionalParams != null) {
             params.putAll(additionalParams);
         }
@@ -490,7 +488,7 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
     }
 
     private boolean isOldDate(Date date, String logPrefix) {
-        Date deleteJobsOlder = DateUtils.getDateFromCurrent(MxSettings.getInstance().getDeleteJobsOlder() * -1);
+        Date deleteJobsOlder = DateUtils.getDateFromCurrent(-3); // TODO: 3/12/17 impl
         boolean isOld = DateUtils.getStartOfDay(date).before(deleteJobsOlder);
         if (isOld) {
             MCLoggerFactory.getLogger(this.getClass()).info(logPrefix + ", " + date);

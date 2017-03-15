@@ -1,14 +1,12 @@
 package com.magenta.mc.client.android.service.storage;
 
 import com.magenta.mc.client.android.entity.AbstractStop;
-import com.magenta.mc.client.android.mc.MxSettings;
+import com.magenta.mc.client.android.entity.Address;
+import com.magenta.mc.client.android.entity.TaskState;
 import com.magenta.mc.client.android.mc.demo.DemoStorageInitializer;
-import com.magenta.mc.client.android.mc.settings.Settings;
 import com.magenta.mc.client.android.service.ServicesRegistry;
 import com.magenta.mc.client.android.service.storage.entity.Job;
 import com.magenta.mc.client.android.service.storage.entity.Stop;
-import com.magenta.mc.client.android.entity.Address;
-import com.magenta.mc.client.android.entity.TaskState;
 import com.magenta.mc.client.android.util.DemoDataUtils;
 
 import java.util.ArrayList;
@@ -18,17 +16,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Deprecated // TODO: 3/12/17 impl
 public class DemoStorageInitializerImpl implements DemoStorageInitializer {
 
     private DemoDataUtils.Country country;
     private DemoDataUtils.Town town;
 
     public boolean initStorage() {
-        country = ((MxSettings) Settings.get()).getDemoCountry();
-        town = ((MxSettings) Settings.get()).getDemoTown();
-        createMockJobs();
-        ((MxSettings) Settings.get()).setBarcodeEnabled(true);
-        ((MxSettings) Settings.get()).setSignatureEnabled(true);
+//        country = ((MxSettings) Settings.get()).getDemoCountry();
+//        town = ((MxSettings) Settings.get()).getDemoTown();
+//        createMockJobs();
+//        ((MxSettings) Settings.get()).setBarcodeEnabled(true);
+//        ((MxSettings) Settings.get()).setSignatureEnabled(true);
         return true;
     }
 

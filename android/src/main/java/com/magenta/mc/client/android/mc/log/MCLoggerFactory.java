@@ -2,9 +2,6 @@ package com.magenta.mc.client.android.mc.log;
 
 import android.support.annotation.NonNull;
 
-import com.magenta.mc.client.android.mc.settings.PropertyEventListener;
-import com.magenta.mc.client.android.mc.settings.Settings;
-import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.mc.util.ResourceManager;
 
 import net.sf.microlog.core.Level;
@@ -12,6 +9,7 @@ import net.sf.microlog.core.LoggerFactory;
 import net.sf.microlog.core.PropertyConfigurator;
 import net.sf.microproperties.Properties;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
@@ -69,9 +67,6 @@ public class MCLoggerFactory {
 
     private MCLogger getLogger1(String name) {
         if (isInitialized) {
-            if (Setup.get().getSettings().getBooleanProperty(Settings.LOG_USING_ONE_LOGGER_PROPERTY, "false")) {
-                name = "MCLogger";
-            }
             return delegate.get(LoggerFactory.getLogger(name));
         } else {
             return beforeInitLogger.get(name);
@@ -80,9 +75,6 @@ public class MCLoggerFactory {
 
     private MCLogger getLogger1(Class clazz) {
         if (isInitialized) {
-            if (Setup.get().getSettings().getBooleanProperty(Settings.LOG_USING_ONE_LOGGER_PROPERTY, "false")) {
-                clazz = MCLogger.class;
-            }
             return delegate.get(LoggerFactory.getLogger(clazz));
         } else {
             return beforeInitLogger.get(clazz);
@@ -100,7 +92,7 @@ public class MCLoggerFactory {
                     try {
                         if (micrologProperties == null) {
                             micrologProperties = new Properties();
-                            InputStream propStream = Setup.get().getSettings().openFile(PROPERTIES_FILENAME);
+                            InputStream propStream = /*Setup.get().getSettings().openFile(PROPERTIES_FILENAME)*/new FileInputStream("");
                             if (propStream == null) { // no explicit file, using properties bound to jar
                                 propStream = ResourceManager.getInstance().getResourceAsStream(PROPERTIES_FILENAME);
                             }
@@ -111,13 +103,6 @@ public class MCLoggerFactory {
                     } catch (Exception e) {
                         getLogger(getClass()).error("Error while loading microlog properties from " + PROPERTIES_FILENAME, e);
                     }
-                    Setup.get().getSettings().addPropertyListener(new PropertyEventListener() {
-                        public void propertyChanged(String property, String oldValue, String newValue) {
-                            if (Settings.LOGGING_ENABLED.equals(property)) {
-                                pipeStdToLogger();
-                            }
-                        }
-                    });
                     pipeStdToLogger();
                     isInitialized = true;
                     beforeInitLogger.flush();
@@ -128,19 +113,14 @@ public class MCLoggerFactory {
     }
 
     private void pipeStdToLogger() {
-        if (Setup.get().getSettings().getLoggingEnabled()) {
-            if (loggerOutStream == null) {
-                loggerOutStream = redirectStreamToLogger(systemOut, stdOutLoggerName, Level.DEBUG);
-            }
-            if (loggerErrStream == null) {
-                loggerErrStream = redirectStreamToLogger(systemErr, stdErrLoggerName, Level.ERROR);
-            }
-            System.setOut(loggerOutStream);
-            System.setErr(loggerErrStream);
-        } else {
-            System.setOut(systemOut);
-            System.setErr(systemErr);
+        if (loggerOutStream == null) {
+            loggerOutStream = redirectStreamToLogger(systemOut, stdOutLoggerName, Level.DEBUG);
         }
+        if (loggerErrStream == null) {
+            loggerErrStream = redirectStreamToLogger(systemErr, stdErrLoggerName, Level.ERROR);
+        }
+        System.setOut(loggerOutStream);
+        System.setErr(loggerErrStream);
     }
 
     private PrintStream redirectStreamToLogger(PrintStream stream, final String loggerName, final Level level) {

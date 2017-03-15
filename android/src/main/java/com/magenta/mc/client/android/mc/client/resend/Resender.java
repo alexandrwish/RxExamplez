@@ -1,6 +1,7 @@
 package com.magenta.mc.client.android.mc.client.resend;
 
 import com.magenta.mc.client.android.MobileApp;
+import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.mc.components.MCTimerTask;
 import com.magenta.mc.client.android.mc.components.McTimeoutTask;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
@@ -18,7 +19,7 @@ import EDU.oswego.cs.dl.util.concurrent.ReentrantWriterPreferenceReadWriteLock;
 public class Resender {
 
     private static Resender instance;
-    private int INTERVAL = 30000; // 30 seconds
+    private long INTERVAL = 30000; // 30 seconds
     private MCTimerTask resendResendables;
     private Map<ResendableMetadata, List<Resendable>> resendableMap;
     private ReentrantWriterPreferenceReadWriteLock cacheLock = new ReentrantWriterPreferenceReadWriteLock();
@@ -87,7 +88,7 @@ public class Resender {
         loadCacheIfNecessary();
         send(true);
         // seems like retransmission interval is not needed
-        INTERVAL = Setup.get().getSettings().getIntProperty("resender.interval", "30000");
+        INTERVAL = /*Setup.get().getSettings().getIntProperty("resender.interval", "30000")*/Settings.get().getSaveLocationInterval();
         MCLoggerFactory.getLogger(getClass()).debug("Resender started with interval: " + INTERVAL);
     }
 

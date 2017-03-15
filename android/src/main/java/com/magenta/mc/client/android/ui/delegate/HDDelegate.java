@@ -1,6 +1,8 @@
 package com.magenta.mc.client.android.ui.delegate;
 
+import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -20,6 +22,8 @@ import com.magenta.mc.client.android.service.HttpService;
 import com.magenta.mc.client.android.service.SenderService;
 import com.magenta.mc.client.android.service.SocketIOService;
 import com.magenta.mc.client.android.service.holder.ServiceHolder;
+import com.magenta.mc.client.android.ui.activity.JobsActivity;
+import com.magenta.mc.client.android.ui.activity.common.LoginActivity;
 import com.magenta.mc.client.android.ui.dialog.DialogFactory;
 import com.magenta.mc.client.android.ui.dialog.DistributionDialogFragment;
 
@@ -47,20 +51,23 @@ public class HDDelegate extends SmokeActivityDelegate implements HttpResponseLis
     }
 
     public void loginResult(int result) {
-        // TODO: 2/13/17 return answer to UI
         MCLoggerFactory.getLogger(HDDelegate.class).debug("Login result = " + result);
-        switch (result) {
-            case Constants.OK: {
-                ServiceHolder.getInstance().startService(HttpService.class, Pair.create(IntentAttributes.HTTP_TYPE, Constants.SETTINGS_TYPE));
-                ServiceHolder.getInstance().startService(HttpService.class, Pair.create(IntentAttributes.HTTP_TYPE, Constants.JOBS_TYPE));
-                ServiceHolder.getInstance().bindService(SocketIOService.class);
-                break;
-            }
-            case Constants.WARN: {
-                break;
-            }
-            case Constants.ERROR: {
-                break;
+        Activity activity = getActivity();
+        if (activity instanceof LoginActivity) {
+            switch (result) {
+                case Constants.OK: {
+                    ServiceHolder.getInstance().startService(HttpService.class, Pair.create(IntentAttributes.HTTP_TYPE, Constants.SETTINGS_TYPE));
+                    ServiceHolder.getInstance().startService(HttpService.class, Pair.create(IntentAttributes.HTTP_TYPE, Constants.JOBS_TYPE));
+                    ServiceHolder.getInstance().bindService(SocketIOService.class);
+                    activity.startActivity(new Intent(activity, JobsActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
+                    activity.finish();
+                    break;
+                }
+                case Constants.WARN:
+                case Constants.ERROR: {
+                    new AlertDialog.Builder(activity).show();
+                    break;
+                }
             }
         }
     }

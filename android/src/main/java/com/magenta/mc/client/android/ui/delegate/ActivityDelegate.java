@@ -2,7 +2,6 @@ package com.magenta.mc.client.android.ui.delegate;
 
 import android.view.MenuItem;
 
-import com.magenta.mc.client.android.mc.client.DriverStatus;
 import com.magenta.mc.client.android.ui.OnMenuItemSelectedListener;
 
 public interface ActivityDelegate {
@@ -25,5 +24,5 @@ public interface ActivityDelegate {
 
     boolean onOptionsItemSelected(MenuItem item);
 
-    void setDriverStatus(DriverStatus driverStatus);
+    void setDriverStatus(Object o);
 }

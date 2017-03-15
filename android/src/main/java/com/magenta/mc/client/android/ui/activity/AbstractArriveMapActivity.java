@@ -25,8 +25,6 @@ import com.magenta.mc.client.android.entity.DynamicAttributeType;
 import com.magenta.mc.client.android.entity.MapSettingsEntity;
 import com.magenta.mc.client.android.entity.TaskState;
 import com.magenta.mc.client.android.mc.MxAndroidUtil;
-import com.magenta.mc.client.android.mc.MxSettings;
-import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.service.ServicesRegistry;
 import com.magenta.mc.client.android.service.storage.entity.Job;
 import com.magenta.mc.client.android.service.storage.entity.Stop;
@@ -80,11 +78,11 @@ public abstract class AbstractArriveMapActivity extends DistributionActivity imp
 
         List<MapSettingsEntity> entities;
         try {
-            entities = DistributionDAO.getInstance().getMapSettings(Setup.get().getSettings().getLogin());
+            entities = DistributionDAO.getInstance().getMapSettings(Settings.get().getLogin());
         } catch (SQLException ignore) {
             entities = new ArrayList<>(0);
         }
-        if (!entities.isEmpty() && mIsMapDisplayingEnabled) {
+        if (!entities.isEmpty()) {
             switch (entities.get(0).getMapProviderType()) {
                 case YANDEX: {
                     mapController = new YandexMapController(this, Collections.singletonList(stop), true);
@@ -345,7 +343,7 @@ public abstract class AbstractArriveMapActivity extends DistributionActivity imp
                         })
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                MxSettings.getInstance().setMapTrackingEnabled(trackingEnabled = trackingEnabledNewValue);
+                                // TODO: 3/12/17 impl
                             }
                         })
                         .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {

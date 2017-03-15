@@ -30,21 +30,17 @@ import com.magenta.mc.client.android.mc.tracking.GeoLocationBatch;
 import com.magenta.mc.client.android.record.LoginRecord;
 import com.magenta.mc.client.android.record.LoginResultRecord;
 import com.magenta.mc.client.android.record.PointsResultRecord;
-import com.magenta.mc.client.android.rpc.RPCOut;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
 import rx.Subscriber;
@@ -63,6 +59,7 @@ public class HttpClient {
                 .baseUrl("https://maxoptra.com")
                 .client(new OkHttpClient.Builder().connectTimeout(5, TimeUnit.MINUTES).readTimeout(5, TimeUnit.MINUTES).build())
                 .addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setLenient().create()))
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build().create(ServiceClient.class);
     }
 
@@ -122,11 +119,7 @@ public class HttpClient {
         result.setAction(states);
         result.setParameters(values);
         result.setUid(UUID.randomUUID().toString());
-        try {
-            result.setActionTime(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.UK).parse((String) values.get("date")));
-        } catch (ParseException e) {
-            result.setActionTime(new Date());
-        }
+        result.setActionTime(Long.valueOf((String) values.get("date")));
         results.add(result);
         // TODO: 2/20/17 return observer
         apiClient.actionPost(results)
@@ -137,7 +130,7 @@ public class HttpClient {
                     }
 
                     public void onError(Throwable e) {
-                        MCLoggerFactory.getLogger(RPCOut.class).error(e.getMessage(), e);
+                        MCLoggerFactory.getLogger(HttpClient.class).error(e.getMessage(), e);
                     }
 
                     public void onNext(List<OrderActionResult> orderActionResults) {
@@ -148,7 +141,7 @@ public class HttpClient {
 
     @Deprecated
     // TODO: 2/17/17 fix me
-    public void sendLocations(final Long id, List<GeoLocation> locations) {
+    public void sendLocations(final String id, List<GeoLocation> locations) {
         List<TelemetryRecord> records = new LinkedList<>();
         for (GeoLocation o : locations) {
             TelemetryRecord record = new TelemetryRecord();
@@ -175,7 +168,7 @@ public class HttpClient {
                     }
 
                     public void onNext(Boolean aBoolean) {
-                        Resender.getInstance().sent(GeoLocationBatch.METADATA, id);
+                        Resender.getInstance().sent(GeoLocationBatch.METADATA, Long.valueOf(id));
                     }
                 });
     }

@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.magenta.mc.client.android.McAndroidApplication;
+import com.magenta.mc.client.android.ui.theme.Theme;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -42,6 +43,7 @@ public class Settings {
     private static final String SAVE_LOCATION_INTERVAL = "save.location.interval";
     private static final String TRACKING_ENABLED = "tracking.enabled";
     private static final String TIMEZONE = "timezone";
+    private static final String SENTRY_DSN = "sentry.dsn";
     public static String[] IGNORED_MAP_PROVIDERS = {
             "googlesatellite",
             "ptv",
@@ -52,7 +54,6 @@ public class Settings {
             "mapquest",
             "map24"
     };
-
     private final SharedPreferences preferences;
 
     private Settings() {
@@ -165,6 +166,14 @@ public class Settings {
 
     public String getTimezone() {
         return preferences.getString(TIMEZONE, "DEFAULT");
+    }
+
+    public String getSentryURL() {
+        return preferences.getString(SENTRY_DSN, "");
+    }
+
+    public Theme getTheme() {
+        return Theme.lookup(Integer.valueOf(preferences.getString(APP_THEME, "1")));
     }
 
     public static class SettingsBuilder {

@@ -83,9 +83,9 @@ android {
     }
     android.variantFilter { variant ->
         buildConfig.each { k, v ->
-            if (variant.buildType.name.equals('release') && variant.getFlavors().get(0).name.equals(k) && v.build_release.equals("false")) {
+            if (variant.buildType.name == 'release' && variant.getFlavors().get(0).name == k && v.build_release == "false") {
                 variant.setIgnore(true);
-            } else if (variant.buildType.name.equals('debug') && variant.getFlavors().get(0).name.equals(k) && v.build_debug.equals("false")) {
+            } else if (variant.buildType.name == 'debug' && variant.getFlavors().get(0).name == k && v.build_debug == "false") {
                 variant.setIgnore(true);
             }
         }

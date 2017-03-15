@@ -2,31 +2,21 @@ package com.magenta.mc.client.android.mc;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 
 import com.magenta.mc.client.android.events.InstallUpdateEvent;
+import com.magenta.mc.client.android.mc.demo.DemoStorageInitializer;
 import com.magenta.mc.client.android.service.ServicesRegistry;
 import com.magenta.mc.client.android.setup.AndroidSetup;
 import com.magenta.mc.client.android.update.AndroidUpdateCheck;
-import com.magenta.mc.client.android.mc.demo.DemoStorageInitializer;
-import com.magenta.mc.client.android.mc.settings.Settings;
-import com.magenta.mc.client.android.mc.setup.Setup;
-import com.magenta.mc.client.android.rpc.DefaultRpcResponseHandler;
 
 public class MxSetup extends AndroidSetup {
 
     private static final String PLATFORM = "ANDROID";
     private final DemoStorageInitializer demoStorageInitializer;
-    private Settings settings;
 
     public MxSetup(final Context applicationContext, final DemoStorageInitializer demoStorageInitializer) {
         super(applicationContext);
         this.demoStorageInitializer = demoStorageInitializer;
-        settings = new MxSettings(applicationContext);
-    }
-
-    public Settings getSettings() {
-        return settings;
     }
 
     public DemoStorageInitializer getStorageInitializer() {
@@ -54,7 +44,7 @@ public class MxSetup extends AndroidSetup {
         updateCheck = new AndroidUpdateCheck(applicationContext) {
             protected Intent createUpdateIntent() {
                 final Intent updateIntent = new Intent("android.intent.action.VIEW");
-                updateIntent.setDataAndType(Uri.fromFile(getContext().getFileStreamPath(Setup.get().getSettings().getUpdateApplicationName() + Setup.get().getSettings().getAppVersion() + ".apk")), "application/vnd.android.package-archive");
+//                updateIntent.setDataAndType(Uri.fromFile(getContext().getFileStreamPath(Setup.get().getSettings().getUpdateApplicationName() + Setup.get().getSettings().getAppVersion() + ".apk")), "application/vnd.android.package-archive");
                 return updateIntent;
             }
 
@@ -62,20 +52,20 @@ public class MxSetup extends AndroidSetup {
                 if (checkDownloadedUpdate()) {
                     ServicesRegistry.getCoreService().notifyListeners(new InstallUpdateEvent("INSTALL_UPDATE", getUpdateFile().toString()));
                 } else {
-                    MxSettings.getInstance().setUpdateDelayed(false);
+//                    MxSettings.getInstance().setUpdateDelayed(false);
                 }
             }
 
             public void check() {
-                DefaultRpcResponseHandler.isUpdateAvailable(
-                        Setup.get().getSettings().getAppVersion(),
-                        PLATFORM,
-                        Setup.get().getSettings().getUpdateApplicationName());
+//                DefaultRpcResponseHandler.isUpdateAvailable(
+//                        Setup.get().getSettings().getAppVersion(),
+//                        PLATFORM,
+//                        Setup.get().getSettings().getUpdateApplicationName());
             }
 
             public void complete(Boolean available) {
                 if (!available) {
-                    MxSettings.getInstance().setUpdateDelayed(false);
+//                    MxSettings.getInstance().setUpdateDelayed(false);
                 }
                 super.complete(available);
             }

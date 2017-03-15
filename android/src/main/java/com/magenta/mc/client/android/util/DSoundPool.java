@@ -9,7 +9,7 @@ import android.util.SparseIntArray;
 
 import com.magenta.mc.client.android.MobileApp;
 import com.magenta.mc.client.android.R;
-import com.magenta.mc.client.android.mc.MxSettings;
+import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 import com.magenta.mc.client.android.sound.DSound;
 
@@ -47,7 +47,7 @@ public class DSoundPool extends SoundPool {
     }
 
     public void playSound(int sound, boolean vibration) {
-        if (!MxSettings.getInstance().isIncomingUpdatePlaySoundEnabled()) return;
+        if (!Settings.get().getAudioAlert()) return;
         final int streamVolumeCurrent = audioManager.getStreamVolume(AudioManager.STREAM_RING);
         final int streamVolumeMax = audioManager.getStreamMaxVolume(AudioManager.STREAM_RING);
         /* Volume calculations */

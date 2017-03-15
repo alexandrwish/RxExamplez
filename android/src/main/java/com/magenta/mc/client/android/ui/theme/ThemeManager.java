@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.view.ContextThemeWrapper;
 
+import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.mc.setup.Setup;
-import com.magenta.mc.client.android.settings.AndroidSettings;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,8 +20,7 @@ public abstract class ThemeManager {
     public Theme getCurrentTheme() {
         if (currentTheme == null) {
             if (Setup.isInitialized()) {
-                AndroidSettings settings = (AndroidSettings) Setup.get().getSettings();
-                currentTheme = settings.getApplicationTheme();
+                currentTheme = Settings.get().getTheme();
             } else {
                 return DEFAULT_THEME;
             }

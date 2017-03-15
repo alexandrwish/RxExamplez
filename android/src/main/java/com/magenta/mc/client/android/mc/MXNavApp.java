@@ -5,9 +5,9 @@ import android.widget.Toast;
 
 import com.magenta.mc.client.android.McAndroidApplication;
 import com.magenta.mc.client.android.R;
+import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.entity.LocationEntity;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
-import com.magenta.mc.client.android.mc.settings.Settings;
 import com.tomtom.navapp.ErrorCallback;
 import com.tomtom.navapp.NavAppClient;
 import com.tomtom.navapp.NavAppError;

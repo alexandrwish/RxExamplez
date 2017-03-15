@@ -20,7 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class ServiceHolder {
 
     private static ServiceHolder instance;
-    private final Map<String, Triple<ServiceConnection, IBinder, BindListener>> binders = new ConcurrentHashMap<>();
+    private final Map<String, Triple<ServiceConnection, ? extends IBinder, BindListener>> binders = new ConcurrentHashMap<>();
 
     private ServiceHolder() {
     }

@@ -7,11 +7,9 @@ import android.content.Intent;
 import android.view.MenuItem;
 
 import com.magenta.mc.client.android.R;
-import com.magenta.mc.client.android.rpc.operations.LogoutLock;
-import com.magenta.mc.client.android.service.ServicesRegistry;
+import com.magenta.mc.client.android.common.IntentAttributes;
 import com.magenta.mc.client.android.events.AlertEvent;
 import com.magenta.mc.client.android.ui.activity.common.LoginActivity;
-import com.magenta.mc.client.android.common.IntentAttributes;
 
 import java.util.List;
 
@@ -25,7 +23,8 @@ public class HDActivityDecorator extends ActivityDecorator {
 
     public boolean onMenuSelected(MenuItem item) {
         if (item.getItemId() == R.id.logout) {
-            LogoutLock.getInstance().logout();
+//            LogoutLock.getInstance().logout();
+            // TODO: 3/12/17 impl
             context.startActivity(new Intent(context, LoginActivity.class));
         }
         return true;

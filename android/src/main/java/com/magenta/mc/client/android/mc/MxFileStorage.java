@@ -1,7 +1,7 @@
 package com.magenta.mc.client.android.mc;
 
+import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.mc.exception.StorageException;
-import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.mc.storage.Storable;
 import com.magenta.mc.client.android.mc.storage.StorableMetadata;
 import com.magenta.mc.client.android.mc.storage.file.FileStorage;
@@ -23,7 +23,7 @@ public class MxFileStorage extends FileStorage {
         if (metadata.common) {
             dir = new File(storageFolder, metadata.name);
         } else {
-            String userId = Setup.get().getSettings().getUserId();
+            String userId = Settings.get().getUserId();
             dir = new File(new File(storageFolder, userId), metadata.name);
         }
         if (!dir.exists()) {
@@ -41,7 +41,7 @@ public class MxFileStorage extends FileStorage {
         return dir;
     }
 
-    public List load(StorableMetadata metadata) throws StorageException {
+    public List<Storable> load(StorableMetadata metadata) throws StorageException {
         try {
             metadata.storageLock.readLock().acquire();
             final File dir = getDir(metadata);
@@ -53,7 +53,7 @@ public class MxFileStorage extends FileStorage {
                     return ((String) o1).compareTo(((String) o2));
                 }
             });
-            List result = new ArrayList(ids.length);
+            List<Storable> result = new ArrayList<>(ids.length);
             for (String id : ids) {
                 Storable nextStorable = load(metadata, id);
                 if (nextStorable != null)
@@ -61,7 +61,7 @@ public class MxFileStorage extends FileStorage {
             }
             return result;
         } catch (InterruptedException e) {
-            return new ArrayList();
+            return new ArrayList<>();
         } finally {
             metadata.storageLock.readLock().release();
         }

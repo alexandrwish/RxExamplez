@@ -3,11 +3,10 @@ package com.magenta.mc.client.android.util;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 
+import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.entity.DynamicAttributeEntity;
 import com.magenta.mc.client.android.entity.DynamicAttributeType;
 import com.magenta.mc.client.android.entity.LocalizeStringEntity;
-import com.magenta.mc.client.android.mc.MxSettings;
-import com.magenta.mc.client.android.mc.setup.Setup;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,7 +40,7 @@ public class Attribute {
     }
 
     public static Attribute fromEntity(DynamicAttributeEntity entity, Context ctx) {
-        LocalizeStringEntity.LocalizeStringType type = LocalizeStringEntity.LocalizeStringType.getType(((MxSettings) Setup.get().getSettings()).getLocale());
+        LocalizeStringEntity.LocalizeStringType type = LocalizeStringEntity.LocalizeStringType.getType(Settings.get().getLocale());
         return new Attribute(
                 entity.getId(),
                 entity.getTitle().getLocalizeString(type),

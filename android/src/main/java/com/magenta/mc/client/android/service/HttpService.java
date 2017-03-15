@@ -14,7 +14,6 @@ import com.magenta.mc.client.android.entity.MapProviderType;
 import com.magenta.mc.client.android.entity.MapSettingsEntity;
 import com.magenta.mc.client.android.http.HttpClient;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
-import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.record.LoginResultRecord;
 import com.magenta.mc.client.android.service.renderer.SingleJobRenderer;
 import com.magenta.mc.client.android.ui.activity.common.LoginActivity;
@@ -37,7 +36,7 @@ public class HttpService extends IntentService {
 
     private static boolean updateSettings(MapSettingsEntity entity, Map<String, Map<String, String>> mapSettings) throws SQLException {
         if (mapSettings.size() == 1) {
-            entity.setDriver(Setup.get().getSettings().getLogin());
+            entity.setDriver(Settings.get().getLogin());
             for (Map.Entry<String, Map<String, String>> entry : mapSettings.entrySet()) {
                 entity.setProvider(entry.getKey());
                 entity.setMapProviderType(MapProviderType.GOOGLE.name().equalsIgnoreCase(entry.getKey())
@@ -93,8 +92,12 @@ public class HttpService extends IntentService {
                     }
 
                     public void onNext(LoginResultRecord result) {
-                        Settings.SettingsBuilder.get().start().setAuthToken(result.getToken()).apply();
-                        sendBroadcast(new Intent(Constants.HTTP_SERVICE_NAME).putExtra(IntentAttributes.HTTP_LOGIN_RESPONSE_TYPE, Constants.OK)); //все хорошо
+                        if (result.getError()) {
+                            sendBroadcast(new Intent(Constants.HTTP_SERVICE_NAME).putExtra(IntentAttributes.HTTP_LOGIN_RESPONSE_TYPE, Constants.WARN)); //все плохо, но не у нас
+                        } else {
+                            Settings.SettingsBuilder.get().start().setAuthToken(result.getToken()).apply();
+                            sendBroadcast(new Intent(Constants.HTTP_SERVICE_NAME).putExtra(IntentAttributes.HTTP_LOGIN_RESPONSE_TYPE, Constants.OK)); //все хорошо
+                        }
                     }
                 });
     }
@@ -144,7 +147,7 @@ public class HttpService extends IntentService {
                             result.getMapProperties().put("openstreetmap", osm);
                         }
                         try {
-                            List<MapSettingsEntity> mapSettingsEntities = DistributionDAO.getInstance().getMapSettings(Setup.get().getSettings().getLogin());
+                            List<MapSettingsEntity> mapSettingsEntities = DistributionDAO.getInstance().getMapSettings(Settings.get().getLogin());
                             if (!mapSettingsEntities.isEmpty()) {
                                 if (!mapSettings.containsKey(mapSettingsEntities.get(0).getProvider()) || !mapSettingsEntities.get(0).isRemember()) {
                                     if (updateSettings(mapSettingsEntities.get(0), mapSettings)) {

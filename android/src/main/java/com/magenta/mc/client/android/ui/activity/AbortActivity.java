@@ -16,7 +16,6 @@ import com.magenta.mc.client.android.db.dao.DistributionDAO;
 import com.magenta.mc.client.android.entity.AbstractStop;
 import com.magenta.mc.client.android.entity.DynamicAttributeEntity;
 import com.magenta.mc.client.android.entity.TaskState;
-import com.magenta.mc.client.android.mc.MxSettings;
 import com.magenta.mc.client.android.record.DynamicAttributeRecord;
 import com.magenta.mc.client.android.service.ServicesRegistry;
 import com.magenta.mc.client.android.service.listeners.BroadcastEvent;
@@ -49,9 +48,10 @@ public class AbortActivity extends DistributionActivity implements WorkflowActiv
 
     private void updateReasons() {
         mReasons.clear();
-        if (!MxSettings.getInstance().isOfflineVersion()) {
-            mReasons.addAll(MxSettings.getInstance().getOrderCancelReasons());
-        }
+        // TODO: 3/12/17 impl
+//        if (!MxSettings.getInstance().isOfflineVersion()) {
+//            mReasons.addAll(MxSettings.getInstance().getOrderCancelReasons());
+//        }
         if (mReasons.isEmpty()) {
             mReasons.addAll(Arrays.asList(getApplicationContext().getResources().getStringArray(R.array.pickup_abort_code_array)));
         }

@@ -7,6 +7,7 @@ import android.os.IBinder;
 import android.os.PowerManager;
 
 import com.magenta.mc.client.android.MobileApp;
+import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.ui.AndroidUI;
@@ -36,7 +37,7 @@ public class McService extends RoboService {
         MobileApp.setInstance(createMobileApp());
         MCLoggerFactory.getLogger(getClass()).trace("starting in foreground");
         Notifications notifications = ((AndroidUI) Setup.get().getUI()).getNotifications();
-        String appName = Setup.get().getSettings().getAppName();
+        String appName = getString(R.string.mx_app_name);
         startForeground(MAIN_NOTIFICATION_ID, notifications.createConnectionStatusNotification(false, appName));
         MCLoggerFactory.getLogger(getClass()).trace("started in foreground");
     }
@@ -54,7 +55,7 @@ public class McService extends RoboService {
         MCLoggerFactory.getLogger(getClass()).trace("onStartCommand: Received start id " + startId + ": " + intent);
         try {
             if (intent == null || !intent.getBooleanExtra("dont_login", false)) {
-                MobileApp.getInstance().needToLogin();
+//                MobileApp.getInstance().needToLogin();
             }
         } catch (Exception e) {
             MCLoggerFactory.getLogger(getClass()).error("Error while service onStartCommand", e);

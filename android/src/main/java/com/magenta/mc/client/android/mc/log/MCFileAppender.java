@@ -143,6 +143,6 @@ public class MCFileAppender extends AbstractFileAppender {
     }
 
     private void setDirName(String value) {
-        directory = new File(Setup.get().getSettings().getLogFolder(), value).getPath();
+//        directory = new File(Setup.get().getSettings().getLogFolder(), value).getPath(); // TODO: 3/12/17 impl
     }
 }

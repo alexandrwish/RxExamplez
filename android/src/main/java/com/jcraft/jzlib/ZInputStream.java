@@ -130,9 +130,9 @@ public class ZInputStream extends FilterInputStream {
             }
         }
         while (z.avail_out == len && err == JZlib.Z_OK);
-        //System.err.print("("+(len-z.avail_out)+")");
+        //System.err.eat("("+(len-z.avail_out)+")");
         /*    for (int i=0; i<len-z.avail_out; i++) {
-               System.out.print((char) b[i]);
+               System.out.eat((char) b[i]);
            }
            System.out.println();
         */

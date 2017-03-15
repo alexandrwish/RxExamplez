@@ -1,5 +1,7 @@
 package com.magenta.mc.client.android.entity;
 
+import com.magenta.hdmate.mx.model.StopStatus;
+
 public class TaskState {
 
     public static final int UNKNOWN = -1;
@@ -266,5 +268,48 @@ public class TaskState {
             return STOP_SUSPENDED;
         }
         return UNKNOWN;
+    }
+
+    public static String getStatus(StopStatus status) {
+        switch (status) {
+            case NEW:
+            case ALLOCATED:
+            case COMMITTING:
+            case DETAILS_SENDING:
+            case DETAILS_SENT:
+            case RECEIVED:
+            case READ:
+            case COMMITTED:
+                return STR_STOP_IDLE;
+            case CLOSED:
+                return STR_STOP_COMPLETED;
+            case FAILED:
+                return STR_STOP_ABORTED;
+            case PICKUP_ON_MOVE:
+                return STR_STOP_ON_ROUTE;
+            case PICKUP_ARRIVED:
+                return STR_STOP_ARRIVED;
+            case PICKUP_STARTED:
+                return STR_STOP_RUN_STARTED;
+            case PICKUP_FINISHED:
+                return STR_STOP_RUN_FINISHED;
+            case PICKUP_DEPARTED:
+                return STR_STOP_RUN_STARTED;
+            case DELIVERY_ON_MOVE:
+                return STR_STOP_ON_ROUTE;
+            case DELIVERY_ARRIVED:
+                return STR_STOP_ARRIVED;
+            case DELIVERY_STARTED:
+                return STR_STOP_RUN_STARTED;
+            case DELIVERY_FINISHED:
+                return STR_STOP_RUN_FINISHED;
+            case DELIVERY_DEPARTED:
+                return STR_STOP_RUN_STARTED;
+            case SUSPENDED:
+                return STR_STOP_SUSPENDED;
+            case FAKE:
+                return "";
+        }
+        return "";
     }
 }

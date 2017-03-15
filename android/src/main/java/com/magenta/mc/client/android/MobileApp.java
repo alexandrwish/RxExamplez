@@ -1,12 +1,7 @@
 package com.magenta.mc.client.android;
 
-import android.content.Intent;
-
 import com.magenta.mc.client.android.entity.AbstractJobStatus;
 import com.magenta.mc.client.android.mc.MxSetup;
-import com.magenta.mc.client.android.mc.client.Login;
-import com.magenta.mc.client.android.mc.client.TimeSynchronization;
-import com.magenta.mc.client.android.mc.client.XMPPClient;
 import com.magenta.mc.client.android.mc.client.resend.ResendableMetadata;
 import com.magenta.mc.client.android.mc.client.resend.Resender;
 import com.magenta.mc.client.android.mc.components.AbortableTask;
@@ -16,13 +11,9 @@ import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.mc.tracking.GeoLocationBatch;
 import com.magenta.mc.client.android.mc.util.ResourceManager;
-import com.magenta.mc.client.android.rpc.bin_chunks.BinaryChunkResendable;
-import com.magenta.mc.client.android.rpc.bin_chunks.random.RandomBinTransTask;
-import com.magenta.mc.client.android.rpc.xmpp.XMPPStream;
 import com.magenta.mc.client.android.service.SaveLocationService;
 import com.magenta.mc.client.android.service.ServicesRegistry;
 import com.magenta.mc.client.android.service.storage.DemoStorageInitializerImpl;
-import com.magenta.mc.client.android.ui.activity.common.LoginActivity;
 import com.magenta.mc.client.android.util.AndroidResourceManager;
 
 import java.io.IOException;
@@ -115,10 +106,6 @@ public class MobileApp {
         }
     }
 
-    public XMPPStream initStream(String serverName, String host, int port, boolean ssl, long connectionId) throws IOException {
-        return new XMPPStream(serverName, host, port, ssl, connectionId);
-    }
-
     private void afterSetInstance() {
         run();
     }
@@ -148,8 +135,6 @@ public class MobileApp {
 
         setupThreadPools();
 
-        setupXmppConflictListener();
-
         setupTimeChecking();
 
         setupMemoryUsageLogging();
@@ -158,40 +143,7 @@ public class MobileApp {
 
         Resender.getInstance().registerResendables(getResendablesMetadata());
 
-        MCLoggerFactory.getLogger(MobileApp.class).info("Application started: " + Setup.get().getSettings().getAppName() +
-                " version: " + Setup.get().getSettings().getAppVersion() +
-                ", mcc-core: " + Setup.get().getSettings().getMcClientCoreVersion() +
-                ", mcc-platform: " + Setup.get().getSettings().getMcClientPlatformVersion());
-
         McAndroidApplication.resetSettingsUserId();
-        needToLogin();
-    }
-
-    public void needToLogin() {
-        MCLoggerFactory.getLogger(getClass()).debug("incrementing needToLoginRequestsCount, old value  " + needToLoginRequestsCount);
-        needToLoginRequestsCount++;
-        if (needToLoginRequestsCount == 2) {
-            needToLoginRequestsCount = 0;
-            try {
-                String pinAndPass = Setup.get().getSettings().getUserIdAndPassword();
-                final String[] pass = pinAndPass.split(";");
-                if (pass.length == 2) {
-                    MobileApp.runTask(new Runnable() {
-                        public void run() {
-                            Login.getInstance().doLogin(pass[0], pass[1], new Runnable() {
-                                public void run() {
-                                    MCLoggerFactory.getLogger(getClass()).debug("log in completed after service restart");
-                                }
-                            });
-                        }
-                    });
-                } else {
-                    MCLoggerFactory.getLogger(getClass()).error(String.format("Pin [%s] is wrong.", pinAndPass));
-                }
-            } catch (Exception e) {
-                MCLoggerFactory.getLogger(getClass()).error("Cant login after service restart", e);
-            }
-        }
     }
 
     private void initSetup() {
@@ -199,7 +151,7 @@ public class MobileApp {
     }
 
     private ResendableMetadata[] getResendablesMetadata() {
-        ResendableMetadata[] res = new ResendableMetadata[]{GeoLocationBatch.METADATA, BinaryChunkResendable.METADATA, RandomBinTransTask.RESENDABLE_METADATA};
+        ResendableMetadata[] res = new ResendableMetadata[]{GeoLocationBatch.METADATA};
         return joinMetadata(res, new ResendableMetadata[]{AbstractJobStatus.RESENDABLE_METADATA});
     }
 
@@ -218,15 +170,6 @@ public class MobileApp {
         ServicesRegistry.stopSaveLocationsService();
     }
 
-    private void setupXmppConflictListener() {
-        XMPPClient.getInstance().setXmppConflictListener(new Runnable() {
-            public void run() {
-                Login.setUserLoggout();
-                McAndroidApplication.getInstance().startActivity(new Intent(McAndroidApplication.getInstance(), LoginActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
-            }
-        });
-    }
-
     private void setupTimeChecking() {
         getTimer().schedule(
                 new MCTimerTask() {
@@ -236,7 +179,6 @@ public class MobileApp {
                         if (delta > 1000 * 60) { //one minute
                             MCLoggerFactory.getLogger("TimeChecking").warn("Time was changed: " + delta / 1000.0 / 60 / 60
                                     + "h calc new time delta");
-                            TimeSynchronization.synchronize();
                         }
                         prevCheckMillis = now;
                     }
@@ -251,7 +193,7 @@ public class MobileApp {
                                 + " KiB, Total " + Runtime.getRuntime().totalMemory() / 1024 + " KiB, Max "
                                 + Runtime.getRuntime().maxMemory() / 1024 + " KiB, " + Thread.activeCount() + " threads");
                     }
-                }, 0, 1000 * 60 * 10);     //print memory usage every 10 min
+                }, 0, 1000 * 60 * 10);     //eat memory usage every 10 min
     }
 
     private void initResourceManager() {
@@ -319,7 +261,7 @@ public class MobileApp {
     private void setupThreadPools() {
         // default size is 3 = (N + 1) + 1
         // given N = 1 - number of processors, + 1 thread for servicing I/O of XMPP stream
-        final int poolSize = Setup.get().getSettings().getIntProperty("main-thread-pool.size", "3");
+        final int poolSize = /*Setup.get().getSettings().getIntProperty("main-thread-pool.size", "3")*/3;
         mainThreadPool = new PooledExecutor(new LinkedQueue(), poolSize);
         mainThreadPool.setMinimumPoolSize(poolSize);
         mainThreadPool.waitWhenBlocked();

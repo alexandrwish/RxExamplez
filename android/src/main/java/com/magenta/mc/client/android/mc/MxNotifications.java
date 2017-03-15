@@ -6,14 +6,13 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
-import com.magenta.mc.client.android.ui.activity.common.LoginActivity;
 import com.magenta.mc.client.android.R;
+import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.service.McService;
 import com.magenta.mc.client.android.ui.AndroidUI;
 import com.magenta.mc.client.android.ui.ApplicationIcons;
 import com.magenta.mc.client.android.ui.Notifications;
-import com.magenta.mc.client.android.mc.settings.Settings;
-import com.magenta.mc.client.android.mc.setup.Setup;
+import com.magenta.mc.client.android.ui.activity.common.LoginActivity;
 
 public class MxNotifications extends Notifications {
 
@@ -32,7 +31,7 @@ public class MxNotifications extends Notifications {
         setLastNotificationIsAlert(true);
         return new Notification.Builder(getContext())
                 .setSmallIcon(online ? icons.getOnline() : icons.getOffline())
-                .setContentTitle(applicationName == null ? Settings.get().getAppName() : applicationName)
+                .setContentTitle(applicationName == null ? getContext().getString(R.string.mx_app_name) : applicationName)
                 .setContentText(getContext().getString(online ? R.string.mc_notification_status_online : R.string.mc_notification_status_offline))
                 .setContentIntent(PendingIntent.getActivity(getContext(), 0, new Intent(getContext(), LoginActivity.class), 0))
                 .build();

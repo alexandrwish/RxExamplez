@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
 import android.os.Build;
-import android.preference.PreferenceManager;
 import android.webkit.GeolocationPermissions;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
@@ -12,6 +11,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.magenta.mc.client.android.McAndroidApplication;
+import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.db.CacheDBHelper;
 import com.magenta.mc.client.android.db.dao.DistributionDAO;
 import com.magenta.mc.client.android.db.dao.TileCacheDAO;
@@ -21,8 +21,6 @@ import com.magenta.mc.client.android.entity.MapSettingsEntity;
 import com.magenta.mc.client.android.entity.TileCacheEntity;
 import com.magenta.mc.client.android.handler.MapUpdateHandler;
 import com.magenta.mc.client.android.mc.MxAndroidUtil;
-import com.magenta.mc.client.android.mc.MxSettings;
-import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.service.ServicesRegistry;
 import com.magenta.mc.client.android.service.storage.entity.Job;
 import com.magenta.mc.client.android.service.storage.entity.Stop;
@@ -50,7 +48,6 @@ public class Maplet extends WebView {
     LocationEntity location;
     MapUpdateHandler handler;
     boolean onLoad;
-    boolean enableCache;
 
     public Maplet(Activity context, MapController mapController) {
         super(context);
@@ -67,7 +64,6 @@ public class Maplet extends WebView {
             return;
         }
         this.context = (Activity) context;
-        this.enableCache = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext()).getBoolean(MxSettings.ENABLE_CACHE, true);
         GeoWebChromeClient chromeClient = new GeoWebChromeClient();
         //WebViewClient webClient = new GeoWebViewClient();
         isInit = true;
@@ -93,12 +89,12 @@ public class Maplet extends WebView {
 
     public void updateSettings() {
         try {
-            List<MapSettingsEntity> entities = DistributionDAO.getInstance().getMapSettings(Setup.get().getSettings().getLogin());
+            List<MapSettingsEntity> entities = DistributionDAO.getInstance().getMapSettings(Settings.get().getLogin());
             if (!entities.isEmpty()) {
                 loadUrl("javascript:initConfig(" + entities.get(0).getSettings() + ")");
             }
         } catch (SQLException ignore) {
-            loadUrl("javascript:initConfig(" + Setup.get().getSettings().getProperty("map.property") + ")");
+            loadUrl("javascript:initConfig(" + "" + ")"); //// TODO: 3/12/17 impl
         }
     }
 
@@ -207,7 +203,7 @@ public class Maplet extends WebView {
             if (loc != null && maplet.mapController.mTrackCurrentPosition) {
                 maplet.loadUrl("javascript:panToCurrent(" + loc.getLat() + "," + loc.getLon() + ")");
             }
-            if ((MxSettings.getInstance().isMapTrackingEnabled() || firstRun)) {
+            if (firstRun) {
                 List<Address> addressList = new ArrayList<>();
                 if (maplet.routeWithDriver) {
                     if (loc != null) {
@@ -336,15 +332,13 @@ public class Maplet extends WebView {
         @JavascriptInterface
         public void getTileInCache(final String url, final String name, final String x, final String y, final String z) {
             String blob = "";
-            if (enableCache) {
-                try {
-                    List<TileCacheEntity> tiles = TileCacheDAO.getInstance().getTileFromCache(name != null ? name : "default", Integer.valueOf(x), Integer.valueOf(y), Integer.valueOf(z));
-                    if (!tiles.isEmpty()) {
-                        blob = new String(CompressUtils.decompress(tiles.get(0).getBlob()), Charset.forName("US-ASCII"));
-                        TileCacheDAO.getInstance().updateUsedDate(tiles.get(0));
-                    }
-                } catch (Exception ignore) {
+            try {
+                List<TileCacheEntity> tiles = TileCacheDAO.getInstance().getTileFromCache(name != null ? name : "default", Integer.valueOf(x), Integer.valueOf(y), Integer.valueOf(z));
+                if (!tiles.isEmpty()) {
+                    blob = new String(CompressUtils.decompress(tiles.get(0).getBlob()), Charset.forName("US-ASCII"));
+                    TileCacheDAO.getInstance().updateUsedDate(tiles.get(0));
                 }
+            } catch (Exception ignore) {
             }
             final String src = blob;
             handler.post(new Runnable() {
@@ -360,7 +354,6 @@ public class Maplet extends WebView {
 
         @JavascriptInterface
         public void saveTile(final String blob, final String name, final String x, final String y, final String z) {
-            if (!enableCache) return;
             try {
                 TileCacheEntity entity = new TileCacheEntity();
                 entity.setLastAccessDate(System.currentTimeMillis());
@@ -371,7 +364,7 @@ public class Maplet extends WebView {
                 entity.setBlob(CompressUtils.compress(blob.getBytes(Charset.forName("US-ASCII"))));
                 TileCacheDAO.getInstance().saveTileToCache(entity);
                 if (new File(McAndroidApplication.getInstance().getDBAdapter().getDB(CacheDBHelper.DATABASE_NAME).getPath()).length() >=
-                        MxSettings.getInstance().getIntProperty(MxSettings.USED_CACHE_SPACE, "500") * 1024 * 1024) {
+                        500 * 1024 * 1024) { // TODO: 3/12/17 impl
                     TileCacheDAO.getInstance().removeCacheTiles(null);
                 }
             } catch (Exception ignore) {

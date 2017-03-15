@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.magenta.mc.client.android.R;
-import com.magenta.mc.client.android.mc.settings.Settings;
 import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.service.McService;
 
@@ -51,7 +50,7 @@ public class Notifications {
         return new NotificationBuilder(context)
                 .setId(TAG_CONNECTION_STATE, McService.MAIN_NOTIFICATION_ID)
                 .setIcon(online ? icons.getOnline() : icons.getOffline())
-                .setTitle(applicationName == null ? Settings.get().getAppName() : applicationName)
+                .setTitle(applicationName == null ? getContext().getString(R.string.mx_app_name) : applicationName)
                 .setMessage(context.getString(online ? R.string.mc_notification_status_online : R.string.mc_notification_status_offline))
                 .create();
     }

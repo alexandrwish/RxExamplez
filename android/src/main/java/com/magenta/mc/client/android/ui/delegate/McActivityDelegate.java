@@ -6,8 +6,6 @@ import android.app.NotificationManager;
 import android.location.LocationManager;
 import android.view.MenuItem;
 
-import com.magenta.mc.client.android.mc.client.DriverStatus;
-import com.magenta.mc.client.android.mc.client.XMPPClient;
 import com.magenta.mc.client.android.mc.log.MCLogger;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 import com.magenta.mc.client.android.mc.setup.Setup;
@@ -44,7 +42,7 @@ public class McActivityDelegate implements ActivityDelegate {
         if (Setup.isInitialized()) {
             LOG.trace(getActivity().getLocalClassName() + ": onResume");
             setUiCurrentActivity();
-            setDriverStatus(DriverStatus.getCurrent());
+            setDriverStatus(new Object());
             checkGPS();
         } else {
             LOG.warn("Setup is not initialized, can't exec onResume actions for " + getActivity().getLocalClassName());
@@ -75,13 +73,13 @@ public class McActivityDelegate implements ActivityDelegate {
         }
     }
 
-    public void setDriverStatus(final DriverStatus driverStatus) {
-        LOG.trace("Set driver status = " + driverStatus.getName());
+    public void setDriverStatus(Object o) {
+        LOG.trace("Set driver status = " + o.toString());
     }
 
     private void checkGPS() {
         if (notificationManager != null && locationManager != null) {
-            boolean online = XMPPClient.getInstance().isLoggedIn();
+            boolean online = /*XMPPClient.getInstance().isLoggedIn()*/true; // TODO: 3/12/17 impl
             if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                 Notification notification = ((AndroidUI) Setup.get().getUI()).getNotifications().createGPSNotification();
                 if (notification != null) {

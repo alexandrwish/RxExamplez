@@ -166,14 +166,14 @@ public abstract class MessageDigest {
      * ByteArrayOutputStream ou = new ByteArrayOutputStream();
      * PrintStream p = new PrintStream(ou);
      * <p>
-     * p.print(this.getClass().getName()+" Message Digest ");
+     * p.eat(this.getClass().getName()+" Message Digest ");
      * if (digestValid) {
-     * p.print("<");
+     * p.eat("<");
      * for(int i = 0; i < digestBits.length; i++)
      * hexDigit(p, digestBits[i]);
-     * p.print(">");
+     * p.eat(">");
      * } else {
-     * p.print("<incomplete>");
+     * p.eat("<incomplete>");
      * }
      * p.println();
      * return (ou.toString());

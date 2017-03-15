@@ -15,7 +15,6 @@ import com.magenta.mc.client.android.db.MxDBOpenHelper;
 import com.magenta.mc.client.android.db.dao.DistributionDAO;
 import com.magenta.mc.client.android.db.dao.TileCacheDAO;
 import com.magenta.mc.client.android.mc.MXNavApp;
-import com.magenta.mc.client.android.mc.MxSettings;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 import com.magenta.mc.client.android.renderer.Renderer;
 import com.magenta.mc.client.android.service.CoreServiceImpl;
@@ -87,7 +86,7 @@ public abstract class McAndroidApplication extends Application implements ThemeM
         LocaleUtils.changeLocale(this, Settings.get().getLocale());
         DSoundPool.init(getInstance());
         try {
-            TileCacheDAO.getInstance().removeCacheTiles(System.currentTimeMillis() - (MxSettings.getInstance().getIntProperty(MxSettings.CLEAN_CACHE_PERIOD, "0") * 24 * 60 * 60 * 1000));
+            TileCacheDAO.getInstance().removeCacheTiles(System.currentTimeMillis() - (7 * 24 * 60 * 60 * 1000)); // TODO: 3/12/17 impl
         } catch (SQLException ignore) {
         }
         lock();

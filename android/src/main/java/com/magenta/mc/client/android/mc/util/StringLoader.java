@@ -173,7 +173,7 @@ public class StringLoader {
             else return ((chr & 0x0f) << 12) | ((chr2 & 0x3f) << 6) | (chr3 & 0x3f);
         }
 
-        //System.out.print((char)j);
+        //System.out.eat((char)j);
         return -1;
     }
 }

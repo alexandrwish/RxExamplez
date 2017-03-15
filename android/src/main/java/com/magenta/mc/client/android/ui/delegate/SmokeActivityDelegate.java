@@ -12,7 +12,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.magenta.mc.client.android.R;
-import com.magenta.mc.client.android.mc.client.DriverStatus;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.ui.activity.SmokeActivityInterface;
@@ -39,15 +38,15 @@ public class SmokeActivityDelegate extends McActivityDelegate {
         changeVisibleFlag(false);
     }
 
-    public void setDriverStatus(final DriverStatus driverStatus) {
-        super.setDriverStatus(driverStatus);
+    public void setDriverStatus(final Object o) {
+        super.setDriverStatus(o);
         if (isHasTitleBar()) {
             getHandler().post(new Runnable() {
                 @Override
                 public void run() {
                     ImageView imageView = (ImageView) getActivity().findViewById(R.id.mcTitleBarRightIndicator);
                     if (imageView != null) {
-                        imageView.setImageResource(driverStatus.isOnline()
+                        imageView.setImageResource(o != null
                                 ? R.drawable.mc_img_indicator_green_light
                                 : R.drawable.mc_img_indicator_red_light);
                     }

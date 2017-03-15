@@ -8,12 +8,11 @@ import android.util.Pair;
 
 import com.google.gson.Gson;
 import com.magenta.mc.client.android.McAndroidApplication;
+import com.magenta.mc.client.android.binder.SocketBinder;
 import com.magenta.mc.client.android.common.Constants;
 import com.magenta.mc.client.android.common.IntentAttributes;
 import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.common.UserStatus;
-import com.magenta.mc.client.android.mc.MxSettings;
-import com.magenta.mc.client.android.mc.client.Login;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 import com.magenta.mc.client.android.record.UpdateRunEvent;
 import com.magenta.mc.client.android.service.holder.ServiceHolder;
@@ -52,6 +51,9 @@ public class SocketIOService extends Service {
     protected long mTimeStamp;
     private Subscription subscribtion;
 
+    public PublishSubject<Pair<Long, String>> getPublisher() {
+        return publisher;
+    }
 
     public void onCreate() {
         super.onCreate();
@@ -232,13 +234,13 @@ public class SocketIOService extends Service {
     }
 
     protected void onJobChanged(String json, Ack ack) throws JSONException, SQLException {
-        JSONObject rootJson = new JSONObject(json);
-        JSONObject messageJson = rootJson.getJSONObject("message");
-        String key = rootJson.optString("key");
-        MCLoggerFactory.getLogger(SocketIOService.class).debug(String.format("Callback %s ack key", key));
-        ack.call(key);
-
-        UpdateRunEvent event = mGson.fromJson(messageJson.getJSONObject("properties").optString("msg"), UpdateRunEvent.class);
+//        JSONObject rootJson = new JSONObject(json);
+//        JSONObject messageJson = rootJson.getJSONObject("message");
+//        String key = rootJson.optString("key");
+//        MCLoggerFactory.getLogger(SocketIOService.class).debug(String.format("Callback %s ack key", key));
+//        ack.call(key);
+        UpdateRunEvent event = /*mGson.fromJson(messageJson.getJSONObject("properties").optString("msg"), UpdateRunEvent.class)*/new UpdateRunEvent(System.currentTimeMillis(), "");
+        mTimeStamp = System.currentTimeMillis();
         publisher.onNext(Pair.create(System.currentTimeMillis(), event.getReference()));
         // TODO: 2/27/17 has states?
     }
@@ -265,8 +267,8 @@ public class SocketIOService extends Service {
     }
 
     protected String getSocketUrl() {
-        String port = "80"; // TODO: 2/6/17 impl
-        return ("443".equals(port) ? "https://" : "http://") + MxSettings.get().getProperty(com.magenta.mc.client.android.mc.settings.Settings.HOST) + ":" + port + Constants.SOCKET_IO_POSTFIX + "?" + Constants.AUTH_TOKEN + "=" + Settings.get().getAuthToken();
+        String port = Settings.get().getPort();
+        return ("443".equals(port) ? "https://" : "http://") + Settings.get().getHost() + ":" + port + Constants.SOCKET_IO_POSTFIX + "?" + Constants.AUTH_TOKEN + "=" + Settings.get().getAuthToken();
     }
 
     protected boolean isAuthFailed(Object arg) {
@@ -291,7 +293,7 @@ public class SocketIOService extends Service {
     }
 
     protected void dropUser() {
-        Login.getInstance().logout();
+//        Login.getInstance().logout();
         // TODO: 2/27/17 раскоментировать и имплементировать после выпиливания xmpp
 //        EventBus.getDefault().postSticky(new DropUserEvent());
 //        startActivity(new Intent(this, MateApplication.getInstance().getWorkflowService().getLoginActivity()).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK));
@@ -307,6 +309,6 @@ public class SocketIOService extends Service {
     }
 
     public IBinder onBind(Intent intent) {
-        return new Binder(); // TODO: 3/5/17 class binder for this
+        return new SocketBinder(this);
     }
 }

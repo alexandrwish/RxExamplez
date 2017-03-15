@@ -13,12 +13,11 @@ import android.widget.TableLayout;
 
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.common.IntentAttributes;
+import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.db.dao.DistributionDAO;
 import com.magenta.mc.client.android.entity.DynamicAttributeType;
 import com.magenta.mc.client.android.entity.TaskState;
-import com.magenta.mc.client.android.mc.HDSettings;
 import com.magenta.mc.client.android.mc.MxAndroidUtil;
-import com.magenta.mc.client.android.mc.MxSettings;
 import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.service.ServicesRegistry;
 import com.magenta.mc.client.android.service.storage.entity.Job;
@@ -82,8 +81,8 @@ public class StartActivity extends DistributionActivity implements WorkflowActiv
                                 return MxAndroidUtil.showTomTomOrDefaultNavigator(stop.getAddress(), StartActivity.this);
                             }
                         }))
-                .add(new Attribute(getString(R.string.load), StringUtils.formatDouble(stop.getParameter(Stop.ATTR_LOAD))).setUnit(MxSettings.get().getProperty(HDSettings.MX_CONFIG_CAPACITY_UNITS, "")))
-                .add(new Attribute(getString(R.string.volume), StringUtils.formatDouble(stop.getParameter(Stop.ATTR_VOLUME))).setUnit(MxSettings.get().getProperty(HDSettings.MX_CONFIG_CAPACITY_UNITS, "")))
+                .add(new Attribute(getString(R.string.load), StringUtils.formatDouble(stop.getParameter(Stop.ATTR_LOAD))).setUnit(Settings.get().getCapacityUnit()))
+                .add(new Attribute(getString(R.string.volume), StringUtils.formatDouble(stop.getParameter(Stop.ATTR_VOLUME))).setUnit(Settings.get().getVolumeUnit()))
                 .add(new Attribute(getString(R.string.contact_label), stop.getContactPerson()))
                 .add(new Attribute(getString(R.string.phone_label), stop.getContactPhone()).setType(DynamicAttributeType.PHONE))
                 .add(new Attribute(getString(R.string.cost_label), StringUtils.formatCost(stop.getParameter(Stop.ATTR_COST))))

@@ -3,6 +3,7 @@ package com.magenta.mc.client.android.service.storage.entity;
 import android.content.Context;
 
 import com.magenta.mc.client.android.McAndroidApplication;
+import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.db.dao.StopsDAO;
 import com.magenta.mc.client.android.entity.AbstractJob;
 import com.magenta.mc.client.android.entity.AbstractJobStatus;
@@ -15,7 +16,6 @@ import com.magenta.mc.client.android.events.JobEvent;
 import com.magenta.mc.client.android.mc.MxAndroidUtil;
 import com.magenta.mc.client.android.mc.client.resend.Resender;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
-import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.mc.storage.FieldGetter;
 import com.magenta.mc.client.android.mc.storage.FieldSetter;
 import com.magenta.mc.client.android.mc.util.Resources;
@@ -90,7 +90,7 @@ public class Stop extends AbstractStop {
                 + " \"" + StatusUtils.translate(context, this.state) + "\"->\"" + StatusUtils.translate(context, state) + "\"");
         setState(state);
         if (state == TaskState.STOP_ARRIVED) {
-            setArriveDate(Setup.get().getSettings().getCurrentDate());
+            setArriveDate(new Date());
             getStopValues().put("arriveDate", Resources.DATE_FORMAT.format(getArriveDate()));
         } else {
             getStopValues().remove("arriveDate");
@@ -100,7 +100,7 @@ public class Stop extends AbstractStop {
             getStopValues().put("lat", String.valueOf(location.getLat()));
             getStopValues().put("lon", String.valueOf(location.getLon()));
         }
-        getStopValues().put("performer", Setup.get().getSettings().getUserId());
+        getStopValues().put("performer", Settings.get().getLogin());
         parentJob.setLastValidState(getStateString());
         if (isCompleted()) {
             parentJob.setLastStop(this);

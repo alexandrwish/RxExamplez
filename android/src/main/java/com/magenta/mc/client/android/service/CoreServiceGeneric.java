@@ -10,6 +10,7 @@ import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
 
+import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.service.listeners.BroadcastEvent;
@@ -36,7 +37,7 @@ public abstract class CoreServiceGeneric extends Service implements CoreService 
         public void onProviderDisabled(String provider) {
         }
     };
-    protected final Map<String, BroadcastEventsListener> broadcastListeners = new ConcurrentHashMap<String, BroadcastEventsListener>(0);
+    protected final Map<String, BroadcastEventsListener> broadcastListeners = new ConcurrentHashMap<>(0);
     private final IBinder mBinder = new LocalBinder();
 
     public void registerListener(final BroadcastEventsListener listener) {
@@ -83,7 +84,7 @@ public abstract class CoreServiceGeneric extends Service implements CoreService 
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000L, 10.0f, locationListener);
         MCLoggerFactory.getLogger(getClass()).trace("starting in foreground");
         Notifications notifications = ((AndroidUI) Setup.get().getUI()).getNotifications();
-        String appName = Setup.get().getSettings().getAppName();
+        String appName = getString(R.string.mx_app_name);
         startForeground(McService.MAIN_NOTIFICATION_ID, notifications.createConnectionStatusNotification(false, appName));
         MCLoggerFactory.getLogger(getClass()).trace("started in foreground");
     }

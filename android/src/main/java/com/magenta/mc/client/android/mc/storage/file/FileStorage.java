@@ -1,8 +1,8 @@
 package com.magenta.mc.client.android.mc.storage.file;
 
+import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.mc.exception.StorageException;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
-import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.mc.storage.BinaryStorable;
 import com.magenta.mc.client.android.mc.storage.Storable;
 import com.magenta.mc.client.android.mc.storage.StorableMetadata;
@@ -82,7 +82,7 @@ public class FileStorage implements Storage {
         }
     }
 
-    public List load(StorableMetadata metadata) throws StorageException {
+    public List<Storable> load(StorableMetadata metadata) throws StorageException {
         try {
             metadata.storageLock.readLock().acquire();
 
@@ -108,15 +108,15 @@ public class FileStorage implements Storage {
                     return ((String) o1).compareTo((String) o2);
                 }
             });
-            List result = new ArrayList(ids.length);
-            for (int i = 0; i < ids.length; i++) {
-                Storable nextStorable = load(metadata, ids[i]);
+            List<Storable> result = new ArrayList<>(ids.length);
+            for (String id : ids) {
+                Storable nextStorable = load(metadata, id);
                 if (nextStorable != null)
                     result.add(nextStorable);
             }
             return result;
         } catch (InterruptedException e) {
-            return new ArrayList();
+            return new ArrayList<>();
         } finally {
             metadata.storageLock.readLock().release();
         }
@@ -177,20 +177,13 @@ public class FileStorage implements Storage {
     private boolean handleReadingException(StorableMetadata metadata, String storableId, IOException readingException) {
         if (readingException != null) {
             MCLoggerFactory.getLogger(FileStorage.class).error("Error while reading " + storableId, readingException);
-            boolean deleted = false;
             try {
                 delete(metadata, storableId);
             } catch (StorageException e) {
                 e.printStackTrace();
             }
             isStorageCorrupted = true;
-            if (deleted) {
-                MCLoggerFactory.getLogger(FileStorage.class).debug(storableId + " has been deleted");
-                return true;
-            } else {
-                MCLoggerFactory.getLogger(FileStorage.class).error("Cannot delete " + storableId);
-                return false;
-            }
+            return false;
         } else {
             return true;
         }
@@ -262,7 +255,7 @@ public class FileStorage implements Storage {
         if (metadata.common) {
             dir = new File(storageFolder, metadata.name);
         } else {
-            String userId = Setup.get().getSettings().getUserId();
+            String userId = Settings.get().getUserId();
             dir = new File(new File(storageFolder, userId), metadata.name);
         }
 

@@ -2,8 +2,8 @@ package com.magenta.mc.client.android.acra;
 
 import android.net.Uri;
 
+import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.http.HTTPHelper;
-import com.magenta.mc.client.android.mc.MxSettings;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 
 import org.json.JSONObject;
@@ -42,7 +42,7 @@ final class SentryHelper {
     }
 
     private Uri getDsn() {
-        String dsnStr = MxSettings.getInstance().getProperty(MxSettings.SENTRY_DSN);
+        String dsnStr = Settings.get().getSentryURL();
         if (dsnStr.isEmpty()) {
             IllegalStateException e = new IllegalStateException();
             MCLoggerFactory.getLogger(getClass()).error(e.getMessage(), e);

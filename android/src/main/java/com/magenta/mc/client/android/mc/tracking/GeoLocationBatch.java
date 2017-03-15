@@ -1,11 +1,11 @@
 package com.magenta.mc.client.android.mc.tracking;
 
+import com.magenta.mc.client.android.http.HttpClient;
 import com.magenta.mc.client.android.mc.client.resend.Resendable;
 import com.magenta.mc.client.android.mc.client.resend.ResendableMetadata;
 import com.magenta.mc.client.android.mc.storage.FieldGetter;
 import com.magenta.mc.client.android.mc.storage.FieldSetter;
 import com.magenta.mc.client.android.mc.storage.StorableMetadata;
-import com.magenta.mc.client.android.rpc.DefaultRpcResponseHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +34,7 @@ public class GeoLocationBatch extends Resendable {
     }
 
     public boolean send() {
-        DefaultRpcResponseHandler.locations(id, locations);
+//        HttpClient.getInstance().sendLocations(id, locations);
         return true;
     }
 

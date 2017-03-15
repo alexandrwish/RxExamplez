@@ -1,6 +1,5 @@
 package com.magenta.mc.client.android.mc.log_sending;
 
-import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.mc.storage.FieldGetter;
 import com.magenta.mc.client.android.mc.storage.FieldSetter;
 import com.magenta.mc.client.android.mc.storage.Storable;
@@ -47,7 +46,7 @@ public class LogRequest extends Storable {
         this.endDate = endDate;
         this.requestId = requestId;
         this.type = type;
-        Date currentDate = Setup.get().getSettings().getCurrentDate();
+        Date currentDate = /*Setup.get().getSettings().getCurrentDate()*/new Date();
         this.dateReceived = currentDate;
         this.dateChanged = currentDate;
     }

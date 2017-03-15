@@ -16,11 +16,10 @@ import android.widget.Toast;
 
 import com.magenta.mc.client.android.McAndroidApplication;
 import com.magenta.mc.client.android.R;
+import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.entity.Address;
 import com.magenta.mc.client.android.entity.LocationEntity;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
-import com.magenta.mc.client.android.mc.settings.Settings;
-import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.mc.tracking.GeoLocation;
 import com.magenta.mc.client.android.service.LocationService;
 import com.magenta.mc.client.android.service.ServicesRegistry;
@@ -28,10 +27,6 @@ import com.magenta.mc.client.android.util.AndroidUtil2;
 import com.magenta.mc.client.android.util.ReflectionUtils;
 import com.tomtom.navapp.Trip;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -46,10 +41,6 @@ public final class MxAndroidUtil {
 
     public static MxAndroidUtil getUtil() {
         return util;
-    }
-
-    public static String getPhoneNumber() {
-        return ((TelephonyManager) McAndroidApplication.getInstance().getSystemService(Context.TELEPHONY_SERVICE)).getLine1Number();
     }
 
     public static String getImei() {
@@ -77,7 +68,7 @@ public final class MxAndroidUtil {
 
     public static boolean showGoogleOrYandexNavigator(final Address address, final Context context) {
         try {
-            Intent intent = ((MxSettings) Setup.get().getSettings()).getLocale().equalsIgnoreCase("ru")
+            Intent intent = Settings.get().getLocale().equalsIgnoreCase("ru")
                     ? launchYandexNavigator(context, address)
                     : launchGoogleNavigator(address);
             if (intent != null) {
@@ -238,16 +229,6 @@ public final class MxAndroidUtil {
             MCLoggerFactory.getLogger(MxAndroidUtil.class).info("Current location not found.");
         }
         return location;
-    }
-
-    public static String readResponse(InputStream in) throws IOException {
-        String line;
-        BufferedReader br = new BufferedReader(new InputStreamReader(in));
-        StringBuilder sb = new StringBuilder();
-        while ((line = br.readLine()) != null) {
-            sb.append(line);
-        }
-        return sb.toString();
     }
 
     static class DeprecatedUtils extends AndroidUtil2 {

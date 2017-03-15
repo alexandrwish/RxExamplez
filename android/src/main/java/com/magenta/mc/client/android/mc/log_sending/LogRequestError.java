@@ -5,15 +5,7 @@ import com.magenta.mc.client.android.mc.client.resend.ResendableMetadata;
 import com.magenta.mc.client.android.mc.storage.FieldGetter;
 import com.magenta.mc.client.android.mc.storage.FieldSetter;
 import com.magenta.mc.client.android.mc.storage.StorableMetadata;
-import com.magenta.mc.client.android.rpc.DefaultRpcResponseHandler;
 
-/**
- * Created by IntelliJ IDEA.
- * User: const
- * Date: 13.06.12
- * Time: 21:38
- * To change this template use File | Settings | File Templates.
- */
 public class LogRequestError extends Resendable {
 
     public static final ResendableMetadata METADATA = new ResendableMetadata("log", true, true);
@@ -31,7 +23,7 @@ public class LogRequestError extends Resendable {
     }
 
     public boolean send() {
-        DefaultRpcResponseHandler.logRequestError(this);
+//        DefaultRpcResponseHandler.logRequestError(this);// TODO: 3/12/17
         return true;
     }
 

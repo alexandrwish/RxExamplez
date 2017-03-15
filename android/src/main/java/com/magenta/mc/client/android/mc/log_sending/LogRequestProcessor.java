@@ -6,7 +6,6 @@ import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.mc.storage.BinaryStorable;
 import com.magenta.mc.client.android.mc.storage.StorableMetadata;
 import com.magenta.mc.client.android.mc.storage.Storage;
-import com.magenta.mc.client.android.rpc.bin_chunks.random.RandomBinaryTransmitter;
 
 import net.sf.microproperties.Properties;
 
@@ -20,16 +19,13 @@ import java.io.StringWriter;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import EDU.oswego.cs.dl.util.concurrent.Mutex;
 
-/**
- * @author Petr Popov
- *         Created: 23.01.12 17:06
- */
 public class LogRequestProcessor {
 
     private static final long LOG_REQUEST_EXPIRATION_2_DAYS = 2 * 24 * 60 * 60 * 1000;
@@ -44,7 +40,7 @@ public class LogRequestProcessor {
     private SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT_STR);
 
     public LogRequestProcessor() {
-        pieceMaxLength = Setup.get().getSettings().getIntProperty("log.sending.piece.length", "50000");
+        pieceMaxLength = /*Setup.get().getSettings().getIntProperty("log.sending.piece.length", "50000")*/50000;
     }
 
     private static boolean acquireRequestRun(Long requestId) {
@@ -86,7 +82,7 @@ public class LogRequestProcessor {
             return;
         }
         request.setState(LogRequest.STATE_SIGNALLED);
-        request.setDateChanged(Setup.get().getSettings().getCurrentDate());
+        request.setDateChanged(/*Setup.get().getSettings().getCurrentDate()*/new Date());
         storage.save(request);
     }
 
@@ -147,7 +143,7 @@ public class LogRequestProcessor {
                     case LogRequest.STATE_SIGNALLED:
                         // this is an old accomplished request, just check and
                         // delete requests older than 2 days
-                        long elapsedMillis = Setup.get().getSettings().getCurrentDate().getTime() - request.getDateChanged().getTime();
+                        long elapsedMillis =/* Setup.get().getSettings().getCurrentDate().getTime()*/System.currentTimeMillis() - request.getDateChanged().getTime();
                         if (elapsedMillis > LOG_REQUEST_EXPIRATION_2_DAYS) {
                             storage.delete(request);
                         }
@@ -197,7 +193,7 @@ public class LogRequestProcessor {
             BinaryStorable logBlob = Setup.get().getStorage().getBinary(LOG_BLOB_METADATA, requestId.toString());
             try {
                 while (!complete && availableBackupFiles > -1) {
-                    File dir = new File(Setup.get().getSettings().getLogFolder(), directory);
+                    File dir = new File(/*Setup.get().getSettings().getLogFolder()*/"", directory); // TODO: 3/12/17 impl
                     File file = new File(dir, filename + ((availableBackupFiles > 0) ? ("." + availableBackupFiles) : ""));
 
                     if (file.exists()) {
@@ -291,17 +287,18 @@ public class LogRequestProcessor {
         }
     }
 
+    // TODO: 3/12/17 impl
     private void transmitLogBinary(LogRequest request, BinaryStorable logBlob) {
-        RandomBinaryTransmitter.transmit(LOG_URI_LOCATION + "/" + request.getId(), logBlob.getUri(), true);
-        request.setState(LogRequest.STATE_SIGNALLED);
-        request.setDateChanged(Setup.get().getSettings().getCurrentDate());
-        Setup.get().getStorage().save(request);
+//        RandomBinaryTransmitter.transmit(LOG_URI_LOCATION + "/" + request.getId(), logBlob.getUri(), true);
+//        request.setState(LogRequest.STATE_SIGNALLED);
+//        request.setDateChanged(Setup.get().getSettings().getCurrentDate());
+//        Setup.get().getStorage().save(request);
     }
 
     private void finalizeRequest(LogRequest request) {
-        request.setState(LogRequest.STATE_DONE);
-        request.setDateChanged(Setup.get().getSettings().getCurrentDate());
-        Setup.get().getStorage().save(request);
+//        request.setState(LogRequest.STATE_DONE);
+//        request.setDateChanged(Setup.get().getSettings().getCurrentDate());
+//        Setup.get().getStorage().save(request);
     }
 
 }

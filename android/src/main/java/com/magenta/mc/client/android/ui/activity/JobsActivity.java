@@ -20,14 +20,11 @@ import android.widget.ListView;
 
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.common.IntentAttributes;
+import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.entity.AbstractStop;
 import com.magenta.mc.client.android.entity.TaskState;
 import com.magenta.mc.client.android.events.EventType;
-import com.magenta.mc.client.android.mc.MxSettings;
-import com.magenta.mc.client.android.mc.client.DriverStatus;
-import com.magenta.mc.client.android.mc.client.Login;
 import com.magenta.mc.client.android.mc.setup.Setup;
-import com.magenta.mc.client.android.rpc.operations.JobsRefreshing;
 import com.magenta.mc.client.android.service.ServicesRegistry;
 import com.magenta.mc.client.android.service.listeners.BroadcastEvent;
 import com.magenta.mc.client.android.service.listeners.MxBroadcastEvents;
@@ -82,8 +79,8 @@ public class JobsActivity extends DistributionActivity implements WorkflowActivi
                 Job job = (Job) adapterView.getItemAtPosition(position);
                 if (job != null) {
                     Intent intent;
-                    boolean allowToPassJobsInArbitraryOrder = ((MxSettings) Setup.get().getSettings()).isAllowToPassJobsInArbitraryOrder();
-                    boolean allowToPassStopsInArbitraryOrder = ((MxSettings) Setup.get().getSettings()).isAllowToPassStopsInArbitraryOrder();
+                    boolean allowToPassJobsInArbitraryOrder = Settings.get().getSeveralRuns();
+                    boolean allowToPassStopsInArbitraryOrder = Settings.get().getRandomOrders();
                     boolean allPreviousRunIsComplete = true;
                     for (int i = 0; i < position; i++) {
                         Job j = (Job) adapterView.getItemAtPosition(i);
@@ -123,7 +120,7 @@ public class JobsActivity extends DistributionActivity implements WorkflowActivi
         });
         refreshBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                JobsRefreshing.refresh();
+//                JobsRefreshing.refresh(); // TODO: 3/12/17 impl
                 Animation animation = AnimationUtils.loadAnimation(JobsActivity.this, R.anim.refresh_anim);
                 refreshBtn.startAnimation(animation);
             }
@@ -145,7 +142,6 @@ public class JobsActivity extends DistributionActivity implements WorkflowActivi
         });
         callBtn = (ImageView) findViewById(R.id.call_btn);
         updateDispatcherPhone();
-        getDelegate().setDriverStatus(DriverStatus.getCurrent());
         showRuns();
     }
 
@@ -185,8 +181,7 @@ public class JobsActivity extends DistributionActivity implements WorkflowActivi
     }
 
     private void updateDispatcherPhone() {
-        String phone = ((MxSettings) Setup.get().getSettings()).getDispatcherPhoneNumber();
-        PhoneUtils.assignPhone(callBtn, phone);
+        PhoneUtils.assignPhone(callBtn, Settings.get().getDispatcherPhone());
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -198,7 +193,7 @@ public class JobsActivity extends DistributionActivity implements WorkflowActivi
     public boolean onOptionsItemSelected(MenuItem item) {
         int i = item.getItemId();
         if (i == R.id.refresh) {
-            JobsRefreshing.refresh();
+//            JobsRefreshing.refresh(); // TODO: 3/12/17 impl
         } else if (i == R.id.logout) {
             logout();
         } else {
@@ -208,7 +203,7 @@ public class JobsActivity extends DistributionActivity implements WorkflowActivi
     }
 
     private void logout() {
-        Login.getInstance().logout(true);
+//        Login.getInstance().logout(true); // TODO: 3/12/17 impl
         ServicesRegistry.getDataController().clear();
         startActivity(new Intent(JobsActivity.this, LoginActivity.class));
         finish();

@@ -10,7 +10,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.telephony.TelephonyManager;
 
-import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.mc.tracking.GeoLocation;
 import com.magenta.mc.client.android.mc.tracking.GeoLocationSource;
 import com.magenta.mc.client.android.mc.util.PlatformUtil;
@@ -78,7 +77,7 @@ public class AndroidUtil implements PlatformUtil {
                 location.getSpeed() * 3.6F,
                 location.getBearing(),
                 satellitesCount);
-        result.setRetrieveTimestamp(System.currentTimeMillis() + Setup.get().getSettings().getTimeDelta());
+        result.setRetrieveTimestamp(System.currentTimeMillis());
         result.setSource(source);
         return result;
     }

@@ -2,16 +2,16 @@ package com.magenta.mc.client.android.service.storage.entity;
 
 import android.content.Context;
 
-import com.magenta.mc.client.android.handler.AlertHandler;
+import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.entity.AbstractJob;
 import com.magenta.mc.client.android.entity.AbstractJobStatus;
 import com.magenta.mc.client.android.entity.AbstractStop;
 import com.magenta.mc.client.android.entity.JobEntity;
 import com.magenta.mc.client.android.entity.LocationEntity;
 import com.magenta.mc.client.android.entity.TaskState;
+import com.magenta.mc.client.android.handler.AlertHandler;
 import com.magenta.mc.client.android.mc.MxAndroidUtil;
 import com.magenta.mc.client.android.mc.client.resend.Resender;
-import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.service.ServicesRegistry;
 import com.magenta.mc.client.android.util.StatusUtils;
 
@@ -101,7 +101,7 @@ public class Job extends AbstractJob implements JobEntity {
             parameters.put("lat", location.getLat());
             parameters.put("lon", location.getLon());
         }
-        parameters.put("performer", Setup.get().getSettings().getUserId());
+        parameters.put("performer", Settings.get().getUserId());
         final JobStatus jobStatus = (JobStatus) ServicesRegistry.getDataController().saveJobStatus(this, parameters);
         if (send) {
             Resender.getInstance().sendSavedResendable(jobStatus);

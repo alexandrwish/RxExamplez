@@ -8,22 +8,18 @@ import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
 import com.magenta.mc.client.android.R;
-import com.magenta.mc.client.android.events.InstallUpdateEvent;
-import com.magenta.mc.client.android.mc.MxSettings;
-import com.magenta.mc.client.android.mc.client.Login;
-import com.magenta.mc.client.android.mc.setup.Setup;
-import com.magenta.mc.client.android.service.ServicesRegistry;
+import com.magenta.mc.client.android.common.IntentAttributes;
 import com.magenta.mc.client.android.events.AlertEvent;
 import com.magenta.mc.client.android.events.EventType;
+import com.magenta.mc.client.android.events.InstallUpdateEvent;
+import com.magenta.mc.client.android.service.ServicesRegistry;
 import com.magenta.mc.client.android.service.listeners.BroadcastEvent;
 import com.magenta.mc.client.android.service.listeners.MxBroadcastEvents;
 import com.magenta.mc.client.android.service.storage.entity.Job;
 import com.magenta.mc.client.android.service.storage.entity.Stop;
 import com.magenta.mc.client.android.ui.dialog.DialogFactory;
 import com.magenta.mc.client.android.ui.dialog.DistributionDialogFragment;
-import com.magenta.mc.client.android.common.IntentAttributes;
 
 import java.util.HashMap;
 
@@ -31,8 +27,6 @@ public abstract class DistributionActivity extends MxGenericActivity<HDActivityD
 
     protected String currentJobId;
     protected String currentStopId;
-    protected boolean mIsMapDisplayingEnabled;
-    protected MxSettings mSettings;
     private boolean isUpdateDialogShowed = false;
     private boolean isDialogShowedAfterLoseFocus = false;
     private String updateFilePathFromEvent;
@@ -50,8 +44,6 @@ public abstract class DistributionActivity extends MxGenericActivity<HDActivityD
         if (currentStopId == null && savedInstanceState != null) {
             currentStopId = savedInstanceState.getString(IntentAttributes.STOP_ID);
         }
-        mSettings = ((MxSettings) Setup.get().getSettings());
-        mIsMapDisplayingEnabled = mSettings.isMapDisplayingEnabled();
         if (savedInstanceState != null) {
             isUpdateDialogShowed = savedInstanceState.getBoolean(IntentAttributes.UPDATE_DIALOG_SHOWED);
             updateFilePathFromEvent = savedInstanceState.getString(IntentAttributes.UPDATE_DIALOG_PATH);
@@ -126,7 +118,7 @@ public abstract class DistributionActivity extends MxGenericActivity<HDActivityD
     }
 
     public void updateMapSettings() {
-        HashMap mapSettings = new Gson().fromJson((String) Setup.get().getSettings().get("map.property"), HashMap.class);
+        HashMap mapSettings = /*new Gson().fromJson((String) Setup.get().getSettings().get("map.property"), HashMap.class);*/ new HashMap(); // TODO: 3/12/17 impl
         if (mapSettings != null && mapSettings.size() > 1) {
             Bundle bundle = new Bundle();
             bundle.putInt(DialogFactory.TITLE, R.string.map_dialog);
@@ -142,43 +134,43 @@ public abstract class DistributionActivity extends MxGenericActivity<HDActivityD
         }
         runOnUiThread(new Runnable() {
             public void run() {
-                AlertDialog.Builder builder = new AlertDialog.Builder(DistributionActivity.this)
-                        .setMessage(!mSettings.isUpdateDelayed() ? R.string.update_needed_text : R.string.update_needed_second_text)
-                        .setPositiveButton(R.string.mx_ok, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                resetRestoreUpdateData();
-                                final Bundle bundle = new Bundle(3);
-                                bundle.clear();
-                                bundle.putBoolean("update", true);
-                                bundle.putString("path", path);
-                                Login.getInstance().logout(true);
-                                ServicesRegistry.getWorkflowService().logout(bundle);
-                            }
-                        })
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setCancelable(false);
-                if (!mSettings.isUpdateDelayed()) {
-                    builder.setNegativeButton(R.string.mx_cancel, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            resetRestoreUpdateData();
-                            mSettings.setUpdateDelayed(true);
-                            Toast.makeText(DistributionActivity.this, R.string.update_needed_toast_text, Toast.LENGTH_LONG).show();
-                        }
-                    });
-                }
-                if (!mSettings.isUpdateDelayed()) {
-                    builder.setNegativeButton(R.string.mx_cancel, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            resetRestoreUpdateData();
-                            mSettings.setUpdateDelayed(true);
-                            Toast.makeText(DistributionActivity.this, R.string.update_needed_toast_text, Toast.LENGTH_LONG).show();
-                        }
-                    });
-                }
+//                AlertDialog.Builder builder = new AlertDialog.Builder(DistributionActivity.this)
+//                        .setMessage(!mSettings.isUpdateDelayed() ? R.string.update_needed_text : R.string.update_needed_second_text)
+//                        .setPositiveButton(R.string.mx_ok, new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                resetRestoreUpdateData();
+//                                final Bundle bundle = new Bundle(3);
+//                                bundle.clear();
+//                                bundle.putBoolean("update", true);
+//                                bundle.putString("path", path);
+//                                Login.getInstance().logout(true);
+//                                ServicesRegistry.getWorkflowService().logout(bundle);
+//                            }
+//                        })
+//                        .setIcon(android.R.drawable.ic_dialog_alert)
+//                        .setCancelable(false);
+//                if (!mSettings.isUpdateDelayed()) {
+//                    builder.setNegativeButton(R.string.mx_cancel, new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            resetRestoreUpdateData();
+//                            mSettings.setUpdateDelayed(true);
+//                            Toast.makeText(DistributionActivity.this, R.string.update_needed_toast_text, Toast.LENGTH_LONG).show();
+//                        }
+//                    });
+//                }
+//                if (!mSettings.isUpdateDelayed()) {
+//                    builder.setNegativeButton(R.string.mx_cancel, new DialogInterface.OnClickListener() {
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            resetRestoreUpdateData();
+//                            mSettings.setUpdateDelayed(true);
+//                            Toast.makeText(DistributionActivity.this, R.string.update_needed_toast_text, Toast.LENGTH_LONG).show();
+//                        }
+//                    });
+//                }
                 saveDialogStateToPref();
                 isUpdateDialogShowed = true;
-                builder.show();
+//                builder.show();
             }
         });
     }
