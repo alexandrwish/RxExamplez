@@ -7,22 +7,18 @@ import com.magenta.mc.client.android.mc.storage.Storage;
 import com.magenta.mc.client.android.mc.storage.file.FileStorage;
 import com.magenta.mc.client.android.mc.ui.UI;
 import com.magenta.mc.client.android.mc.update.UpdateCheck;
-import com.magenta.mc.client.android.mc.util.PlatformUtil;
 import com.magenta.mc.client.android.ui.AndroidUI;
 import com.magenta.mc.client.android.update.AndroidUpdateCheck;
-import com.magenta.mc.client.android.util.AndroidUtil;
 
 public class AndroidSetup extends Setup {
 
     protected Storage storage;
-    protected AndroidUtil androidUtil;
     protected AndroidUI ui;
     protected UpdateCheck updateCheck;
 
     public AndroidSetup(final Context applicationContext) {
         initSettings(applicationContext);
         initStorage(applicationContext);
-        initPlatformUtil(applicationContext);
         initUI(applicationContext);
         initUpdateCheck(applicationContext);
     }
@@ -35,10 +31,6 @@ public class AndroidSetup extends Setup {
         ui = new AndroidUI(applicationContext);
     }
 
-    protected void initPlatformUtil(Context applicationContext) {
-        androidUtil = new AndroidUtil(applicationContext);
-    }
-
     private void initSettings(Context applicationContext) {
         // FIXME: 3/12/17 pls
     }
@@ -49,10 +41,6 @@ public class AndroidSetup extends Setup {
 
     public Storage getStorage() {
         return storage;
-    }
-
-    public PlatformUtil getPlatformUtil() {
-        return androidUtil;
     }
 
     public UI getUI() {

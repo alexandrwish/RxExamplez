@@ -23,7 +23,6 @@ import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 import com.magenta.mc.client.android.mc.tracking.GeoLocation;
 import com.magenta.mc.client.android.service.LocationService;
 import com.magenta.mc.client.android.service.ServicesRegistry;
-import com.magenta.mc.client.android.util.AndroidUtil2;
 import com.magenta.mc.client.android.util.ReflectionUtils;
 import com.tomtom.navapp.Trip;
 
@@ -229,25 +228,6 @@ public final class MxAndroidUtil {
             MCLoggerFactory.getLogger(MxAndroidUtil.class).info("Current location not found.");
         }
         return location;
-    }
-
-    static class DeprecatedUtils extends AndroidUtil2 {
-
-        DeprecatedUtils(Context applicationContext) {
-            super(applicationContext);
-            ReflectionUtils.setValueOfPrivateField(AndroidUtil2.class, this, "gpsLocationListener", new EmptyLocationListener());
-            ReflectionUtils.setValueOfPrivateField(AndroidUtil2.class, this, "networkLocationListener", new EmptyLocationListener());
-        }
-
-        public GeoLocation getGeoLocation(final int locationMaxAge) {
-            return null;
-        }
-
-        public void initLocationAPI() {
-        }
-
-        public void shutdownLocationAPI() {
-        }
     }
 
     private static class EmptyLocationListener implements LocationListener {

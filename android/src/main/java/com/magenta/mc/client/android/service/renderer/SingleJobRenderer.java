@@ -14,35 +14,24 @@ import com.magenta.mc.client.android.entity.Address;
 import com.magenta.mc.client.android.entity.DynamicAttributeEntity;
 import com.magenta.mc.client.android.entity.DynamicAttributeType;
 import com.magenta.mc.client.android.entity.JobEntity;
-import com.magenta.mc.client.android.entity.JobType;
 import com.magenta.mc.client.android.entity.LocalizeStringEntity;
 import com.magenta.mc.client.android.entity.OrderItemEntity;
 import com.magenta.mc.client.android.entity.OrderItemStatus;
 import com.magenta.mc.client.android.entity.TaskState;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
-import com.magenta.mc.client.android.mc.util.Resources;
-import com.magenta.mc.client.android.mc.xml.XMLDataBlock;
-import com.magenta.mc.client.android.record.DynamicAttributeRecord;
-import com.magenta.mc.client.android.record.OrderItemRecord;
-import com.magenta.mc.client.android.renderer.ObjectRenderer;
 import com.magenta.mc.client.android.service.storage.entity.Job;
 import com.magenta.mc.client.android.service.storage.entity.Stop;
-import com.magenta.mc.client.android.util.ParametersParser;
-import com.magenta.mc.client.android.util.RpcParser;
 import com.magenta.mc.client.android.util.StringUtils;
 
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
-public class SingleJobRenderer implements ObjectRenderer {
+public class SingleJobRenderer {
 
+    /*
     private static List createStops(XMLDataBlock stopsBlock, Job job) {
         final List stops = new ArrayList();
         boolean stopOrderDetected = false;
@@ -157,6 +146,7 @@ public class SingleJobRenderer implements ObjectRenderer {
         }
         return address;
     }
+    */
 
     public static JobEntity renderJob(Run run) {
         Job result = new Job();
@@ -271,6 +261,7 @@ public class SingleJobRenderer implements ObjectRenderer {
         return null;
     }
 
+    /*
     public Object renderFromBlock(XMLDataBlock jobBlock) {
         Job result = new Job();
         result.setReferenceId(jobBlock.getChildBlockText("reference"));
@@ -320,4 +311,5 @@ public class SingleJobRenderer implements ObjectRenderer {
         }
         return null;
     }
+    */
 }

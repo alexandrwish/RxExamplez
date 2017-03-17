@@ -11,7 +11,6 @@ import com.magenta.mc.client.android.update.AndroidUpdateCheck;
 
 public class MxSetup extends AndroidSetup {
 
-    private static final String PLATFORM = "ANDROID";
     private final DemoStorageInitializer demoStorageInitializer;
 
     public MxSetup(final Context applicationContext, final DemoStorageInitializer demoStorageInitializer) {
@@ -30,10 +29,6 @@ public class MxSetup extends AndroidSetup {
                 notifications = new MxNotifications(context);
             }
         };
-    }
-
-    protected void initPlatformUtil(final Context applicationContext) {
-        androidUtil = new MxAndroidUtil.DeprecatedUtils(applicationContext);
     }
 
     protected void initStorage(final Context applicationContext) {

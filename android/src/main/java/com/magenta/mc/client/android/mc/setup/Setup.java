@@ -5,8 +5,6 @@ import com.magenta.mc.client.android.mc.demo.SnapshotInitializer;
 import com.magenta.mc.client.android.mc.storage.Storage;
 import com.magenta.mc.client.android.mc.ui.UI;
 import com.magenta.mc.client.android.mc.update.UpdateCheck;
-import com.magenta.mc.client.android.mc.util.PlatformUtil;
-import com.magenta.mc.client.android.mc.util.PlatfromUtilDefault;
 
 public class Setup {
 
@@ -32,10 +30,6 @@ public class Setup {
 
     public Storage getStorage() {
         throw new UnsupportedOperationException("getStorage is not supported in base class, please override it");
-    }
-
-    public PlatformUtil getPlatformUtil() {
-        return new PlatfromUtilDefault();
     }
 
     public UI getUI() {

@@ -4,10 +4,7 @@ import com.magenta.mc.client.android.mc.storage.FieldGetter;
 import com.magenta.mc.client.android.mc.storage.FieldSetter;
 import com.magenta.mc.client.android.mc.storage.Storable;
 import com.magenta.mc.client.android.mc.storage.StorableMetadata;
-import com.magenta.mc.client.android.mc.util.DateFormatter;
-import com.magenta.mc.client.android.mc.xml.XMLDataBlock;
 
-import java.text.ParseException;
 import java.util.Date;
 
 public class LogRequest extends Storable {
@@ -51,17 +48,18 @@ public class LogRequest extends Storable {
         this.dateChanged = currentDate;
     }
 
-    public static LogRequest parse(XMLDataBlock block) throws ParseException {
-        XMLDataBlock strBlock = block.getChildBlock("string");
-        XMLDataBlock requestBlock = strBlock.getChildBlock("log_request");
-        LogRequest result = new LogRequest();
-        result.startDate = DateFormatter.parseFromUTC(requestBlock.getChildBlockText(LogRequest.FIELD_START_DATE));
-        result.endDate = DateFormatter.parseFromUTC(requestBlock.getChildBlockText(LogRequest.FIELD_END_DATE));
-        result.requestId = Long.parseLong(requestBlock.getChildBlockText(LogRequest.FIELD_REQUEST_ID));
-        result.type = LogType.valueOf(requestBlock.getChildBlockText(LogRequest.FIELD_LOG_TYPE));
-
-        return result;
-    }
+    /*
+        public static LogRequest parse(XMLDataBlock block) throws ParseException {
+            XMLDataBlock strBlock = block.getChildBlock("string");
+            XMLDataBlock requestBlock = strBlock.getChildBlock("log_request");
+            LogRequest result = new LogRequest();
+            result.startDate = DateFormatter.parseFromUTC(requestBlock.getChildBlockText(LogRequest.FIELD_START_DATE));
+            result.endDate = DateFormatter.parseFromUTC(requestBlock.getChildBlockText(LogRequest.FIELD_END_DATE));
+            result.requestId = Long.parseLong(requestBlock.getChildBlockText(LogRequest.FIELD_REQUEST_ID));
+            result.type = LogType.valueOf(requestBlock.getChildBlockText(LogRequest.FIELD_LOG_TYPE));
+            return result;
+        }
+    */
 
     public Date getStartDate() {
         return startDate;
