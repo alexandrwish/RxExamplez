@@ -13,9 +13,9 @@ import com.google.gson.GsonBuilder;
 import com.magenta.hdmate.mx.ApiClient;
 import com.magenta.hdmate.mx.api.MateApi;
 import com.magenta.hdmate.mx.auth.ApiKeyAuth;
-import com.magenta.hdmate.mx.model.Job;
 import com.magenta.hdmate.mx.model.OrderAction;
 import com.magenta.hdmate.mx.model.OrderActionResult;
+import com.magenta.hdmate.mx.model.Run;
 import com.magenta.hdmate.mx.model.TelemetryRecord;
 import com.magenta.mc.client.android.McAndroidApplication;
 import com.magenta.mc.client.android.common.Constants;
@@ -105,7 +105,7 @@ public class HttpClient {
         return apiClient.registerLogin(MxAndroidUtil.getImei()).observeOn(Schedulers.io());
     }
 
-    public Observable<List<Job>> getJobs() {
+    public Observable<List<Run>> getJobs() {
         return apiClient.allscheduleGet().observeOn(Schedulers.io());
     }
 

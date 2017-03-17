@@ -4,8 +4,8 @@ import android.app.IntentService;
 import android.content.Intent;
 
 import com.google.gson.Gson;
-import com.magenta.hdmate.mx.model.Job;
 import com.magenta.hdmate.mx.model.OrderCancelationReason;
+import com.magenta.hdmate.mx.model.Run;
 import com.magenta.mc.client.android.common.Constants;
 import com.magenta.mc.client.android.common.IntentAttributes;
 import com.magenta.mc.client.android.common.Settings;
@@ -167,7 +167,7 @@ public class HttpService extends IntentService {
     private void getJobs() {
         HttpClient.getInstance().getJobs()
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<List<Job>>() {
+                .subscribe(new Subscriber<List<Run>>() {
                     public void onCompleted() {
                         sendBroadcast(new Intent(Constants.HTTP_SERVICE_NAME).putExtra(IntentAttributes.HTTP_JOBS_RESPONSE_TYPE, Constants.STOP));
                     }
@@ -177,10 +177,10 @@ public class HttpService extends IntentService {
                         sendBroadcast(new Intent(Constants.HTTP_SERVICE_NAME).putExtra(IntentAttributes.HTTP_JOBS_RESPONSE_TYPE, Constants.ERROR));
                     }
 
-                    public void onNext(List<Job> jobRecords) {
+                    public void onNext(List<Run> runs) {
                         sendBroadcast(new Intent(Constants.HTTP_SERVICE_NAME).putExtra(IntentAttributes.HTTP_JOBS_RESPONSE_TYPE, Constants.START));
-                        for (Job jobRecord : jobRecords) {
-                            ServicesRegistry.getDataController().updateJob(SingleJobRenderer.renderJob(jobRecord));
+                        for (Run run : runs) {
+                            ServicesRegistry.getDataController().updateJob(SingleJobRenderer.renderJob(run));
                         }
                     }
                 });

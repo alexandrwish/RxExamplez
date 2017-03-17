@@ -5,6 +5,7 @@ import com.magenta.hdmate.mx.model.AttributeRecord;
 import com.magenta.hdmate.mx.model.LocationRecord;
 import com.magenta.hdmate.mx.model.Order;
 import com.magenta.hdmate.mx.model.OrderItem;
+import com.magenta.hdmate.mx.model.Run;
 import com.magenta.hdmate.mx.model.StopKind;
 import com.magenta.hdmate.mx.model.TimeWindow;
 import com.magenta.mc.client.android.db.dao.DistributionDAO;
@@ -157,24 +158,24 @@ public class SingleJobRenderer implements ObjectRenderer {
         return address;
     }
 
-    public static JobEntity renderJob(com.magenta.hdmate.mx.model.Job job) {
+    public static JobEntity renderJob(Run run) {
         Job result = new Job();
-        result.setAddress(createAddress(job.getDepotLocation()));
-        result.setStartAddress(createAddress(job.getStartLocation()));
-        result.setEndAddress(createAddress(job.getEndLocation()));
-        result.setReferenceId(job.getReference());
-        result.setDate(new Date(job.getDate()));
-        result.setParameter(Job.ATTR_NUMBER, String.valueOf(job.getNumber()));
-        result.setParameter(Job.ATTR_LOADING_END_TIME, String.valueOf(job.getLoadingEndTime()));
-        result.setParameter(Job.ATTR_LOADING_DURATION, String.valueOf(job.getLoadingDuration()));
-        result.setParameter(Job.ATTR_UNLOADING_DURATION, String.valueOf(job.getUnloadingDuration()));
-        result.setParameter(Job.ATTR_UNLOADING_END_TIME, String.valueOf(job.getUnloadingEndTime()));
-        result.setParameter(Job.ATTR_DRIVING_TIME, String.valueOf(job.getDrivingTime()));
-        result.setParameter(Job.ATTR_TOTAL_DISTANCE, String.valueOf(job.getDistance()));
-        result.setParameter(Job.ATTR_TOTAL_VOLUME, String.valueOf(job.getVolume()));
-        result.setParameter(Job.ATTR_TOTAL_LOAD, String.valueOf(job.getLoad()));
+        result.setAddress(createAddress(run.getDepotLocation()));
+        result.setStartAddress(createAddress(run.getStartLocation()));
+        result.setEndAddress(createAddress(run.getEndLocation()));
+        result.setReferenceId(run.getReference());
+        result.setDate(new Date(run.getDate()));
+        result.setParameter(Job.ATTR_NUMBER, String.valueOf(run.getNumber()));
+        result.setParameter(Job.ATTR_LOADING_END_TIME, String.valueOf(run.getLoadingEndTime()));
+        result.setParameter(Job.ATTR_LOADING_DURATION, String.valueOf(run.getLoadingDuration()));
+        result.setParameter(Job.ATTR_UNLOADING_DURATION, String.valueOf(run.getUnloadingDuration()));
+        result.setParameter(Job.ATTR_UNLOADING_END_TIME, String.valueOf(run.getUnloadingEndTime()));
+        result.setParameter(Job.ATTR_DRIVING_TIME, String.valueOf(run.getDrivingTime()));
+        result.setParameter(Job.ATTR_TOTAL_DISTANCE, String.valueOf(run.getDistance()));
+        result.setParameter(Job.ATTR_TOTAL_VOLUME, String.valueOf(run.getVolume()));
+        result.setParameter(Job.ATTR_TOTAL_LOAD, String.valueOf(run.getLoad()));
         List<AbstractStop> stops = new LinkedList<>();
-        for (Order order : job.getStops()) {
+        for (Order order : run.getStops()) {
             AbstractStop stop = createStop(order, result);
             stops.add(stop);
         }
