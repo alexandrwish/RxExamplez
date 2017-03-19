@@ -134,14 +134,20 @@ public class HttpClient {
                     }
 
                     public void onNext(List<OrderActionResult> orderActionResults) {
-                        Resender.getInstance().sent(STATUS_RESENDABLE_METADATA, id);
+                        if (orderActionResults != null) {
+                            for (OrderActionResult result : orderActionResults) {
+                                if (result.getSuccess()) {
+                                    Resender.getInstance().sent(STATUS_RESENDABLE_METADATA, id);
+                                }
+                            }
+                        }
                     }
                 });
     }
 
     @Deprecated
     // TODO: 2/17/17 fix me
-    public void sendLocations(final String id, List<GeoLocation> locations) {
+    public void sendLocations(final Long id, List<GeoLocation> locations) {
         List<TelemetryRecord> records = new LinkedList<>();
         for (GeoLocation o : locations) {
             TelemetryRecord record = new TelemetryRecord();
@@ -167,8 +173,10 @@ public class HttpClient {
                         MCLoggerFactory.getLogger(HttpClient.class).error(e.getMessage(), e);
                     }
 
-                    public void onNext(Boolean aBoolean) {
-                        Resender.getInstance().sent(GeoLocationBatch.METADATA, Long.valueOf(id));
+                    public void onNext(Boolean success) {
+                        if (success) {
+                            Resender.getInstance().sent(GeoLocationBatch.METADATA, id);
+                        }
                     }
                 });
     }
