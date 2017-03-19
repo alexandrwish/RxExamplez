@@ -12,7 +12,6 @@ import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.common.UserStatus;
 import com.magenta.mc.client.android.db.DBAdapter;
 import com.magenta.mc.client.android.db.MxDBOpenHelper;
-import com.magenta.mc.client.android.db.dao.DistributionDAO;
 import com.magenta.mc.client.android.db.dao.TileCacheDAO;
 import com.magenta.mc.client.android.mc.MXNavApp;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
@@ -32,9 +31,6 @@ import com.magenta.mc.client.android.util.WorkflowServiceImpl;
 import org.acra.annotation.ReportsCrashes;
 
 import java.sql.SQLException;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 import roboguice.RoboGuice;
 
@@ -75,7 +71,6 @@ public abstract class McAndroidApplication extends Application implements ThemeM
         initNavAppClient();
         initDBAdapter();
         initAcra();
-//        Renderer.registerRenderers(SingleJobRenderer.class);
         ServicesRegistry.registerDataController(new DataControllerImpl());
         ServicesRegistry.registerWorkflowService(WorkflowServiceImpl.class);
         ServicesRegistry.startCoreService(this, CoreServiceImpl.class);
@@ -144,17 +139,6 @@ public abstract class McAndroidApplication extends Application implements ThemeM
         return new MxThemeManager();
     }
 
-    /**
-     * Override this method if You want hide settings of your app.
-     *
-     * @return set of settings keys
-     */
-    public Set<String> getHiddenSettings() {
-        Set<String> result = new HashSet<>();
-        result.add("ui.theme");
-        return result;
-    }
-
     private void setupGuice() {
         RoboGuice.setBaseApplicationInjector(this, RoboGuice.DEFAULT_STAGE, RoboGuice.newDefaultRoboModule(this), createModule());
     }
@@ -184,14 +168,6 @@ public abstract class McAndroidApplication extends Application implements ThemeM
     protected void initAcra() {
         AcraConfigurator acraConfigurator = new AcraConfigurator();
         acraConfigurator.init(this);
-    }
-
-    public void completeStatisticSending(Date date) {
-        try {
-            DistributionDAO.getInstance().clearStatistics(date);
-        } catch (SQLException e) {
-            MCLoggerFactory.getLogger(getClass()).error(e.getMessage(), e);
-        }
     }
 
     public void lock() {

@@ -8,9 +8,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.location.Location;
-import android.location.LocationListener;
 import android.net.Uri;
-import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.widget.Toast;
 
@@ -20,10 +18,8 @@ import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.entity.Address;
 import com.magenta.mc.client.android.entity.LocationEntity;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
-import com.magenta.mc.client.android.mc.tracking.GeoLocation;
 import com.magenta.mc.client.android.service.LocationService;
 import com.magenta.mc.client.android.service.ServicesRegistry;
-import com.magenta.mc.client.android.util.ReflectionUtils;
 import com.tomtom.navapp.Trip;
 
 import java.util.ArrayList;
@@ -228,20 +224,5 @@ public final class MxAndroidUtil {
             MCLoggerFactory.getLogger(MxAndroidUtil.class).info("Current location not found.");
         }
         return location;
-    }
-
-    private static class EmptyLocationListener implements LocationListener {
-
-        public void onLocationChanged(Location location) {
-        }
-
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-        }
-
-        public void onProviderEnabled(String provider) {
-        }
-
-        public void onProviderDisabled(String provider) {
-        }
     }
 }

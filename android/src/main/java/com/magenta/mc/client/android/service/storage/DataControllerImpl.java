@@ -16,7 +16,6 @@ import com.magenta.mc.client.android.mc.exception.UnknownJobStatusException;
 import com.magenta.mc.client.android.mc.log.MCLogger;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 import com.magenta.mc.client.android.mc.setup.Setup;
-import com.magenta.mc.client.android.mc.util.Resources;
 import com.magenta.mc.client.android.service.DataController;
 import com.magenta.mc.client.android.service.ServicesRegistry;
 import com.magenta.mc.client.android.service.listeners.BroadcastEvent;
@@ -353,7 +352,7 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
         jobStatus.setJobReferenceId(jobReferenceId);
         jobStatus.setJobStatus(jobStatusString);
         final Map<String, String> params = new HashMap<>();
-        params.put("date", Resources.UTC_DATE_FORMAT.format(new Date()));
+        params.put("date", String.valueOf(System.currentTimeMillis()));
         if (additionalParams != null) {
             params.putAll(additionalParams);
         }
