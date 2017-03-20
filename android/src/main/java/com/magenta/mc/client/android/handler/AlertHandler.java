@@ -34,7 +34,7 @@ public class AlertHandler extends Handler {
     }
 
     public void start() {
-        if (Settings.get().getShowAlert() && !started) {
+        if (Settings.get().getAudioAlert() && !started) {
             started = true;
             killMePlz = false;
             delay = Settings.get().getAlertDelay() * 60 * 1000;

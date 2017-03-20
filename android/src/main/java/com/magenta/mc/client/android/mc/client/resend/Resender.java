@@ -88,7 +88,7 @@ public class Resender {
         loadCacheIfNecessary();
         send(true);
         // seems like retransmission interval is not needed
-        INTERVAL = /*Setup.get().getSettings().getIntProperty("resender.interval", "30000")*/Settings.get().getSaveLocationInterval();
+        INTERVAL = Settings.get().getLocationSave();
         MCLoggerFactory.getLogger(getClass()).debug("Resender started with interval: " + INTERVAL);
     }
 

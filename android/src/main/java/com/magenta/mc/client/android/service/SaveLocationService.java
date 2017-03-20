@@ -2,7 +2,6 @@ package com.magenta.mc.client.android.service;
 
 import android.location.Location;
 import android.os.CountDownTimer;
-import android.util.Log;
 
 import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.db.dao.DistributionDAO;
@@ -17,10 +16,10 @@ public class SaveLocationService extends SaveLocationsService {
 
     public void onCreate() {
         super.onCreate();
-        final long saveToDbInterval = Settings.get().getSaveLocationInterval();
+        final long saveToDbInterval = Settings.get().getLocationSave();
         mCdt = new CountDownTimer(mSendToServerInterval, saveToDbInterval) {
             public void onTick(long millisUntilFinished) {
-                if (Settings.get().getTrackingEnabled()) {
+                if (Settings.get().getLocationEnable()) {
                     LocationService locationService = ServicesRegistry.getLocationService();
                     if (locationService != null) {
                         Location loc = locationService.getLocation();

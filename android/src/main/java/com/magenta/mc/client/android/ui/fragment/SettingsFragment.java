@@ -69,7 +69,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                     preference.setSummary(((EditTextPreference) preference).getText());
                 }
             } else if (preference instanceof ListPreference) {
-                if (Settings.USER_LOCALE.equals(preference.getKey())) {
+                if (Settings.APP_LOCALE.equals(preference.getKey())) {
                     ((ListPreference) preference).setEntries(LocaleUtils.listOfAvailableLocales(McAndroidApplication.getInstance()));
                 }
                 preference.setSummary(((ListPreference) preference).getEntry());
@@ -95,14 +95,14 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             }
             if (Settings.APP_THEME.equals(key)) {
                 switchUiTheme(sharedPreferences);
-            } else if (Settings.USER_LOCALE.equals(key)) {
+            } else if (Settings.APP_LOCALE.equals(key)) {
                 switchLang(sharedPreferences);
             }
         }
     }
 
     private void switchLang(SharedPreferences sharedPreferences) {
-        LocaleUtils.changeLocale(McAndroidApplication.getInstance(), sharedPreferences.getString(Settings.USER_LOCALE, null));
+        LocaleUtils.changeLocale(McAndroidApplication.getInstance(), sharedPreferences.getString(Settings.APP_LOCALE, null));
         Activity activity = getActivity();
         startActivity(new Intent(activity, activity.getClass()));
         activity.finish();

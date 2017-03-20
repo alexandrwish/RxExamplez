@@ -13,21 +13,32 @@ import java.util.Set;
 @SuppressWarnings("unused")
 public class Settings {
 
-    public static final String USER_LOCALE = "user.locale";
+    //public settings
+    public static final String APP_LOCALE = "user.locale";
+    public static final String APP_HOST = "app.host";
+    public static final String APP_PORT = "app.port";
     public static final String APP_THEME = "app.theme";
+    public static final String LOC_SAVE = "loc.save";
+    public static final String LOC_ENABLE = "loc.enable";
+    public static final String UPDATE_ALERT = "update.alert";
+    public static final String MOTO_BARCODE = "moto.barcode";
     public static final String SETTING_PASSWORD = "settings.password";
+    public static final String CACHE_PERIOD = "cache.period";
+    public static final String CACHE_SPACE = "cache.space";
+    public static final String CACHE_ENABLE = "cache.enable";
 
     private static final Settings instance = new Settings();
+    //private settings
     private static final String FACT_COST = "fact.cost";
     private static final String BARCODE_SCREEN = "barcode.screen";
-    private static final String UPDATE_ALERT = "update.alert";
+
     private static final String SIGNATURE_SCREEN = "signature.screen";
     private static final String RANDOM_ORDERS = "random.orders";
     private static final String SEVERAL_RUNS = "several.runs";
     private static final String DISPLAY_MAP = "display.map";
-    private static final String SHOW_ALERT = "show.alert";
     private static final String NON_COMPLETED = "non.completed";
     private static final String ALERT_DELAY = "alert.delay";
+    private static final String AUDIO_ALERT = "audio.alert";
     private static final String DISPATCHER_PHONE = "dispatcher.phone";
     private static final String CAPACITY_UNIT = "capacity.unit";
     private static final String VOLUME_UNIT = "volume.unit";
@@ -35,13 +46,7 @@ public class Settings {
     private static final String AUTH_TOKEN = "api.key";
     private static final String USER_LOGIN = "user.login";
     private static final String USER_ACCOUNT = "user.account";
-    private static final String APP_HOST = "app.host";
-    private static final String APP_PORT = "app.port";
-    private static final String AUDIO_ALERT = "audio.alert";
     private static final String CANCEL_REASONS = "cancel.reasons";
-    private static final String MOTO_BARCODE = "moto.barcode";
-    private static final String SAVE_LOCATION_INTERVAL = "save.location.interval";
-    private static final String TRACKING_ENABLED = "tracking.enabled";
     private static final String TIMEZONE = "timezone";
     private static final String SENTRY_DSN = "sentry.dsn";
     public static String[] IGNORED_MAP_PROVIDERS = {
@@ -88,8 +93,8 @@ public class Settings {
         return preferences.getBoolean(DISPLAY_MAP, false);
     }
 
-    public Boolean getShowAlert() {
-        return preferences.getBoolean(SHOW_ALERT, false);
+    public Boolean getUpdateAlert() {
+        return preferences.getBoolean(UPDATE_ALERT, false);
     }
 
     public Integer getNonCompleted() {
@@ -133,7 +138,7 @@ public class Settings {
     }
 
     public String getLocale() {
-        return preferences.getString(USER_LOCALE, "");
+        return preferences.getString(APP_LOCALE, "");
     }
 
     public String getHost() {
@@ -156,12 +161,12 @@ public class Settings {
         return preferences.getBoolean(MOTO_BARCODE, false);
     }
 
-    public Long getSaveLocationInterval() {
-        return preferences.getLong(SAVE_LOCATION_INTERVAL, 60000L);
+    public Long getLocationSave() {
+        return preferences.getLong(LOC_SAVE, 60000L);
     }
 
-    public Boolean getTrackingEnabled() {
-        return preferences.getBoolean(TRACKING_ENABLED, true);
+    public Boolean getLocationEnable() {
+        return preferences.getBoolean(LOC_ENABLE, true);
     }
 
     public String getTimezone() {
@@ -174,6 +179,26 @@ public class Settings {
 
     public Theme getTheme() {
         return Theme.lookup(Integer.valueOf(preferences.getString(APP_THEME, "1")));
+    }
+
+    public String getSettingPassword() {
+        return preferences.getString(SETTING_PASSWORD, "");
+    }
+
+    public String getCachePeriod() {
+        return CACHE_PERIOD;
+    }
+
+    public String getCacheSpace() {
+        return CACHE_SPACE;
+    }
+
+    public String getCacheEnable() {
+        return CACHE_ENABLE;
+    }
+
+    public Boolean contains(String name) {
+        return preferences.contains(name);
     }
 
     public static class SettingsBuilder {
@@ -237,9 +262,9 @@ public class Settings {
             return this;
         }
 
-        public SettingsBuilder setShowAlert(Boolean enableAlert) {
+        public SettingsBuilder setUpdateAlert(Boolean enableAlert) {
             if (enableAlert != null) {
-                editor.putBoolean(SHOW_ALERT, enableAlert);
+                editor.putBoolean(UPDATE_ALERT, enableAlert);
             }
             return this;
         }
@@ -302,7 +327,7 @@ public class Settings {
 
         public SettingsBuilder setLocale(String locale) {
             if (locale != null) {
-                editor.putString(USER_LOCALE, locale);
+                editor.putString(APP_LOCALE, locale);
             }
             return this;
         }
@@ -349,16 +374,16 @@ public class Settings {
             return this;
         }
 
-        public SettingsBuilder setSaveLocationInterval(Long saveLocationInterval) {
-            if (saveLocationInterval != null) {
-                editor.putLong(SAVE_LOCATION_INTERVAL, saveLocationInterval);
+        public SettingsBuilder setLocationSave(Long locationSave) {
+            if (locationSave != null) {
+                editor.putLong(LOC_SAVE, locationSave);
             }
             return this;
         }
 
-        public SettingsBuilder setTrackingEnabled(Boolean trackingEnabled) {
-            if (trackingEnabled != null) {
-                editor.putBoolean(TRACKING_ENABLED, trackingEnabled);
+        public SettingsBuilder setLocationEnable(Boolean locationEnable) {
+            if (locationEnable != null) {
+                editor.putBoolean(LOC_ENABLE, locationEnable);
             }
             return this;
         }
@@ -373,6 +398,13 @@ public class Settings {
         public SettingsBuilder setTheme(String theme) {
             if (theme != null) {
                 editor.putString(APP_THEME, theme);
+            }
+            return this;
+        }
+
+        public SettingsBuilder setSettingsPassword(String password) {
+            if (password != null) {
+                editor.putString(SETTING_PASSWORD, password);
             }
             return this;
         }

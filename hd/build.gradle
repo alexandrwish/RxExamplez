@@ -36,13 +36,13 @@ android {
         }
     }
     compileSdkVersion 22
-    buildToolsVersion '25.0.0'
+    buildToolsVersion '25.0.2'
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 22
         applicationId "com.magenta.maxunits.mobile.hd"
         versionCode 1
-        versionName "1.0." + code
+        versionName "4.1.0." + code
     }
     buildTypes {
         release {
@@ -62,72 +62,26 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
     }
-    def Properties versionProps = new Properties()
-    versionProps['VERSION_CODE'] = code.toString()
-    versionProps['VERSION_HASH'] = getCommitHash()
-    versionProps['VERSION_DATE'] = getCommitDate()
-    def versionPropsFile = file('./src/main/assets/version.properties')
-    versionProps.store(versionPropsFile.newWriter(), null)
-    applicationVariants.all { variant ->
-        variant.outputs.each { output ->
-            File unaligned = output.packageApplication.outputFile;
-            File aligned = output.outputFile
-            if (!unaligned.getName().equalsIgnoreCase(aligned.getName())) {
-                unaligned.delete()
-            } else {
-                output.outputFile = new File(
-                        output.outputFile.parent,
-                        output.outputFile.name.replace(".apk", "-${versionName}.apk"))
-            }
-        }
-    }
-    android.variantFilter { variant ->
-        buildConfig.each { k, v ->
-            if (variant.buildType.name == 'release' && variant.getFlavors().get(0).name == k && v.build_release == "false") {
-                variant.setIgnore(true);
-            } else if (variant.buildType.name == 'debug' && variant.getFlavors().get(0).name == k && v.build_debug == "false") {
-                variant.setIgnore(true);
-            }
-        }
-    }
     productFlavors {
         buildConfig.each { k, v ->
             "$k" {
-            }
-        }
-    }
-}
+                buildConfigField("String", "COMMIT_HASH", "\"" + getCommitHash() + "\"")
+                buildConfigField("String", "COMMIT_DATE", "\"" + getCommitDate() + "\"")
+                buildConfigField("String", "APP_HOST", "\"" + "$v.host" + "\"")
+                buildConfigField("String", "APP_PORT", "\"" + "$v.port" + "\"")
+                buildConfigField("String", "APP_LOCALE", "\"" + "$v.locale" + "\"")
+                buildConfigField("String", "APP_THEME", "\"" + "$v.theme" + "\"")
+                buildConfigField("String", "LOC_SEND", "\"" + "$v.loc_send" + "\"")
+                buildConfigField("String", "LOC_SAVE", "\"" + "$v.loc_save" + "\"")
+                buildConfigField("String", "LOC_ENABLE", "\"" + "$v.loc_enable" + "\"")
+                buildConfigField("String", "CACHE_PERIOD", "\"" + "$v.cache_period" + "\"")
+                buildConfigField("String", "CACHE_SPACE", "\"" + "$v.cache_space" + "\"")
+                buildConfigField("String", "CACHE_ENABLE", "\"" + "$v.cache_enable" + "\"")
+                buildConfigField("String", "PASSWORD", "\"" + "$v.password" + "\"")
+                buildConfigField("String", "UPDATE_ALERT", "\"" + "$v.update_alert" + "\"")
+                buildConfigField("String", "MOTO_BARCODE", "\"" + "$v.moto_barcode" + "\"")
 
-tasks.whenTaskAdded { task ->
-    copy {
-        from './src/main/assets/settings_default.properties'
-        into './src/main/assets/'
-        rename { String fileName ->
-            fileName.replace('_default', '')
-        }
-    }
-    buildConfig.each { k, v ->
-        if ((task.name.equalsIgnoreCase('generate' + k + 'DebugBuildConfig')) || (task.name.equalsIgnoreCase('generate' + k + 'ReleaseBuildConfig'))) {
-            def taskName = 'configure' + k
-            tasks.create(taskName) {
-                doLast {
-                    ant.propertyfile(file: file('./src/main/assets/settings.properties')) {
-                        entry(key: "locale.key", value: v.language)
-                        entry(key: "server.address", value: v.server)
-                        entry(key: "server.port", value: v.port)
-                        entry(key: "server.component.name", value: v.component)
-                        entry(key: "tracking.retrieveIntervalSec", value: v.retrieveInterval)
-                        entry(key: "tracking.tracking.batchCoverSec", value: v.batchCover)
-                        entry(key: "update.server.port", value: v.updatePort)
-                        entry(key: "api.address", value: v.apiAddress)
-                        entry(key: "keepAlive.period", value: v.keepAlive)
-                        entry(key: "save.locations.interval", value: v.saveLocations)
-                        entry(key: "settings.password", value: v.password)
-                        entry(key: "tracking.enabled", value: v.trackingEnabled)
-                    }
-                }
             }
-            task.dependsOn taskName
         }
     }
 }

@@ -126,7 +126,7 @@ public class HttpService extends IntentService {
                                 .setNonCompleted(result.getNonCompletedTimePeriod())
                                 .setDisplayMap(result.getEnableMapDisplaying())
                                 .setDispatcherPhone(result.getDispatcherPhone())
-                                .setShowAlert(result.getAlertEnable())
+                                .setAudioAlert(result.getAlertEnable())
                                 .setAlertDelay(result.getAlertDelay())
                                 .setCapacityUnit(result.getCapacityUnits())
                                 .setVolumeUnit(result.getVolumeUnits())
