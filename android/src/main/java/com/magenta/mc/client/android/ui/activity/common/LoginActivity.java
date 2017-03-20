@@ -140,6 +140,8 @@ public class LoginActivity extends SmokeActivity<HDDelegate> {
         String password = UserUtils.encodeLoginPassword(mEditTextPassword.getText().toString());
         if (account.isEmpty() || login.isEmpty() || password.isEmpty()) {
             return;
+        } else {
+            Settings.SettingsBuilder.get().start().setLogin(login).setAccount(account).apply();
         }
         try {
             final InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
