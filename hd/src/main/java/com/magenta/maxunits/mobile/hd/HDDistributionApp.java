@@ -36,6 +36,15 @@ public class HDDistributionApp extends McAndroidApplication {
         if (!settings.contains(Settings.MOTO_BARCODE)) {
             builder.setMotoBarcode(Boolean.valueOf(BuildConfig.MOTO_BARCODE));
         }
+        if (!settings.contains(Settings.CACHE_ENABLE)) {
+            builder.setCacheEnable(Boolean.valueOf(BuildConfig.CACHE_ENABLE));
+        }
+        if (!settings.contains(Settings.CACHE_SPACE)) {
+            builder.setCacheSpace(BuildConfig.CACHE_SPACE);
+        }
+        if (!settings.contains(Settings.CACHE_PERIOD)) {
+            builder.setCachePeriod(BuildConfig.CACHE_PERIOD);
+        }
         builder.apply();
         super.onCreate();
     }

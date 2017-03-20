@@ -17,14 +17,14 @@
     <PreferenceCategory android:title="@string/mx_activity_preferences_tracking">
 
         <CheckBoxPreference
-            android:key="tracking.enabled"
+            android:key="loc.enabled"
             android:summary="@string/mx_activity_preferences_tracking_summary"
             android:title="@string/mx_activity_preferences_enabled" />
 
         <EditTextPreference
-            android:dependency="tracking.enabled"
+            android:dependency="loc.enabled"
             android:inputType="number"
-            android:key="save.location.interval"
+            android:key="loc.period"
             android:title="@string/mx_activity_preferences_batchCover" />
     </PreferenceCategory>
 
@@ -44,7 +44,7 @@
         <ListPreference
             android:defaultValue="en"
             android:entryValues="@array/mx_locale_list"
-            android:key="user.locale"
+            android:key="app.locale"
             android:title="@string/mx_language" />
 
         <ListPreference
@@ -73,5 +73,24 @@
             android:entryValues="@array/mx_demo_country_and_town_list"
             android:key="offline.demo.country"
             android:title="@string/mx_country_and_town" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/mx_activity_preferences_map_cache">
+
+        <CheckBoxPreference
+            android:key="cache.enable"
+            android:title="@string/enable_cache" />
+
+        <EditTextPreference
+            android:dependency="cache.enable"
+            android:inputType="number"
+            android:key="cache.period"
+            android:title="@string/max_cache_age" />
+
+        <EditTextPreference
+            android:dependency="cache.enable"
+            android:inputType="number"
+            android:key="cache.space"
+            android:title="@string/used_cache_space" />
     </PreferenceCategory>
 </PreferenceScreen>

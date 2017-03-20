@@ -12,6 +12,7 @@ import android.preference.PreferenceGroup;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.magenta.mc.client.android.McAndroidApplication;
@@ -33,14 +34,14 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         if (v == null) {
             return null;
         }
-//        Button button = new Button(getActivity().getApplicationContext());
-//        button.setText(R.string.preferences_clear_map_cash);
-//        v.addView(button);
-//        button.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
+        Button button = new Button(getActivity().getApplicationContext());
+        button.setText(R.string.clear_cache);
+        v.addView(button);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
 //                McAndroidApplication.getInstance().getCacheSession().getTileCacheEntityDao().deleteAll();
-//            }
-//        });
+            }
+        });
         return v;
     }
 

@@ -14,7 +14,7 @@ import java.util.Set;
 public class Settings {
 
     //public settings
-    public static final String APP_LOCALE = "user.locale";
+    public static final String APP_LOCALE = "app.locale";
     public static final String APP_HOST = "app.host";
     public static final String APP_PORT = "app.port";
     public static final String APP_THEME = "app.theme";
@@ -185,16 +185,16 @@ public class Settings {
         return preferences.getString(SETTING_PASSWORD, "");
     }
 
-    public String getCachePeriod() {
-        return CACHE_PERIOD;
+    public Long getCachePeriod() {
+        return Long.valueOf(preferences.getString(CACHE_PERIOD, "14")) * 86400000L;
     }
 
-    public String getCacheSpace() {
-        return CACHE_SPACE;
+    public Integer getCacheSpace() {
+        return Integer.valueOf(preferences.getString(CACHE_SPACE, "100"));
     }
 
-    public String getCacheEnable() {
-        return CACHE_ENABLE;
+    public Boolean getCacheEnable() {
+        return preferences.getBoolean(CACHE_ENABLE, true);
     }
 
     public Boolean contains(String name) {
@@ -405,6 +405,27 @@ public class Settings {
         public SettingsBuilder setSettingsPassword(String password) {
             if (password != null) {
                 editor.putString(SETTING_PASSWORD, password);
+            }
+            return this;
+        }
+
+        public SettingsBuilder setCacheEnable(Boolean enable) {
+            if (enable != null) {
+                editor.putBoolean(CACHE_ENABLE, enable);
+            }
+            return this;
+        }
+
+        public SettingsBuilder setCachePeriod(String period) {
+            if (period != null) {
+                editor.putString(CACHE_PERIOD, period);
+            }
+            return this;
+        }
+
+        public SettingsBuilder setCacheSpace(String space) {
+            if (space != null) {
+                editor.putString(CACHE_SPACE, space);
             }
             return this;
         }
