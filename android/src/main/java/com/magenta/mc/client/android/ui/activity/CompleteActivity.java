@@ -180,7 +180,7 @@ public class CompleteActivity extends DistributionActivity {
                     if (signature != null) {
                         intent.putExtra(SignatureActivity.EXTRA_CONTACT_NAME, (String) signature[0])
                                 .putExtra(SignatureActivity.EXTRA_SIGNATURE, (String) signature[1])
-                                .putExtra(SignatureActivity.EXTRA_SIGNATURE_TIMESTAMP, (Long) signature[2]);
+                                .putExtra(SignatureActivity.EXTRA_SIGNATURE_TIMESTAMP, Long.valueOf((String) signature[2]));
                     }
                     startActivityForResult(intent, SignatureActivity.REQUEST_CODE);
                 }
