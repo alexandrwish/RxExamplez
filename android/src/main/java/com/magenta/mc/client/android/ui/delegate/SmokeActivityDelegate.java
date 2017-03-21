@@ -11,7 +11,9 @@ import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import com.magenta.mc.client.android.McAndroidApplication;
 import com.magenta.mc.client.android.R;
+import com.magenta.mc.client.android.common.UserStatus;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.ui.activity.SmokeActivityInterface;
@@ -46,7 +48,7 @@ public class SmokeActivityDelegate extends McActivityDelegate {
                 public void run() {
                     ImageView imageView = (ImageView) getActivity().findViewById(R.id.mcTitleBarRightIndicator);
                     if (imageView != null) {
-                        imageView.setImageResource(o != null
+                        imageView.setImageResource(McAndroidApplication.getInstance().getStatus().equals(UserStatus.ONLINE)
                                 ? R.drawable.mc_img_indicator_green_light
                                 : R.drawable.mc_img_indicator_red_light);
                     }
@@ -60,8 +62,7 @@ public class SmokeActivityDelegate extends McActivityDelegate {
     }
 
     public boolean onCreateOptionMenu(Menu menu) {
-        MenuInflater inflater = getActivity().getMenuInflater();
-        inflater.inflate(getMenu(), menu);
+        getActivity().getMenuInflater().inflate(getMenu(), menu);
         return true;
     }
 

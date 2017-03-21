@@ -162,23 +162,25 @@ public class HttpClient {
             record.setGps(isGPSEnable());
         }
         // TODO: 2/20/17 return observer
-        apiClient.telemetryPost(records)
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<Boolean>() {
-                    public void onCompleted() {
+        if (apiClient != null) {
+            apiClient.telemetryPost(records)
+                    .subscribeOn(Schedulers.io())
+                    .subscribe(new Subscriber<Boolean>() {
+                        public void onCompleted() {
 
-                    }
-
-                    public void onError(Throwable e) {
-                        MCLoggerFactory.getLogger(HttpClient.class).error(e.getMessage(), e);
-                    }
-
-                    public void onNext(Boolean success) {
-                        if (success) {
-                            Resender.getInstance().sent(GeoLocationBatch.METADATA, id);
                         }
-                    }
-                });
+
+                        public void onError(Throwable e) {
+                            MCLoggerFactory.getLogger(HttpClient.class).error(e.getMessage(), e);
+                        }
+
+                        public void onNext(Boolean success) {
+                            if (success) {
+                                Resender.getInstance().sent(GeoLocationBatch.METADATA, id);
+                            }
+                        }
+                    });
+        }
     }
 
     // TODO: 2/20/17 use EasyDeviceInfo

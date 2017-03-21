@@ -22,11 +22,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.magenta.mc.client.android.McAndroidApplication;
 import com.magenta.mc.client.android.MobileApp;
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.common.Constants;
 import com.magenta.mc.client.android.common.IntentAttributes;
 import com.magenta.mc.client.android.common.Settings;
+import com.magenta.mc.client.android.common.UserStatus;
 import com.magenta.mc.client.android.http.HttpClient;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
 import com.magenta.mc.client.android.mc.setup.Setup;
@@ -55,7 +57,9 @@ public class LoginActivity extends SmokeActivity<LoginDelegate> {
     public void initActivity(Bundle savedInstanceState) {
         setContentView(R.layout.login_activity);
         Activity currentActivity = ((AndroidUI) Setup.get().getUI()).getCurrentActivity();
-        if (currentActivity != null && !(currentActivity instanceof LoginActivity)/* && XMPPClient.getInstance().isLoggedIn()*/) { // TODO: 3/12/17 impl
+        if (currentActivity != null
+                && !(currentActivity instanceof LoginActivity)
+                && !UserStatus.LOGOUT.equals(McAndroidApplication.getInstance().getStatus())) {
             Intent intent = new Intent(LoginActivity.this, currentActivity.getClass());
             startActivity(intent);
             finish();
@@ -268,10 +272,10 @@ public class LoginActivity extends SmokeActivity<LoginDelegate> {
         if (Setup.isInitialized()) {
             Activity currentActivity = chooseNextActivity();
             String activityClass = currentActivity != null ? currentActivity.getClass().getSimpleName() : "null";
-            MCLoggerFactory.getLogger(getClass()).debug("LoginActivity " + activityClass + " " + /*Login.isUserLoggedIn()*/ true); // TODO: 3/12/17 impl
+            MCLoggerFactory.getLogger(getClass()).debug("LoginActivity " + activityClass + " " + McAndroidApplication.getInstance().getStatus());
             if (currentActivity != null
                     && !(currentActivity instanceof LoginActivity)
-                    /*&& Login.isUserLoggedIn()*/) { // TODO: 3/12/17 impl
+                    && !UserStatus.LOGOUT.equals(McAndroidApplication.getInstance().getStatus())) {
                 Intent intent = new Intent(LoginActivity.this, currentActivity.getClass());
                 intent.putExtra("FROM_LOGIN_ACTIVITY", true);
                 intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
