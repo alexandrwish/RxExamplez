@@ -34,7 +34,7 @@ import com.magenta.mc.client.android.service.HttpService;
 import com.magenta.mc.client.android.ui.AndroidUI;
 import com.magenta.mc.client.android.ui.activity.SettingsActivity;
 import com.magenta.mc.client.android.ui.activity.SmokeActivity;
-import com.magenta.mc.client.android.ui.delegate.HDDelegate;
+import com.magenta.mc.client.android.ui.delegate.LoginDelegate;
 import com.magenta.mc.client.android.ui.dialog.InputDialog;
 import com.magenta.mc.client.android.util.Checksum;
 import com.magenta.mc.client.android.util.StringUtils;
@@ -44,7 +44,7 @@ import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
-public class LoginActivity extends SmokeActivity<HDDelegate> {
+public class LoginActivity extends SmokeActivity<LoginDelegate> {
 
     private String oldLocale;
     private Activity previous;
