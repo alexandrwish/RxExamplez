@@ -320,4 +320,5 @@
     <string name="update_needed_text">New version of the application is available. Start the update?</string>
     <string name="update_needed_toast_text">The application must be updated after the next logging in.</string>
     <string name="update_needed_second_text">New version of the application is available. Please install the updates to continue.</string>
+    <string name="try_again">Can\'t login. Check User ID and Pin and try again or late.</string>
 </resources>

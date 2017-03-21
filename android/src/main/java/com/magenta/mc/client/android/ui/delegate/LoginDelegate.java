@@ -2,7 +2,6 @@ package com.magenta.mc.client.android.ui.delegate;
 
 import android.app.Activity;
 import android.app.AlarmManager;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -38,7 +37,7 @@ public class LoginDelegate extends HDDelegate {
                 }
                 case Constants.WARN:
                 case Constants.ERROR: {
-                    new AlertDialog.Builder(activity).show();
+                    ((LoginActivity)activity).showLoginError();
                     break;
                 }
             }

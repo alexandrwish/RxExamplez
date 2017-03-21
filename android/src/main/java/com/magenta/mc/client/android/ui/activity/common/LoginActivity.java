@@ -286,4 +286,18 @@ public class LoginActivity extends SmokeActivity<LoginDelegate> {
     public void onBackPressed() {
         moveTaskToBack(true);
     }
+
+    public void showLoginError() {
+        new AlertDialog.Builder(this)
+                .setMessage(R.string.try_again)
+                .setCancelable(false)
+                .setNeutralButton(R.string.mx_ok,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        })
+                .create()
+                .show();
+    }
 }
