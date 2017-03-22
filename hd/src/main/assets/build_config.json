@@ -791,7 +791,7 @@
     "cache_period": 14,
     "cache_space": 100,
     "cache_enable": true,
-    "password": "",
+    "password": "1",
     "update_alert": true,
     "moto_barcode": false,
     "build_release": "false",
