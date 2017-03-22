@@ -158,7 +158,10 @@ public abstract class AbstractArriveMapActivity extends DistributionActivity imp
     protected void initButtons() {
         arriveButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (stop.getParameters().containsKey(Stop.ATTR_CUSTOMER_LOCATION_VERIFIED) && MxAndroidUtil.getGeoLocation() != null && ((LocationManager) getSystemService(Context.LOCATION_SERVICE)).isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                Boolean verified = Boolean.valueOf((String) stop.getParameters().get(Stop.ATTR_CUSTOMER_LOCATION_VERIFIED));
+                if ((verified == null || !verified)
+                        && MxAndroidUtil.getGeoLocation() != null
+                        && ((LocationManager) getSystemService(Context.LOCATION_SERVICE)).isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(AbstractArriveMapActivity.this);
                     builder.setMessage(R.string.mx_msg_verify_location_question)
                             .setCancelable(false)
