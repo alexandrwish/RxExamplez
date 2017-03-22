@@ -35,7 +35,7 @@ public class ArriveMapActivity extends AbstractArriveMapActivity {
         } else if (i == R.id.suspend) {
             suspendStop();
         } else {
-            return decorator.onMenuSelected(item) || super.onOptionsItemSelected(item);
+            return super.onOptionsItemSelected(item);
         }
         return true;
     }

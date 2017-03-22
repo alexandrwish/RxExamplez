@@ -1,12 +1,8 @@
 package com.magenta.mc.client.android.ui.activity;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.common.IntentAttributes;
@@ -61,10 +57,6 @@ public abstract class DistributionActivity extends MxGenericActivity<HDActivityD
         //init views after setContentView(R.id.layout)
     }
 
-    public boolean onContextItemSelected(MenuItem item) {
-        return decorator.onMenuSelected(item) || super.onContextItemSelected(item);
-    }
-
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         if (hasFocus && isUpdateDialogShowed && updateFilePathFromEvent != null && !isDialogShowedAfterLoseFocus) {
@@ -89,10 +81,6 @@ public abstract class DistributionActivity extends MxGenericActivity<HDActivityD
         outState.putString(IntentAttributes.UPDATE_DIALOG_PATH, updateFilePathFromEvent);
         outState.putBoolean(IntentAttributes.DIALOG_SHOWED_AFTER_LOSE_FOCUS, isDialogShowedAfterLoseFocus);
         super.onSaveInstanceState(outState);
-    }
-
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return decorator.onMenuSelected(item) || super.onContextItemSelected(item);
     }
 
     public String getCustomTitle() {

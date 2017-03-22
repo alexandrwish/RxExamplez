@@ -254,7 +254,7 @@ public class StartActivity extends DistributionActivity implements WorkflowActiv
                     .putExtra(IntentAttributes.JOB_ID, currentJobId)
                     .putExtra(IntentAttributes.STOP_ID, currentStopId));
         } else {
-            return decorator.onMenuSelected(item) || super.onOptionsItemSelected(item);
+            return super.onOptionsItemSelected(item);
         }
         return true;
     }

@@ -7,9 +7,6 @@ import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Pair;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
@@ -19,12 +16,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-import com.magenta.mc.client.android.McAndroidApplication;
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.common.Constants;
 import com.magenta.mc.client.android.common.IntentAttributes;
 import com.magenta.mc.client.android.common.Settings;
-import com.magenta.mc.client.android.common.UserStatus;
 import com.magenta.mc.client.android.entity.AbstractStop;
 import com.magenta.mc.client.android.entity.TaskState;
 import com.magenta.mc.client.android.events.EventType;
@@ -39,7 +34,6 @@ import com.magenta.mc.client.android.service.storage.StateController;
 import com.magenta.mc.client.android.service.storage.entity.Job;
 import com.magenta.mc.client.android.service.storage.entity.Stop;
 import com.magenta.mc.client.android.ui.AndroidUI;
-import com.magenta.mc.client.android.ui.activity.common.LoginActivity;
 import com.magenta.mc.client.android.ui.adapter.JobsAdapter;
 import com.magenta.mc.client.android.util.PhoneUtils;
 
@@ -143,11 +137,10 @@ public class JobsActivity extends DistributionActivity implements WorkflowActivi
         });
         findViewById(R.id.logout_btn).setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                logout();
+                getDelegate().logout();
             }
         });
         callBtn = (ImageView) findViewById(R.id.call_btn);
-        updateDispatcherPhone();
         showRuns();
     }
 
@@ -183,17 +176,11 @@ public class JobsActivity extends DistributionActivity implements WorkflowActivi
         StateController.cleanCurrentJob();
         super.onResume();
         refreshJobs(true);
-        updateDispatcherPhone();
-    }
-
-    private void updateDispatcherPhone() {
         PhoneUtils.assignPhone(callBtn, Settings.get().getDispatcherPhone());
     }
 
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
-        return true;
+    public Integer getMenu() {
+        return R.menu.menu;
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -201,18 +188,11 @@ public class JobsActivity extends DistributionActivity implements WorkflowActivi
         if (i == R.id.refresh) {
             ServiceHolder.getInstance().startService(HttpService.class, Pair.create(IntentAttributes.HTTP_TYPE, Constants.JOBS_TYPE));
         } else if (i == R.id.logout) {
-            logout();
+            getDelegate().logout();
         } else {
-            return decorator.onMenuSelected(item) || super.onOptionsItemSelected(item);
+            return super.onOptionsItemSelected(item);
         }
         return true;
-    }
-
-    private void logout() {
-        McAndroidApplication.getInstance().setStatus(UserStatus.LOGOUT);
-        ServicesRegistry.getDataController().clear();
-        startActivity(new Intent(JobsActivity.this, LoginActivity.class));
-        finish();
     }
 
     public void refreshJobs(boolean invokedFromActivity) {
@@ -229,11 +209,7 @@ public class JobsActivity extends DistributionActivity implements WorkflowActivi
         }
     }
 
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            moveTaskToBack(true);
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
+    public void onBackPressed() {
+        moveTaskToBack(true);
     }
 }

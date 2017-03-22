@@ -38,8 +38,6 @@ import com.magenta.mc.client.android.ui.activity.SettingsActivity;
 import com.magenta.mc.client.android.ui.activity.SmokeActivity;
 import com.magenta.mc.client.android.ui.delegate.LoginDelegate;
 import com.magenta.mc.client.android.ui.dialog.InputDialog;
-import com.magenta.mc.client.android.util.Checksum;
-import com.magenta.mc.client.android.util.StringUtils;
 import com.magenta.mc.client.android.util.UserUtils;
 
 import java.io.File;
@@ -162,11 +160,11 @@ public class LoginActivity extends SmokeActivity<LoginDelegate> {
     }
 
     protected void processSettingsButtonClick() {
-        final String password = StringUtils.toBlank("");
-        if (password != null) {
+        final String password =  Settings.get().getSettingPassword();
+        if (password != null && !password.trim().isEmpty()) {
             InputDialog.showPasswordInput(getString(R.string.mx_settings_locked), getString(R.string.mx_enter_password), new InputDialog.Callback<String>() {
                 public void ok(final String value) {
-                    if (Checksum.md5(value).equals(password)) {
+                    if (value.equalsIgnoreCase(password)) {
                         startActivityForResult(new Intent(LoginActivity.this, SettingsActivity.class), SettingsActivity.class.hashCode());
                     } else {
                         Toast.makeText(LoginActivity.this, getString(R.string.mx_incorrect_password), Toast.LENGTH_SHORT).show();
