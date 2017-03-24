@@ -14,22 +14,21 @@ import com.magenta.mc.client.android.service.listeners.BroadcastEvent;
 import com.magenta.mc.client.android.service.listeners.MxBroadcastEvents;
 import com.magenta.mc.client.android.service.storage.entity.Job;
 import com.magenta.mc.client.android.service.storage.entity.Stop;
+import com.magenta.mc.client.android.ui.delegate.WorkflowDelegate;
 import com.magenta.mc.client.android.ui.dialog.DialogFactory;
 import com.magenta.mc.client.android.ui.dialog.DistributionDialogFragment;
 
 import java.util.HashMap;
 
-public abstract class DistributionActivity extends MxGenericActivity<HDActivityDecorator> {
+public abstract class DistributionActivity extends SmokeActivity<WorkflowDelegate> {
 
     protected String currentJobId;
     protected String currentStopId;
     private boolean isUpdateDialogShowed = false;
     private boolean isDialogShowedAfterLoseFocus = false;
     private String updateFilePathFromEvent;
+    private ActivityDecorator decorator = new ActivityDecorator(this);
 
-    {
-        decorator = (HDActivityDecorator) ServicesRegistry.getWorkflowService().getDecorator(this);
-    }
 
     public void initActivity(Bundle savedInstanceState) {
         currentJobId = getIntent().getStringExtra(IntentAttributes.JOB_ID);

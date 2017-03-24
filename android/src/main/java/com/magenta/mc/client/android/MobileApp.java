@@ -4,7 +4,6 @@ import com.magenta.mc.client.android.entity.AbstractJobStatus;
 import com.magenta.mc.client.android.mc.MxSetup;
 import com.magenta.mc.client.android.mc.client.resend.ResendableMetadata;
 import com.magenta.mc.client.android.mc.client.resend.Resender;
-import com.magenta.mc.client.android.mc.components.AbortableTask;
 import com.magenta.mc.client.android.mc.components.MCTimerTask;
 import com.magenta.mc.client.android.mc.demo.DemoStorageInitializer;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
@@ -42,7 +41,6 @@ public class MobileApp {
     private final DemoStorageInitializer demoStorageInitializer;
     private Timer timer;
     private long prevCheckMillis = System.currentTimeMillis();
-    private volatile int needToLoginRequestsCount;
 
     public MobileApp() {
         demoStorageInitializer = new DemoStorageInitializerImpl();
@@ -65,10 +63,6 @@ public class MobileApp {
 
     public static void runConsecutiveTask(Runnable task) {
         runOnThreadPool(task, consecutiveExecutor);
-    }
-
-    public static void runAbortableTaskWithTimeout(final Runnable task, Runnable abort, long timeout) {
-        new AbortableTask(task, abort, timeout).run();
     }
 
     private static void runOnThreadPool(Runnable task, PooledExecutor pool) {
@@ -163,7 +157,7 @@ public class MobileApp {
     }
 
     private void setupGeoLocationAPI() {
-        ServicesRegistry.startSaveLocationsService(McAndroidApplication.getInstance(), SaveLocationService.class);
+        ServicesRegistry.startSaveLocationsService(SaveLocationService.class);
     }
 
     private void stopGeoLocationAPI() {

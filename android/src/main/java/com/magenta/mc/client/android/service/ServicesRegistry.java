@@ -1,6 +1,5 @@
 package com.magenta.mc.client.android.service;
 
-import android.app.Application;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -9,11 +8,8 @@ import android.os.IBinder;
 
 import com.magenta.mc.client.android.McAndroidApplication;
 import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
-import com.magenta.mc.client.android.ui.activity.DistributionActivity;
 
 import net.sf.microlog.core.LoggerFactory;
-
-import java.lang.reflect.Constructor;
 
 public class ServicesRegistry {
 
@@ -29,7 +25,6 @@ public class ServicesRegistry {
 
         }
     };
-    private static WorkflowService workflowService;
     private static LocationService sLocationService;
     private static final ServiceConnection sLocationServiceConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
@@ -44,7 +39,6 @@ public class ServicesRegistry {
     };
 
     private static Class<? extends CoreService> coreServiceClass;
-    private static Class<? extends WorkflowService> workflowServiceClass;
     private static Class<? extends SaveLocationsService> saveLocationsServiceClass;
     private static DataController dataController;
     private static CoreService coreService;
@@ -64,7 +58,7 @@ public class ServicesRegistry {
         ServicesRegistry.dataController = dataController;
     }
 
-    public static void startSaveLocationsService(final Application application, Class<? extends SaveLocationsService> saveLocationsServiceClass) {
+    public static void startSaveLocationsService(Class<? extends SaveLocationsService> saveLocationsServiceClass) {
         ServicesRegistry.saveLocationsServiceClass = saveLocationsServiceClass;
         connectToSaveLocationsServiceClass();
     }
@@ -80,10 +74,6 @@ public class ServicesRegistry {
             saveLocationsService.kill();
             saveLocationsService.stopSelf();
         }
-    }
-
-    public static void registerWorkflowService(final Class<? extends WorkflowService> workflowServiceClass) {
-        ServicesRegistry.workflowServiceClass = workflowServiceClass;
     }
 
     public static DataController getDataController() {
@@ -107,7 +97,7 @@ public class ServicesRegistry {
         }
     }
 
-    public static void startCoreService(final Application application, Class<? extends CoreService> coreServiceClass) {
+    public static void startCoreService(Class<? extends CoreService> coreServiceClass) {
         ServicesRegistry.coreServiceClass = coreServiceClass;
         connectToCoreService();
     }
@@ -116,26 +106,6 @@ public class ServicesRegistry {
         if (coreService != null) {
             coreService.stopSelf();
         }
-    }
-
-    private static WorkflowService newWorkflowService(final Context context) {
-        if (workflowServiceClass == null) {
-            throw new IllegalStateException("WorkflowService not registered");
-        }
-        try {
-            final Constructor constructor = workflowServiceClass.getConstructor(Context.class);
-            workflowService = (WorkflowService) constructor.newInstance(context);
-            return workflowService;
-        } catch (Exception e) {
-            throw new RuntimeException("Can't create new instance of WorkflowService", e);
-        }
-    }
-
-    public static WorkflowService getWorkflowService() {
-        if (workflowService == null) {
-            return newWorkflowService(McAndroidApplication.getInstance());
-        }
-        return workflowService;
     }
 
     public static void startLocationService(Context application, Class<? extends LocationService> locationServiceClass) {

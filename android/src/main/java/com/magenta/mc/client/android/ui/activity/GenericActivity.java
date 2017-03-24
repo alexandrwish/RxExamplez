@@ -8,7 +8,7 @@ import javax.inject.Inject;
 
 import roboguice.activity.RoboActivity;
 
-public class GenericActivity<D extends ActivityDelegate> extends RoboActivity implements IGenericActivity<D> {
+public class GenericActivity<D extends ActivityDelegate> extends RoboActivity {
 
     @Inject
     private D delegate;

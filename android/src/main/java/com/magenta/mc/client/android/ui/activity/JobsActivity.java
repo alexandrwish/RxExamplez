@@ -6,7 +6,6 @@ import android.graphics.ColorFilter;
 import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Pair;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
@@ -17,16 +16,13 @@ import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.magenta.mc.client.android.R;
-import com.magenta.mc.client.android.common.Constants;
 import com.magenta.mc.client.android.common.IntentAttributes;
 import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.entity.AbstractStop;
 import com.magenta.mc.client.android.entity.TaskState;
 import com.magenta.mc.client.android.events.EventType;
 import com.magenta.mc.client.android.mc.setup.Setup;
-import com.magenta.mc.client.android.service.HttpService;
 import com.magenta.mc.client.android.service.ServicesRegistry;
-import com.magenta.mc.client.android.service.holder.ServiceHolder;
 import com.magenta.mc.client.android.service.listeners.BroadcastEvent;
 import com.magenta.mc.client.android.service.listeners.MxBroadcastEvents;
 import com.magenta.mc.client.android.service.storage.DataControllerImpl;
@@ -50,6 +46,7 @@ public class JobsActivity extends DistributionActivity implements WorkflowActivi
         return getString(R.string.runs);
     }
 
+    @SuppressWarnings("unused")
     @MxBroadcastEvents({EventType.RELOAD_SCHEDULE, EventType.NEW_JOB, EventType.JOB_CANCELLED, EventType.JOB_UPDATED})
     public void onScheduleUpdate(BroadcastEvent<String> e) {
         refreshJobs(false);
@@ -120,7 +117,7 @@ public class JobsActivity extends DistributionActivity implements WorkflowActivi
         });
         refreshBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                ServiceHolder.getInstance().startService(HttpService.class, Pair.create(IntentAttributes.HTTP_TYPE, Constants.JOBS_TYPE));
+                getDelegate().reloadJobs();
                 Animation animation = AnimationUtils.loadAnimation(JobsActivity.this, R.anim.refresh_anim);
                 refreshBtn.startAnimation(animation);
             }
@@ -186,7 +183,7 @@ public class JobsActivity extends DistributionActivity implements WorkflowActivi
     public boolean onOptionsItemSelected(MenuItem item) {
         int i = item.getItemId();
         if (i == R.id.refresh) {
-            ServiceHolder.getInstance().startService(HttpService.class, Pair.create(IntentAttributes.HTTP_TYPE, Constants.JOBS_TYPE));
+            getDelegate().reloadJobs();
         } else if (i == R.id.logout) {
             getDelegate().logout();
         } else {

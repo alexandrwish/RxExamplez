@@ -26,7 +26,6 @@ import com.magenta.mc.client.android.ui.theme.ThemeManager;
 import com.magenta.mc.client.android.util.DSoundPool;
 import com.magenta.mc.client.android.util.LocaleUtils;
 import com.magenta.mc.client.android.util.StringUtils;
-import com.magenta.mc.client.android.util.WorkflowServiceImpl;
 
 import org.acra.annotation.ReportsCrashes;
 
@@ -72,8 +71,7 @@ public abstract class McAndroidApplication extends Application implements ThemeM
         initDBAdapter();
         initAcra();
         ServicesRegistry.registerDataController(new DataControllerImpl());
-        ServicesRegistry.registerWorkflowService(WorkflowServiceImpl.class);
-        ServicesRegistry.startCoreService(this, CoreServiceImpl.class);
+        ServicesRegistry.startCoreService(CoreServiceImpl.class);
         ServicesRegistry.startLocationService(this, LocationService.class);
         new MobileApp();
         LocaleUtils.changeLocale(this, Settings.get().getLocale());
