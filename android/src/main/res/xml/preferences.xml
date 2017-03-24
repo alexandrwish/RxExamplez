@@ -47,13 +47,6 @@
             android:key="app.locale"
             android:title="@string/mx_language" />
 
-        <ListPreference
-            android:defaultValue="0"
-            android:entries="@array/settings_theme_entries"
-            android:entryValues="@array/settings_theme_values"
-            android:key="app.theme"
-            android:title="@string/menu_switch_theme" />
-
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="moto.barcode"
