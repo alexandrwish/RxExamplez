@@ -1,6 +1,6 @@
 package com.magenta.mc.client.android.util;
 
-import com.magenta.mc.client.android.mc.crypto.MD5;
+import com.magenta.mc.client.android.crypto.MD5;
 
 public class UserUtils {
 

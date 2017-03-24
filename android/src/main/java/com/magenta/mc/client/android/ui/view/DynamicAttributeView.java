@@ -19,7 +19,7 @@ import android.widget.TimePicker;
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.db.dao.DistributionDAO;
 import com.magenta.mc.client.android.entity.DynamicAttributeEntity;
-import com.magenta.mc.client.android.entity.DynamicAttributeType;
+import com.magenta.mc.client.android.entity.type.DynamicAttributeType;
 import com.magenta.mc.client.android.ui.dialog.DateTimePickerDialog;
 import com.magenta.mc.client.android.util.Attribute;
 import com.magenta.mc.client.android.util.PhoneUtils;

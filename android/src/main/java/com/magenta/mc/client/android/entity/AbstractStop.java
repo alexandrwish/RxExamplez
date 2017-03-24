@@ -2,9 +2,9 @@ package com.magenta.mc.client.android.entity;
 
 import android.content.Context;
 
-import com.magenta.mc.client.android.mc.storage.FieldGetter;
-import com.magenta.mc.client.android.mc.storage.FieldSetter;
-import com.magenta.mc.client.android.mc.storage.StorableField;
+import com.magenta.mc.client.android.storage.FieldGetter;
+import com.magenta.mc.client.android.storage.FieldSetter;
+import com.magenta.mc.client.android.storage.StorableField;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -92,18 +92,6 @@ public abstract class AbstractStop extends StorableField {
         this.parentJob = job;
     }
 
-    public void setPassengers(List passengers) {
-        this.passengers = passengers;
-    }
-
-    public List getParcels() {
-        return parcels;
-    }
-
-    public void setParcels(List parcels) {
-        this.parcels = parcels;
-    }
-
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -117,11 +105,6 @@ public abstract class AbstractStop extends StorableField {
 
     public int hashCode() {
         return referenceId != null ? referenceId.toLowerCase().hashCode() : 0;
-    }
-
-    public Passenger getContact() {
-        if (passengers == null || passengers.size() == 0) return null;
-        return (Passenger) passengers.get(0);
     }
 
     public void setOrderItems(String barcodes) {

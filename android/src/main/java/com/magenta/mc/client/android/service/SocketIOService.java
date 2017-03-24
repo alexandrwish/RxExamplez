@@ -2,7 +2,6 @@ package com.magenta.mc.client.android.service;
 
 import android.app.Service;
 import android.content.Intent;
-import android.os.Binder;
 import android.os.IBinder;
 import android.util.Pair;
 
@@ -13,7 +12,7 @@ import com.magenta.mc.client.android.common.Constants;
 import com.magenta.mc.client.android.common.IntentAttributes;
 import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.common.UserStatus;
-import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
+import com.magenta.mc.client.android.log.MCLoggerFactory;
 import com.magenta.mc.client.android.record.UpdateRunEvent;
 import com.magenta.mc.client.android.service.holder.ServiceHolder;
 import com.magenta.mc.client.android.ui.activity.common.LoginActivity;

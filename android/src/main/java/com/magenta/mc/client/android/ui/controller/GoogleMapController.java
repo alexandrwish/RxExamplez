@@ -22,12 +22,12 @@ import com.google.gson.Gson;
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.entity.AbstractStop;
 import com.magenta.mc.client.android.entity.Address;
+import com.magenta.mc.client.android.entity.Job;
 import com.magenta.mc.client.android.entity.LocationEntity;
 import com.magenta.mc.client.android.handler.MapUpdateHandler;
-import com.magenta.mc.client.android.mc.MxAndroidUtil;
-import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
+import com.magenta.mc.client.android.log.MCLoggerFactory;
 import com.magenta.mc.client.android.service.ServicesRegistry;
-import com.magenta.mc.client.android.service.storage.entity.Job;
+import com.magenta.mc.client.android.util.MxAndroidUtil;
 import com.magenta.mc.client.android.util.StringUtils;
 
 import java.util.ArrayList;

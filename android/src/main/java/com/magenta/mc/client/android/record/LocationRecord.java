@@ -1,7 +1,7 @@
 package com.magenta.mc.client.android.record;
 
 import com.magenta.mc.client.android.entity.LocationEntity;
-import com.magenta.mc.client.android.mc.MxAndroidUtil;
+import com.magenta.mc.client.android.util.MxAndroidUtil;
 
 public class LocationRecord {
 

@@ -10,11 +10,11 @@ import android.net.Uri;
 
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.common.Settings;
-import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
-import com.magenta.mc.client.android.mc.setup.Setup;
 import com.magenta.mc.client.android.events.EventType;
 import com.magenta.mc.client.android.events.JobEvent;
-import com.magenta.mc.client.android.service.listeners.BroadcastEvent;
+import com.magenta.mc.client.android.listener.BroadcastEvent;
+import com.magenta.mc.client.android.log.MCLoggerFactory;
+import com.magenta.mc.client.android.setup.Setup;
 import com.magenta.mc.client.android.ui.AndroidUI;
 import com.magenta.mc.client.android.ui.Notifications;
 import com.magenta.mc.client.android.ui.activity.JobsActivity;

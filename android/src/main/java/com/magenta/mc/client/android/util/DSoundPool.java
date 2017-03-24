@@ -10,7 +10,7 @@ import android.util.SparseIntArray;
 import com.magenta.mc.client.android.MobileApp;
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.common.Settings;
-import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
+import com.magenta.mc.client.android.log.MCLoggerFactory;
 import com.magenta.mc.client.android.sound.DSound;
 
 import java.util.HashSet;

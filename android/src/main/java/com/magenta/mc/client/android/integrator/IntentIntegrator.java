@@ -116,7 +116,6 @@ public final class IntentIntegrator {
         }
         intentScan.setPackage(targetAppPackage);
         intentScan.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intentScan.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         activity.startActivityForResult(intentScan, REQUEST_CODE);
         return null;
     }

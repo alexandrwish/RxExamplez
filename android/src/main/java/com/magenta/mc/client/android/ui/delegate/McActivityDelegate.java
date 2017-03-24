@@ -6,10 +6,10 @@ import android.app.NotificationManager;
 import android.location.LocationManager;
 import android.view.MenuItem;
 
-import com.magenta.mc.client.android.mc.log.MCLogger;
-import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
-import com.magenta.mc.client.android.mc.setup.Setup;
+import com.magenta.mc.client.android.log.MCLogger;
+import com.magenta.mc.client.android.log.MCLoggerFactory;
 import com.magenta.mc.client.android.service.McService;
+import com.magenta.mc.client.android.setup.Setup;
 import com.magenta.mc.client.android.ui.AndroidUI;
 import com.magenta.mc.client.android.ui.OnMenuItemSelectedListener;
 

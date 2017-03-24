@@ -18,9 +18,9 @@ import android.widget.Toast;
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.db.dao.DistributionDAO;
-import com.magenta.mc.client.android.entity.OrderItemCheckStatus;
 import com.magenta.mc.client.android.entity.OrderItemEntity;
-import com.magenta.mc.client.android.entity.OrderItemStatus;
+import com.magenta.mc.client.android.entity.type.OrderItemCheckType;
+import com.magenta.mc.client.android.entity.type.OrderItemType;
 import com.magenta.mc.client.android.integrator.IntentIntegrator;
 import com.magenta.mc.client.android.integrator.IntentResult;
 import com.magenta.mc.client.android.sound.DSound;
@@ -87,13 +87,13 @@ public class OrderItemActivity extends DistributionActivity implements WorkflowA
                 if (barcode.trim().isEmpty()) {
                     Toast.makeText(OrderItemActivity.this, R.string.empty_field, Toast.LENGTH_LONG).show();
                 } else {
-                    if (!checkBarcode(barcode).equals(OrderItemCheckStatus.FIND)) {
+                    if (!checkBarcode(barcode).equals(OrderItemCheckType.FIND)) {
                         OrderItemEntity entity = new OrderItemEntity();
                         entity.setBarcode(barcode);
                         entity.setName(name);
                         entity.setJob(currentJobId);
                         entity.setStop(currentStopId);
-                        entity.setStatus(OrderItemStatus.ADDED_BY_DRIVER);
+                        entity.setStatus(OrderItemType.ADDED_BY_DRIVER);
                         entity.setMxID("-1");
                         try {
                             dao.createOrderItem(entity);
@@ -126,7 +126,7 @@ public class OrderItemActivity extends DistributionActivity implements WorkflowA
                 try {
                     int notScanned = 0;
                     for (OrderItemEntity orderItem : orderItems) {
-                        if (orderItem.getStatus().equals(OrderItemStatus.NOT_CHECKED)) {
+                        if (orderItem.getStatus().equals(OrderItemType.NOT_CHECKED)) {
                             notScanned++;
                         }
                     }
@@ -153,13 +153,13 @@ public class OrderItemActivity extends DistributionActivity implements WorkflowA
         });
     }
 
-    private OrderItemCheckStatus checkBarcode(String barcode) {
+    private OrderItemCheckType checkBarcode(String barcode) {
         boolean duplicate = false;
         if (!StringUtils.isBlank(barcode)) {
             for (OrderItemEntity item : orderItems) {
                 if (item.getBarcode().trim().equalsIgnoreCase(barcode.trim())) {
-                    if (item.getStatus().equals(OrderItemStatus.NOT_CHECKED)) {
-                        item.setStatus(OrderItemStatus.CHECKED);
+                    if (item.getStatus().equals(OrderItemType.NOT_CHECKED)) {
+                        item.setStatus(OrderItemType.CHECKED);
                         try {
                             dao.updateOrderItem(item);
                         } catch (Exception ignore) {
@@ -167,7 +167,7 @@ public class OrderItemActivity extends DistributionActivity implements WorkflowA
                         adapter.notifyDataSetChanged();
                         clearHeader(false);
                         DSoundPool.getInstance().playSound(DSound.SOUND_SUCCESS.getNum(), true);
-                        return OrderItemCheckStatus.FIND;
+                        return OrderItemCheckType.FIND;
                     } else {
                         duplicate = true;
                     }
@@ -178,9 +178,9 @@ public class OrderItemActivity extends DistributionActivity implements WorkflowA
         if (duplicate) {
             Toast.makeText(OrderItemActivity.this, R.string.duplicate_barcode, Toast.LENGTH_LONG).show();
             DSoundPool.getInstance().playSound(DSound.SOUND_SUCCESS.getNum(), true);
-            return OrderItemCheckStatus.DUPLICATE;
+            return OrderItemCheckType.DUPLICATE;
         }
-        return OrderItemCheckStatus.INCORRECT;
+        return OrderItemCheckType.INCORRECT;
     }
 
     private void startScanner() {
@@ -192,7 +192,7 @@ public class OrderItemActivity extends DistributionActivity implements WorkflowA
             registerReceiver(new BroadcastReceiver() {
                 public void onReceive(Context context, Intent intent) {
                     if (intent.getAction() != null && intent.getAction().contentEquals(ourIntentAction)) {
-                        if (checkBarcode(intent.getStringExtra(DATA_STRING_TAG)).equals(OrderItemCheckStatus.INCORRECT) && (header.getVisibility() == View.GONE)) {
+                        if (checkBarcode(intent.getStringExtra(DATA_STRING_TAG)).equals(OrderItemCheckType.INCORRECT) && (header.getVisibility() == View.GONE)) {
                             Toast.makeText(OrderItemActivity.this, R.string.wrong_barcode, Toast.LENGTH_LONG).show();
                             DSoundPool.getInstance().playSound(DSound.SOUND_ERROR.getNum(), true);
                         }
@@ -231,7 +231,7 @@ public class OrderItemActivity extends DistributionActivity implements WorkflowA
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if (scanResult != null && scanResult.getContents() != null) {
-            if (checkBarcode(scanResult.getContents()).equals(OrderItemCheckStatus.INCORRECT) && header.getVisibility() == View.GONE) {
+            if (checkBarcode(scanResult.getContents()).equals(OrderItemCheckType.INCORRECT) && header.getVisibility() == View.GONE) {
                 Toast.makeText(OrderItemActivity.this, R.string.wrong_barcode, Toast.LENGTH_LONG).show();
                 DSoundPool.getInstance().playSound(DSound.SOUND_ERROR.getNum(), true);
             }

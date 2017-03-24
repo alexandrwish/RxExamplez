@@ -10,7 +10,7 @@ import android.os.IBinder;
 import android.util.Pair;
 
 import com.magenta.mc.client.android.McAndroidApplication;
-import com.magenta.mc.client.android.service.listeners.BindListener;
+import com.magenta.mc.client.android.listener.BindListener;
 import com.magenta.mc.client.android.util.Triple;
 
 import java.util.Map;

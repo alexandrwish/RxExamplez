@@ -1,7 +1,7 @@
 package com.magenta.mc.client.android.service;
 
-import com.magenta.mc.client.android.service.listeners.BroadcastEvent;
-import com.magenta.mc.client.android.service.listeners.BroadcastEventsListener;
+import com.magenta.mc.client.android.listener.BroadcastEvent;
+import com.magenta.mc.client.android.listener.BroadcastEventsListener;
 
 public interface CoreService {
 

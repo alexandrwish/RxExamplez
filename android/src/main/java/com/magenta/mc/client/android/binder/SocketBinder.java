@@ -3,7 +3,7 @@ package com.magenta.mc.client.android.binder;
 import android.os.Binder;
 import android.util.Pair;
 
-import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
+import com.magenta.mc.client.android.log.MCLoggerFactory;
 import com.magenta.mc.client.android.service.SocketIOService;
 import com.magenta.mc.client.android.ui.delegate.WorkflowDelegate;
 

@@ -1,6 +1,6 @@
 package com.magenta.mc.client.android.events;
 
-import com.magenta.mc.client.android.service.listeners.BroadcastEvent;
+import com.magenta.mc.client.android.listener.BroadcastEvent;
 
 public class JobEvent extends BroadcastEvent<String> {
 

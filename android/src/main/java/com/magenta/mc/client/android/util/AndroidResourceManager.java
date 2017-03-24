@@ -3,8 +3,7 @@ package com.magenta.mc.client.android.util;
 import android.content.Context;
 import android.content.res.Resources;
 
-import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
-import com.magenta.mc.client.android.mc.util.ResourceManager;
+import com.magenta.mc.client.android.log.MCLoggerFactory;
 
 import java.io.InputStream;
 

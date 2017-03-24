@@ -1,6 +1,5 @@
 package com.magenta.mc.client.android.service.renderer;
 
-import com.google.gson.Gson;
 import com.magenta.hdmate.mx.model.AttributeRecord;
 import com.magenta.hdmate.mx.model.LocationRecord;
 import com.magenta.hdmate.mx.model.Order;
@@ -12,141 +11,22 @@ import com.magenta.mc.client.android.db.dao.DistributionDAO;
 import com.magenta.mc.client.android.entity.AbstractStop;
 import com.magenta.mc.client.android.entity.Address;
 import com.magenta.mc.client.android.entity.DynamicAttributeEntity;
-import com.magenta.mc.client.android.entity.DynamicAttributeType;
+import com.magenta.mc.client.android.entity.Job;
 import com.magenta.mc.client.android.entity.JobEntity;
 import com.magenta.mc.client.android.entity.LocalizeStringEntity;
 import com.magenta.mc.client.android.entity.OrderItemEntity;
-import com.magenta.mc.client.android.entity.OrderItemStatus;
+import com.magenta.mc.client.android.entity.Stop;
 import com.magenta.mc.client.android.entity.TaskState;
-import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
-import com.magenta.mc.client.android.service.storage.entity.Job;
-import com.magenta.mc.client.android.service.storage.entity.Stop;
-import com.magenta.mc.client.android.util.StringUtils;
+import com.magenta.mc.client.android.entity.type.DynamicAttributeType;
+import com.magenta.mc.client.android.entity.type.OrderItemType;
+import com.magenta.mc.client.android.log.MCLoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 public class SingleJobRenderer {
-
-    /*
-    private static List createStops(XMLDataBlock stopsBlock, Job job) {
-        final List stops = new ArrayList();
-        boolean stopOrderDetected = false;
-        if (stopsBlock != null && stopsBlock.getChildBlocks() != null) {
-            final Vector<XMLDataBlock> stopBlocks = stopsBlock.getChildBlocks();
-            for (XMLDataBlock stopBlock : stopBlocks) {
-                final String orderValue = stopBlock.getChildBlockText("index");
-                int index;
-                try {
-                    index = Integer.parseInt(orderValue);
-                    if (!stopOrderDetected)
-                        stopOrderDetected = true;
-                } catch (Exception e) {
-                    index = -1;
-                }
-                final Stop stop = new Stop(
-                        stopBlock.getChildBlockText("name"),
-                        stopBlock.getChildBlockText("reference"),
-                        stopBlock.getChildBlockText("type"),
-                        createAddress(stopBlock.getChildBlock("address")),
-                        stopBlock.getChildBlockText("notes"),
-                        index,
-                        stopBlock.getChildBlockText("state")
-                );
-                final String date = stopBlock.getChildBlockText("date");
-                if (date != null && date.trim().length() > 0) {
-                    try {
-                        stop.setDate(Resources.UTC_DATE_FORMAT.parse(date));
-                    } catch (ParseException e) {
-                        // incorrect date format
-                        e.printStackTrace();
-                    }
-                }
-                stop.setGroupId(stopBlock.getChildBlockText("group"));
-                stop.setCompleted(stop.getState() == TaskState.STOP_COMPLETED);
-                stop.setParentJob(job);
-                stop.setParameters(ParametersParser.fromString(stopBlock.getChildBlockText("parameters")));
-                stop.setAttributes(RpcParser.parseAttributes(stopBlock.getChildBlock("attributes")));
-                String oirStr = (String) stop.getParameters().remove("orderItems");
-                String darStr = (String) stop.getParameters().remove("attributes");
-                OrderItemRecord[] orderItemRecords = new Gson().fromJson(StringUtils.decodeURI(oirStr), OrderItemRecord[].class);
-                DynamicAttributeRecord[] dynamicAttributeRecords = new Gson().fromJson(StringUtils.decodeURI(darStr), DynamicAttributeRecord[].class);
-                try {
-                    DistributionDAO dao = DistributionDAO.getInstance();
-                    dao.clearOrderItems(stop.getReferenceId());
-                    dao.clearDynamicAttribute(stop.getReferenceId());
-                    if (orderItemRecords != null && orderItemRecords.length > 0) {
-                        List<OrderItemEntity> orderItemEntities = new ArrayList<>(orderItemRecords.length);
-                        for (OrderItemRecord record : orderItemRecords) {
-                            OrderItemEntity entity = record.toEntity();
-                            entity.setJob(job.getReferenceId());
-                            entity.setStop(stop.getReferenceId());
-                            orderItemEntities.add(entity);
-                        }
-                        dao.createOrderItems(orderItemEntities);
-                    }
-                    if (dynamicAttributeRecords != null && dynamicAttributeRecords.length > 0) {
-                        List<DynamicAttributeEntity> dynamicAttributeEntities = new ArrayList<>(dynamicAttributeRecords.length);
-                        for (DynamicAttributeRecord record : dynamicAttributeRecords) {
-                            DynamicAttributeEntity entity = record.toEntity();
-                            entity.setJob(job.getReferenceId());
-                            entity.setStop(stop.getReferenceId());
-                            dynamicAttributeEntities.add(entity);
-                        }
-                        dao.createDynamicAttributes(dynamicAttributeEntities);
-                    }
-                } catch (Exception ignore) {
-                }
-                stops.add(stop);
-            }
-        }
-        if (stopOrderDetected) {
-            // if any order values specified
-            // then sort stops by their 'order' values
-            Collections.sort(stops, new Comparator() {
-                public int compare(Object o, Object o1) {
-                    Stop stop1 = (Stop) o;
-                    Stop stop2 = (Stop) o1;
-                    final Integer order1 = stop1.getIndex();
-                    final Integer order2 = stop2.getIndex();
-                    if (order1 > -1 && order2 > -1) {
-                        // both orders defined
-                        return order1.compareTo(order2);
-                    } else if (order1 < 0 && order2 < 0) {
-                        // both undefined
-                        return 0;
-                    } else if (order1 < 0) {
-                        // first undefined
-                        return -1;
-                    } else {
-                        // second undefined
-                        return 1;
-                    }
-                }
-            });
-        }
-        return stops;
-    }
-
-    private static Address createAddress(final XMLDataBlock data) {
-        if (data == null) {
-            return null;
-        }
-        final String latitude = data.getChildBlockText("latitude");
-        final String longitude = data.getChildBlockText("longitude");
-        final Address address = new Address(data.getChildBlockText("full"), data.getChildBlockText("postcode"));
-        if (latitude != null && latitude.trim().length() > 0) {
-            address.setLatitude(Double.parseDouble(latitude));
-        }
-        if (longitude != null && longitude.trim().length() > 0) {
-            address.setLongitude(Double.parseDouble(longitude));
-        }
-        return address;
-    }
-    */
 
     public static JobEntity renderJob(Run run) {
         Job result = new Job();
@@ -212,7 +92,7 @@ public class SingleJobRenderer {
                     entity.setMxID("1"); // TODO: 3/11/17 impl
                     entity.setName(item.getName());
                     entity.setBarcode(item.getBarcode());
-                    entity.setStatus(OrderItemStatus.NOT_CHECKED); // TODO: 3/11/17 impl
+                    entity.setStatus(OrderItemType.NOT_CHECKED); // TODO: 3/11/17 impl
                     entity.setJob(job.getReferenceId());
                     entity.setStop(stop.getReferenceId());
                     orderItemEntities.add(entity);
@@ -260,56 +140,4 @@ public class SingleJobRenderer {
         }
         return null;
     }
-
-    /*
-    public Object renderFromBlock(XMLDataBlock jobBlock) {
-        Job result = new Job();
-        result.setReferenceId(jobBlock.getChildBlockText("reference"));
-        result.setNotes(jobBlock.getChildBlockText("notes"));
-        final String date = jobBlock.getChildBlockText("date");
-        if (date != null && date.trim().length() > 0) {
-            try {
-                result.setDate(Resources.UTC_DATE_FORMAT.parse(date));
-            } catch (ParseException ignore) {
-            }
-        }
-        result.setContactName(jobBlock.getChildBlockText("contactName"));
-        result.setContactPhone(jobBlock.getChildBlockText("contactPhone"));
-        result.setStops(createStops(jobBlock.getChildBlock("stops"), result));
-        result.setParameters(ParametersParser.fromString(jobBlock.getChildBlockText("parameters")));
-        result.setEndAddress(getAddressFromString(result.getParameters().remove("end-location")));
-        result.setStartAddress(getAddressFromString(result.getParameters().remove("start-location")));
-        String status = jobBlock.getChildBlockText("status");
-        if (status != null && (status = status.trim()).length() > 0) {
-            result.setState(TaskState.intValue(status));
-            if (result.getState() == TaskState.UNKNOWN) {
-                result.setLastValidState(status);
-            }
-        }
-        String type = jobBlock.getChildBlockText("type");
-        if (type != null && (type = type.trim()).length() > 0) {
-            result.setType(JobType.fromString(type));
-        }
-        result.setAddress(createAddress(jobBlock.getChildBlock("address")));
-        return result;
-    }
-
-    private Address getAddressFromString(Object o) {
-        if (o != null && o instanceof String) {
-            try {
-                Map addressMap = new Gson().fromJson(StringUtils.decodeURI((String) o), Map.class);
-                if (addressMap.size() != 3) {
-                    return null;
-                }
-                Address address = new Address();
-                address.setFullAddress(addressMap.get("address").toString());
-                address.setLatitude(Double.valueOf(addressMap.get("lat").toString()));
-                address.setLongitude(Double.valueOf(addressMap.get("lon").toString()));
-                return address;
-            } catch (Exception ignore) {
-            }
-        }
-        return null;
-    }
-    */
 }

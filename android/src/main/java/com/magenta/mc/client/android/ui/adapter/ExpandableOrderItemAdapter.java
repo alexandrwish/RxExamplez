@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.entity.OrderItemEntity;
-import com.magenta.mc.client.android.entity.OrderItemStatus;
+import com.magenta.mc.client.android.entity.type.OrderItemType;
 import com.magenta.mc.client.android.ui.activity.OrderItemActivity;
 import com.magenta.mc.client.android.util.StringUtils;
 
@@ -48,7 +48,7 @@ public class ExpandableOrderItemAdapter extends DistributionArrayAdapter<OrderIt
         viewHolder.name.setText(getShortText(entity.getName(), MAX_NAME_LENGTH));
         viewHolder.value.setText(getShortText(entity.getBarcode(), MAX_BARCODE_LENGTH));
         viewHolder.expand = false;
-        viewHolder.clear.setVisibility(entity.getStatus().equals(OrderItemStatus.ADDED_BY_DRIVER) ? View.VISIBLE : View.INVISIBLE);
+        viewHolder.clear.setVisibility(entity.getStatus().equals(OrderItemType.ADDED_BY_DRIVER) ? View.VISIBLE : View.INVISIBLE);
         viewHolder.clear.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 ((OrderItemActivity) context).removeOrderItem(entity);

@@ -5,10 +5,10 @@ import android.os.Looper;
 
 import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.entity.AbstractStop;
+import com.magenta.mc.client.android.entity.Job;
+import com.magenta.mc.client.android.entity.Stop;
 import com.magenta.mc.client.android.events.AlertEvent;
 import com.magenta.mc.client.android.service.ServicesRegistry;
-import com.magenta.mc.client.android.service.storage.entity.Job;
-import com.magenta.mc.client.android.service.storage.entity.Stop;
 
 import java.util.ArrayList;
 import java.util.List;

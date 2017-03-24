@@ -7,7 +7,7 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 
 import com.magenta.mc.client.android.McAndroidApplication;
-import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
+import com.magenta.mc.client.android.log.MCLoggerFactory;
 
 import net.sf.microlog.core.LoggerFactory;
 
@@ -114,6 +114,7 @@ public class ServicesRegistry {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public static <T extends LocationService> T getLocationService() {
         if (sLocationService == null) {
             return null;

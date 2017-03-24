@@ -4,11 +4,11 @@ import android.view.View;
 import android.widget.Button;
 
 import com.magenta.mc.client.android.R;
-import com.magenta.mc.client.android.mc.util.ResourceManager;
 import com.magenta.mc.client.android.ui.theme.Theme;
 import com.magenta.mc.client.android.ui.theme.ThemeManageable;
 import com.magenta.mc.client.android.ui.theme.ThemeManager;
 import com.magenta.mc.client.android.util.AndroidResourceManager;
+import com.magenta.mc.client.android.util.ResourceManager;
 
 public abstract class WorkflowConfiguration<TASK, SUBTASK> implements ThemeManageable {
 

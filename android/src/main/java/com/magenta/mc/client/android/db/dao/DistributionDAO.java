@@ -13,20 +13,16 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.magenta.mc.client.android.McAndroidApplication;
 import com.magenta.mc.client.android.db.DBAdapter;
 import com.magenta.mc.client.android.db.DistributionDBHelper;
-import com.magenta.mc.client.android.entity.AbstractJobStatus;
 import com.magenta.mc.client.android.entity.DynamicAttributeEntity;
 import com.magenta.mc.client.android.entity.LocalizeStringEntity;
 import com.magenta.mc.client.android.entity.LocationEntity;
 import com.magenta.mc.client.android.entity.MapSettingsEntity;
 import com.magenta.mc.client.android.entity.OrderItemEntity;
-import com.magenta.mc.client.android.entity.PhoneStatisticEntity;
-import com.magenta.mc.client.android.entity.StatusSenderLock;
 import com.magenta.mc.client.android.util.StringUtils;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -130,26 +126,6 @@ public class DistributionDAO {
         dao.delete(deleteBuilder.prepare());
     }
 
-    public void createPhoneState(PhoneStatisticEntity entity) throws SQLException {
-        ConnectionSource source = new AndroidConnectionSource(adapter.getDB(DistributionDBHelper.DATABASE_NAME));
-        Dao<PhoneStatisticEntity, Integer> dao = DaoManager.createDao(source, PhoneStatisticEntity.class);
-        dao.create(entity);
-    }
-
-    public List<PhoneStatisticEntity> getPhoneStatistics() throws SQLException {
-        ConnectionSource source = new AndroidConnectionSource(adapter.getDB(DistributionDBHelper.DATABASE_NAME));
-        Dao<PhoneStatisticEntity, Integer> dao = DaoManager.createDao(source, PhoneStatisticEntity.class);
-        return dao.queryBuilder().limit(90L).query();
-    }
-
-    public void clearStatistics(Date date) throws SQLException {
-        ConnectionSource source = new AndroidConnectionSource(adapter.getDB(DistributionDBHelper.DATABASE_NAME));
-        Dao<PhoneStatisticEntity, Integer> dao = DaoManager.createDao(source, PhoneStatisticEntity.class);
-        DeleteBuilder<PhoneStatisticEntity, Integer> deleteBuilder = dao.deleteBuilder();
-        deleteBuilder.setWhere(dao.deleteBuilder().where().le("date", date));
-        dao.delete(deleteBuilder.prepare());
-    }
-
     public List<MapSettingsEntity> getMapSettings(String driver) throws SQLException {
         ConnectionSource source = new AndroidConnectionSource(adapter.getDB(DistributionDBHelper.DATABASE_NAME));
         Dao<MapSettingsEntity, Integer> dao = DaoManager.createDao(source, MapSettingsEntity.class);
@@ -160,31 +136,6 @@ public class DistributionDAO {
         ConnectionSource source = new AndroidConnectionSource(adapter.getDB(DistributionDBHelper.DATABASE_NAME));
         Dao<MapSettingsEntity, Integer> dao = DaoManager.createDao(source, MapSettingsEntity.class);
         dao.createOrUpdate(settingsEntity);
-    }
-
-    public void addLock(AbstractJobStatus status) throws SQLException {
-        ConnectionSource source = new AndroidConnectionSource(adapter.getDB(DistributionDBHelper.DATABASE_NAME));
-        Dao<StatusSenderLock, Integer> dao = DaoManager.createDao(source, StatusSenderLock.class);
-        StatusSenderLock lock = new StatusSenderLock();
-        lock.setJobStatus(status.getJobStatus());
-        lock.setJobReferenceId(status.getJobReferenceId());
-        lock.setJobId(status.getId());
-        dao.createOrUpdate(lock);
-    }
-
-    public void releaseLock(String id, String ref, String status) throws SQLException {
-        ConnectionSource source = new AndroidConnectionSource(adapter.getDB(DistributionDBHelper.DATABASE_NAME));
-        Dao<StatusSenderLock, Integer> dao = DaoManager.createDao(source, StatusSenderLock.class);
-        DeleteBuilder<StatusSenderLock, Integer> deleteBuilder = dao.deleteBuilder();
-        deleteBuilder.setWhere(dao.deleteBuilder().where().eq("job_id", id).and().eq("job_ref", ref).and().eq("job_status", status));
-        dao.delete(deleteBuilder.prepare());
-    }
-
-    public boolean hasLock(AbstractJobStatus status) throws SQLException {
-        ConnectionSource source = new AndroidConnectionSource(adapter.getDB(DistributionDBHelper.DATABASE_NAME));
-        Dao<StatusSenderLock, Integer> dao = DaoManager.createDao(source, StatusSenderLock.class);
-        List<StatusSenderLock> locks = dao.queryBuilder().where().eq("job_id", status.getId()).and().eq("job_ref", status.getJobReferenceId()).and().eq("job_status", status.getJobStatus()).query();
-        return locks == null || locks.isEmpty();
     }
 
     public void saveLocation(LocationEntity entity) throws SQLException {

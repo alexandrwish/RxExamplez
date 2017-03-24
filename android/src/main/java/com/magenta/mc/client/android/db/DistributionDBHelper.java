@@ -9,12 +9,10 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import com.magenta.mc.client.android.entity.DynamicAttributeEntity;
 import com.magenta.mc.client.android.entity.LocalizeStringEntity;
+import com.magenta.mc.client.android.entity.LocationEntity;
 import com.magenta.mc.client.android.entity.MapSettingsEntity;
 import com.magenta.mc.client.android.entity.OrderItemEntity;
-import com.magenta.mc.client.android.entity.PhoneStatisticEntity;
-import com.magenta.mc.client.android.entity.StatusSenderLock;
-import com.magenta.mc.client.android.entity.LocationEntity;
-import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
+import com.magenta.mc.client.android.log.MCLoggerFactory;
 
 public class DistributionDBHelper extends SQLiteOpenHelper {
 
@@ -23,9 +21,7 @@ public class DistributionDBHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 3;
 
     private static final Class[] TABLES = new Class[]{
-            StatusSenderLock.class,
             MapSettingsEntity.class,
-            PhoneStatisticEntity.class,
             OrderItemEntity.class,
             DynamicAttributeEntity.class,
             LocationEntity.class,

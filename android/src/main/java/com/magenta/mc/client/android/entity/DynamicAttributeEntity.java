@@ -3,6 +3,7 @@ package com.magenta.mc.client.android.entity;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import com.magenta.mc.client.android.entity.type.DynamicAttributeType;
 import com.magenta.mc.client.android.record.DynamicAttributeRecord;
 import com.magenta.mc.client.android.util.StringUtils;
 

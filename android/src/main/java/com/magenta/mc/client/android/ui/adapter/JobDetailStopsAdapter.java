@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.entity.AbstractStop;
-import com.magenta.mc.client.android.service.storage.entity.Stop;
 import com.magenta.mc.client.android.util.StopsComparator;
 
 import java.util.Collections;

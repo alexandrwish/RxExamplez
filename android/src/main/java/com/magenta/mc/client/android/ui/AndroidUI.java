@@ -3,10 +3,9 @@ package com.magenta.mc.client.android.ui;
 import android.app.Activity;
 import android.content.Context;
 
-import com.magenta.mc.client.android.mc.components.dialogs.manager.IDialogManager;
-import com.magenta.mc.client.android.mc.components.waiting.WaitIcon;
-import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
-import com.magenta.mc.client.android.mc.ui.UI;
+import com.magenta.mc.client.android.components.dialogs.manager.IDialogManager;
+import com.magenta.mc.client.android.components.waiting.WaitIcon;
+import com.magenta.mc.client.android.log.MCLoggerFactory;
 
 public class AndroidUI implements UI {
 

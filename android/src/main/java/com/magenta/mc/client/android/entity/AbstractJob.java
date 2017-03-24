@@ -1,9 +1,10 @@
 package com.magenta.mc.client.android.entity;
 
-import com.magenta.mc.client.android.mc.storage.FieldGetter;
-import com.magenta.mc.client.android.mc.storage.FieldSetter;
-import com.magenta.mc.client.android.mc.storage.Storable;
-import com.magenta.mc.client.android.mc.storage.StorableMetadata;
+import com.magenta.mc.client.android.entity.type.JobType;
+import com.magenta.mc.client.android.storage.FieldGetter;
+import com.magenta.mc.client.android.storage.FieldSetter;
+import com.magenta.mc.client.android.storage.Storable;
+import com.magenta.mc.client.android.storage.StorableMetadata;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -31,8 +32,6 @@ public abstract class AbstractJob extends Storable {
     private static final String FIELD_END_ADDRESS = "endAddress";
     private static final String FIELD_START_ADDRESS = "startAddress";
     private static final String FIELD_STOPS = "stops";
-    private static final String FIELD_PASSENGERS = "passengers";
-    private static final String FIELD_PARCELS = "parcels";
     private static final String FIELD_STATE = "state";
     private static final String FIELD_LASTSTOP = "lastStop";
     private static final String FIELD_CURRENT_STOP = "currentStop";
@@ -50,13 +49,11 @@ public abstract class AbstractJob extends Storable {
     protected Address endAddress;
     protected Address startAddress;
     protected List<AbstractStop> stops;
-    protected Passenger[] passengers;
-    protected Parcel[] parcels;
     protected int state = -1;
     protected AbstractStop lastStop;
     protected AbstractStop currentStop;
     protected String lastValidState;
-    protected int type;
+    protected JobType type;
     protected boolean acknowledged = true;
     protected Map<String, String> parameters;
     protected Set attributes;
@@ -180,22 +177,6 @@ public abstract class AbstractJob extends Storable {
         return null;
     }
 
-    public Passenger[] getPassengers() {
-        return passengers;
-    }
-
-    public void setPassengers(Passenger[] passengers) {
-        this.passengers = passengers;
-    }
-
-    public Parcel[] getParcels() {
-        return parcels;
-    }
-
-    public void setParcels(Parcel[] parcels) {
-        this.parcels = parcels;
-    }
-
     public boolean stopsDone() {
         for (int i = 0; i < stops.size(); i++) {
             AbstractStop stop = stops.get(i);
@@ -262,11 +243,11 @@ public abstract class AbstractJob extends Storable {
         this.lastValidState = lastValidState;
     }
 
-    public int getType() {
+    public JobType getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(JobType type) {
         this.type = type;
     }
 
@@ -345,8 +326,6 @@ public abstract class AbstractJob extends Storable {
         parameters = job.getParameters();
         endAddress = job.getEndAddress();
         startAddress = job.getStartAddress();
-        setPassengers(job.getPassengers());
-        setParcels(job.getParcels());
         setState(job.getState());
         setLastValidState(job.getLastValidState());
         if (stops != null) {
@@ -514,16 +493,6 @@ public abstract class AbstractJob extends Storable {
                         stops = (List<AbstractStop>) value;
                     }
                 },
-                new FieldSetter(FIELD_PASSENGERS) {
-                    public void setValue(Object value) {
-                        passengers = (Passenger[]) value;
-                    }
-                },
-                new FieldSetter(FIELD_PARCELS) {
-                    public void setValue(Object value) {
-                        parcels = (Parcel[]) value;
-                    }
-                },
                 new FieldSetter(FIELD_STATE) {
                     public void setValue(Object value) {
                         state = (Integer) value;
@@ -546,7 +515,7 @@ public abstract class AbstractJob extends Storable {
                 },
                 new FieldSetter(FIELD_TYPE) {
                     public void setValue(Object value) {
-                        type = (Integer) value;
+                        type = JobType.valueOf((Integer) value);
                     }
                 },
                 new FieldSetter(FIELD_PARAMETERS) {
@@ -607,16 +576,6 @@ public abstract class AbstractJob extends Storable {
                 new FieldGetter(FIELD_STOPS) {
                     public Object getValue() {
                         return stops;
-                    }
-                },
-                new FieldGetter(FIELD_PASSENGERS) {
-                    public Object getValue() {
-                        return passengers;
-                    }
-                },
-                new FieldGetter(FIELD_PARCELS) {
-                    public Object getValue() {
-                        return parcels;
                     }
                 },
                 new FieldGetter(FIELD_STATE) {

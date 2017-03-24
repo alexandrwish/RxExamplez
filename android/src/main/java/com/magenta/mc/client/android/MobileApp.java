@@ -1,19 +1,19 @@
 package com.magenta.mc.client.android;
 
+import com.magenta.mc.client.android.components.MCTimerTask;
+import com.magenta.mc.client.android.demo.DemoStorageInitializer;
 import com.magenta.mc.client.android.entity.AbstractJobStatus;
-import com.magenta.mc.client.android.mc.MxSetup;
-import com.magenta.mc.client.android.mc.client.resend.ResendableMetadata;
-import com.magenta.mc.client.android.mc.client.resend.Resender;
-import com.magenta.mc.client.android.mc.components.MCTimerTask;
-import com.magenta.mc.client.android.mc.demo.DemoStorageInitializer;
-import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
-import com.magenta.mc.client.android.mc.setup.Setup;
-import com.magenta.mc.client.android.mc.tracking.GeoLocationBatch;
-import com.magenta.mc.client.android.mc.util.ResourceManager;
-import com.magenta.mc.client.android.service.SaveLocationService;
+import com.magenta.mc.client.android.log.MCLoggerFactory;
+import com.magenta.mc.client.android.resender.ResendableMetadata;
+import com.magenta.mc.client.android.resender.Resender;
+import com.magenta.mc.client.android.service.SaveLocationsService;
 import com.magenta.mc.client.android.service.ServicesRegistry;
-import com.magenta.mc.client.android.service.storage.DemoStorageInitializerImpl;
+import com.magenta.mc.client.android.setup.MxSetup;
+import com.magenta.mc.client.android.setup.Setup;
+import com.magenta.mc.client.android.storage.DemoStorageInitializerImpl;
+import com.magenta.mc.client.android.tracking.GeoLocationBatch;
 import com.magenta.mc.client.android.util.AndroidResourceManager;
+import com.magenta.mc.client.android.util.ResourceManager;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -157,7 +157,7 @@ public class MobileApp {
     }
 
     private void setupGeoLocationAPI() {
-        ServicesRegistry.startSaveLocationsService(SaveLocationService.class);
+        ServicesRegistry.startSaveLocationsService(SaveLocationsService.class);
     }
 
     private void stopGeoLocationAPI() {

@@ -3,6 +3,7 @@ package com.magenta.mc.client.android.entity;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import com.magenta.mc.client.android.entity.type.OrderItemType;
 import com.magenta.mc.client.android.record.OrderItemRecord;
 import com.magenta.mc.client.android.util.StringUtils;
 
@@ -14,7 +15,7 @@ public class OrderItemEntity extends JobStopEntity<OrderItemRecord> {
     @DatabaseField(columnName = "name")
     private String name;
     @DatabaseField(columnName = "status", dataType = DataType.ENUM_STRING)
-    private OrderItemStatus status;
+    private OrderItemType status;
 
     public String getBarcode() {
         return StringUtils.decodeURI(barcode);
@@ -32,11 +33,11 @@ public class OrderItemEntity extends JobStopEntity<OrderItemRecord> {
         this.name = StringUtils.encodeURI(name);
     }
 
-    public OrderItemStatus getStatus() {
+    public OrderItemType getStatus() {
         return status;
     }
 
-    public void setStatus(OrderItemStatus status) {
+    public void setStatus(OrderItemType status) {
         this.status = status;
     }
 

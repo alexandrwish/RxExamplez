@@ -1,8 +1,8 @@
 package com.magenta.mc.client.android.acra;
 
 import com.magenta.mc.client.android.McAndroidApplication;
-import com.magenta.mc.client.android.mc.MxAndroidUtil;
-import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
+import com.magenta.mc.client.android.log.MCLoggerFactory;
+import com.magenta.mc.client.android.util.MxAndroidUtil;
 
 import org.acra.ACRA;
 import org.acra.ACRAConfiguration;

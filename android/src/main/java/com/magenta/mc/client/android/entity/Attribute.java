@@ -1,8 +1,8 @@
 package com.magenta.mc.client.android.entity;
 
-import com.magenta.mc.client.android.mc.storage.FieldGetter;
-import com.magenta.mc.client.android.mc.storage.FieldSetter;
-import com.magenta.mc.client.android.mc.storage.StorableField;
+import com.magenta.mc.client.android.storage.FieldGetter;
+import com.magenta.mc.client.android.storage.FieldSetter;
+import com.magenta.mc.client.android.storage.StorableField;
 
 public class Attribute extends StorableField {
 

@@ -12,17 +12,17 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.magenta.mc.client.android.R;
+import com.magenta.mc.client.android.common.IntentAttributes;
 import com.magenta.mc.client.android.db.dao.DistributionDAO;
 import com.magenta.mc.client.android.entity.AbstractStop;
 import com.magenta.mc.client.android.entity.DynamicAttributeEntity;
+import com.magenta.mc.client.android.entity.Job;
+import com.magenta.mc.client.android.entity.Stop;
 import com.magenta.mc.client.android.entity.TaskState;
+import com.magenta.mc.client.android.listener.BroadcastEvent;
+import com.magenta.mc.client.android.listener.MxBroadcastEvents;
 import com.magenta.mc.client.android.record.DynamicAttributeRecord;
 import com.magenta.mc.client.android.service.ServicesRegistry;
-import com.magenta.mc.client.android.service.listeners.BroadcastEvent;
-import com.magenta.mc.client.android.service.listeners.MxBroadcastEvents;
-import com.magenta.mc.client.android.service.storage.entity.Job;
-import com.magenta.mc.client.android.service.storage.entity.Stop;
-import com.magenta.mc.client.android.common.IntentAttributes;
 import com.magenta.mc.client.android.util.StringUtils;
 
 import java.sql.SQLException;

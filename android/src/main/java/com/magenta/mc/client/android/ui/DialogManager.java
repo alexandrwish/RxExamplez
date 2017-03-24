@@ -5,14 +5,10 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 
-import com.magenta.mc.client.android.MobileApp;
-import com.magenta.mc.client.android.mc.components.dialogs.DialogCallback;
-import com.magenta.mc.client.android.mc.components.dialogs.DialogCallbackExecutor;
-import com.magenta.mc.client.android.mc.components.dialogs.SynchronousCallback;
-import com.magenta.mc.client.android.mc.components.dialogs.manager.IDialogManager;
-import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
-import com.magenta.mc.client.android.mc.setup.Setup;
-import com.magenta.mc.client.android.mc.util.FutureRunnable;
+import com.magenta.mc.client.android.components.dialogs.DialogCallback;
+import com.magenta.mc.client.android.components.dialogs.DialogCallbackExecutor;
+import com.magenta.mc.client.android.components.dialogs.manager.IDialogManager;
+import com.magenta.mc.client.android.setup.Setup;
 
 import EDU.oswego.cs.dl.util.concurrent.Mutex;
 import EDU.oswego.cs.dl.util.concurrent.Sync;
@@ -26,144 +22,6 @@ public class DialogManager implements IDialogManager {
 
     public DialogManager(final Context applicationContext) {
         this.applicationContext = applicationContext;
-    }
-
-    public void runAsyncDialogTask(final Runnable task) {
-        MobileApp.runConsecutiveTask(new Runnable() {
-            public void run() {
-                runDialogTask(task);
-            }
-        });
-    }
-
-    public void runDialogTask(final Runnable task) {
-        try {
-            acquireDialogSync();
-            task.run();
-        } catch (InterruptedException e) {
-            // shutdown
-        } finally {
-            releaseDialogSync();
-        }
-    }
-
-    public void runDialogTask(final FutureRunnable taskWithFuture) {
-        try {
-            acquireDialogSync();
-            taskWithFuture.run(new Runnable() {
-                public void run() {
-                    releaseDialogSync();
-                }
-            });
-        } catch (InterruptedException e) {
-            // shutdown
-        }
-    }
-
-    public boolean confirmUnsafe(String title, String message) {
-        return confirmSafe(title, message);
-    }
-
-    public boolean confirmUnsafe(String title, String message, DialogCallback callback) {
-        return confirmSafe(title, message, callback);
-    }
-
-    public boolean confirmSafe(String title, String message) {
-        return confirmSafe(title, message, null);
-    }
-
-    public boolean confirmSafe(final String title, final String message, final DialogCallback callback) {
-        final Object mutex = new Object();
-        final Boolean[] result = {null};
-        final SynchronousCallback confirmationCallback = new SynchronousCallback() {
-            public void done(boolean ok) {
-                result[0] = ok;
-                synchronized (mutex) {
-                    mutex.notify();
-                }
-            }
-        };
-        final Thread asyncConfirmation = new Thread(new Runnable() {
-            public void run() {
-                asyncConfirmSafe(title, message, confirmationCallback);
-            }
-        }, "SyncDialogDaemon");
-        asyncConfirmation.start();
-        synchronized (mutex) {
-            try {
-                if (result[0] == null)
-                    mutex.wait();
-            } catch (InterruptedException e) {
-                // ok
-            }
-        }
-        boolean res = result[0];
-        DialogCallbackExecutor.execCallback(callback, res);
-        return res;
-    }
-
-    public void asyncConfirmSafe(String title, String message) {
-        asyncConfirmSafe(title, message, null);
-    }
-
-    public void asyncConfirmSafe(final String title, final String message, final DialogCallback callback) {
-        final Activity activity = ((AndroidUI) Setup.get().getUI()).getCurrentActivity();
-        activity.runOnUiThread(new Runnable() {
-            public void run() {
-                final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-                if (isUseTitle() && title != null) {
-                    builder.setTitle(title);
-                }
-                builder
-                        .setMessage(message)
-                        .setCancelable(false)
-                        .setNegativeButton(getLeftButtonText(), getClickListener(callback, getLeftButtonResult()))
-                        .setPositiveButton(getRightButtonText(), getClickListener(callback, getRightButtonResult()))
-                        .show();
-            }
-        });
-    }
-
-    public void messageUnsafe(String title, String msg) {
-        messageSafe(title, msg);
-    }
-
-    public void messageUnsafe(String title, String msg, DialogCallback callback) {
-        messageSafe(title, msg, null);
-    }
-
-    public void messageSafe(String title, String msg) {
-        messageSafe(title, msg, null);
-    }
-
-    public void messageSafe(final String title, final String msg, DialogCallback callback) {
-        final Object mutex = new Object();
-        final Boolean[] result = {null};
-        final SynchronousCallback confirmationCallback = new SynchronousCallback() {
-
-            public void done(boolean ok) {
-                result[0] = ok;
-                synchronized (mutex) {
-                    mutex.notify();
-                }
-            }
-        };
-        final Thread asyncConfirmation = new Thread(new Runnable() {
-            public void run() {
-                asyncMessageSafe(title, msg, confirmationCallback);
-            }
-        }, "SyncDialogDaemon");
-        asyncConfirmation.start();
-        synchronized (mutex) {
-            try {
-                if (result[0] == null)
-                    mutex.wait();
-            } catch (InterruptedException e) {
-                // ok
-            }
-        }
-        boolean res = result[0];
-        DialogCallbackExecutor.execCallback(callback, res);
     }
 
     public void asyncMessageSafe(final String title, final String msg) {
@@ -200,19 +58,7 @@ public class DialogManager implements IDialogManager {
         }
     }
 
-    public void acquireDialogSync() throws InterruptedException {
-        MCLoggerFactory.getLogger(getClass()).trace("Acquiring dialog sync");
-        dialogSync.acquire();
-        MCLoggerFactory.getLogger(getClass()).trace("Dialog sync acquired");
-    }
-
-    public void releaseDialogSync() {
-        MCLoggerFactory.getLogger(getClass()).trace("Releasing dialog sync");
-        dialogSync.release();
-        MCLoggerFactory.getLogger(getClass()).trace("Dialog sync released");
-    }
-
-    public void ShowDialogsAgain(Object o) {
+    public void showDialogsAgain(Object o) {
         //TODO implement this method if need to show dialogs after pull up
     }
 

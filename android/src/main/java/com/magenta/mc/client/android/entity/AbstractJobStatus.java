@@ -1,10 +1,10 @@
 package com.magenta.mc.client.android.entity;
 
-import com.magenta.mc.client.android.mc.client.resend.Resendable;
-import com.magenta.mc.client.android.mc.client.resend.ResendableMetadata;
-import com.magenta.mc.client.android.mc.storage.FieldGetter;
-import com.magenta.mc.client.android.mc.storage.FieldSetter;
-import com.magenta.mc.client.android.mc.storage.StorableMetadata;
+import com.magenta.mc.client.android.resender.Resendable;
+import com.magenta.mc.client.android.resender.ResendableMetadata;
+import com.magenta.mc.client.android.storage.FieldGetter;
+import com.magenta.mc.client.android.storage.FieldSetter;
+import com.magenta.mc.client.android.storage.StorableMetadata;
 
 import java.util.Map;
 

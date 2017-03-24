@@ -2,8 +2,8 @@ package com.magenta.mc.client.android.ui.dialog;
 
 import android.os.Bundle;
 
-import com.magenta.mc.client.android.mc.log.MCLogger;
-import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
+import com.magenta.mc.client.android.log.MCLogger;
+import com.magenta.mc.client.android.log.MCLoggerFactory;
 
 public class DialogFactory {
 

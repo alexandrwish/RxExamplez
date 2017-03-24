@@ -34,7 +34,7 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package com.jcraft.jzlib;
 
-import com.magenta.mc.client.android.mc.util.ArrayLoader;
+import com.magenta.mc.client.android.util.ArrayLoader;
 
 final class StaticTree {
     // Bit length codes must not exceed MAX_BL_BITS bits

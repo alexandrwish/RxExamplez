@@ -3,7 +3,6 @@ package com.magenta.mc.client.android.util;
 import android.content.Context;
 
 import com.magenta.mc.client.android.R;
-import com.magenta.mc.client.android.mc.util.Resources;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

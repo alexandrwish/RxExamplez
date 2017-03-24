@@ -14,9 +14,8 @@ import com.google.gson.Gson;
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.db.dao.DistributionDAO;
-import com.magenta.mc.client.android.entity.MapProviderType;
 import com.magenta.mc.client.android.entity.MapSettingsEntity;
-import com.magenta.mc.client.android.mc.setup.Setup;
+import com.magenta.mc.client.android.entity.type.MapProviderType;
 import com.magenta.mc.client.android.util.StringUtils;
 
 import java.sql.SQLException;

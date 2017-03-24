@@ -6,9 +6,9 @@ import android.content.Intent;
 import com.magenta.mc.client.android.common.IntentAttributes;
 import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.entity.AbstractStop;
+import com.magenta.mc.client.android.entity.Job;
+import com.magenta.mc.client.android.entity.Stop;
 import com.magenta.mc.client.android.entity.TaskState;
-import com.magenta.mc.client.android.service.storage.entity.Job;
-import com.magenta.mc.client.android.service.storage.entity.Stop;
 import com.magenta.mc.client.android.ui.activity.ArriveMapActivity;
 import com.magenta.mc.client.android.ui.activity.StartActivity;
 

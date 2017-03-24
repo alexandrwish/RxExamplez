@@ -14,8 +14,8 @@ import android.widget.ImageView;
 import com.magenta.mc.client.android.McAndroidApplication;
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.common.UserStatus;
-import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
-import com.magenta.mc.client.android.mc.setup.Setup;
+import com.magenta.mc.client.android.log.MCLoggerFactory;
+import com.magenta.mc.client.android.setup.Setup;
 import com.magenta.mc.client.android.ui.activity.SmokeActivityInterface;
 
 public class SmokeActivityDelegate extends McActivityDelegate {
@@ -32,7 +32,7 @@ public class SmokeActivityDelegate extends McActivityDelegate {
         super.onResume();
         changeVisibleFlag(true);
         LOG.info(getActivity().getLocalClassName() + ": show info dialog if needed");
-        Setup.get().getUI().getDialogManager().ShowDialogsAgain(getActivity());
+        Setup.get().getUI().getDialogManager().showDialogsAgain(getActivity());
     }
 
     public void onPause() {

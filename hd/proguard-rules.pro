@@ -74,7 +74,7 @@
 -keep public class com.magenta.maxunits.mobile.hd.utils.WorkflowUtils { *; }
 
 -keepclassmembers class * {
-    @com.magenta.mc.client.android.service.listeners.MxBroadcastEvents *;
+    @com.magenta.mc.client.android.listener.MxBroadcastEvents *;
 }
 
 # adding this in to preserve line numbers so that the stack traces

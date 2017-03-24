@@ -11,10 +11,10 @@ import android.os.Bundle;
 import android.os.IBinder;
 
 import com.magenta.mc.client.android.R;
-import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
-import com.magenta.mc.client.android.mc.setup.Setup;
-import com.magenta.mc.client.android.service.listeners.BroadcastEvent;
-import com.magenta.mc.client.android.service.listeners.BroadcastEventsListener;
+import com.magenta.mc.client.android.listener.BroadcastEvent;
+import com.magenta.mc.client.android.listener.BroadcastEventsListener;
+import com.magenta.mc.client.android.log.MCLoggerFactory;
+import com.magenta.mc.client.android.setup.Setup;
 import com.magenta.mc.client.android.ui.AndroidUI;
 import com.magenta.mc.client.android.ui.Notifications;
 

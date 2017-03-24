@@ -2,8 +2,8 @@ package com.magenta.mc.client.android.record;
 
 import com.google.gson.Gson;
 import com.magenta.mc.client.android.entity.DynamicAttributeEntity;
-import com.magenta.mc.client.android.entity.DynamicAttributeType;
 import com.magenta.mc.client.android.entity.LocalizeStringEntity;
+import com.magenta.mc.client.android.entity.type.DynamicAttributeType;
 
 import java.io.Serializable;
 

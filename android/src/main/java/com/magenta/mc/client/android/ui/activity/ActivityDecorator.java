@@ -10,14 +10,14 @@ import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.binder.SocketBinder;
 import com.magenta.mc.client.android.common.IntentAttributes;
 import com.magenta.mc.client.android.events.AlertEvent;
+import com.magenta.mc.client.android.listener.BroadcastEvent;
+import com.magenta.mc.client.android.listener.BroadcastEventsListener;
+import com.magenta.mc.client.android.listener.GenericBroadcastEventsAdapter;
+import com.magenta.mc.client.android.listener.MxBroadcastEvents;
 import com.magenta.mc.client.android.service.CoreService;
 import com.magenta.mc.client.android.service.ServicesRegistry;
 import com.magenta.mc.client.android.service.SocketIOService;
 import com.magenta.mc.client.android.service.holder.ServiceHolder;
-import com.magenta.mc.client.android.service.listeners.BroadcastEvent;
-import com.magenta.mc.client.android.service.listeners.BroadcastEventsListener;
-import com.magenta.mc.client.android.service.listeners.GenericBroadcastEventsAdapter;
-import com.magenta.mc.client.android.service.listeners.MxBroadcastEvents;
 
 import java.lang.reflect.Method;
 import java.util.HashSet;

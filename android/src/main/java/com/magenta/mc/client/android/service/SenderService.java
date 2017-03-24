@@ -8,8 +8,8 @@ import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.db.dao.DistributionDAO;
 import com.magenta.mc.client.android.entity.LocationEntity;
 import com.magenta.mc.client.android.http.HttpClient;
-import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
-import com.magenta.mc.client.android.mc.tracking.GeoLocation;
+import com.magenta.mc.client.android.log.MCLoggerFactory;
+import com.magenta.mc.client.android.tracking.GeoLocation;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

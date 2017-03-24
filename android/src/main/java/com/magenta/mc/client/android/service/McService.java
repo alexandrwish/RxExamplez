@@ -8,8 +8,8 @@ import android.os.PowerManager;
 
 import com.magenta.mc.client.android.MobileApp;
 import com.magenta.mc.client.android.R;
-import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
-import com.magenta.mc.client.android.mc.setup.Setup;
+import com.magenta.mc.client.android.log.MCLoggerFactory;
+import com.magenta.mc.client.android.setup.Setup;
 import com.magenta.mc.client.android.ui.AndroidUI;
 import com.magenta.mc.client.android.ui.Notifications;
 

@@ -3,6 +3,7 @@ package com.magenta.mc.client.android.entity;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import com.magenta.mc.client.android.entity.type.MapProviderType;
 
 @DatabaseTable(tableName = "map_settings")
 public class MapSettingsEntity extends AbstractEntity {

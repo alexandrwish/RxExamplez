@@ -12,7 +12,7 @@ import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.common.Constants;
 import com.magenta.mc.client.android.common.IntentAttributes;
 import com.magenta.mc.client.android.common.UserStatus;
-import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
+import com.magenta.mc.client.android.log.MCLoggerFactory;
 import com.magenta.mc.client.android.service.HttpService;
 import com.magenta.mc.client.android.service.SocketIOService;
 import com.magenta.mc.client.android.service.holder.ServiceHolder;

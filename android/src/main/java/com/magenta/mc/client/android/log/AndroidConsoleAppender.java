@@ -2,8 +2,6 @@ package com.magenta.mc.client.android.log;
 
 import android.util.Log;
 
-import com.magenta.mc.client.android.mc.log.ServerTime;
-
 import net.sf.microlog.core.Level;
 import net.sf.microlog.core.appender.ConsoleAppender;
 
@@ -11,7 +9,7 @@ public class AndroidConsoleAppender extends ConsoleAppender {
 
     public void doLog(String clientID, String name, long time, Level level, Object message, Throwable throwable) {
         name = "mc." + name.substring(name.lastIndexOf(".") + 1, name.length());
-        String strMessage = message.toString() + " server time(" + ServerTime.get() + ")";
+        String strMessage = message.toString();
         switch (level.toInt()) {
             case Level.ERROR_INT:
                 Log.e(name, strMessage, throwable);

@@ -1,7 +1,7 @@
 package com.magenta.mc.client.android.record;
 
 import com.magenta.mc.client.android.entity.OrderItemEntity;
-import com.magenta.mc.client.android.entity.OrderItemStatus;
+import com.magenta.mc.client.android.entity.type.OrderItemType;
 
 import java.io.Serializable;
 
@@ -10,9 +10,9 @@ public class OrderItemRecord implements Serializable {
     private Long id;
     private String barcode;
     private String name;
-    private OrderItemStatus status;
+    private OrderItemType status;
 
-    public OrderItemRecord(Long id, String barcode, String name, OrderItemStatus status) {
+    public OrderItemRecord(Long id, String barcode, String name, OrderItemType status) {
         this.id = id;
         this.barcode = barcode;
         this.name = name;
@@ -43,11 +43,11 @@ public class OrderItemRecord implements Serializable {
         this.name = name;
     }
 
-    public OrderItemStatus getStatus() {
+    public OrderItemType getStatus() {
         return status;
     }
 
-    public void setStatus(OrderItemStatus status) {
+    public void setStatus(OrderItemType status) {
         this.status = status;
     }
 

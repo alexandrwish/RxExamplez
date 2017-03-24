@@ -1,7 +1,6 @@
 package com.magenta.mc.client.android.ui;
 
-import com.magenta.mc.client.android.mc.log.MCLoggerFactory;
-import com.magenta.mc.client.android.mc.ui.TaskUpdateController;
+import com.magenta.mc.client.android.log.MCLoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;

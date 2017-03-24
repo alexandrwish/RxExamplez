@@ -1,9 +1,9 @@
 package com.magenta.mc.client.android.entity;
 
-import com.magenta.mc.client.android.mc.storage.FieldGetter;
-import com.magenta.mc.client.android.mc.storage.FieldSetter;
-import com.magenta.mc.client.android.mc.storage.Storable;
-import com.magenta.mc.client.android.mc.storage.StorableMetadata;
+import com.magenta.mc.client.android.storage.FieldGetter;
+import com.magenta.mc.client.android.storage.FieldSetter;
+import com.magenta.mc.client.android.storage.Storable;
+import com.magenta.mc.client.android.storage.StorableMetadata;
 
 import java.util.Date;
 
