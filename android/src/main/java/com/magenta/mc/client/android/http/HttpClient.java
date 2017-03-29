@@ -112,6 +112,10 @@ public class HttpClient {
     @Deprecated
     // TODO: 2/17/17 fix me
     public void sendState(final long id, String userId, String jobRef, String states, Map values) {
+        if (values.get("stop-ref") == null) {
+            Resender.getInstance().sent(STATUS_RESENDABLE_METADATA, id);
+            return; //doesn't support run states
+        }
         List<OrderAction> results = new ArrayList<>(1);
         OrderAction result = new OrderAction();
         result.setOrderId(Long.valueOf((String) values.get("stop-ref"), Character.MAX_RADIX));

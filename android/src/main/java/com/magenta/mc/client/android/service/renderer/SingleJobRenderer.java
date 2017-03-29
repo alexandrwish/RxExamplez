@@ -65,8 +65,6 @@ public class SingleJobRenderer {
                 -1,
                 TaskState.getStatus(order.getStatus()));
         stop.setParentJob(job);
-        stop.setAddress(createAddress(order.getLocation()));
-//        stop.setState(order.getStatus()); // TODO: 3/11/17 impl
         stop.setDate(new Date(order.getDate()));
         stop.setArriveDate(new Date(order.getExpectedArrival()));
         stop.setParameter(Stop.ATTR_PRIORITY, String.valueOf(order.getPriority() != null ? order.getPriority() : 0));

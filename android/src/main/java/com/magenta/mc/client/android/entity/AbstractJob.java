@@ -1,6 +1,5 @@
 package com.magenta.mc.client.android.entity;
 
-import com.magenta.mc.client.android.entity.type.JobType;
 import com.magenta.mc.client.android.storage.FieldGetter;
 import com.magenta.mc.client.android.storage.FieldSetter;
 import com.magenta.mc.client.android.storage.Storable;
@@ -36,7 +35,6 @@ public abstract class AbstractJob extends Storable {
     private static final String FIELD_LASTSTOP = "lastStop";
     private static final String FIELD_CURRENT_STOP = "currentStop";
     private static final String FIELD_LAST_VALID_STATE = "lastValidState";
-    private static final String FIELD_TYPE = "type";
     private static final String FIELD_PARAMETERS = "parameters";
     private static final String FIELD_ATTRIBUTES = "attributes";
 
@@ -53,7 +51,6 @@ public abstract class AbstractJob extends Storable {
     protected AbstractStop lastStop;
     protected AbstractStop currentStop;
     protected String lastValidState;
-    protected JobType type;
     protected boolean acknowledged = true;
     protected Map<String, String> parameters;
     protected Set attributes;
@@ -241,14 +238,6 @@ public abstract class AbstractJob extends Storable {
 
     public void setLastValidState(String lastValidState) {
         this.lastValidState = lastValidState;
-    }
-
-    public JobType getType() {
-        return type;
-    }
-
-    public void setType(JobType type) {
-        this.type = type;
     }
 
     public Map<String, String> getParameters() {
@@ -513,11 +502,6 @@ public abstract class AbstractJob extends Storable {
                         lastValidState = (String) value;
                     }
                 },
-                new FieldSetter(FIELD_TYPE) {
-                    public void setValue(Object value) {
-                        type = JobType.valueOf((Integer) value);
-                    }
-                },
                 new FieldSetter(FIELD_PARAMETERS) {
                     public void setValue(Object value) {
                         parameters = (Map<String, String>) value;
@@ -596,11 +580,6 @@ public abstract class AbstractJob extends Storable {
                 new FieldGetter(FIELD_LAST_VALID_STATE) {
                     public Object getValue() {
                         return lastValidState;
-                    }
-                },
-                new FieldGetter(FIELD_TYPE) {
-                    public Object getValue() {
-                        return type;
                     }
                 },
                 new FieldGetter(FIELD_PARAMETERS) {

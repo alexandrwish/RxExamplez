@@ -22,7 +22,6 @@ public class FullJobHistory extends AbstractJob implements JobEntity {
         lastStop = job.getCurrentStop();
         currentStop = job.getCurrentStop();
         lastValidState = job.getLastValidState();
-        type = job.getType();
         acknowledged = job.isAcknowledged();
         parameters = job.getParameters();
         attributes = job.getAttributes();

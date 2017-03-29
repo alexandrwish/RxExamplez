@@ -12,10 +12,8 @@ import com.magenta.mc.client.android.entity.Job;
 import com.magenta.mc.client.android.entity.JobStatus;
 import com.magenta.mc.client.android.entity.Stop;
 import com.magenta.mc.client.android.entity.TaskState;
-import com.magenta.mc.client.android.entity.type.JobType;
 import com.magenta.mc.client.android.events.EventType;
 import com.magenta.mc.client.android.events.JobEvent;
-import com.magenta.mc.client.android.exception.UnknownJobStatusException;
 import com.magenta.mc.client.android.listener.BroadcastEvent;
 import com.magenta.mc.client.android.log.MCLogger;
 import com.magenta.mc.client.android.log.MCLoggerFactory;
@@ -331,14 +329,6 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
         }
         if (stop != null) {
             stop.fillStatusMap(map); //todo stop.getParams()
-        }
-        try {
-            map.put("type", JobType.stringValue(job.getType()));
-        } catch (UnknownJobStatusException e) {
-            // ignore
-        }
-        if (JobType.BREAK.equals(job.getType())) {
-            map.put("other-ref", job.getParameter("break-real-id"));
         }
         final JobStatus jobStatus = createJobStatusVO(job.getReferenceId(), jobStatusString, map);
         Resender.getInstance().saveResendable(jobStatus);

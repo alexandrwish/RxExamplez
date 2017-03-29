@@ -53,6 +53,8 @@ public class SocketBinder extends Binder {
     }
 
     public void unsubscribe() {
-        subscription.unsubscribe();
+        if (subscription != null) {
+            subscription.unsubscribe();
+        }
     }
 }
