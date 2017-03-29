@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -188,6 +187,7 @@ public abstract class AbstractArriveMapActivity extends DistributionActivity imp
         });
         abortBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                getDelegate().abortStop();
                 startActivity(new Intent(AbstractArriveMapActivity.this, AbortActivity.class)
                         .putExtra(IntentAttributes.JOB_ID, currentJobId)
                         .putExtra(IntentAttributes.STOP_ID, currentStopId));
@@ -195,7 +195,7 @@ public abstract class AbstractArriveMapActivity extends DistributionActivity imp
         });
         pauseBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                suspendStop();
+                getDelegate().suspendStop();
             }
         });
     }
@@ -217,12 +217,6 @@ public abstract class AbstractArriveMapActivity extends DistributionActivity imp
         String[] times = stop.getTimeWindowAsString().replaceAll(" ", "").split("[-,:]");
         ((TimeView) findViewById(R.id.left_bound)).setHours(times[0]).setMinutes(times[1]);
         ((TimeView) findViewById(R.id.right_bound)).setHours(times[2]).setMinutes(times[3]);
-    }
-
-    protected void suspendStop() {
-        stop.processSetState(TaskState.STOP_SUSPENDED);
-        startActivity(new Intent(AbstractArriveMapActivity.this, JobActivity.class));
-        finish();
     }
 
     public Integer getMenu() {
@@ -325,10 +319,6 @@ public abstract class AbstractArriveMapActivity extends DistributionActivity imp
         finish();
     }
 
-    public boolean onContextItemSelected(MenuItem item) {
-        return onOptionsItemSelected(item);
-    }
-
     protected Dialog onCreateDialog(int id) {
         switch (id) {
             case Maplet.DIALOG_MAP_OPTIONS: {
@@ -359,5 +349,9 @@ public abstract class AbstractArriveMapActivity extends DistributionActivity imp
             default:
                 return super.onCreateDialog(id);
         }
+    }
+
+    public AbstractStop getStop() {
+        return stop;
     }
 }

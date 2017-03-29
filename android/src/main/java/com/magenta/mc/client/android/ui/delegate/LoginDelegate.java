@@ -6,8 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Pair;
+import android.view.MenuItem;
 
 import com.magenta.mc.client.android.McAndroidApplication;
+import com.magenta.mc.client.android.MobileApp;
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.common.Constants;
 import com.magenta.mc.client.android.common.IntentAttributes;
@@ -39,7 +41,7 @@ public class LoginDelegate extends HDDelegate {
                 }
                 case Constants.WARN:
                 case Constants.ERROR: {
-                    ((LoginActivity)activity).showLoginError();
+                    ((LoginActivity) activity).showLoginError();
                     break;
                 }
             }
@@ -70,5 +72,17 @@ public class LoginDelegate extends HDDelegate {
                 break;
             }
         }
+    }
+
+    protected boolean onItemSelected(MenuItem item) {
+        int i = item.getItemId();
+        if (i == R.id.mx_menu_login_properties) {
+            ((LoginActivity) getActivity()).processSettingsButtonClick();
+        } else if (i == R.id.mx_menu_login_exit) {
+            getActivity().startActivity(new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+            getActivity().finish();
+            MobileApp.getInstance().exit();
+        }
+        return super.onItemSelected(item);
     }
 }

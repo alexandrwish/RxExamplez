@@ -6,7 +6,6 @@ import android.graphics.ColorFilter;
 import android.graphics.ColorMatrixColorFilter;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -178,18 +177,6 @@ public class JobsActivity extends DistributionActivity implements WorkflowActivi
 
     public Integer getMenu() {
         return R.menu.menu;
-    }
-
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int i = item.getItemId();
-        if (i == R.id.refresh) {
-            getDelegate().reloadJobs();
-        } else if (i == R.id.logout) {
-            getDelegate().logout();
-        } else {
-            return super.onOptionsItemSelected(item);
-        }
-        return true;
     }
 
     public void refreshJobs(boolean invokedFromActivity) {

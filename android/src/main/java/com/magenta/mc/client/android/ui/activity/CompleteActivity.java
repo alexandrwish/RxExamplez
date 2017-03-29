@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.InputFilter;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.Button;
@@ -220,12 +219,6 @@ public class CompleteActivity extends DistributionActivity {
         ((TimeView) findViewById(R.id.right_bound)).setHours(times[2]).setMinutes(times[3]);
     }
 
-    private void suspendStop() {
-        stop.processSetState(TaskState.STOP_SUSPENDED);
-        startActivity(new Intent(CompleteActivity.this, JobActivity.class));
-        finish();
-    }
-
     public Integer getMenu() {
         return R.menu.fail_with_suspended;
     }
@@ -317,29 +310,6 @@ public class CompleteActivity extends DistributionActivity {
 
     public void onBackPressed() {
         finish();
-    }
-
-    public boolean onContextItemSelected(MenuItem item) {
-        return onOptionsItemSelected(item);
-    }
-
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int i = item.getItemId();
-        if (i == R.id.abort) {
-            startActivity(new Intent(this, AbortActivity.class)
-                    .putExtra(IntentAttributes.JOB_ID, currentJobId)
-                    .putExtra(IntentAttributes.STOP_ID, currentStopId));
-        } else if (i == R.id.fail) {
-            startActivity(new Intent(this, AbortActivity.class)
-                    .putExtra(AbortActivity.EXTRA_APPLY_FOR_RUN, true)
-                    .putExtra(IntentAttributes.JOB_ID, currentJobId)
-                    .putExtra(IntentAttributes.STOP_ID, currentStopId));
-        } else if (i == R.id.suspend) {
-            suspendStop();
-        } else {
-            return super.onOptionsItemSelected(item);
-        }
-        return true;
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

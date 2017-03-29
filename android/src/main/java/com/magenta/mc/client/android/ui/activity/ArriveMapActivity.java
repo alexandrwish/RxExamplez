@@ -1,10 +1,8 @@
 package com.magenta.mc.client.android.ui.activity;
 
 import android.content.Intent;
-import android.view.MenuItem;
 import android.view.View;
 
-import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.common.IntentAttributes;
 
 public class ArriveMapActivity extends AbstractArriveMapActivity {
@@ -19,24 +17,5 @@ public class ArriveMapActivity extends AbstractArriveMapActivity {
                 startActivity(intent);
             }
         });
-    }
-
-    public boolean onOptionsItemSelected(final MenuItem item) {
-        int i = item.getItemId();
-        if (i == R.id.abort) {
-            startActivity(new Intent(this, AbortActivity.class)
-                    .putExtra(IntentAttributes.JOB_ID, currentJobId)
-                    .putExtra(IntentAttributes.STOP_ID, currentStopId));
-        } else if (i == R.id.fail) {
-            startActivity(new Intent(this, AbortActivity.class)
-                    .putExtra(AbortActivity.EXTRA_APPLY_FOR_RUN, true)
-                    .putExtra(IntentAttributes.JOB_ID, currentJobId)
-                    .putExtra(IntentAttributes.STOP_ID, currentStopId));
-        } else if (i == R.id.suspend) {
-            suspendStop();
-        } else {
-            return super.onOptionsItemSelected(item);
-        }
-        return true;
     }
 }

@@ -29,7 +29,6 @@ public abstract class DistributionActivity extends SmokeActivity<WorkflowDelegat
     private String updateFilePathFromEvent;
     private ActivityDecorator decorator = new ActivityDecorator(this);
 
-
     public void initActivity(Bundle savedInstanceState) {
         currentJobId = getIntent().getStringExtra(IntentAttributes.JOB_ID);
         if (currentJobId == null && savedInstanceState != null) {
@@ -173,5 +172,13 @@ public abstract class DistributionActivity extends SmokeActivity<WorkflowDelegat
                 .putBoolean(IntentAttributes.UPDATE_DIALOG_SHOWED, isUpdateDialogShowed)
                 .putString(IntentAttributes.UPDATE_DIALOG_PATH, updateFilePathFromEvent)
                 .apply();
+    }
+
+    public String getCurrentJobId() {
+        return currentJobId;
+    }
+
+    public String getCurrentStopId() {
+        return currentStopId;
     }
 }

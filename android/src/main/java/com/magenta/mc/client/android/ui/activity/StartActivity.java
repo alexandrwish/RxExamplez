@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Pair;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -57,6 +56,7 @@ public class StartActivity extends DistributionActivity implements WorkflowActiv
         return getMenu();
     }
 
+    @SuppressWarnings("unchecked")
     public void initActivity(Bundle savedInstanceState) {
         super.initActivity(savedInstanceState);
         setContentView(R.layout.activity_start);
@@ -112,6 +112,7 @@ public class StartActivity extends DistributionActivity implements WorkflowActiv
         }
     }
 
+    @SuppressWarnings("unchecked")
     protected void updateButtons() {
         Pair<Job, Stop> pair = ServicesRegistry.getDataController().find(currentJobId, currentStopId);
         if (pair == null || pair.second == null) {
@@ -231,31 +232,10 @@ public class StartActivity extends DistributionActivity implements WorkflowActiv
         });
     }
 
-    public boolean onContextItemSelected(MenuItem item) {
-        return onOptionsItemSelected(item);
-    }
-
     protected void goToArriveMapActivity() {
         startActivity(new Intent(StartActivity.this, ArriveMapActivity.class)
                 .putExtra(IntentAttributes.JOB_ID, currentJobId)
                 .putExtra(IntentAttributes.STOP_ID, currentStopId));
         finish();
-    }
-
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int i = item.getItemId();
-        if (i == R.id.abort) {
-            startActivity(new Intent(this, AbortActivity.class)
-                    .putExtra(IntentAttributes.JOB_ID, currentJobId)
-                    .putExtra(IntentAttributes.STOP_ID, currentStopId));
-        } else if (i == R.id.fail) {
-            startActivity(new Intent(this, AbortActivity.class)
-                    .putExtra(AbortActivity.EXTRA_APPLY_FOR_RUN, true)
-                    .putExtra(IntentAttributes.JOB_ID, currentJobId)
-                    .putExtra(IntentAttributes.STOP_ID, currentStopId));
-        } else {
-            return super.onOptionsItemSelected(item);
-        }
-        return true;
     }
 }

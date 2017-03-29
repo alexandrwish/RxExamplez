@@ -14,7 +14,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -23,7 +22,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.magenta.mc.client.android.McAndroidApplication;
-import com.magenta.mc.client.android.MobileApp;
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.common.Constants;
 import com.magenta.mc.client.android.common.IntentAttributes;
@@ -159,8 +157,8 @@ public class LoginActivity extends SmokeActivity<LoginDelegate> {
         );
     }
 
-    protected void processSettingsButtonClick() {
-        final String password =  Settings.get().getSettingPassword();
+    public void processSettingsButtonClick() {
+        final String password = Settings.get().getSettingPassword();
         if (password != null && !password.trim().isEmpty()) {
             InputDialog.showPasswordInput(getString(R.string.mx_settings_locked), getString(R.string.mx_enter_password), new InputDialog.Callback<String>() {
                 public void ok(final String value) {
@@ -194,20 +192,6 @@ public class LoginActivity extends SmokeActivity<LoginDelegate> {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.mx_login, menu);
-        return true;
-    }
-
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.mx_menu_login_properties) {
-            processSettingsButtonClick();
-        } else if (item.getItemId() == R.id.mx_menu_login_exit) {
-            Intent intent = new Intent(Intent.ACTION_MAIN);
-            intent.addCategory(Intent.CATEGORY_HOME);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-            finish();
-            MobileApp.getInstance().exit();
-        }
         return true;
     }
 

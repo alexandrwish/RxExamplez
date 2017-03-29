@@ -11,7 +11,6 @@ import com.magenta.mc.client.android.log.MCLoggerFactory;
 import com.magenta.mc.client.android.service.McService;
 import com.magenta.mc.client.android.setup.Setup;
 import com.magenta.mc.client.android.ui.AndroidUI;
-import com.magenta.mc.client.android.ui.OnMenuItemSelectedListener;
 
 import javax.inject.Inject;
 
@@ -22,7 +21,6 @@ public class McActivityDelegate implements ActivityDelegate {
     protected NotificationManager notificationManager;
     @Inject
     protected LocationManager locationManager;
-    protected OnMenuItemSelectedListener onMenuItemSelectedListener;
     @Inject
     private Activity activity;
 
@@ -92,26 +90,15 @@ public class McActivityDelegate implements ActivityDelegate {
         }
     }
 
-    public void setOnMenuItemSelectedListener(OnMenuItemSelectedListener onMenuItemSelectedListener) {
-        if (onMenuItemSelectedListener != null) {
-            onMenuItemSelectedListener.setActivity(activity);
-        }
-        this.onMenuItemSelectedListener = onMenuItemSelectedListener;
-    }
-
     public boolean onContextItemSelected(MenuItem item) {
-        if (onMenuItemSelectedListener != null) {
-            return onMenuItemSelectedListener.onContextItemSelected(item);
-        } else {
-            return getActivity().onContextItemSelected(item);
-        }
+        return onItemSelected(item);
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (onMenuItemSelectedListener != null) {
-            return onMenuItemSelectedListener.onOptionsItemSelected(item);
-        } else {
-            return getActivity().onOptionsItemSelected(item);
-        }
+        return onItemSelected(item);
+    }
+
+    protected boolean onItemSelected(MenuItem item) {
+        return true;
     }
 }
