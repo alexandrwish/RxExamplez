@@ -176,6 +176,7 @@ public class HttpClient {
 
                         public void onNext(Boolean success) {
                             if (success) {
+                                // TODO: 28/03/2017 удалять точки
                                 Resender.getInstance().sent(GeoLocationBatch.METADATA, id);
                             }
                         }

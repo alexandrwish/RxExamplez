@@ -45,11 +45,7 @@
             android:enabled="true" />
 
         <service
-            android:name="com.magenta.mc.client.android.service.PhoneStatisticService"
-            android:enabled="true" />
-
-        <service
-            android:name="com.magenta.mc.client.android.service.SaveLocationService"
+            android:name="com.magenta.mc.client.android.service.SaveLocationsService"
             android:enabled="true" />
 
         <service
