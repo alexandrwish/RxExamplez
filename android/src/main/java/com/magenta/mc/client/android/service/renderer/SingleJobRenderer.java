@@ -69,8 +69,7 @@ public class SingleJobRenderer {
 //        stop.setState(order.getStatus()); // TODO: 3/11/17 impl
         stop.setDate(new Date(order.getDate()));
         stop.setArriveDate(new Date(order.getExpectedArrival()));
-        stop.setParameter(Stop.ATTR_PRIORITY, String.valueOf(1));
-//        stop.setParameter(Stop.ATTR_PRIORITY, order.getPriority()); // TODO: 3/11/17 impl
+        stop.setParameter(Stop.ATTR_PRIORITY, String.valueOf(order.getPriority() != null ? order.getPriority() : 0));
         stop.setParameter(Stop.ATTR_CUSTOMER, order.getCustomer());
         stop.setParameter(Stop.ATTR_DURATION, String.valueOf(order.getDuration()));
         stop.setParameter(Stop.ATTR_CONTACT_PERSON, order.getContactName());
