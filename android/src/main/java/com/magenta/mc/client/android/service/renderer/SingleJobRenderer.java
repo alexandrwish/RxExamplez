@@ -59,7 +59,7 @@ public class SingleJobRenderer {
     private static AbstractStop createStop(Order order, Job job) {
         Stop stop = new Stop(order.getName(),
                 order.getReference(),
-                StopKind.DROP.equals(order.getStopKind()) ? "do" : "pu",
+                StopKind.DROP.equals(order.getStopKind()) ? "drop" : "pickup",
                 createAddress(order.getLocation()),
                 order.getDescription(),
                 -1,
