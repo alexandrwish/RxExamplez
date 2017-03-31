@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class SingleJobRenderer {
 
@@ -106,7 +107,7 @@ public class SingleJobRenderer {
                     entity.setValue(record.getValue());
                     entity.setName(record.getName());
                     entity.setUnit(record.getUnit());
-                    entity.setTitle(new LocalizeStringEntity());
+                    entity.setTitle(getTitle(record.getTitle()));
                     entity.setTypeName(DynamicAttributeType.valueOf(record.getTypeName().name()));
                     entity.setJob(job.getReferenceId());
                     entity.setStop(stop.getReferenceId());
@@ -125,6 +126,15 @@ public class SingleJobRenderer {
         order.getStopKind();
         */
         return stop;
+    }
+
+    private static LocalizeStringEntity getTitle(Map<String, String> title) {
+        LocalizeStringEntity entity = new LocalizeStringEntity();
+        entity.setEn(title.get("en"));
+        entity.setEs(title.get("es"));
+        entity.setFr(title.get("fr"));
+        entity.setRu(title.get("ru"));
+        return entity;
     }
 
     private static Address createAddress(LocationRecord record) {
