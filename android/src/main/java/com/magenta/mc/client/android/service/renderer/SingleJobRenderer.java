@@ -76,6 +76,7 @@ public class SingleJobRenderer {
         stop.setParameter(Stop.ATTR_CUSTOMER_LOCATION_VERIFIED, order.getCustomerLocationIsVerified());
         stop.setParameter(Stop.ATTR_LOAD, String.valueOf(order.getCapacity1()));
         stop.setParameter(Stop.ATTR_VOLUME, String.valueOf(order.getCapacity2()));
+        stop.setParameter(Stop.ATTR_LOCATION, order.getLocation() != null ? order.getLocation().getName() : "");
         if (order.getTimeWindows() != null && order.getTimeWindows().size() > 0) {
             TimeWindow w = order.getTimeWindows().get(0);
             stop.setParameter(Stop.ATTR_WINDOW_START_TIME, String.valueOf(w.getStart()));
