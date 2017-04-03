@@ -56,11 +56,10 @@ public class JobsActivity extends DistributionActivity implements WorkflowActivi
         super.initActivity(savedInstanceState);
         setContentView(R.layout.activity_jobs);
         ListView listView = (ListView) findViewById(R.id.job_list);
-        ImageView changeMapBtn = (ImageView) findViewById(R.id.change_map_btn);
         final ImageView viewBtn = (ImageView) findViewById(R.id.run_view_btn);
         final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         final ImageView refreshBtn = (ImageView) findViewById(R.id.run_refresh_btn);
-        changeMapBtn.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.change_map_btn).setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 updateMapSettings();
             }

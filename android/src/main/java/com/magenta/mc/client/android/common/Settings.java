@@ -4,10 +4,13 @@ import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.google.gson.Gson;
 import com.magenta.mc.client.android.McAndroidApplication;
 import com.magenta.mc.client.android.ui.theme.Theme;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @SuppressWarnings("unused")
@@ -48,6 +51,7 @@ public class Settings {
     private static final String USER_ACCOUNT = "user.account";
     private static final String CANCEL_REASONS = "cancel.reasons";
     private static final String TIMEZONE = "timezone";
+    private static final String MAP_SETTINGS = "MAP_SETTINGS";
     private static final String SENTRY_DSN = "sentry.dsn";
     public static String[] IGNORED_MAP_PROVIDERS = {
             "googlesatellite",
@@ -195,6 +199,10 @@ public class Settings {
 
     public Boolean getCacheEnable() {
         return preferences.getBoolean(CACHE_ENABLE, true);
+    }
+
+    public HashMap<String, Map<String, String>> getMapSettings() {
+        return new Gson().fromJson(preferences.getString(MAP_SETTINGS, ""), HashMap.class);
     }
 
     public Boolean contains(String name) {
@@ -426,6 +434,13 @@ public class Settings {
         public SettingsBuilder setCacheSpace(String space) {
             if (space != null) {
                 editor.putString(CACHE_SPACE, space);
+            }
+            return this;
+        }
+
+        public SettingsBuilder setMapSettings(Map<String, Map<String, String>> mapSettings) {
+            if (mapSettings != null) {
+                editor.putString(MAP_SETTINGS, new Gson().toJson(mapSettings));
             }
             return this;
         }

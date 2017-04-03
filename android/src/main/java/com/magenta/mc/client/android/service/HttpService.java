@@ -146,6 +146,7 @@ public class HttpService extends IntentService {
                             osm.put("use_map_provider", "true");
                             result.getMapProperties().put("openstreetmap", osm);
                         }
+                        Settings.SettingsBuilder.get().start().setMapSettings(mapSettings).apply();
                         try {
                             List<MapSettingsEntity> mapSettingsEntities = DistributionDAO.getInstance().getMapSettings(Settings.get().getLogin());
                             if (!mapSettingsEntities.isEmpty()) {

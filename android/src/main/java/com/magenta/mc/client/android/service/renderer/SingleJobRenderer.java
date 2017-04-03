@@ -140,7 +140,7 @@ public class SingleJobRenderer {
     }
 
     private static Address createAddress(LocationRecord record) {
-        if (record != null) {
+        if (record != null && record.getLat() != null && record.getLon() != null) {
             Address a = new Address();
             a.setFullAddress(record.getAddress());
             a.setLatitude(record.getLat());

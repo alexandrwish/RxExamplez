@@ -32,10 +32,6 @@
     function HideProgressAnimation() {
         $("#loading-div-background").hide();
     }
-
-
-
-
 </script>
 <script type="text/javascript">
     ShowProgressAnimation();
@@ -59,10 +55,9 @@
     map.addLayer(currentLocationLayer);
     initConfig = function (mapConfig) {
         map.setConfig(mapConfig, map);
-         setTimeout(function(){
-         window.mapletJS.onload();
-      }, 500);
-
+        setTimeout(function(){
+            window.mapletJS.onload();
+        }, 500);
     };
     showOrder = function (lat, lng, type, priority, reference, orderHrs, orderMns) {
         if (window.order[reference]) {
@@ -188,10 +183,6 @@
         <!--}-->
     <!--});-->
     <!--map.addControl(new CurrentLocationControl());-->
-
-
-
-
 </script>
 </body>
 </html>

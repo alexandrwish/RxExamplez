@@ -6,6 +6,7 @@ import android.preference.PreferenceManager;
 
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.common.IntentAttributes;
+import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.entity.Job;
 import com.magenta.mc.client.android.entity.Stop;
 import com.magenta.mc.client.android.events.AlertEvent;
@@ -19,6 +20,7 @@ import com.magenta.mc.client.android.ui.dialog.DialogFactory;
 import com.magenta.mc.client.android.ui.dialog.DistributionDialogFragment;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public abstract class DistributionActivity extends SmokeActivity<WorkflowDelegate> {
 
@@ -104,7 +106,7 @@ public abstract class DistributionActivity extends SmokeActivity<WorkflowDelegat
     }
 
     public void updateMapSettings() {
-        HashMap mapSettings = /*new Gson().fromJson((String) Setup.get().getSettings().get("map.property"), HashMap.class);*/ new HashMap(); // TODO: 3/12/17 impl
+        HashMap<String, Map<String, String>> mapSettings = Settings.get().getMapSettings();
         if (mapSettings != null && mapSettings.size() > 1) {
             Bundle bundle = new Bundle();
             bundle.putInt(DialogFactory.TITLE, R.string.map_dialog);
