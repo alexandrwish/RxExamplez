@@ -42,7 +42,7 @@ public class DateUtils {
     }
 
     public static String timeToHumanReadable(int seconds, Context context) {
-        int tmp = seconds / 60;
+        int tmp = (seconds / 1000) / 60;
         int minutes = tmp % 60;
         tmp = tmp / 60;
         int hours = tmp % 24;
