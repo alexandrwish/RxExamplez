@@ -228,24 +228,24 @@ public class JobActivity extends DistributionActivity implements WorkflowActivit
     private void showRunInformation(Job job) {
         pickupLocation.setText(Html.fromHtml("<u> " + job.getStartAddress().getFullAddress() + " </u>"));
         dropLocation.setText(Html.fromHtml("<u> " + job.getEndAddress().getFullAddress() + " </u>"));
-        long loadingEndTime = job.getParameterAsInt(Job.ATTR_LOADING_END_TIME, 0);
-        long loadingDuration = job.getParameterAsInt(Job.ATTR_LOADING_DURATION, 0);
-        long unloadingEndTime = job.getParameterAsInt(Job.ATTR_UNLOADING_END_TIME, 0);
-        long unloadingDuration = job.getParameterAsInt(Job.ATTR_UNLOADING_DURATION, 0);
+        long loadingEndTime = job.getParameterAsLong(Job.ATTR_LOADING_END_TIME, 0);
+        long loadingDuration = job.getParameterAsLong(Job.ATTR_LOADING_DURATION, 0);
+        long unloadingEndTime = job.getParameterAsLong(Job.ATTR_UNLOADING_END_TIME, 0);
+        long unloadingDuration = job.getParameterAsLong(Job.ATTR_UNLOADING_DURATION, 0);
         double totalLoad = job.getParameterAsDouble(Job.ATTR_TOTAL_LOAD, 0);
         double totalVolume = job.getParameterAsDouble(Job.ATTR_TOTAL_VOLUME, 0);
         long totalDrivingTime = job.getParameterAsLong(Job.ATTR_DRIVING_TIME, 0);
         double totalDistance = job.getParameterAsDouble(Job.ATTR_TOTAL_DISTANCE, 0);
         if (loadingDuration > 0) {
-            loading.setText(DateUtils.toStringTime(new Date((loadingEndTime - loadingDuration) * 1000))
-                    + " - " + DateUtils.toStringTime(new Date(loadingEndTime * 1000)));
+            loading.setText(DateUtils.toStringTime(new Date((loadingEndTime - loadingDuration)))
+                    + " - " + DateUtils.toStringTime(new Date(loadingEndTime)));
             loadingRow.setVisibility(View.VISIBLE);
         } else {
             loadingRow.setVisibility(View.GONE);
         }
         if (unloadingDuration > 0) {
-            unloading.setText(DateUtils.toStringTime(new Date((unloadingEndTime - unloadingDuration) * 1000))
-                    + " - " + DateUtils.toStringTime(new Date(unloadingEndTime * 1000)));
+            unloading.setText(DateUtils.toStringTime(new Date(unloadingEndTime - unloadingDuration * 60 * 1000))
+                    + " - " + DateUtils.toStringTime(new Date(unloadingEndTime)));
             unloadingRow.setVisibility(View.VISIBLE);
         } else {
             unloadingRow.setVisibility(View.GONE);
