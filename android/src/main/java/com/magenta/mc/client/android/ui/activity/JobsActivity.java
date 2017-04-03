@@ -30,8 +30,10 @@ import com.magenta.mc.client.android.storage.DataControllerImpl;
 import com.magenta.mc.client.android.storage.StateController;
 import com.magenta.mc.client.android.ui.AndroidUI;
 import com.magenta.mc.client.android.ui.adapter.JobsAdapter;
+import com.magenta.mc.client.android.util.JobsComparator;
 import com.magenta.mc.client.android.util.PhoneUtils;
 
+import java.util.Collections;
 import java.util.List;
 
 public class JobsActivity extends DistributionActivity implements WorkflowActivity {
@@ -163,6 +165,7 @@ public class JobsActivity extends DistributionActivity implements WorkflowActivi
         List<Job> jobs = ServicesRegistry.getDataController().loadCurrentJobs();
         if (showCompletedRun) {
             jobs.addAll(((DataControllerImpl) ServicesRegistry.getDataController()).getJobsFromHistory());
+            Collections.sort(jobs, JobsComparator.getInstance());
         }
         return jobs;
     }

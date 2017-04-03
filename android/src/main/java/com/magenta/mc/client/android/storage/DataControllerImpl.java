@@ -22,6 +22,7 @@ import com.magenta.mc.client.android.service.DataController;
 import com.magenta.mc.client.android.service.ServicesRegistry;
 import com.magenta.mc.client.android.setup.Setup;
 import com.magenta.mc.client.android.util.DateUtils;
+import com.magenta.mc.client.android.util.JobsComparator;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -369,13 +370,7 @@ public class DataControllerImpl implements DataController<Job, JobStatus, Stop> 
             }
         }
         final ArrayList<Job> jobsArray = new ArrayList<>(active);
-        Collections.sort(jobsArray, new Comparator<Job>() {
-            public int compare(Job job1, Job job2) {
-                return job1.getDate() != null && job2.getDate() != null
-                        ? job1.getDate().compareTo(job2.getDate())
-                        : 0;
-            }
-        });
+        Collections.sort(jobsArray, JobsComparator.getInstance());
         return jobsArray;
     }
 
