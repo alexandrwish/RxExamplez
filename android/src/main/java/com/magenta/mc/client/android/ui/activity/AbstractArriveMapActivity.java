@@ -106,7 +106,7 @@ public abstract class AbstractArriveMapActivity extends DistributionActivity imp
         DynamicAttributeView dynamicAttributeView = new DynamicAttributeView(this, (TableLayout) findViewById(R.id.details))
                 .add(new Attribute(getString(R.string.reference_label), stop.getStopName()))
                 .add(new Attribute(getString(R.string.window), StringUtils.getTimeRange(stop.getParameterAsLong(Stop.ATTR_WINDOW_START_TIME, 0L), stop.getParameterAsLong(Stop.ATTR_WINDOW_END_TIME, 0L))))
-                .add(new Attribute(getString(R.string.service), StringUtils.getTimeRange(stop.getDate().getTime() / 1000, stop.getParameterAsLong(Stop.ATTR_DEPART_TIME, stop.getDate().getTime() / 1000))))
+                .add(new Attribute(getString(R.string.service), StringUtils.getTimeRange(stop.getDate().getTime() / 1000, stop.getParameterAsLong(Stop.ATTR_DEPART_TIME, stop.getDate().getTime()) / 1000)))
                 .add(new Attribute(getString(R.string.customer_label), stop.getCustomer()))
                 .add(new Attribute(getString(R.string.customer_location), stop.getLocation()))
                 .add(new Attribute(getString(R.string.address_label), stop.getAddressAsString()).addListeners(

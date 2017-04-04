@@ -37,14 +37,14 @@ public class SingleJobRenderer {
         result.setReferenceId(run.getReference());
         result.setDate(new Date(run.getDate()));
         result.setParameter(Job.ATTR_NUMBER, String.valueOf(run.getNumber()));
+        result.setParameter(Job.ATTR_TOTAL_LOAD, String.valueOf(run.getLoad()));
+        result.setParameter(Job.ATTR_TOTAL_VOLUME, String.valueOf(run.getVolume()));
+        result.setParameter(Job.ATTR_DRIVING_TIME, String.valueOf(run.getDrivingTime()));
+        result.setParameter(Job.ATTR_TOTAL_DISTANCE, String.valueOf(run.getDistance()));
         result.setParameter(Job.ATTR_LOADING_END_TIME, String.valueOf(run.getLoadingEndTime()));
         result.setParameter(Job.ATTR_LOADING_DURATION, String.valueOf(run.getLoadingDuration()));
         result.setParameter(Job.ATTR_UNLOADING_DURATION, String.valueOf(run.getUnloadingDuration()));
         result.setParameter(Job.ATTR_UNLOADING_END_TIME, String.valueOf(run.getUnloadingEndTime()));
-        result.setParameter(Job.ATTR_DRIVING_TIME, String.valueOf(run.getDrivingTime()));
-        result.setParameter(Job.ATTR_TOTAL_DISTANCE, String.valueOf(run.getDistance()));
-        result.setParameter(Job.ATTR_TOTAL_VOLUME, String.valueOf(run.getVolume()));
-        result.setParameter(Job.ATTR_TOTAL_LOAD, String.valueOf(run.getLoad()));
         List<AbstractStop> stops = new LinkedList<>();
         for (Order order : run.getStops()) {
             AbstractStop stop = createStop(order, result);
@@ -68,15 +68,16 @@ public class SingleJobRenderer {
         stop.setParentJob(job);
         stop.setDate(new Date(order.getDate()));
         stop.setArriveDate(new Date(order.getExpectedArrival()));
+        stop.setParameter(Stop.ATTR_LOAD, String.valueOf(order.getCapacity1()));
+        stop.setParameter(Stop.ATTR_VOLUME, String.valueOf(order.getCapacity2()));
         stop.setParameter(Stop.ATTR_PRIORITY, String.valueOf(order.getPriority() != null ? order.getPriority() : 0));
         stop.setParameter(Stop.ATTR_CUSTOMER, order.getCustomer());
         stop.setParameter(Stop.ATTR_DURATION, String.valueOf(order.getDuration()));
+        stop.setParameter(Stop.ATTR_LOCATION, order.getLocation() != null ? order.getLocation().getName() : "");
+        stop.setParameter(Stop.ATTR_DEPART_TIME, String.valueOf(order.getTimeEnd()));
         stop.setParameter(Stop.ATTR_CONTACT_PERSON, order.getContactName());
         stop.setParameter(Stop.ATTR_CONTACT_NUMBER, order.getContactPhone());
         stop.setParameter(Stop.ATTR_CUSTOMER_LOCATION_VERIFIED, order.getCustomerLocationIsVerified());
-        stop.setParameter(Stop.ATTR_LOAD, String.valueOf(order.getCapacity1()));
-        stop.setParameter(Stop.ATTR_VOLUME, String.valueOf(order.getCapacity2()));
-        stop.setParameter(Stop.ATTR_LOCATION, order.getLocation() != null ? order.getLocation().getName() : "");
         if (order.getTimeWindows() != null && order.getTimeWindows().size() > 0) {
             TimeWindow w = order.getTimeWindows().get(0);
             stop.setParameter(Stop.ATTR_WINDOW_START_TIME, String.valueOf(w.getStart()));
