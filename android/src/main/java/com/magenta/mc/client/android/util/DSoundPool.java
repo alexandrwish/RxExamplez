@@ -47,7 +47,7 @@ public class DSoundPool extends SoundPool {
     }
 
     public void playSound(int sound, boolean vibration) {
-        if (!Settings.get().getAudioAlert()) return;
+        if (!Settings.get().getUpdateAlert()) return;
         final int streamVolumeCurrent = audioManager.getStreamVolume(AudioManager.STREAM_RING);
         final int streamVolumeMax = audioManager.getStreamMaxVolume(AudioManager.STREAM_RING);
         /* Volume calculations */

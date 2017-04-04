@@ -55,7 +55,7 @@ public class CoreServiceImpl extends CoreServiceGeneric {
         } else {
             showNotification(title, message, closeWorkflowActivity);
         }
-        if (Settings.get().getAudioAlert()) {
+        if (Settings.get().getUpdateAlert()) {
             try {
                 mediaPlayer.start();
             } catch (Exception ignore) {

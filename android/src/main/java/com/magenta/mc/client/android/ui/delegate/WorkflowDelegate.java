@@ -1,6 +1,8 @@
 package com.magenta.mc.client.android.ui.delegate;
 
 import android.app.AlarmManager;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -40,7 +42,13 @@ public class WorkflowDelegate extends HDDelegate {
                     bundle.putInt(DialogFactory.VALUE, R.string.please_wait);
                     waitIconDialog = DialogFactory.create(DialogFactory.WAIT_DIALOG, bundle);
                 }
-                waitIconDialog.show(getActivity().getFragmentManager(), waitIconDialog.getName());
+                FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction();
+                Fragment prev = getActivity().getFragmentManager().findFragmentByTag(waitIconDialog.getName());
+                if (prev != null) {
+                    ft.remove(prev);
+                }
+                ft.addToBackStack(null);
+                waitIconDialog.show(ft, waitIconDialog.getName());
                 break;
             }
             case Constants.ERROR: {
