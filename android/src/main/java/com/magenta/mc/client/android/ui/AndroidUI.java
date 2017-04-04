@@ -78,8 +78,4 @@ public class AndroidUI implements UI {
 
     public void toFront() {
     }
-
-    public boolean beforeLoginActivity(Activity activity) {
-        return true;
-    }
 }

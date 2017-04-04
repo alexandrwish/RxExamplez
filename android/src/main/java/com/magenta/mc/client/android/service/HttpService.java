@@ -156,7 +156,11 @@ public class HttpService extends IntentService {
                                     }
                                 }
                             } else {
-                                updateSettings(new MapSettingsEntity(), mapSettings);
+                                if (mapSettings.size() == 1) {
+                                    updateSettings(new MapSettingsEntity(), mapSettings);
+                                } else {
+                                    sendBroadcast(new Intent(Constants.HTTP_SERVICE_NAME).putExtra(IntentAttributes.HTTP_SETTINGS_RESPONSE_TYPE, Constants.OK));
+                                }
                             }
                         } catch (SQLException e) {
                             MCLoggerFactory.getLogger(LoginActivity.class).error(e.getMessage(), e);

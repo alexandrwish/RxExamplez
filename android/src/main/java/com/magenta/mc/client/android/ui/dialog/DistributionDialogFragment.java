@@ -12,7 +12,8 @@ import com.magenta.mc.client.android.log.MCLoggerFactory;
 
 public class DistributionDialogFragment extends DialogFragment {
 
-    protected MCLogger LOG = MCLoggerFactory.getLogger(getName());
+    protected final MCLogger LOG = MCLoggerFactory.getLogger(getName());
+    protected DialogCallback mCallback;
 
     public DistributionDialogFragment() {
     }
@@ -46,5 +47,9 @@ public class DistributionDialogFragment extends DialogFragment {
             builder.setMessage(tmp);
         }
         return builder.create();
+    }
+
+    public void setCallback(DialogCallback callback) {
+        mCallback = callback;
     }
 }

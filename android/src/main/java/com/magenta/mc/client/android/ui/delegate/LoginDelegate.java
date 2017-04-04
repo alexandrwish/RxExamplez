@@ -1,10 +1,7 @@
 package com.magenta.mc.client.android.ui.delegate;
 
 import android.app.Activity;
-import android.app.AlarmManager;
-import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.util.Pair;
 import android.view.MenuItem;
 
@@ -20,8 +17,6 @@ import com.magenta.mc.client.android.service.SocketIOService;
 import com.magenta.mc.client.android.service.holder.ServiceHolder;
 import com.magenta.mc.client.android.ui.activity.JobsActivity;
 import com.magenta.mc.client.android.ui.activity.common.LoginActivity;
-import com.magenta.mc.client.android.ui.dialog.DialogFactory;
-import com.magenta.mc.client.android.ui.dialog.DistributionDialogFragment;
 
 public class LoginDelegate extends HDDelegate {
 
@@ -44,32 +39,6 @@ public class LoginDelegate extends HDDelegate {
                     ((LoginActivity) activity).showLoginError();
                     break;
                 }
-            }
-        }
-    }
-
-    public void settingsResult(int result) {
-        // TODO: 2/13/17 return answer to UI
-        MCLoggerFactory.getLogger(getClass()).debug("Login result = " + result);
-        switch (result) {
-            case Constants.OK: {
-                ((AlarmManager) McAndroidApplication.getInstance().getSystemService(Context.ALARM_SERVICE))
-                        .setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, Constants.SEND_DELTA, Constants.SEND_DELTA, intent);
-                break;
-            }
-            case Constants.WARN: {
-                Bundle bundle = new Bundle(3);
-                bundle.putInt(DialogFactory.ICON, android.R.drawable.ic_dialog_info);
-                bundle.putInt(DialogFactory.TITLE, R.string.alert_map_title);
-                bundle.putInt(DialogFactory.VALUE, R.string.alert_map_value);
-                DistributionDialogFragment fragment = DialogFactory.create(DialogFactory.ALERT_DIALOG, bundle);
-                if (fragment != null) {
-                    fragment.show(getActivity().getFragmentManager(), fragment.getName());
-                }
-                break;
-            }
-            case Constants.ERROR: {
-                break;
             }
         }
     }
