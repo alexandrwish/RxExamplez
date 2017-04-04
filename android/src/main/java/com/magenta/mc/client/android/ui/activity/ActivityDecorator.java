@@ -4,10 +4,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.IBinder;
 
 import com.magenta.mc.client.android.R;
-import com.magenta.mc.client.android.binder.SocketBinder;
 import com.magenta.mc.client.android.common.IntentAttributes;
 import com.magenta.mc.client.android.events.AlertEvent;
 import com.magenta.mc.client.android.listener.BroadcastEvent;
@@ -16,8 +14,6 @@ import com.magenta.mc.client.android.listener.GenericBroadcastEventsAdapter;
 import com.magenta.mc.client.android.listener.MxBroadcastEvents;
 import com.magenta.mc.client.android.service.CoreService;
 import com.magenta.mc.client.android.service.ServicesRegistry;
-import com.magenta.mc.client.android.service.SocketIOService;
-import com.magenta.mc.client.android.service.holder.ServiceHolder;
 
 import java.lang.reflect.Method;
 import java.util.HashSet;
@@ -35,16 +31,14 @@ public class ActivityDecorator {
         this.context = context;
     }
 
+    // TODO: 04/04/2017 add in activity
     public void onResume() {
         registerListener();
     }
 
+    // TODO: 04/04/2017 add in activity
     public void onPause() {
         removeListener();
-        IBinder binder = ServiceHolder.getInstance().getService(SocketIOService.class.getName());
-        if (binder != null) {
-            ((SocketBinder) binder).unsubscribe();
-        }
     }
 
     public void showAlert(final AlertEvent event) {

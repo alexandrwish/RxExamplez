@@ -3,9 +3,12 @@ package com.magenta.mc.client.android.binder;
 import android.os.Binder;
 import android.util.Pair;
 
+import com.magenta.mc.client.android.common.Constants;
+import com.magenta.mc.client.android.common.IntentAttributes;
 import com.magenta.mc.client.android.log.MCLoggerFactory;
+import com.magenta.mc.client.android.service.HttpService;
 import com.magenta.mc.client.android.service.SocketIOService;
-import com.magenta.mc.client.android.ui.delegate.WorkflowDelegate;
+import com.magenta.mc.client.android.service.holder.ServiceHolder;
 
 import java.util.concurrent.TimeUnit;
 
@@ -24,7 +27,7 @@ public class SocketBinder extends Binder {
         this.service = service;
     }
 
-    public void subscribe(final WorkflowDelegate delegate) {
+    public void subscribe() {
         subscription = service.getPublisher()
                 .doOnNext(new Action1<Pair<Long, String>>() {
                     public void call(Pair<Long, String> pair) {
@@ -47,11 +50,12 @@ public class SocketBinder extends Binder {
                     }
 
                     public void onNext(Pair<Long, String> pair) {
-                        delegate.reloadJobs();
+                        ServiceHolder.getInstance().startService(HttpService.class, Pair.create(IntentAttributes.HTTP_TYPE, Constants.JOBS_TYPE));
                     }
                 });
     }
 
+    // TODO: 04/04/2017 unsubscribr on logout
     public void unsubscribe() {
         if (subscription != null) {
             subscription.unsubscribe();

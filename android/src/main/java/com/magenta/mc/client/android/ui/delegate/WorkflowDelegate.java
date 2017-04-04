@@ -4,13 +4,11 @@ import android.app.AlarmManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.util.Pair;
 import android.view.MenuItem;
 
 import com.magenta.mc.client.android.McAndroidApplication;
 import com.magenta.mc.client.android.R;
-import com.magenta.mc.client.android.binder.SocketBinder;
 import com.magenta.mc.client.android.common.Constants;
 import com.magenta.mc.client.android.common.IntentAttributes;
 import com.magenta.mc.client.android.common.UserStatus;
@@ -18,7 +16,6 @@ import com.magenta.mc.client.android.entity.TaskState;
 import com.magenta.mc.client.android.log.MCLoggerFactory;
 import com.magenta.mc.client.android.service.HttpService;
 import com.magenta.mc.client.android.service.ServicesRegistry;
-import com.magenta.mc.client.android.service.SocketIOService;
 import com.magenta.mc.client.android.service.holder.ServiceHolder;
 import com.magenta.mc.client.android.ui.activity.AbortActivity;
 import com.magenta.mc.client.android.ui.activity.AbstractArriveMapActivity;
@@ -31,23 +28,7 @@ import com.magenta.mc.client.android.ui.dialog.DistributionDialogFragment;
 
 public class WorkflowDelegate extends HDDelegate {
 
-    DistributionDialogFragment waitIconDialog;
-
-    public void onResume() {
-        super.onResume();
-        IBinder binder = ServiceHolder.getInstance().getService(SocketIOService.class.getName());
-        if (binder != null) {
-            ((SocketBinder) binder).subscribe(this);
-        }
-    }
-
-    public void onPause() {
-        super.onPause();
-        IBinder binder = ServiceHolder.getInstance().getService(SocketIOService.class.getName());
-        if (binder != null) {
-            ((SocketBinder) binder).unsubscribe();
-        }
-    }
+    private DistributionDialogFragment waitIconDialog;
 
     public void jobsResult(int result) {
         MCLoggerFactory.getLogger(getClass()).debug("Jobs result = " + result);
@@ -73,7 +54,7 @@ public class WorkflowDelegate extends HDDelegate {
                     waitIconDialog.dismiss();
                 }
                 if (getActivity() instanceof JobsActivity) {
-                    ((JobsActivity)getActivity()).refreshJobs(false);
+                    ((JobsActivity) getActivity()).refreshJobs(false);
                 }
                 break;
             }
