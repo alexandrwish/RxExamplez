@@ -6,6 +6,7 @@ import com.magenta.hdmate.mx.model.Order;
 import com.magenta.hdmate.mx.model.OrderItem;
 import com.magenta.hdmate.mx.model.Run;
 import com.magenta.hdmate.mx.model.StopKind;
+import com.magenta.hdmate.mx.model.StopPriority;
 import com.magenta.hdmate.mx.model.TimeWindow;
 import com.magenta.mc.client.android.db.dao.DistributionDAO;
 import com.magenta.mc.client.android.entity.AbstractStop;
@@ -70,7 +71,7 @@ public class SingleJobRenderer {
         stop.setArriveDate(new Date(order.getExpectedArrival()));
         stop.setParameter(Stop.ATTR_LOAD, String.valueOf(order.getCapacity1()));
         stop.setParameter(Stop.ATTR_VOLUME, String.valueOf(order.getCapacity2()));
-        stop.setParameter(Stop.ATTR_PRIORITY, String.valueOf(order.getPriority() != null ? order.getPriority() : 0));
+        stop.setParameter(Stop.ATTR_PRIORITY, String.valueOf(getPriority(order.getPriority())));
         stop.setParameter(Stop.ATTR_CUSTOMER, order.getCustomer());
         stop.setParameter(Stop.ATTR_DURATION, String.valueOf(order.getDuration()));
         stop.setParameter(Stop.ATTR_LOCATION, order.getLocation() != null ? order.getLocation().getName() : "");
@@ -130,6 +131,22 @@ public class SingleJobRenderer {
         order.getStopKind();
         */
         return stop;
+    }
+
+    private static String getPriority(StopPriority priority) {
+        if (priority == null) {
+            return "0";
+        }
+        switch (priority) {
+            case NORMAL:
+                return "0";
+            case MIDHIGH:
+                return "1";
+            case HIGH:
+                return "2";
+            default:
+                return "0";
+        }
     }
 
     private static LocalizeStringEntity getTitle(Map<String, String> title) {
