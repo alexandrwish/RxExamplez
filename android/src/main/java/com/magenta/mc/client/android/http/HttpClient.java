@@ -10,6 +10,7 @@ import android.os.BatteryManager;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.j256.ormlite.logger.LoggerFactory;
 import com.magenta.hdmate.mx.ApiClient;
 import com.magenta.hdmate.mx.api.MateApi;
 import com.magenta.hdmate.mx.auth.ApiKeyAuth;
@@ -20,6 +21,7 @@ import com.magenta.hdmate.mx.model.TelemetryRecord;
 import com.magenta.mc.client.android.McAndroidApplication;
 import com.magenta.mc.client.android.common.Constants;
 import com.magenta.mc.client.android.common.Settings;
+import com.magenta.mc.client.android.db.dao.DistributionDAO;
 import com.magenta.mc.client.android.entity.Address;
 import com.magenta.mc.client.android.log.MCLoggerFactory;
 import com.magenta.mc.client.android.record.LoginRecord;
@@ -28,9 +30,9 @@ import com.magenta.mc.client.android.record.PointsResultRecord;
 import com.magenta.mc.client.android.resender.ResendableMetadata;
 import com.magenta.mc.client.android.resender.Resender;
 import com.magenta.mc.client.android.tracking.GeoLocation;
-import com.magenta.mc.client.android.tracking.GeoLocationBatch;
 import com.magenta.mc.client.android.util.MxAndroidUtil;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -180,8 +182,11 @@ public class HttpClient {
 
                         public void onNext(Boolean success) {
                             if (success) {
-                                // TODO: 28/03/2017 удалять точки
-                                Resender.getInstance().sent(GeoLocationBatch.METADATA, id);
+                                try {
+                                    DistributionDAO.getInstance().clearLocations(id, Settings.get().getUserId());
+                                } catch (SQLException e) {
+                                    LoggerFactory.getLogger(HttpClient.class).error(e.getMessage(), e);
+                                }
                             }
                         }
                     });

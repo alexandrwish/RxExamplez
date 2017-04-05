@@ -30,10 +30,12 @@ public class SenderService extends IntentService {
         try {
             List<LocationEntity> entities = DistributionDAO.getInstance().getGeoLocations(Settings.get().getUserId());
             List<GeoLocation> locations = new ArrayList<>(entities.size());
+            long id = 0;
             for (LocationEntity entity : entities) {
                 locations.add(new GeoLocation(entity.getDate(), entity.getLat(), entity.getLon(), entity.getSpeed(), 0F, 0));
+                id = entity.getId() > id ? entity.getId() : id;
             }
-            HttpClient.getInstance().sendLocations(System.currentTimeMillis(), locations);
+            HttpClient.getInstance().sendLocations(id, locations);
         } catch (SQLException e) {
             MCLoggerFactory.getLogger(SenderService.class).error(e.getMessage(), e);
         }
