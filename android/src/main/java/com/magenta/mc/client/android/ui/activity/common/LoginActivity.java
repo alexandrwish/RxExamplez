@@ -271,9 +271,9 @@ public class LoginActivity extends SmokeActivity<LoginDelegate> {
         moveTaskToBack(true);
     }
 
-    public void showLoginError() {
+    public void showLoginError(boolean connectionError) {
         new AlertDialog.Builder(this)
-                .setMessage(R.string.try_again)
+                .setMessage(connectionError ? R.string.try_late : R.string.try_again)
                 .setCancelable(false)
                 .setNeutralButton(R.string.mx_ok,
                         new DialogInterface.OnClickListener() {

@@ -36,9 +36,9 @@ android {
         }
     }
     compileSdkVersion 22
-    buildToolsVersion '25.0.0'
+    buildToolsVersion '25.0.2'
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 17
         targetSdkVersion 22
         applicationId "com.magenta.maxunits.mobile.vr"
         versionCode 1

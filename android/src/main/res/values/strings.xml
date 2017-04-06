@@ -101,8 +101,8 @@
     <string name="mx_map_go_to_current_location">Go to current location</string>
     <string name="mx_map_tracking_options">Tracking options</string>
     <string name="mx_map_track_current_position">Track current position</string>
-    <string name="mx_empty" />
-    <string name="mx_divider">:</string>
+    <string name="mx_empty" translatable="false" />
+    <string name="mx_divider" translatable="false">:</string>
     <string name="mx_yes">Yes</string>
     <string name="mx_no">No</string>
     <string name="mx_ok">OK</string>
@@ -320,5 +320,6 @@
     <string name="update_needed_text">New version of the application is available. Start the update?</string>
     <string name="update_needed_toast_text">The application must be updated after the next logging in.</string>
     <string name="update_needed_second_text">New version of the application is available. Please install the updates to continue.</string>
-    <string name="try_again">Can\'t login. Check User ID and Pin and try again or late.</string>
+    <string name="try_again">Can\'t login. Check User ID and Pin and try again.</string>
+    <string name="try_late">Can\'t connect to server. Try to connect late.</string>
 </resources>

@@ -44,8 +44,10 @@ public class LoginDelegate extends HDDelegate {
                     break;
                 }
                 case Constants.WARN:
+                    ((LoginActivity) activity).showLoginError(true);
+                    break;
                 case Constants.ERROR: {
-                    ((LoginActivity) activity).showLoginError();
+                    ((LoginActivity) activity).showLoginError(false);
                     break;
                 }
             }
