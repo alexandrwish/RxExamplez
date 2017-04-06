@@ -77,7 +77,7 @@ public abstract class McAndroidApplication extends Application implements ThemeM
         LocaleUtils.changeLocale(this, Settings.get().getLocale());
         DSoundPool.init(getInstance());
         try {
-            TileCacheDAO.getInstance().removeCacheTiles(System.currentTimeMillis() - (7 * 24 * 60 * 60 * 1000)); // TODO: 3/12/17 impl
+            TileCacheDAO.getInstance().removeCacheTiles(System.currentTimeMillis() - Settings.get().getCachePeriod() * 86400000);
         } catch (SQLException ignore) {
         }
         lock();

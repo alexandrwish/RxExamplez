@@ -15,11 +15,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.j256.ormlite.logger.LoggerFactory;
 import com.magenta.mc.client.android.McAndroidApplication;
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.common.Settings;
+import com.magenta.mc.client.android.db.dao.TileCacheDAO;
 import com.magenta.mc.client.android.util.LocaleUtils;
 import com.magenta.mc.client.android.util.ThemeUtils;
+
+import java.sql.SQLException;
 
 public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -39,7 +43,11 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         v.addView(button);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-//                McAndroidApplication.getInstance().getCacheSession().getTileCacheEntityDao().deleteAll();
+                try {
+                    TileCacheDAO.getInstance().removeCacheTiles(System.currentTimeMillis());
+                } catch (SQLException e) {
+                    LoggerFactory.getLogger(getClass()).error(e.getMessage(), e);
+                }
             }
         });
         return v;

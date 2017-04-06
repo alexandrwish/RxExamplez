@@ -364,7 +364,7 @@ public class Maplet extends WebView {
                 entity.setBlob(CompressUtils.compress(blob.getBytes(Charset.forName("US-ASCII"))));
                 TileCacheDAO.getInstance().saveTileToCache(entity);
                 if (new File(McAndroidApplication.getInstance().getDBAdapter().getDB(CacheDBHelper.DATABASE_NAME).getPath()).length() >=
-                        500 * 1024 * 1024) { // TODO: 3/12/17 impl
+                        Settings.get().getCacheSpace() * 1048576) {
                     TileCacheDAO.getInstance().removeCacheTiles(null);
                 }
             } catch (Exception ignore) {
