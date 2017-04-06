@@ -10,6 +10,7 @@ import com.magenta.mc.client.android.common.Constants;
 import com.magenta.mc.client.android.common.IntentAttributes;
 import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.db.dao.DistributionDAO;
+import com.magenta.mc.client.android.entity.JobEntity;
 import com.magenta.mc.client.android.entity.MapSettingsEntity;
 import com.magenta.mc.client.android.entity.type.MapProviderType;
 import com.magenta.mc.client.android.http.HttpClient;
@@ -21,6 +22,7 @@ import com.magenta.mc.client.android.ui.activity.common.LoginActivity;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -185,8 +187,13 @@ public class HttpService extends IntentService {
 
                     public void onNext(List<Run> runs) {
                         sendBroadcast(new Intent(Constants.HTTP_SERVICE_NAME).putExtra(IntentAttributes.HTTP_JOBS_RESPONSE_TYPE, Constants.START));
+                        List<JobEntity> jobs = new LinkedList<>();
                         for (Run run : runs) {
-                            ServicesRegistry.getDataController().updateJob(SingleJobRenderer.renderJob(run));
+                            jobs.add(SingleJobRenderer.renderJob(run));
+                        }
+                        ServicesRegistry.getDataController().clear();
+                        for (JobEntity job : jobs) {
+                            ServicesRegistry.getDataController().updateJob(job);
                         }
                     }
                 });

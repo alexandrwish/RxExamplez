@@ -38,7 +38,7 @@ public class LoginDelegate extends HDDelegate {
                     ServiceHolder.getInstance().startService(HttpService.class, Pair.create(IntentAttributes.HTTP_TYPE, Constants.JOBS_TYPE));
                     ServiceHolder.getInstance().bindService(SocketIOService.class, new BindListener() {
                         public void onBind(IBinder binder) {
-                            ((SocketBinder)binder).subscribe();
+                            ((SocketBinder) binder).subscribe();
                         }
                     });
                     break;

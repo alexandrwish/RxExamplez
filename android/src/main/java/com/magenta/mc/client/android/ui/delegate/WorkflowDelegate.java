@@ -18,6 +18,7 @@ import com.magenta.mc.client.android.entity.TaskState;
 import com.magenta.mc.client.android.log.MCLoggerFactory;
 import com.magenta.mc.client.android.service.HttpService;
 import com.magenta.mc.client.android.service.ServicesRegistry;
+import com.magenta.mc.client.android.service.SocketIOService;
 import com.magenta.mc.client.android.service.holder.ServiceHolder;
 import com.magenta.mc.client.android.ui.activity.AbortActivity;
 import com.magenta.mc.client.android.ui.activity.AbstractArriveMapActivity;
@@ -101,6 +102,7 @@ public class WorkflowDelegate extends HDDelegate {
     public void logout() {
         McAndroidApplication.getInstance().setStatus(UserStatus.LOGOUT);
         ServicesRegistry.getDataController().clear();
+        ServiceHolder.getInstance().stopService(SocketIOService.class);
         getActivity().startActivity(new Intent(getActivity(), LoginActivity.class));
         getActivity().finish();
     }
