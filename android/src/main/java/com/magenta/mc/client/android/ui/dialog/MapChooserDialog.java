@@ -131,9 +131,9 @@ public class MapChooserDialog extends DistributionDialogFragment {
         if (!emptySettings) {
             return;
         }
-        Object o = "google"; // TODO: 3/12/17 impl
-        if (o != null && !StringUtils.isBlank((String) o)) {
-            String provider = ((String) o).toLowerCase();
+        String defaultMap = Settings.get().getDefaultMap();
+        if (defaultMap != null && !StringUtils.isBlank(defaultMap)) {
+            String provider = defaultMap.toLowerCase();
             for (String s : Settings.IGNORED_MAP_PROVIDERS) {
                 if (s.equalsIgnoreCase(provider)) {
                     provider = "openstreetmap";
