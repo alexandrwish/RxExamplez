@@ -14,6 +14,7 @@ import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.common.UserStatus;
 import com.magenta.mc.client.android.log.MCLoggerFactory;
 import com.magenta.mc.client.android.record.UpdateRunEvent;
+import com.magenta.mc.client.android.resender.Resender;
 import com.magenta.mc.client.android.service.holder.ServiceHolder;
 import com.magenta.mc.client.android.ui.activity.common.LoginActivity;
 
@@ -59,6 +60,8 @@ public class SocketIOService extends Service {
         try {
             IO.Options options = new IO.Options();
             options.path = "/pda.io";
+            options.reconnection = true;
+            options.reconnectionDelay = 5000;
             mSocket = IO.socket(getSocketUrl(), options);
         } catch (URISyntaxException e) {
             MCLoggerFactory.getLogger(SocketIOService.class).error(e.getMessage(), e);
@@ -80,6 +83,10 @@ public class SocketIOService extends Service {
         }).on(Socket.EVENT_CONNECT, new Emitter.Listener() {
             public void call(Object... args) {
                 onConnected();
+            }
+        }).on(Socket.EVENT_RECONNECT, new Emitter.Listener() {
+            public void call(Object... args) {
+                onReconnected();
             }
         }).on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
             public void call(Object... args) {
@@ -220,6 +227,11 @@ public class SocketIOService extends Service {
         MCLoggerFactory.getLogger(SocketIOService.class).debug("EVENT_CONNECT");
         McAndroidApplication.getInstance().setStatus(UserStatus.ONLINE);
         repost();
+    }
+
+    protected void onReconnected() {
+        MCLoggerFactory.getLogger(SocketIOService.class).debug("EVENT_RECONNECT");
+        Resender.getInstance().start();
     }
 
     protected void onDisconnected() {

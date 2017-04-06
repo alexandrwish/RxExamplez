@@ -48,7 +48,7 @@ public class SmokeActivityDelegate extends McActivityDelegate {
                 public void run() {
                     ImageView imageView = (ImageView) getActivity().findViewById(R.id.mcTitleBarRightIndicator);
                     if (imageView != null) {
-                        imageView.setImageResource(McAndroidApplication.getInstance().getStatus().equals(UserStatus.ONLINE)
+                        imageView.setImageResource(UserStatus.ONLINE.equals(McAndroidApplication.getInstance().getStatus())
                                 ? R.drawable.mc_img_indicator_green_light
                                 : R.drawable.mc_img_indicator_red_light);
                     }
