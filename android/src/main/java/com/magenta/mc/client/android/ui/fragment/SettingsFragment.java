@@ -12,7 +12,6 @@ import android.preference.PreferenceGroup;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.j256.ormlite.logger.LoggerFactory;
@@ -38,16 +37,15 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         if (v == null) {
             return null;
         }
-        Button button = new Button(getActivity().getApplicationContext());
-        button.setText(R.string.clear_cache);
-        v.addView(button);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+        Preference button = findPreference(getString(R.string.clear_cache));
+        button.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            public boolean onPreferenceClick(Preference preference) {
                 try {
                     TileCacheDAO.getInstance().removeCacheTiles(System.currentTimeMillis());
                 } catch (SQLException e) {
                     LoggerFactory.getLogger(getClass()).error(e.getMessage(), e);
                 }
+                return true;
             }
         });
         return v;

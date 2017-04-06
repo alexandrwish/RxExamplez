@@ -85,5 +85,9 @@
             android:inputType="number"
             android:key="cache.space"
             android:title="@string/used_cache_space" />
+
+        <Preference
+            android:key="@string/clear_cache"
+            android:title="@string/clear_cache" />
     </PreferenceCategory>
 </PreferenceScreen>
