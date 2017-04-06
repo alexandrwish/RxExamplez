@@ -13,6 +13,7 @@ import com.magenta.mc.client.android.binder.SocketBinder;
 import com.magenta.mc.client.android.common.Constants;
 import com.magenta.mc.client.android.common.IntentAttributes;
 import com.magenta.mc.client.android.common.UserStatus;
+import com.magenta.mc.client.android.http.HttpClient;
 import com.magenta.mc.client.android.listener.BindListener;
 import com.magenta.mc.client.android.log.MCLoggerFactory;
 import com.magenta.mc.client.android.service.HttpService;
@@ -29,6 +30,7 @@ public class LoginDelegate extends HDDelegate {
         if (activity instanceof LoginActivity) {
             switch (result) {
                 case Constants.OK: {
+                    HttpClient.getInstance().init();
                     McAndroidApplication.getInstance().setStatus(UserStatus.ONLINE);
                     ServiceHolder.getInstance().startService(HttpService.class, Pair.create(IntentAttributes.HTTP_TYPE, Constants.SETTINGS_TYPE));
                     ServiceHolder.getInstance().startService(HttpService.class, Pair.create(IntentAttributes.HTTP_TYPE, Constants.JOBS_TYPE));

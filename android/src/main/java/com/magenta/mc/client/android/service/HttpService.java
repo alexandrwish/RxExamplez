@@ -56,7 +56,6 @@ public class HttpService extends IntentService {
         if (intent.hasExtra(IntentAttributes.HTTP_TYPE)) {
             switch (intent.getIntExtra(IntentAttributes.HTTP_TYPE, 0)) {
                 case (Constants.LOGIN_TYPE): {
-                    HttpClient.getInstance().init();
                     login(intent);
                     break;
                 }

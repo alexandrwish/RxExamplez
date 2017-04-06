@@ -27,7 +27,6 @@ import com.magenta.mc.client.android.common.Constants;
 import com.magenta.mc.client.android.common.IntentAttributes;
 import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.common.UserStatus;
-import com.magenta.mc.client.android.http.HttpClient;
 import com.magenta.mc.client.android.log.MCLoggerFactory;
 import com.magenta.mc.client.android.service.HttpService;
 import com.magenta.mc.client.android.setup.Setup;
@@ -148,7 +147,6 @@ public class LoginActivity extends SmokeActivity<LoginDelegate> {
             inputManager.hideSoftInputFromWindow(getCurrentFocus() != null ? getCurrentFocus().getWindowToken() : null, InputMethodManager.HIDE_NOT_ALWAYS);
         } catch (Exception ignore) {
         }
-        HttpClient.getInstance().init();
         startService(new Intent(LoginActivity.this, HttpService.class)
                 .putExtra(IntentAttributes.HTTP_TYPE, Constants.LOGIN_TYPE)
                 .putExtra(IntentAttributes.HTTP_ACCOUNT, account)
