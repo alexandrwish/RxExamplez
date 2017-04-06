@@ -3,6 +3,7 @@ package com.magenta.mc.client.android.util;
 import android.app.Application;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.util.DisplayMetrics;
 
 import com.magenta.mc.client.android.R;
 
@@ -15,8 +16,11 @@ public final class LocaleUtils {
 
     public static void changeLocale(final Application application, final String code) {
         final Resources resources = application.getBaseContext().getResources();
+        final DisplayMetrics displayMetrics = resources.getDisplayMetrics();
         final Configuration configuration = resources.getConfiguration();
-        configuration.setLocale(new Locale(code == null ? "en" : code));
+        configuration.locale = new Locale(code == null ? "en" : code);
+        Locale.setDefault(configuration.locale);
+        resources.updateConfiguration(configuration, displayMetrics);
     }
 
     public static String getDisplayName(final String code) {
