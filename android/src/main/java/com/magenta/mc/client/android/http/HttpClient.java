@@ -103,12 +103,19 @@ public class HttpClient {
         return ("443".equals(port) ? "https://" : "http://") + Settings.get().getHost() + ":" + port + postfix;
     }
 
+    private MateApi getApiClient() {
+        if (apiClient == null) {
+            init();
+        }
+        return apiClient;
+    }
+
     public Observable<com.magenta.hdmate.mx.model.Settings> getSettings() {
-        return apiClient.registerLogin(MxAndroidUtil.getImei()).observeOn(Schedulers.io());
+        return getApiClient().registerLogin(MxAndroidUtil.getImei()).observeOn(Schedulers.io());
     }
 
     public Observable<List<Run>> getJobs() {
-        return apiClient.allscheduleGet().observeOn(Schedulers.io());
+        return getApiClient().allscheduleGet().observeOn(Schedulers.io());
     }
 
     @Deprecated
@@ -128,7 +135,7 @@ public class HttpClient {
         result.setActionTime(Long.valueOf((String) values.get("date")));
         results.add(result);
         // TODO: 2/20/17 return observer
-        apiClient.actionPost(results)
+        getApiClient().actionPost(results)
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Subscriber<List<OrderActionResult>>() {
                     public void onCompleted() {
@@ -168,29 +175,28 @@ public class HttpClient {
             record.setGps(isGPSEnable());
         }
         // TODO: 2/20/17 return observer
-        if (apiClient != null) {
-            apiClient.telemetryPost(records)
-                    .subscribeOn(Schedulers.io())
-                    .subscribe(new Subscriber<Boolean>() {
-                        public void onCompleted() {
+        getApiClient().telemetryPost(records)
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<Boolean>() {
+                    public void onCompleted() {
 
-                        }
+                    }
 
-                        public void onError(Throwable e) {
-                            MCLoggerFactory.getLogger(HttpClient.class).error(e.getMessage(), e);
-                        }
+                    public void onError(Throwable e) {
+                        MCLoggerFactory.getLogger(HttpClient.class).error(e.getMessage(), e);
+                    }
 
-                        public void onNext(Boolean success) {
-                            if (success) {
-                                try {
-                                    DistributionDAO.getInstance().clearLocations(id, Settings.get().getUserId());
-                                } catch (SQLException e) {
-                                    LoggerFactory.getLogger(HttpClient.class).error(e.getMessage(), e);
-                                }
+                    public void onNext(Boolean success) {
+                        if (success) {
+                            try {
+                                DistributionDAO.getInstance().clearLocations(id, Settings.get().getUserId());
+                            } catch (SQLException e) {
+                                LoggerFactory.getLogger(HttpClient.class).error(e.getMessage(), e);
                             }
                         }
-                    });
-        }
+                    }
+                });
+
     }
 
     // TODO: 2/20/17 use EasyDeviceInfo
