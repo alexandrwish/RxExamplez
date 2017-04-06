@@ -32,6 +32,8 @@ public class LoginDelegate extends HDDelegate {
                 case Constants.OK: {
                     HttpClient.getInstance().init();
                     McAndroidApplication.getInstance().setStatus(UserStatus.ONLINE);
+                    activity.startActivity(new Intent(activity, JobsActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
+                    activity.finish();
                     ServiceHolder.getInstance().startService(HttpService.class, Pair.create(IntentAttributes.HTTP_TYPE, Constants.SETTINGS_TYPE));
                     ServiceHolder.getInstance().startService(HttpService.class, Pair.create(IntentAttributes.HTTP_TYPE, Constants.JOBS_TYPE));
                     ServiceHolder.getInstance().bindService(SocketIOService.class, new BindListener() {
@@ -39,8 +41,6 @@ public class LoginDelegate extends HDDelegate {
                             ((SocketBinder)binder).subscribe();
                         }
                     });
-                    activity.startActivity(new Intent(activity, JobsActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
-                    activity.finish();
                     break;
                 }
                 case Constants.WARN:

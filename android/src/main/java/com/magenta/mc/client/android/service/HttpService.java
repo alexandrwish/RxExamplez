@@ -24,6 +24,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import rx.Subscriber;
 import rx.schedulers.Schedulers;
@@ -104,6 +105,7 @@ public class HttpService extends IntentService {
     private void getSettings() {
         HttpClient.getInstance().getSettings()
                 .subscribeOn(Schedulers.newThread())
+                .delay(300, TimeUnit.MILLISECONDS)
                 .subscribe(new Subscriber<com.magenta.hdmate.mx.model.Settings>() {
                     public void onCompleted() {
                         sendBroadcast(new Intent(Constants.HTTP_SERVICE_NAME).putExtra(IntentAttributes.HTTP_SETTINGS_RESPONSE_TYPE, Constants.OK));
@@ -158,7 +160,7 @@ public class HttpService extends IntentService {
                                 if (mapSettings.size() == 1) {
                                     updateSettings(new MapSettingsEntity(), mapSettings);
                                 } else {
-                                    sendBroadcast(new Intent(Constants.HTTP_SERVICE_NAME).putExtra(IntentAttributes.HTTP_SETTINGS_RESPONSE_TYPE, Constants.OK));
+                                    sendBroadcast(new Intent(Constants.HTTP_SERVICE_NAME).putExtra(IntentAttributes.HTTP_SETTINGS_RESPONSE_TYPE, Constants.NEED_UPDATE));
                                 }
                             }
                         } catch (SQLException e) {

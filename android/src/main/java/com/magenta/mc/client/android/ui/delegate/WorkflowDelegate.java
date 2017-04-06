@@ -72,10 +72,13 @@ public class WorkflowDelegate extends HDDelegate {
     public void settingsResult(int result) {
         // TODO: 2/13/17 return answer to UI
         MCLoggerFactory.getLogger(getClass()).debug("Login result = " + result);
+        ((AlarmManager) McAndroidApplication.getInstance().getSystemService(Context.ALARM_SERVICE))
+                .setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, Constants.SEND_DELTA, Constants.SEND_DELTA, intent);
         switch (result) {
-            case Constants.OK: {
-                ((AlarmManager) McAndroidApplication.getInstance().getSystemService(Context.ALARM_SERVICE))
-                        .setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, Constants.SEND_DELTA, Constants.SEND_DELTA, intent);
+            case Constants.NEED_UPDATE: {
+                if (getActivity() instanceof DistributionActivity) {
+                    ((DistributionActivity) getActivity()).updateMapSettings();
+                }
                 break;
             }
             case Constants.WARN: {

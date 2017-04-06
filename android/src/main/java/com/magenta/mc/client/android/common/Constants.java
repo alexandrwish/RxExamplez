@@ -27,8 +27,8 @@ public interface Constants {
 
     int OK = 1;
     int WARN = 2;
-
     int ERROR = 3;
+    int NEED_UPDATE = 4;
     int START = 1;
     int STOP = 2;
 
