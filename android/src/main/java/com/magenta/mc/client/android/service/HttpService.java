@@ -2,20 +2,25 @@ package com.magenta.mc.client.android.service;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.os.Bundle;
 
 import com.google.gson.Gson;
 import com.magenta.hdmate.mx.model.OrderCancelationReason;
 import com.magenta.hdmate.mx.model.Run;
+import com.magenta.mc.client.android.McAndroidApplication;
 import com.magenta.mc.client.android.common.Constants;
 import com.magenta.mc.client.android.common.IntentAttributes;
 import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.db.dao.DistributionDAO;
+import com.magenta.mc.client.android.entity.Address;
 import com.magenta.mc.client.android.entity.JobEntity;
 import com.magenta.mc.client.android.entity.MapSettingsEntity;
 import com.magenta.mc.client.android.entity.type.MapProviderType;
 import com.magenta.mc.client.android.http.HttpClient;
 import com.magenta.mc.client.android.log.MCLoggerFactory;
 import com.magenta.mc.client.android.record.LoginResultRecord;
+import com.magenta.mc.client.android.record.PointRecord;
+import com.magenta.mc.client.android.record.PointsResultRecord;
 import com.magenta.mc.client.android.service.renderer.SingleJobRenderer;
 import com.magenta.mc.client.android.ui.activity.common.LoginActivity;
 
@@ -71,7 +76,9 @@ public class HttpService extends IntentService {
                     break;
                 }
                 case (Constants.ROUTE_TYPE): {
-                    getRoute();
+                    List<Address> addresses = intent.getParcelableArrayListExtra(Constants.ADDRESS_LIST);
+                    Long timestamp = intent.getLongExtra(Constants.SYNCHRONIZE_TIMESTAMP, 0L);
+                    getRoute(addresses, timestamp);
                     break;
                 }
             }
@@ -199,6 +206,35 @@ public class HttpService extends IntentService {
                 });
     }
 
-    private void getRoute() {
+    private void getRoute(List<Address> addresses, final Long timestamp) {
+        HttpClient.getInstance().getRoute(addresses)
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<PointsResultRecord>() {
+                    public void onCompleted() {
+
+                    }
+
+                    public void onError(Throwable e) {
+                        MCLoggerFactory.getLogger(LoginActivity.class).error(e.getMessage(), e);
+                    }
+
+                    public void onNext(PointsResultRecord pointsResultRecord) {
+                        String route = "[]";
+                        List<PointRecord> points = pointsResultRecord.getPoints();
+                        if (points != null && !points.isEmpty()) {
+                            Double[][] coordinates = new Double[points.size()][2];
+                            for (int i = 0; i < points.size(); i++) {
+                                PointRecord record = points.get(i);
+                                coordinates[i][0] = record.getLatitude();
+                                coordinates[i][1] = record.getLongitude();
+                            }
+                            route = new Gson().toJson(coordinates);
+                        }
+                        Bundle bundle = new Bundle(2);
+                        bundle.putString("route", route);
+                        bundle.putLong("synchronizeTimestamp", timestamp);
+                        McAndroidApplication.getInstance().sendBroadcast(new Intent(IntentAttributes.UPDATE_ROUTE_ACTION).putExtras(bundle));
+                    }
+                });
     }
 }
