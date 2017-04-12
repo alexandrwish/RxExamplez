@@ -71,7 +71,6 @@ android {
                 buildConfigField("String", "APP_PORT", "\"" + "$v.port" + "\"")
                 buildConfigField("String", "APP_LOCALE", "\"" + "$v.locale" + "\"")
                 buildConfigField("String", "APP_THEME", "\"" + "$v.theme" + "\"")
-                buildConfigField("String", "LOC_SEND", "\"" + "$v.loc_send" + "\"")
                 buildConfigField("String", "LOC_SAVE", "\"" + "$v.loc_save" + "\"")
                 buildConfigField("String", "LOC_ENABLE", "\"" + "$v.loc_enable" + "\"")
                 buildConfigField("String", "CACHE_PERIOD", "\"" + "$v.cache_period" + "\"")

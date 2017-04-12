@@ -166,7 +166,7 @@ public class Settings {
     }
 
     public Long getLocationSave() {
-        return preferences.getLong(LOC_SAVE, 60000L);
+        return Long.valueOf(preferences.getString(LOC_SAVE, "60000L"));
     }
 
     public Boolean getLocationEnable() {
@@ -384,7 +384,7 @@ public class Settings {
 
         public SettingsBuilder setLocationSave(Long locationSave) {
             if (locationSave != null) {
-                editor.putLong(LOC_SAVE, locationSave);
+                editor.putString(LOC_SAVE, locationSave + "");
             }
             return this;
         }
