@@ -2,7 +2,6 @@ package com.magenta.mc.client.android.entity;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-import com.magenta.mc.client.android.record.LocationRecord;
 
 @DatabaseTable(tableName = "geo_locations")
 public class LocationEntity {
@@ -19,6 +18,14 @@ public class LocationEntity {
     private Double mLon;
     @DatabaseField(columnName = "speed")
     private Float mSpeed;
+    @DatabaseField(columnName = "gps")
+    private Boolean mGps;
+    @DatabaseField(columnName = "gprs")
+    private String mGprs;
+    @DatabaseField(columnName = "battery")
+    private Double mBattery;
+    @DatabaseField(columnName = "token")
+    private String mToken;
 
     public long getId() {
         return id;
@@ -68,7 +75,36 @@ public class LocationEntity {
         mSpeed = speed;
     }
 
-    public LocationRecord toRecord() {
-        return new LocationRecord(this);
+    public Boolean getGps() {
+        return mGps;
     }
+
+    public void setGps(Boolean gps) {
+        mGps = gps;
+    }
+
+    public String getGprs() {
+        return mGprs;
+    }
+
+    public void setGprs(String gprs) {
+        mGprs = gprs;
+    }
+
+    public Double getBattery() {
+        return mBattery;
+    }
+
+    public void setBattery(Double battery) {
+        mBattery = battery;
+    }
+
+    public String getToken() {
+        return mToken;
+    }
+
+    public void setToken(String token) {
+        mToken = token;
+    }
+
 }

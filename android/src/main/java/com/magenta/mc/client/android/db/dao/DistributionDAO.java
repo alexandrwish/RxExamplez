@@ -1,13 +1,10 @@
 package com.magenta.mc.client.android.db.dao;
 
-import android.database.Cursor;
-
 import com.j256.ormlite.android.AndroidConnectionSource;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.stmt.DeleteBuilder;
 import com.j256.ormlite.stmt.QueryBuilder;
-import com.j256.ormlite.stmt.SelectArg;
 import com.j256.ormlite.stmt.UpdateBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import com.magenta.mc.client.android.McAndroidApplication;
@@ -21,7 +18,6 @@ import com.magenta.mc.client.android.entity.OrderItemEntity;
 import com.magenta.mc.client.android.util.StringUtils;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -152,34 +148,9 @@ public class DistributionDAO {
         return queryBuilder.orderBy("id", true).limit(500L).query();
     }
 
-    public void clearLocations(long id, String driver) throws SQLException {
+    public void deleteLocations(List<LocationEntity> locations) throws SQLException {
         ConnectionSource source = new AndroidConnectionSource(adapter.getDB(DistributionDBHelper.DATABASE_NAME));
         Dao<LocationEntity, Integer> dao = DaoManager.createDao(source, LocationEntity.class);
-        DeleteBuilder<LocationEntity, Integer> deleteBuilder = dao.deleteBuilder();
-        deleteBuilder.setWhere(dao.deleteBuilder().where().le("id", new SelectArg(id)).and().eq("user_id", driver));
-        dao.delete(deleteBuilder.prepare());
-    }
-
-    public void clearLocationsAfter(long validDate, String driver) throws SQLException {
-        ConnectionSource source = new AndroidConnectionSource(adapter.getDB(DistributionDBHelper.DATABASE_NAME));
-        Dao<LocationEntity, Integer> dao = DaoManager.createDao(source, LocationEntity.class);
-        DeleteBuilder<LocationEntity, Integer> deleteBuilder = dao.deleteBuilder();
-        deleteBuilder.setWhere(dao.deleteBuilder().where().ge("date", new SelectArg(validDate)).and().eq("user_id", driver));
-        dao.delete(deleteBuilder.prepare());
-    }
-
-    public List<String> getDrivers() {
-        List<String> clients = new ArrayList<>();
-        Cursor cursor = adapter.getDB(DistributionDBHelper.DATABASE_NAME).rawQuery("select distinct loc.user_id from geo_locations loc", new String[]{});
-        try {
-            cursor.moveToFirst();
-            for (int i = 0; i < cursor.getCount(); i++) {
-                clients.add(cursor.getString(0));
-                cursor.moveToNext();
-            }
-        } finally {
-            cursor.close();
-        }
-        return clients;
+        dao.delete(locations);
     }
 }

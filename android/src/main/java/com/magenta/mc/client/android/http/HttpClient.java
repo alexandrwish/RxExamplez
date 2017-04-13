@@ -1,12 +1,6 @@
 package com.magenta.mc.client.android.http;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.location.LocationManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.BatteryManager;
+import android.util.Pair;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -18,22 +12,22 @@ import com.magenta.hdmate.mx.model.OrderAction;
 import com.magenta.hdmate.mx.model.OrderActionResult;
 import com.magenta.hdmate.mx.model.Run;
 import com.magenta.hdmate.mx.model.TelemetryRecord;
-import com.magenta.mc.client.android.McAndroidApplication;
 import com.magenta.mc.client.android.common.Constants;
 import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.db.dao.DistributionDAO;
 import com.magenta.mc.client.android.entity.Address;
+import com.magenta.mc.client.android.entity.LocationEntity;
 import com.magenta.mc.client.android.log.MCLoggerFactory;
 import com.magenta.mc.client.android.record.LoginRecord;
 import com.magenta.mc.client.android.record.LoginResultRecord;
 import com.magenta.mc.client.android.record.PointsResultRecord;
 import com.magenta.mc.client.android.resender.ResendableMetadata;
 import com.magenta.mc.client.android.resender.Resender;
-import com.magenta.mc.client.android.tracking.GeoLocation;
 import com.magenta.mc.client.android.util.MxAndroidUtil;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -111,16 +105,16 @@ public class HttpClient {
     }
 
     public Observable<com.magenta.hdmate.mx.model.Settings> getSettings() {
-        return getApiClient().registerLogin(MxAndroidUtil.getImei()).observeOn(Schedulers.io());
+        return getApiClient().registerLogin(Settings.get().getAuthToken(), MxAndroidUtil.getImei()).observeOn(Schedulers.io());
     }
 
     public Observable<List<Run>> getJobs() {
-        return getApiClient().allscheduleGet().observeOn(Schedulers.io());
+        return getApiClient().allscheduleGet(Settings.get().getAuthToken()).observeOn(Schedulers.io());
     }
 
     @Deprecated
     // TODO: 2/17/17 fix me
-    public void sendState(final long id, String userId, String jobRef, String states, Map values) {
+    public void sendState(final long id, String userId, String states, Map values) {
         if (values.get("stop-ref") == null) {
             Resender.getInstance().sent(STATUS_RESENDABLE_METADATA, id);
             return; //doesn't support run states
@@ -135,7 +129,7 @@ public class HttpClient {
         result.setActionTime(Long.valueOf((String) values.get("date")));
         results.add(result);
         // TODO: 2/20/17 return observer
-        getApiClient().actionPost(results)
+        getApiClient().actionPost((String) values.get(Constants.AUTH_TOKEN), results)
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Subscriber<List<OrderActionResult>>() {
                     public void onCompleted() {
@@ -160,67 +154,47 @@ public class HttpClient {
 
     @Deprecated
     // TODO: 2/17/17 fix me
-    public void sendLocations(final Long id, List<GeoLocation> locations) {
-        List<TelemetryRecord> records = new LinkedList<>();
-        for (GeoLocation o : locations) {
+    public void sendLocations(List<LocationEntity> locations) {
+        HashMap<String, Pair<List<TelemetryRecord>, List<LocationEntity>>> records = new HashMap<>();
+        for (LocationEntity entity : locations) {
             TelemetryRecord record = new TelemetryRecord();
             record.setDate(System.currentTimeMillis());
-            record.setHeading(o.getHeading().doubleValue());
-            record.setSpeed(o.getSpeed().doubleValue());
-            record.setLatitude(o.getLat());
-            record.setLongitude(o.getLon());
-            record.setTimestamp(o.getRetrieveTimestamp());
-            record.setBattery(getBatteryLevel());
-            record.setGprs(getNetworkInfo());
-            record.setGps(isGPSEnable());
+            record.setHeading(0D);
+            record.setSpeed(entity.getSpeed().doubleValue());
+            record.setLatitude(entity.getLat());
+            record.setLongitude(entity.getLon());
+            record.setTimestamp(entity.getDate());
+            record.setBattery(entity.getBattery());
+            record.setGprs(entity.getGprs());
+            record.setGps(entity.getGps());
+            if (!records.containsKey(entity.getToken())) {
+                records.put(entity.getToken(), new Pair<List<TelemetryRecord>, List<LocationEntity>>(new LinkedList<TelemetryRecord>(), new LinkedList<LocationEntity>()));
+            }
+            records.get(entity.getToken()).first.add(record);
+            records.get(entity.getToken()).second.add(entity);
         }
-        // TODO: 2/20/17 return observer
-        getApiClient().telemetryPost(records)
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<Boolean>() {
-                    public void onCompleted() {
+        for (final Map.Entry<String, Pair<List<TelemetryRecord>, List<LocationEntity>>> entry : records.entrySet()) {
+            getApiClient().telemetryPost(entry.getKey(), entry.getValue().first)
+                    .subscribeOn(Schedulers.io())
+                    .subscribe(new Subscriber<Boolean>() {
+                        public void onCompleted() {
 
-                    }
+                        }
 
-                    public void onError(Throwable e) {
-                        MCLoggerFactory.getLogger(HttpClient.class).error(e.getMessage(), e);
-                    }
+                        public void onError(Throwable e) {
+                            MCLoggerFactory.getLogger(HttpClient.class).error(e.getMessage(), e);
+                        }
 
-                    public void onNext(Boolean success) {
-                        if (success) {
-                            try {
-                                DistributionDAO.getInstance().clearLocations(id, Settings.get().getUserId());
-                            } catch (SQLException e) {
-                                LoggerFactory.getLogger(HttpClient.class).error(e.getMessage(), e);
+                        public void onNext(Boolean success) {
+                            if (success) {
+                                try {
+                                    DistributionDAO.getInstance().deleteLocations(entry.getValue().second);
+                                } catch (SQLException e) {
+                                    LoggerFactory.getLogger(HttpClient.class).error(e.getMessage(), e);
+                                }
                             }
                         }
-                    }
-                });
-
-    }
-
-    // TODO: 2/20/17 use EasyDeviceInfo
-    private Double getBatteryLevel() {
-        Intent batteryIntent = McAndroidApplication.getInstance().registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
-        if (batteryIntent == null) {
-            return -1d;
+                    });
         }
-        int level = batteryIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
-        int scale = batteryIntent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-        if (level == -1 || scale == -1) {
-            return -1d;
-        }
-        return ((float) level / (float) scale) * 100.0d;
-    }
-
-    private boolean isGPSEnable() {
-        LocationManager manager = (LocationManager) McAndroidApplication.getInstance().getSystemService(Context.LOCATION_SERVICE);
-        return manager != null && manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-    }
-
-    private String getNetworkInfo() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) McAndroidApplication.getInstance().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null ? activeNetworkInfo.toString() : "[]";
     }
 }
