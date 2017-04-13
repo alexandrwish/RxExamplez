@@ -207,7 +207,7 @@
     <string name="enable_cache">Кэшировать карты</string>
     <string name="mx_activity_preferences_map_cache">Настройки карты</string>
     <string name="please_wait">Пожалуйста подождите</string>
-    <string name="clear_cache_msg">Вы действительно хотите очистить кэш?</string>
+    <string name="clear_cache_msg">Кэш карты успешно очищен.</string>
     <string name="complete_previous">Вы должны завершить предыдущую работу, чтобы начать эту.</string>
     <string name="mx_show">Показать</string>
     <string name="mx_ignore">Отложить</string>

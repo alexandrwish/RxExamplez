@@ -228,7 +228,6 @@
     <string name="add">Añadir</string>
     <string name="barcode_item">Código de barras</string>
     <string name="barcode_name">Nombre</string>
-    <string name="clear_cache_msg">¿Estás seguro que quieres limpiar el caché?</string>
     <string name="complete_barcode">%s de artículos no están escaneados todavía. ¿Estás seguro que quieres completar?</string>
     <string name="complete_job_question">¿Estás seguro que quieres complatrar?</string>
     <string name="complete_previous">Deberías complatar el servicio previo antes de iniciar este.</string>

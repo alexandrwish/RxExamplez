@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.j256.ormlite.logger.LoggerFactory;
 import com.magenta.mc.client.android.McAndroidApplication;
@@ -42,6 +43,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             public boolean onPreferenceClick(Preference preference) {
                 try {
                     TileCacheDAO.getInstance().removeCacheTiles(System.currentTimeMillis());
+                    Toast.makeText(getActivity(), R.string.clear_cache_msg, Toast.LENGTH_SHORT).show();
                 } catch (SQLException e) {
                     LoggerFactory.getLogger(getClass()).error(e.getMessage(), e);
                 }

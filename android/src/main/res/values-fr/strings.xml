@@ -220,7 +220,6 @@
     <string name="barcode_item">Code-barre</string>
     <string name="barcode_name">Nom</string>
     <string name="clear_cache">Réinitialiser le cache de la carte</string>
-    <string name="clear_cache_msg">Etes vous sûr de vouloir réinitialiser le cache</string>
     <string name="collection">Collecte</string>
     <string name="complete_barcode">%s articles pas encore scannés. Etes-vous sûr de vouloir terminer ?</string>
     <string name="complete_job_question">Etes-vous sûr de vouloir terminer ?</string>

@@ -253,7 +253,7 @@
     <string name="mx_activity_preferences_map_cache">Map settings</string>
     <string name="mx_activity_preferences_mx_api">Maxoptra api</string>
     <string name="please_wait">Please wait</string>
-    <string name="clear_cache_msg">Are you sure you want to clear cache?</string>
+    <string name="clear_cache_msg">The map cache was successfully cleared.</string>
     <string name="complete_previous">You should complete previous job to start this.</string>
     <string name="mx_show">Show</string>
     <string name="mx_ignore">Ignore</string>

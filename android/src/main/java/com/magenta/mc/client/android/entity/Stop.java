@@ -3,6 +3,7 @@ package com.magenta.mc.client.android.entity;
 import android.content.Context;
 
 import com.magenta.mc.client.android.McAndroidApplication;
+import com.magenta.mc.client.android.common.Constants;
 import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.db.dao.StopsDAO;
 import com.magenta.mc.client.android.events.EventType;
@@ -95,6 +96,7 @@ public class Stop extends AbstractStop {
             getStopValues().put("lon", String.valueOf(location.getLon()));
         }
         getStopValues().put("performer", Settings.get().getLogin());
+        getStopValues().put(Constants.AUTH_TOKEN, Settings.get().getAuthToken());
         parentJob.setLastValidState(getStateString());
         if (isCompleted()) {
             parentJob.setLastStop(this);
