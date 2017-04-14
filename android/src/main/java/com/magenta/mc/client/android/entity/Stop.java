@@ -27,7 +27,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 public class Stop extends AbstractStop {
 
@@ -175,8 +174,8 @@ public class Stop extends AbstractStop {
         final long timeStart = Long.parseLong(getParameter(Stop.ATTR_WINDOW_START_TIME));
         final long timeEnd = Long.parseLong(getParameter(Stop.ATTR_WINDOW_END_TIME));
         return String.format("%s - %s",
-                DateUtils.toStringTime(new Date(TimeUnit.SECONDS.toMillis(timeStart))),
-                DateUtils.toStringTime(new Date(TimeUnit.SECONDS.toMillis(timeEnd))));
+                DateUtils.toStringTime(new Date(timeStart)),
+                DateUtils.toStringTime(new Date(timeEnd)));
     }
 
     public String getTimeAsString() {
