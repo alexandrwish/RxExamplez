@@ -163,6 +163,8 @@ public class HttpService extends IntentService {
                                 if (!mapSettings.containsKey(mapSettingsEntities.get(0).getProvider()) || !mapSettingsEntities.get(0).isRemember()) {
                                     if (updateSettings(mapSettingsEntities.get(0), mapSettings)) {
                                         sendBroadcast(new Intent(Constants.HTTP_SERVICE_NAME).putExtra(IntentAttributes.HTTP_SETTINGS_RESPONSE_TYPE, Constants.WARN));
+                                    } else {
+                                        sendBroadcast(new Intent(Constants.HTTP_SERVICE_NAME).putExtra(IntentAttributes.HTTP_SETTINGS_RESPONSE_TYPE, Constants.NEED_UPDATE));
                                     }
                                 }
                             } else {

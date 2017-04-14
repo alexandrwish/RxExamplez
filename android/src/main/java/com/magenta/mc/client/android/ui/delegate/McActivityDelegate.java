@@ -6,6 +6,8 @@ import android.app.NotificationManager;
 import android.location.LocationManager;
 import android.view.MenuItem;
 
+import com.magenta.mc.client.android.McAndroidApplication;
+import com.magenta.mc.client.android.common.UserStatus;
 import com.magenta.mc.client.android.log.MCLogger;
 import com.magenta.mc.client.android.log.MCLoggerFactory;
 import com.magenta.mc.client.android.service.McService;
@@ -77,7 +79,7 @@ public class McActivityDelegate implements ActivityDelegate {
 
     private void checkGPS() {
         if (notificationManager != null && locationManager != null) {
-            boolean online = /*XMPPClient.getInstance().isLoggedIn()*/true; // TODO: 3/12/17 impl
+            boolean online = UserStatus.ONLINE.equals(McAndroidApplication.getInstance().getStatus());
             if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                 Notification notification = ((AndroidUI) Setup.get().getUI()).getNotifications().createGPSNotification();
                 if (notification != null) {
