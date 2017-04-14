@@ -13,6 +13,7 @@ import com.magenta.mc.client.android.entity.AbstractStop;
 import com.magenta.mc.client.android.entity.Stop;
 import com.magenta.mc.client.android.ui.map.MapAddress;
 import com.magenta.mc.client.android.ui.view.TimeWindowView;
+import com.magenta.mc.client.android.util.DateUtils;
 import com.magenta.mc.client.android.util.DistributionUtils;
 import com.magenta.mc.client.android.util.PhoneUtils;
 import com.magenta.mc.client.android.util.StopsComparator;
@@ -73,7 +74,7 @@ public class StopsAdapter extends DistributionArrayAdapter<AbstractStop> {
         }
         holder.name.setText(stop.getStopName());
         holder.address.setText(destinationAddress != null ? destinationAddress.getFull() : "");
-        holder.time.setText(stop.getTimeAsString());
+        holder.time.setText(DateUtils.toStringTime(stop.getDate()));
         holder.status.setText(stop.getStatusString(context));
         holder.client.setText(stop.getContactPerson());
         holder.stopNumber.setText(jobStops.indexOf(stop) + 1 + "/" + jobStops.size());

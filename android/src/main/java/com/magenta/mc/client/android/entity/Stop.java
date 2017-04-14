@@ -180,7 +180,7 @@ public class Stop extends AbstractStop {
     }
 
     public String getTimeAsString() {
-        return DateUtils.toStringTime(getDate());
+        return DateUtils.toStringTime(new Date(getParameterAsLong(ATTR_START_TIME, getDate().getTime())));
     }
 
     public int getUpdateType() {
