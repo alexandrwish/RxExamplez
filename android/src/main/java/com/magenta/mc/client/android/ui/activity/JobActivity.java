@@ -244,7 +244,7 @@ public class JobActivity extends DistributionActivity implements WorkflowActivit
             loadingRow.setVisibility(View.GONE);
         }
         if (unloadingDuration > 0) {
-            unloading.setText(DateUtils.toStringTime(new Date(unloadingEndTime - unloadingDuration * 60 * 1000))
+            unloading.setText(DateUtils.toStringTime(new Date(unloadingEndTime - unloadingDuration))
                     + " - " + DateUtils.toStringTime(new Date(unloadingEndTime)));
             unloadingRow.setVisibility(View.VISIBLE);
         } else {
