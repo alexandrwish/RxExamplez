@@ -69,8 +69,8 @@ public class SingleJobRenderer {
         stop.setParentJob(job);
         stop.setDate(new Date(order.getDate()));
         stop.setArriveDate(new Date(order.getExpectedArrival()));
-        stop.setParameter(Stop.ATTR_LOAD, String.valueOf(order.getCapacity1()));
-        stop.setParameter(Stop.ATTR_VOLUME, String.valueOf(order.getCapacity2()));
+        stop.setParameter(Stop.ATTR_LOAD, order.getCapacity1() != null ? String.valueOf(order.getCapacity1()) : null);
+        stop.setParameter(Stop.ATTR_VOLUME, order.getCapacity2() != null ? String.valueOf(order.getCapacity2()) : null);
         stop.setParameter(Stop.ATTR_PRIORITY, String.valueOf(getPriority(order.getPriority())));
         stop.setParameter(Stop.ATTR_CUSTOMER, order.getCustomer());
         stop.setParameter(Stop.ATTR_DURATION, String.valueOf(order.getDuration()));
