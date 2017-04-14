@@ -38,6 +38,7 @@ public class Stop extends AbstractStop {
     public static final String ATTR_WINDOW_END_TIME = "window-end-time";
     public static final String ATTR_LOAD = "load";
     public static final String ATTR_VOLUME = "volume";
+    public static final String ATTR_START_TIME = "start-time";
     public static final String ATTR_DEPART_TIME = "depart-time";
     public static final String ATTR_PRIORITY = "priority";
     public static final String ATTR_CUSTOMER = "customer";

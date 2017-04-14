@@ -76,6 +76,7 @@ public class SingleJobRenderer {
         stop.setParameter(Stop.ATTR_DURATION, String.valueOf(order.getDuration()));
         stop.setParameter(Stop.ATTR_LOCATION, order.getLocation() != null ? order.getLocation().getName() : "");
         stop.setParameter(Stop.ATTR_DEPART_TIME, String.valueOf(order.getTimeEnd()));
+        stop.setParameter(Stop.ATTR_START_TIME, String.valueOf(order.getTimeStart()));
         stop.setParameter(Stop.ATTR_CONTACT_PERSON, order.getContactName());
         stop.setParameter(Stop.ATTR_CONTACT_NUMBER, order.getContactPhone());
         stop.setParameter(Stop.ATTR_CUSTOMER_LOCATION_VERIFIED, order.getCustomerLocationIsVerified());
