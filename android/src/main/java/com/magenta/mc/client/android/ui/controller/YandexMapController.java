@@ -2,7 +2,6 @@ package com.magenta.mc.client.android.ui.controller;
 
 import android.app.Activity;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.Build;
 import android.view.View;
 import android.view.ViewTreeObserver;
 
@@ -12,6 +11,7 @@ import com.magenta.mc.client.android.entity.AbstractStop;
 import com.magenta.mc.client.android.entity.Address;
 import com.magenta.mc.client.android.entity.Job;
 import com.magenta.mc.client.android.entity.LocationEntity;
+import com.magenta.mc.client.android.entity.Stop;
 import com.magenta.mc.client.android.handler.MapUpdateHandler;
 import com.magenta.mc.client.android.ui.controller.yandex.BalloonClickListener;
 import com.magenta.mc.client.android.ui.controller.yandex.RouteOverLay;
@@ -36,7 +36,7 @@ public class YandexMapController extends MapController {
     private Overlay overlay;
     private Job job;
 
-    public YandexMapController(final Activity activity, final List<AbstractStop> stops, final boolean routeWithDriver) {
+    public YandexMapController(final Activity activity, final List<Stop> stops, final boolean routeWithDriver) {
         super(activity, stops, routeWithDriver);
         final View view = activity.getLayoutInflater().inflate(R.layout.view_yandex_map, null);
         MapView mapView = (MapView) view.findViewById(R.id.map);
@@ -57,11 +57,7 @@ public class YandexMapController extends MapController {
                 if (isBuilding) {
                     isBuilding = false;
                 } else {
-                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-                        view.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                    } else {
-                        view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    }
+                    view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     controller.showFindMeButton(false);
                     controller.showZoomButtons(false);
                     onMapReady();
@@ -80,7 +76,7 @@ public class YandexMapController extends MapController {
         overlayManager.addOverlay(routeOverLay);
     }
 
-    private Job paintMap(List<AbstractStop> stops) {
+    private Job paintMap(List<Stop> stops) {
         if (overlay != null) {
             overlayManager.removeOverlay(overlay);
         }
@@ -199,7 +195,7 @@ public class YandexMapController extends MapController {
 
         private final YandexMapController controller;
 
-        public YandexHandler(YandexMapController controller) {
+        YandexHandler(YandexMapController controller) {
             this.controller = controller;
         }
 

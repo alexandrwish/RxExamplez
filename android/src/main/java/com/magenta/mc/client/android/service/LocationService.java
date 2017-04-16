@@ -5,9 +5,10 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
+
+import com.magenta.mc.client.android.binder.LocationBinder;
 
 import java.util.List;
 import java.util.Timer;
@@ -21,7 +22,6 @@ public class LocationService extends Service implements LocationListener {
     static int mAccuracyPercent = 40;
     static int mAccuracyMeters = 10;
     static int mVelocityThreshold = 33;
-    final IBinder mBinder = new LocalBinder();
     LocationManager mLocationManager;
     Location mCurrentLocation;
     Timer mLocationUpdateTimer;
@@ -105,7 +105,7 @@ public class LocationService extends Service implements LocationListener {
     }
 
     public IBinder onBind(Intent intent) {
-        return mBinder;
+        return new LocationBinder(this);
     }
 
     public Location getLocation() {
@@ -122,11 +122,5 @@ public class LocationService extends Service implements LocationListener {
     }
 
     public void onProviderDisabled(String provider) {
-    }
-
-    public class LocalBinder extends Binder {
-        public LocationService getService() {
-            return LocationService.this;
-        }
     }
 }

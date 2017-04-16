@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.entity.AbstractStop;
+import com.magenta.mc.client.android.entity.Stop;
 import com.magenta.mc.client.android.util.StopsComparator;
 
 import java.util.Collections;
@@ -43,7 +44,7 @@ public class JobDetailStopsAdapter extends DistributionArrayAdapter<AbstractStop
         return view;
     }
 
-    public void update(List<AbstractStop> stops) {
+    public void update(List<Stop> stops) {
         this.list.clear();
         this.list.addAll(stops);
         Collections.sort(this.list, StopsComparator.getInstance());

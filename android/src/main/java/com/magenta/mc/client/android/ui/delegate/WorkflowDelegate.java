@@ -6,17 +6,21 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Pair;
 import android.view.MenuItem;
 
 import com.magenta.mc.client.android.McAndroidApplication;
 import com.magenta.mc.client.android.R;
+import com.magenta.mc.client.android.binder.SocketBinder;
 import com.magenta.mc.client.android.common.Constants;
 import com.magenta.mc.client.android.common.IntentAttributes;
 import com.magenta.mc.client.android.common.UserStatus;
 import com.magenta.mc.client.android.entity.TaskState;
 import com.magenta.mc.client.android.log.MCLoggerFactory;
 import com.magenta.mc.client.android.service.HttpService;
+import com.magenta.mc.client.android.service.LocationService;
+import com.magenta.mc.client.android.service.SaveLocationsService;
 import com.magenta.mc.client.android.service.ServicesRegistry;
 import com.magenta.mc.client.android.service.SocketIOService;
 import com.magenta.mc.client.android.service.holder.ServiceHolder;
@@ -102,7 +106,13 @@ public class WorkflowDelegate extends HDDelegate {
     public void logout() {
         McAndroidApplication.getInstance().setStatus(UserStatus.LOGOUT);
         ServicesRegistry.getDataController().clear();
+        IBinder binder = ServiceHolder.getInstance().getService(SocketIOService.class.getName());
+        if (binder != null) {
+            ((SocketBinder) binder).unsubscribe();
+        }
         ServiceHolder.getInstance().stopService(SocketIOService.class);
+        ServiceHolder.getInstance().stopService(LocationService.class);
+        ServiceHolder.getInstance().stopService(SaveLocationsService.class);
         getActivity().startActivity(new Intent(getActivity(), LoginActivity.class));
         getActivity().finish();
     }

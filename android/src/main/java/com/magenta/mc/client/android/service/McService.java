@@ -53,13 +53,6 @@ public class McService extends RoboService {
 
     public int onStartCommand(Intent intent, int flags, int startId) {
         MCLoggerFactory.getLogger(getClass()).trace("onStartCommand: Received start id " + startId + ": " + intent);
-        try {
-            if (intent == null || !intent.getBooleanExtra("dont_login", false)) {
-//                MobileApp.getInstance().needToLogin();
-            }
-        } catch (Exception e) {
-            MCLoggerFactory.getLogger(getClass()).error("Error while service onStartCommand", e);
-        }
         return START_STICKY;
     }
 
@@ -86,7 +79,7 @@ public class McService extends RoboService {
         super.onLowMemory();
     }
 
-    public class LocalBinder extends Binder {
+    private class LocalBinder extends Binder {
         public McService getService() {
             return McService.this;
         }

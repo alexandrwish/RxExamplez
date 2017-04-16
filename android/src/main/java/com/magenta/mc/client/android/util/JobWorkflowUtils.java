@@ -99,7 +99,7 @@ public class JobWorkflowUtils {
         intent.putExtra(IntentAttributes.JOB_ID, currentJob.getId()).putExtra(IntentAttributes.STOP_ID, currentStop.getReferenceId());
         if (!Settings.get().getRandomOrders()) {
             boolean allPreviousStopsCompleted = true;
-            List<AbstractStop> stops = currentJob.getStops();
+            List<Stop> stops = currentJob.getStops();
             for (AbstractStop stop : stops) {
                 if (stop.getStopName().equals(currentStop.getStopName())) {
                     break;

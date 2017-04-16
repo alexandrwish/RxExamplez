@@ -2,8 +2,6 @@ package com.magenta.mc.client.android.ui.view;
 
 import android.app.Activity;
 import android.content.Context;
-import android.location.Location;
-import android.os.Build;
 import android.webkit.GeolocationPermissions;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
@@ -65,15 +63,12 @@ public class Maplet extends WebView {
         }
         this.context = (Activity) context;
         GeoWebChromeClient chromeClient = new GeoWebChromeClient();
-        //WebViewClient webClient = new GeoWebViewClient();
         isInit = true;
         getSettings().setJavaScriptEnabled(true);
         getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
         getSettings().setGeolocationEnabled(true);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            getSettings().setAllowUniversalAccessFromFileURLs(true);
-            getSettings().setAllowFileAccessFromFileURLs(true);
-        }
+        getSettings().setAllowUniversalAccessFromFileURLs(true);
+        getSettings().setAllowFileAccessFromFileURLs(true);
         setWebViewClient(new WebViewClient() {
             public void onPageFinished(WebView view, String url) {
                 if (url.equals(PAGE_URL)) {
@@ -105,7 +100,7 @@ public class Maplet extends WebView {
         return mapletJSInterface;
     }
 
-    public void setJobs(List jobs, boolean routeWithDriver) {
+    public void setJobs(List<Stop> jobs, boolean routeWithDriver) {
         this.routeWithDriver = routeWithDriver;
         this.jobs = jobs;
         if (this.jobs != null && !this.jobs.isEmpty()) {
@@ -184,13 +179,13 @@ public class Maplet extends WebView {
     }
 
     public void myLocationJs() {
-        Location loc = ServicesRegistry.getLocationService().getLocation();
+        LocationEntity loc = MxAndroidUtil.getGeoLocation();
         if (loc != null) {
-            Maplet.this.loadUrl("javascript:panToCurrent(" + loc.getLatitude() + "," + loc.getLongitude() + ")");
+            Maplet.this.loadUrl("javascript:panToCurrent(" + loc.getLat() + "," + loc.getLon() + ")");
         }
     }
 
-    static class MapletHandler extends MapUpdateHandler {
+    private static class MapletHandler extends MapUpdateHandler {
 
         final Maplet maplet;
 
@@ -207,13 +202,7 @@ public class Maplet extends WebView {
                 List<Address> addressList = new ArrayList<>();
                 if (maplet.routeWithDriver) {
                     if (loc != null) {
-                        if (maplet.location != null && !(firstRun) && maplet.location.getLat().equals(loc.getLat()) && maplet.location.getLon().equals(loc.getLon())) {
-                            maplet.location = loc;
-                            return;
-                        }
                         maplet.location = loc;
-                    } else {
-                        if (!firstRun) return;
                     }
                     if (maplet.location != null) {
                         Address address = new Address();
@@ -224,7 +213,7 @@ public class Maplet extends WebView {
                     for (Stop stop : maplet.jobs) {
                         addressList.add(stop.getAddress());
                     }
-                } else if (firstRun) {
+                } else {
                     addressList.add(maplet.run.getStartAddress() != null ? maplet.run.getStartAddress() : maplet.run.getAddress());
                     for (Stop stop : maplet.jobs) {
                         addressList.add(stop.getAddress());
@@ -236,19 +225,13 @@ public class Maplet extends WebView {
         }
     }
 
-    private class GeoWebViewClient extends WebViewClient {
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            view.loadUrl(url);
-            return true;
-        }
-    }
-
     public class GeoWebChromeClient extends WebChromeClient {
         public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
             callback.invoke(origin, true, false);
         }
     }
 
+    @SuppressWarnings("unused")
     public class MapletJSInterface {
         Context context;
 

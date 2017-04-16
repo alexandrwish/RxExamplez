@@ -23,19 +23,19 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class StopsAdapter extends DistributionArrayAdapter<AbstractStop> {
+public class StopsAdapter extends DistributionArrayAdapter<Stop> {
 
-    private List<AbstractStop> jobStops;
+    private List<Stop> jobStops;
 
-    public StopsAdapter(Activity context, List<AbstractStop> list) {
+    public StopsAdapter(Activity context, List<Stop> list) {
         super(context, R.layout.item_inactive_stop, list);
         this.jobStops = list.get(0).getParentJob().getStops();
         sort();
     }
 
-    public void update(final List<AbstractStop> stops) {
+    public void update(final List<Stop> stops) {
         super.changeList(stops);
-        this.jobStops = list.isEmpty() ? new LinkedList<AbstractStop>() : list.get(0).getParentJob().getStops();
+        this.jobStops = list.isEmpty() ? new LinkedList<Stop>() : list.get(0).getParentJob().getStops();
         sort();
         notifyDataSetChanged();
     }

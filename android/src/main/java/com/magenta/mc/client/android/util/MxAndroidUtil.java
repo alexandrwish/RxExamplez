@@ -8,18 +8,24 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.location.Location;
+import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.BatteryManager;
+import android.os.IBinder;
 import android.telephony.TelephonyManager;
 import android.widget.Toast;
 
 import com.magenta.mc.client.android.McAndroidApplication;
 import com.magenta.mc.client.android.R;
+import com.magenta.mc.client.android.binder.LocationBinder;
 import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.entity.Address;
 import com.magenta.mc.client.android.entity.LocationEntity;
 import com.magenta.mc.client.android.log.MCLoggerFactory;
 import com.magenta.mc.client.android.service.LocationService;
-import com.magenta.mc.client.android.service.ServicesRegistry;
+import com.magenta.mc.client.android.service.holder.ServiceHolder;
 import com.tomtom.navapp.Trip;
 
 import java.util.ArrayList;
@@ -205,16 +211,15 @@ public final class MxAndroidUtil {
             location = mxNavApp.getLocation(5 * 60 * 1000); //5 minutes Turkish
         }
         if (location == null) {
-            LocationService service = ServicesRegistry.getLocationService();
-            if (service != null) {
-                Location l = service.getLocation();
+            IBinder binder = ServiceHolder.getInstance().getService(LocationService.class.getName());
+            if (binder != null) {
+                Location l = ((LocationBinder) binder).getLocation();
                 if (l != null) {
                     location = new LocationEntity();
                     location.setDate(l.getTime());
                     location.setLat(l.getLatitude());
                     location.setLon(l.getLongitude());
                     location.setSpeed(l.getSpeed());
-                    location.setUserId(Settings.get().getUserId());
                 }
             } else {
                 MCLoggerFactory.getLogger("Location service not bound.");
@@ -222,7 +227,37 @@ public final class MxAndroidUtil {
         }
         if (location == null) {
             MCLoggerFactory.getLogger(MxAndroidUtil.class).info("Current location not found.");
+        } else {
+            location.setUserId(Settings.get().getUserId());
+            location.setToken(Settings.get().getAuthToken());
+            location.setGps(isGPSEnable());
+            location.setGprs(getNetworkInfo());
+            location.setBattery(getBatteryLevel());
         }
         return location;
+    }
+
+    private static Double getBatteryLevel() {
+        Intent batteryIntent = McAndroidApplication.getInstance().registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+        if (batteryIntent == null) {
+            return -1d;
+        }
+        int level = batteryIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+        int scale = batteryIntent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+        if (level == -1 || scale == -1) {
+            return -1d;
+        }
+        return ((float) level / (float) scale) * 100.0d;
+    }
+
+    private static boolean isGPSEnable() {
+        LocationManager manager = (LocationManager) McAndroidApplication.getInstance().getSystemService(Context.LOCATION_SERVICE);
+        return manager != null && manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+    }
+
+    private static String getNetworkInfo() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) McAndroidApplication.getInstance().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null ? activeNetworkInfo.toString() : "[]";
     }
 }

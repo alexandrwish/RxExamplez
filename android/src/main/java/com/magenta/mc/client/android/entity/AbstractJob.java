@@ -46,10 +46,10 @@ public abstract class AbstractJob extends Storable {
     protected Address address;
     protected Address endAddress;
     protected Address startAddress;
-    protected List<AbstractStop> stops;
+    protected List<Stop> stops;
     protected int state = -1;
-    protected AbstractStop lastStop;
-    protected AbstractStop currentStop;
+    protected Stop lastStop;
+    protected Stop currentStop;
     protected String lastValidState;
     protected boolean acknowledged = true;
     protected Map<String, String> parameters;
@@ -153,20 +153,20 @@ public abstract class AbstractJob extends Storable {
         return address != null ? address.getFullAddress() : "";
     }
 
-    public List<AbstractStop> getStops() {
+    public List<Stop> getStops() {
         return stops;
     }
 
-    public void setStops(final List<AbstractStop> stops) {
+    public void setStops(final List<Stop> stops) {
         for (int i = 0; i < stops.size(); i++) {
             stops.get(i).setParentJob(this);
         }
         this.stops = stops;
     }
 
-    public AbstractStop getStop(String stopRef) {
+    public Stop getStop(String stopRef) {
         for (int i = 0; i < stops.size(); i++) {
-            AbstractStop stop = stops.get(i);
+            Stop stop = stops.get(i);
             if (stopRef.equalsIgnoreCase(stop.getReferenceId())) {
                 return stop;
             }
@@ -176,7 +176,7 @@ public abstract class AbstractJob extends Storable {
 
     public boolean stopsDone() {
         for (int i = 0; i < stops.size(); i++) {
-            AbstractStop stop = stops.get(i);
+            Stop stop = stops.get(i);
             if (!stop.isCompleted()) {
                 return false;
             }
@@ -186,7 +186,7 @@ public abstract class AbstractJob extends Storable {
 
     public boolean stopsInProgress() {
         for (int i = 0; i < stops.size(); i++) {
-            AbstractStop stop = stops.get(i);
+            Stop stop = stops.get(i);
             if (stop.isProcessing() || stop.isCompleted()) {
                 return true;
             }
@@ -216,11 +216,11 @@ public abstract class AbstractJob extends Storable {
                 || state == TaskState.RUN_LATE60;
     }
 
-    public AbstractStop getCurrentStop() {
+    public Stop getCurrentStop() {
         return currentStop;
     }
 
-    public void setCurrentStop(AbstractStop currentStop) {
+    public void setCurrentStop(Stop currentStop) {
         boolean changed = (this.currentStop != currentStop);
         this.currentStop = currentStop;
         if (changed) {
@@ -228,7 +228,7 @@ public abstract class AbstractJob extends Storable {
         }
     }
 
-    public void setLastStop(AbstractStop stop) {
+    public void setLastStop(Stop stop) {
         lastStop = stop;
     }
 
@@ -294,7 +294,7 @@ public abstract class AbstractJob extends Storable {
     public int findFirstProgressedStopIndex() {
         int firstIncomplete = -1;
         for (int i = 0; i < stops.size(); i++) {
-            AbstractStop stop = stops.get(i);
+            Stop stop = stops.get(i);
             if (stop.isProcessing()) {
                 return i;
             } else if (firstIncomplete < 0 && !stop.isCompleted()) {
@@ -319,10 +319,10 @@ public abstract class AbstractJob extends Storable {
         setLastValidState(job.getLastValidState());
         if (stops != null) {
             if (state != TaskState.RUN_ASSIGNED && state != TaskState.RUN_SENT && state != TaskState.RUN_RECEIVED) {
-                Set<AbstractStop> intersection = new HashSet<>();
+                Set<Stop> intersection = new HashSet<>();
                 for (ListIterator iterator = stops.listIterator(); iterator.hasNext(); ) {
-                    AbstractStop oldStop = (AbstractStop) iterator.next();
-                    AbstractStop newStop = job.getStop(oldStop.getReferenceId());
+                    Stop oldStop = (Stop) iterator.next();
+                    Stop newStop = job.getStop(oldStop.getReferenceId());
                     if (newStop != null) {
                         intersection.add(oldStop);
                         oldStop.update(newStop);
@@ -336,7 +336,7 @@ public abstract class AbstractJob extends Storable {
                     }
                 }
                 for (int i = 0; i < job.getStops().size(); i++) {
-                    AbstractStop newStop = job.getStops().get(i);
+                    Stop newStop = job.getStops().get(i);
                     if (!intersection.contains(newStop)) {
                         addNewStop(newStop);
                     }
@@ -351,7 +351,7 @@ public abstract class AbstractJob extends Storable {
         }
     }
 
-    protected void completeStop(AbstractStop stop) {
+    protected void completeStop(Stop stop) {
         stop.complete(false);
         if (lastStop == null) {
             setLastStop(stop);
@@ -359,31 +359,31 @@ public abstract class AbstractJob extends Storable {
         moveToNextStopIfCurrent(stop);
     }
 
-    protected void removeCanceledStop(AbstractStop stop) {
+    protected void removeCanceledStop(Stop stop) {
         if (stop == lastStop) {
             lastStop = null;
         }
         moveToNextStopIfCurrent(stop);
     }
 
-    protected void setNewStops(List<AbstractStop> stops) {
+    protected void setNewStops(List<Stop> stops) {
         setStops(stops);
     }
 
-    protected void addNewStop(AbstractStop stop) {
+    protected void addNewStop(Stop stop) {
         stop.setParentJob(this);
         stops.add(stop);
     }
 
     private void sortStops() {
-        Collections.sort(stops, new Comparator<AbstractStop>() {
-            public int compare(AbstractStop stop1, AbstractStop stop2) {
+        Collections.sort(stops, new Comparator<Stop>() {
+            public int compare(Stop stop1, Stop stop2) {
                 return stop1.getIndex() - stop2.getIndex();
             }
         });
     }
 
-    public void moveToNextStopIfCurrent(AbstractStop oldStop) {
+    public void moveToNextStopIfCurrent(Stop oldStop) {
         // move to next stop if this stop is being currently processed
         if (currentStop != null && currentStop.equals(oldStop)) {
             moveToNextStop();
@@ -401,7 +401,7 @@ public abstract class AbstractJob extends Storable {
         boolean allStopsCompleted = true;
         Iterator stopsIter = stops.iterator();
         while (allStopsCompleted && stopsIter.hasNext()) {
-            allStopsCompleted = ((AbstractStop) stopsIter.next()).isCompleted();
+            allStopsCompleted = ((Stop) stopsIter.next()).isCompleted();
         }
         return allStopsCompleted;
     }
@@ -410,7 +410,7 @@ public abstract class AbstractJob extends Storable {
 
     public void abortStopsInGroup(String groupId) {
         for (int i = 0, count = stops.size(); i < count; i++) {
-            final AbstractStop stop = stops.get(i);
+            final Stop stop = stops.get(i);
             if (groupId.equals(stop.getGroupId())) {
                 stop.setState(TaskState.STOP_ABORTED);
             }
@@ -479,7 +479,7 @@ public abstract class AbstractJob extends Storable {
                 },
                 new FieldSetter(FIELD_STOPS) {
                     public void setValue(Object value) {
-                        stops = (List<AbstractStop>) value;
+                        stops = (List<Stop>) value;
                     }
                 },
                 new FieldSetter(FIELD_STATE) {
@@ -489,12 +489,12 @@ public abstract class AbstractJob extends Storable {
                 },
                 new FieldSetter(FIELD_LASTSTOP) {
                     public void setValue(Object value) {
-                        lastStop = (AbstractStop) value;
+                        lastStop = (Stop) value;
                     }
                 },
                 new FieldSetter(FIELD_CURRENT_STOP) {
                     public void setValue(Object value) {
-                        currentStop = (AbstractStop) value;
+                        currentStop = (Stop) value;
                     }
                 },
                 new FieldSetter(FIELD_LAST_VALID_STATE) {

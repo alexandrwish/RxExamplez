@@ -56,7 +56,7 @@ public abstract class AbstractArriveMapActivity extends DistributionActivity imp
     protected boolean trackingEnabled;
     protected boolean trackingEnabledNewValue;
     protected boolean isPickup;
-    protected AbstractStop stop;
+    protected Stop stop;
     protected Job job;
     protected MapController mapController;
 

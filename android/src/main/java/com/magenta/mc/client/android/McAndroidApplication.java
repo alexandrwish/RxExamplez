@@ -15,7 +15,6 @@ import com.magenta.mc.client.android.db.MxDBOpenHelper;
 import com.magenta.mc.client.android.db.dao.TileCacheDAO;
 import com.magenta.mc.client.android.log.MCLoggerFactory;
 import com.magenta.mc.client.android.service.CoreServiceImpl;
-import com.magenta.mc.client.android.service.LocationService;
 import com.magenta.mc.client.android.service.ServicesRegistry;
 import com.magenta.mc.client.android.storage.DataControllerImpl;
 import com.magenta.mc.client.android.ui.activity.SettingsActivity;
@@ -72,7 +71,6 @@ public abstract class McAndroidApplication extends Application implements ThemeM
         initAcra();
         ServicesRegistry.registerDataController(new DataControllerImpl());
         ServicesRegistry.startCoreService(CoreServiceImpl.class);
-        ServicesRegistry.startLocationService(this, LocationService.class);
         new MobileApp();
         LocaleUtils.changeLocale(this, Settings.get().getLocale());
         DSoundPool.init(getInstance());

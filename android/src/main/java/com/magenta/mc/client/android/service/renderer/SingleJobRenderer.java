@@ -9,7 +9,6 @@ import com.magenta.hdmate.mx.model.StopKind;
 import com.magenta.hdmate.mx.model.StopPriority;
 import com.magenta.hdmate.mx.model.TimeWindow;
 import com.magenta.mc.client.android.db.dao.DistributionDAO;
-import com.magenta.mc.client.android.entity.AbstractStop;
 import com.magenta.mc.client.android.entity.Address;
 import com.magenta.mc.client.android.entity.DynamicAttributeEntity;
 import com.magenta.mc.client.android.entity.Job;
@@ -46,9 +45,9 @@ public class SingleJobRenderer {
         result.setParameter(Job.ATTR_LOADING_DURATION, String.valueOf(run.getLoadingDuration()));
         result.setParameter(Job.ATTR_UNLOADING_DURATION, String.valueOf(run.getUnloadingDuration()));
         result.setParameter(Job.ATTR_UNLOADING_END_TIME, String.valueOf(run.getUnloadingEndTime()));
-        List<AbstractStop> stops = new LinkedList<>();
+        List<Stop> stops = new LinkedList<>();
         for (Order order : run.getStops()) {
-            AbstractStop stop = createStop(order, result);
+            Stop stop = createStop(order, result);
             stops.add(stop);
         }
         result.setStops(stops);
@@ -58,7 +57,7 @@ public class SingleJobRenderer {
         return result;
     }
 
-    private static AbstractStop createStop(Order order, Job job) {
+    private static Stop createStop(Order order, Job job) {
         Stop stop = new Stop(order.getName(),
                 order.getReference(),
                 StopKind.DROP.equals(order.getStopKind()) ? "drop" : "pickup",

@@ -112,17 +112,17 @@ public class Job extends AbstractJob implements JobEntity {
         return "";
     }
 
-    protected void completeStop(AbstractStop stop) {
+    protected void completeStop(Stop stop) {
         stop.setUpdateType(Stop.CANCEL_STOP);
         super.removeCanceledStop(stop);
     }
 
-    protected void removeCanceledStop(AbstractStop stop) {
+    protected void removeCanceledStop(Stop stop) {
         stop.setUpdateType(Stop.CANCEL_STOP);
         super.removeCanceledStop(stop);
     }
 
-    protected void setNewStops(List<AbstractStop> stops) {
+    protected void setNewStops(List<Stop> stops) {
         for (AbstractStop stop : stops) {
             stop.setUpdateType(Stop.UPDATE_STOP);
         }
@@ -130,7 +130,7 @@ public class Job extends AbstractJob implements JobEntity {
         super.setNewStops(stops);
     }
 
-    protected void addNewStop(AbstractStop stop) {
+    protected void addNewStop(Stop stop) {
         stop.setUpdateType(Stop.UPDATE_STOP);
         AlertHandler.getInstance().start();
         super.addNewStop(stop);

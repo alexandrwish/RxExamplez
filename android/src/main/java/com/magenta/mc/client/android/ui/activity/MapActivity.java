@@ -11,7 +11,6 @@ import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.common.IntentAttributes;
 import com.magenta.mc.client.android.common.Settings;
 import com.magenta.mc.client.android.db.dao.DistributionDAO;
-import com.magenta.mc.client.android.entity.AbstractStop;
 import com.magenta.mc.client.android.entity.Address;
 import com.magenta.mc.client.android.entity.Job;
 import com.magenta.mc.client.android.entity.MapSettingsEntity;
@@ -57,9 +56,9 @@ public class MapActivity extends DistributionActivity implements WorkflowActivit
         Intent intent = getIntent();
         lat = intent.getDoubleExtra(IntentAttributes.LAT, 0d);
         lon = intent.getDoubleExtra(IntentAttributes.LON, 0d);
-        List<AbstractStop> tmp = new ArrayList<>(1);
+        List<Stop> tmp = new ArrayList<>(1);
         if (lat != 0 && lon != 0) {
-            Stop s = (Stop) j.getStops().get(0);
+            Stop s = j.getStops().get(0);
             Address address = new Address();
             address.setLatitude(lat);
             address.setLongitude(lon);

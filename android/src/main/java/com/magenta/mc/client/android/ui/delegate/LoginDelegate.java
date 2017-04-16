@@ -17,6 +17,8 @@ import com.magenta.mc.client.android.http.HttpClient;
 import com.magenta.mc.client.android.listener.BindListener;
 import com.magenta.mc.client.android.log.MCLoggerFactory;
 import com.magenta.mc.client.android.service.HttpService;
+import com.magenta.mc.client.android.service.LocationService;
+import com.magenta.mc.client.android.service.SaveLocationsService;
 import com.magenta.mc.client.android.service.SocketIOService;
 import com.magenta.mc.client.android.service.holder.ServiceHolder;
 import com.magenta.mc.client.android.ui.activity.JobsActivity;
@@ -36,6 +38,11 @@ public class LoginDelegate extends HDDelegate {
                     activity.finish();
                     ServiceHolder.getInstance().startService(HttpService.class, Pair.create(IntentAttributes.HTTP_TYPE, Constants.SETTINGS_TYPE));
                     ServiceHolder.getInstance().startService(HttpService.class, Pair.create(IntentAttributes.HTTP_TYPE, Constants.JOBS_TYPE));
+                    ServiceHolder.getInstance().bindService(LocationService.class, new BindListener() {
+                        public void onBind(IBinder binder) {
+                            ServiceHolder.getInstance().startService(SaveLocationsService.class);
+                        }
+                    });
                     ServiceHolder.getInstance().bindService(SocketIOService.class, new BindListener() {
                         public void onBind(IBinder binder) {
                             ((SocketBinder) binder).subscribe();

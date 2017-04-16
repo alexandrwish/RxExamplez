@@ -2,8 +2,6 @@ package com.magenta.mc.client.android.ui.controller;
 
 import android.app.Activity;
 import android.graphics.Color;
-import android.location.Location;
-import android.os.Build;
 import android.view.View;
 import android.view.ViewTreeObserver;
 
@@ -24,9 +22,9 @@ import com.magenta.mc.client.android.entity.AbstractStop;
 import com.magenta.mc.client.android.entity.Address;
 import com.magenta.mc.client.android.entity.Job;
 import com.magenta.mc.client.android.entity.LocationEntity;
+import com.magenta.mc.client.android.entity.Stop;
 import com.magenta.mc.client.android.handler.MapUpdateHandler;
 import com.magenta.mc.client.android.log.MCLoggerFactory;
-import com.magenta.mc.client.android.service.ServicesRegistry;
 import com.magenta.mc.client.android.util.MxAndroidUtil;
 import com.magenta.mc.client.android.util.StringUtils;
 
@@ -40,30 +38,26 @@ public class GoogleMapController extends MapController implements OnMapReadyCall
     private boolean traffic;
     private Job job;
 
-    public GoogleMapController(Activity activity, final List<AbstractStop> stops, final boolean routeWithDriver) {
+    public GoogleMapController(Activity activity, final List<Stop> stops, final boolean routeWithDriver) {
         super(activity, stops, routeWithDriver);
         final View view = activity.getLayoutInflater().inflate(R.layout.view_google_map, null);
         mHolder.addView(view);
         ((MapFragment) activity.getFragmentManager().findFragmentById(R.id.map)).getMapAsync(this);
         view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            protected boolean isBuilding = true;
+            private boolean isBuilding = true;
 
             public void onGlobalLayout() {
                 if (isBuilding) {
                     isBuilding = false;
                 } else {
-                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-                        view.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                    } else {
-                        view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    }
+                    view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     onMapReady();
                 }
             }
         });
     }
 
-    protected Job paintMap(List<AbstractStop> stops) {
+    private Job paintMap(List<Stop> stops) {
         map.clear();
         Job job = null;
         for (AbstractStop stop : stops) {
@@ -198,9 +192,9 @@ public class GoogleMapController extends MapController implements OnMapReadyCall
 
     protected void myLocation() {
         super.myLocation();
-        Location loc = ServicesRegistry.getLocationService().getLocation();
+        LocationEntity loc = MxAndroidUtil.getGeoLocation();
         if (loc != null) {
-            map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(loc.getLatitude(), loc.getLongitude()), 16f));
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(loc.getLat(), loc.getLon()), 16f));
         }
     }
 
@@ -213,7 +207,7 @@ public class GoogleMapController extends MapController implements OnMapReadyCall
         }
 
         protected void updateMap(boolean firstRun) {
-            List<Address> addressList = new ArrayList<Address>();
+            List<Address> addressList = new ArrayList<>();
             LocationEntity location = MxAndroidUtil.getGeoLocation();
             if (location != null) {
                 LatLng centerCoordinates = new LatLng(location.getLat(), location.getLon());

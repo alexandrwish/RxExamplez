@@ -198,9 +198,9 @@ public class JobActivity extends DistributionActivity implements WorkflowActivit
         mAdapter.update(getStops(showCompletedJob));
     }
 
-    private List<AbstractStop> getStops(boolean showCompletedJob) {
-        List<AbstractStop> stops = new ArrayList<>();
-        for (AbstractStop stop : job.getStops()) {
+    private List<Stop> getStops(boolean showCompletedJob) {
+        List<Stop> stops = new ArrayList<>();
+        for (Stop stop : job.getStops()) {
             if (showCompletedJob) {
                 stops.add(stop);
             } else if (!stop.isCompleted() && (!(job.isCompleted() || job.isCancelled()))) {

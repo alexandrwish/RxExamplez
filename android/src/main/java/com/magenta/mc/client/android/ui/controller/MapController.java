@@ -50,7 +50,7 @@ public abstract class MapController implements View.OnClickListener {
     protected Activity mActivity;
     protected LinearLayout mHolder;
     protected MapUpdateHandler mHandler;
-    protected List<AbstractStop> mStops;
+    protected List<Stop> mStops;
     protected boolean routeWithDriver;
     protected RouteUpdateReceiver routeUpdateReceiver;
     protected Long synchronizeTimestamp;
@@ -59,7 +59,7 @@ public abstract class MapController implements View.OnClickListener {
     protected View mBaseMapView;
     protected ImageButton mBtnZoomIn, mBtnZoomOut, mBtnMyLocation;
 
-    public MapController(Activity activity, List<AbstractStop> stops, boolean routeWithDriver) {
+    public MapController(Activity activity, List<Stop> stops, boolean routeWithDriver) {
         mActivity = activity;
         mBaseMapView = activity.getLayoutInflater().inflate(R.layout.view_map, null);
         LinearLayout parentHolder = (LinearLayout) activity.findViewById(R.id.map_controller);
