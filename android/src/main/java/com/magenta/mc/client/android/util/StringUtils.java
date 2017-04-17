@@ -9,7 +9,6 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 public final class StringUtils {
 
@@ -36,7 +35,7 @@ public final class StringUtils {
     }
 
     public static String getTimeRange(Long start, Long end) {
-        return String.format("%s - %s", DateUtils.toStringTime(new Date(TimeUnit.SECONDS.toMillis(start))), DateUtils.toStringTime(new Date(TimeUnit.SECONDS.toMillis(end))));
+        return String.format("%s - %s", DateUtils.toStringTime(new Date(start)), DateUtils.toStringTime(new Date(end)));
     }
 
     public static String formatDouble(Double value) {
