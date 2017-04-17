@@ -17,12 +17,12 @@
     <PreferenceCategory android:title="@string/mx_activity_preferences_tracking">
 
         <CheckBoxPreference
-            android:key="loc.enabled"
+            android:key="loc.enable"
             android:summary="@string/mx_activity_preferences_tracking_summary"
             android:title="@string/mx_activity_preferences_enabled" />
 
         <EditTextPreference
-            android:dependency="loc.enabled"
+            android:dependency="loc.enable"
             android:inputType="number"
             android:key="loc.save"
             android:title="@string/mx_activity_preferences_batchCover" />
