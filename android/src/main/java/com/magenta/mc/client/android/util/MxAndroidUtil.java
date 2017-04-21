@@ -227,17 +227,11 @@ public final class MxAndroidUtil {
         }
         if (location == null) {
             MCLoggerFactory.getLogger(MxAndroidUtil.class).info("Current location not found.");
-        } else {
-            location.setUserId(Settings.get().getUserId());
-            location.setToken(Settings.get().getAuthToken());
-            location.setGps(isGPSEnable());
-            location.setGprs(getNetworkInfo());
-            location.setBattery(getBatteryLevel());
         }
         return location;
     }
 
-    private static Double getBatteryLevel() {
+    public static Double getBatteryLevel() {
         Intent batteryIntent = McAndroidApplication.getInstance().registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
         if (batteryIntent == null) {
             return -1d;
@@ -250,12 +244,12 @@ public final class MxAndroidUtil {
         return ((float) level / (float) scale) * 100.0d;
     }
 
-    private static boolean isGPSEnable() {
+    public static boolean isGPSEnable() {
         LocationManager manager = (LocationManager) McAndroidApplication.getInstance().getSystemService(Context.LOCATION_SERVICE);
         return manager != null && manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
     }
 
-    private static String getNetworkInfo() {
+    public static String getNetworkInfo() {
         ConnectivityManager connectivityManager = (ConnectivityManager) McAndroidApplication.getInstance().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null ? activeNetworkInfo.toString() : "[]";

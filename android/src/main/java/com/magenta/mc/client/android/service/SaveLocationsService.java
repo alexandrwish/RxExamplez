@@ -24,12 +24,18 @@ public class SaveLocationsService extends Service {
         mCdt = new CountDownTimer(saveToDbInterval, saveToDbInterval) {
             public void onTick(long millisUntilFinished) {
                 LocationEntity loc = MxAndroidUtil.getGeoLocation();
-                if (loc != null) {
-                    try {
-                        DistributionDAO.getInstance().saveLocation(loc);
-                    } catch (SQLException e) {
-                        MCLoggerFactory.getLogger(getClass()).error(e.getMessage(), e);
-                    }
+                if (loc == null) {
+                    loc = new LocationEntity();
+                }
+                loc.setUserId(Settings.get().getUserId());
+                loc.setToken(Settings.get().getAuthToken());
+                loc.setGps(MxAndroidUtil.isGPSEnable());
+                loc.setGprs(MxAndroidUtil.getNetworkInfo());
+                loc.setBattery(MxAndroidUtil.getBatteryLevel());
+                try {
+                    DistributionDAO.getInstance().saveLocation(loc);
+                } catch (SQLException e) {
+                    MCLoggerFactory.getLogger(getClass()).error(e.getMessage(), e);
                 }
             }
 
