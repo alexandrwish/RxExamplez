@@ -25,6 +25,12 @@
             android:dependency="loc.enable"
             android:inputType="number"
             android:key="loc.save"
+            android:title="@string/mx_activity_preferences_retrieveInterval" />
+
+        <EditTextPreference
+            android:dependency="loc.enable"
+            android:inputType="number"
+            android:key="loc.send"
             android:title="@string/mx_activity_preferences_batchCover" />
     </PreferenceCategory>
 

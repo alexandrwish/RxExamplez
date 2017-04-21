@@ -22,6 +22,7 @@ public class Settings {
     public static final String APP_PORT = "app.port";
     public static final String APP_THEME = "app.theme";
     public static final String LOC_SAVE = "loc.save";
+    public static final String LOC_SEND = "loc.send";
     public static final String LOC_ENABLE = "loc.enable";
     public static final String UPDATE_ALERT = "update.alert";
     public static final String MOTO_BARCODE = "moto.barcode";
@@ -167,6 +168,10 @@ public class Settings {
 
     public Long getLocationSave() {
         return Long.valueOf(preferences.getString(LOC_SAVE, "60000L"));
+    }
+
+    public Long getLocationSend() {
+        return Long.valueOf(preferences.getString(LOC_SEND, "60000L"));
     }
 
     public Boolean getLocationEnable() {
@@ -385,6 +390,13 @@ public class Settings {
         public SettingsBuilder setLocationSave(Long locationSave) {
             if (locationSave != null) {
                 editor.putString(LOC_SAVE, locationSave + "");
+            }
+            return this;
+        }
+
+        public SettingsBuilder setLocationSend(Long locationSend) {
+            if (locationSend != null) {
+                editor.putString(LOC_SEND, locationSend + "");
             }
             return this;
         }

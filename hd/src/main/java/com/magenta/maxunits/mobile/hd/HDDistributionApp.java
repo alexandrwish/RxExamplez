@@ -24,6 +24,9 @@ public class HDDistributionApp extends McAndroidApplication {
         if (!settings.contains(Settings.LOC_SAVE)) {
             builder.setLocationSave(Long.valueOf(BuildConfig.LOC_SAVE));
         }
+        if (!settings.contains(Settings.LOC_SEND)) {
+            builder.setLocationSend(Long.valueOf(BuildConfig.LOC_SEND));
+        }
         if (!settings.contains(Settings.LOC_ENABLE)) {
             builder.setLocationEnable(Boolean.valueOf(BuildConfig.LOC_ENABLE));
         }
