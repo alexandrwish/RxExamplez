@@ -2,6 +2,8 @@ package com.magenta.mc.client.android.log;
 
 import android.support.annotation.NonNull;
 
+import com.magenta.mc.client.android.McAndroidApplication;
+import com.magenta.mc.client.android.R;
 import com.magenta.mc.client.android.util.ResourceManager;
 
 import net.sf.microlog.core.Level;
@@ -9,7 +11,6 @@ import net.sf.microlog.core.LoggerFactory;
 import net.sf.microlog.core.PropertyConfigurator;
 import net.sf.microproperties.Properties;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
@@ -92,7 +93,7 @@ public class MCLoggerFactory {
                     try {
                         if (micrologProperties == null) {
                             micrologProperties = new Properties();
-                            InputStream propStream = /*Setup.get().getSettings().openFile(PROPERTIES_FILENAME)*/new FileInputStream("");
+                            InputStream propStream = McAndroidApplication.getInstance().getResources().openRawResource(R.raw.microlog);
                             if (propStream == null) { // no explicit file, using properties bound to jar
                                 propStream = ResourceManager.getInstance().getResourceAsStream(PROPERTIES_FILENAME);
                             }
