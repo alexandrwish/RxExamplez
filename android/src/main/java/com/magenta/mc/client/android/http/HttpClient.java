@@ -160,7 +160,7 @@ public class HttpClient {
             TelemetryRecord record = new TelemetryRecord();
             record.setDate(System.currentTimeMillis());
             record.setHeading(0D);
-            record.setSpeed(entity.getSpeed().doubleValue());
+            record.setSpeed(entity.getSpeed() != null ? entity.getSpeed().doubleValue() : 0D);
             record.setLatitude(entity.getLat());
             record.setLongitude(entity.getLon());
             record.setTimestamp(entity.getDate());

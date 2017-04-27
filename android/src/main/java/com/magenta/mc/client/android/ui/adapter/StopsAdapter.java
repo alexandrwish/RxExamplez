@@ -20,6 +20,7 @@ import com.magenta.mc.client.android.util.StopsComparator;
 import com.magenta.mc.client.android.util.StringUtils;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -74,7 +75,7 @@ public class StopsAdapter extends DistributionArrayAdapter<Stop> {
         }
         holder.name.setText(stop.getStopName());
         holder.address.setText(destinationAddress != null ? destinationAddress.getFull() : "");
-        holder.time.setText(DateUtils.toStringTime(stop.getDate()));
+        holder.time.setText(DateUtils.toStringTime(new Date(stop.getParameterAsLong(Stop.ATTR_START_TIME, stop.getDate().getTime()))));
         holder.status.setText(stop.getStatusString(context));
         holder.client.setText(stop.getContactPerson());
         holder.stopNumber.setText(jobStops.indexOf(stop) + 1 + "/" + jobStops.size());
