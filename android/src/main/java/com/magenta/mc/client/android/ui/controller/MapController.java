@@ -295,12 +295,8 @@ public abstract class MapController implements View.OnClickListener {
     }
 
     public Bitmap drawBitmap(Integer priority, String time, boolean isPu) {
-        Bitmap bitmap = BitmapFactory.decodeResource(mActivity.getResources(), R.drawable.stop_icon);
-        Bitmap.Config bitmapConfig = bitmap.getConfig();
-        if (bitmapConfig == null) {
-            bitmapConfig = Bitmap.Config.ARGB_8888;
-        }
-        bitmap = bitmap.copy(bitmapConfig, true);
+        int textSize = (int) (12 * mActivity.getResources().getDisplayMetrics().density);
+        Bitmap bitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(mActivity.getResources(), R.drawable.stop_icon), time.length() * textSize, textSize * 2, false);
         Canvas canvas = new Canvas(bitmap);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         int color;
@@ -321,12 +317,11 @@ public abstract class MapController implements View.OnClickListener {
                 color = Color.WHITE;
         }
         paint.setColor(color);
-        int textSize = (int) (12 * mActivity.getResources().getDisplayMetrics().density);
         paint.setTextSize(textSize);
         paint.setShadowLayer(1f, 0f, 1f, Color.DKGRAY);
         Rect bounds = new Rect();
         paint.getTextBounds("⇧ " + time, 0, time.length() + 2, bounds);
-        int x = (bitmap.getWidth() - bounds.width()) / 2;
+        int x = (bitmap.getWidth() - bounds.width()) / 3;
         int y = (int) ((bitmap.getHeight() - bounds.height()) / 2 + textSize / 1.5);
         canvas.drawText(isPu ? "⇧" : "⇩", x, y, paint);
         paint.setColor(Color.WHITE);
