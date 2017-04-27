@@ -182,6 +182,7 @@ public class HttpService extends IntentService {
     }
 
     private void getJobs() {
+        sendBroadcast(new Intent(Constants.HTTP_SERVICE_NAME).putExtra(IntentAttributes.HTTP_JOBS_RESPONSE_TYPE, Constants.START));
         HttpClient.getInstance().getJobs()
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Subscriber<List<Run>>() {
@@ -195,7 +196,6 @@ public class HttpService extends IntentService {
                     }
 
                     public void onNext(List<Run> runs) {
-                        sendBroadcast(new Intent(Constants.HTTP_SERVICE_NAME).putExtra(IntentAttributes.HTTP_JOBS_RESPONSE_TYPE, Constants.START));
                         List<JobEntity> jobs = new LinkedList<>();
                         for (Run run : runs) {
                             jobs.add(SingleJobRenderer.renderJob(run));

@@ -21,7 +21,7 @@ public class WaitDialog extends DistributionDialogFragment {
         setCancelable(bundle.getBoolean(DialogFactory.CANCELABLE));
         mDialog = ProgressDialog.show(getActivity(), null, getActivity().getString(bundle.getInt(DialogFactory.VALUE)));
         if (bundle.getBoolean(DialogFactory.AUTO_KILL, true)) {
-            Observable.just(0).subscribeOn(Schedulers.newThread()).observeOn(Schedulers.io()).timeout(10, TimeUnit.SECONDS).subscribe(new Action1<Integer>() {
+            Observable.just(0).subscribeOn(Schedulers.newThread()).observeOn(Schedulers.io()).delay(10, TimeUnit.SECONDS).subscribe(new Action1<Integer>() {
                 public void call(Integer integer) {
                     if (mWait && getActivity() != null) {
                         getActivity().runOnUiThread(new Runnable() {
