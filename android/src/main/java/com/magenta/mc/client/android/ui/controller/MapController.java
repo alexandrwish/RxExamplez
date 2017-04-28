@@ -296,7 +296,7 @@ public abstract class MapController implements View.OnClickListener {
 
     public Bitmap drawBitmap(Integer priority, String time, boolean isPu) {
         int textSize = (int) (12 * mActivity.getResources().getDisplayMetrics().density);
-        Bitmap bitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(mActivity.getResources(), R.drawable.stop_icon), time.length() * textSize, textSize * 2, false);
+        Bitmap bitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(mActivity.getResources(), R.drawable.stop_icon), time.length() * textSize, textSize * 3, false);
         Canvas canvas = new Canvas(bitmap);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         int color;
