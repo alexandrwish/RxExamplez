@@ -39,7 +39,7 @@ public final class ServiceHolder {
         if (serviceClass == null) {
             return;
         }
-        if (binders.containsKey(serviceClass.getName())) {
+        if (binders.containsKey(serviceClass.getName()) && binders.get(serviceClass.getName()).second != null) {
             if (listener != null) {
                 listener.onBind(binders.get(serviceClass.getName()).second);
             }

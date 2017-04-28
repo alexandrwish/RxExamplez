@@ -305,7 +305,7 @@ public class SocketIOService extends Service {
 
     protected void dropUser() {
 //        Login.getInstance().logout();
-        // TODO: 2/27/17 раскоментировать и имплементировать после выпиливания xmpp
+// TODO: 2/27/17 раскоментировать и имплементировать после выпиливания xmpp
 //        EventBus.getDefault().postSticky(new DropUserEvent());
 //        startActivity(new Intent(this, MateApplication.getInstance().getWorkflowService().getLoginActivity()).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK));
 
